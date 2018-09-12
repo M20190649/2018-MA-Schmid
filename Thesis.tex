@@ -1,0 +1,63 @@
+% % Preamble BEGINN %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%% Preamble (Dokumentenklasse)
+\input{preamble/pre-class}
+
+%%% Alle Namen usw. im Titel und im hyperref-Paket
+\input{preamble/pre-work}
+
+%%% Preamble (Pakete)
+\input{preamble/pre-packages}
+
+\loadglsentries{glossaries}
+\glossarystyle{super}
+\makeglossaries
+
+%%% Neue Befehle
+\input{preamble/pre-newcommands}
+\input{preamble/pre-tablecommands} % Fuer Tabellen
+
+%%% Silbentrennung
+\input{preamble/pre-hyphenation}
+
+% % Preamble ENDE %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% % Inhalt BEGINN %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+% Tabellen-Einstellungen
+\input{preamble/pre-tablesettings}
+% % %%%%%% Vorspiel
+\begin{spacing}{1} % Vorspiel immer mit Standard-Zeilenabstand setzen
+	\frontmatter
+	% % Titelblatt
+	\include{chapters/titel}
+	\include{chapters/vorspiel}
+	\include{chapters/kurzfassung}
+
+	% % Verzeichnisse
+	\tableofcontents
+	\listoffigures
+	% \listoftables
+	\lstlistoflistings
+	\printglossary[type=\acronymtype, title=Abkürzungsverzeichnis]
+\end{spacing}
+
+% % %%%%%% Textteil (Eigentliche Arbeit)
+\mainmatter
+%
+\include{chapters/einleitung}
+
+% % %%%%%% Literaturverzeichnis (darf im deutschen nicht in den Anhang!)
+% Einfaches Literaturverzeichnis
+% \input{chapters/bibEinfach}
+% Literaturverzeichnis mit Bibtex
+\bibliography{bib/sources}
+
+\printglossary
+
+% % %%%%%% Anhang
+\appendix
+% \include{chapters/anhang}
+
+% %  Inhalt ENDE %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\end{document}

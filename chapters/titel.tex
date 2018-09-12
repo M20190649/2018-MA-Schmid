@@ -1,0 +1,45 @@
+%!TEX root = ../Thesis.tex
+
+% % Neue Befehle
+\newcommand{\HRule}[2]{\noindent\rule[#1]{\linewidth}{#2}} % Horiz. Linie
+\newcommand{\vlinespace}[1]{\vspace*{#1\baselineskip}} % Abstand
+\newcommand{\titleemph}[1]{\textbf{#1}} % Hervorheben
+
+\begin{titlepage}
+ \sffamily % Titelseite in seriefenloser Schrift
+      \includegraphics[scale=0.7]{ressources/img/logo_itdesigners}
+      \hfill
+      % Logo Hochschule
+      \includegraphics[width=5cm]{ressources/img/logo_hfu}
+      \HRule{13pt}{1pt}
+      \centering
+      \Large
+      \vlinespace{1}\\
+      \workTyp\\
+      \vspace{1em}
+      \huge
+      \workTitel\\
+%
+      \Large
+      \vlinespace{2}
+          im Master-Studiengang \workStudiengang\\
+          der Hochschule Furtwangen\\
+
+      \vlinespace{2}
+      \workNameStudent
+%
+   \vfill
+   \raggedright
+%
+   \large
+   \titleemph{Zeitraum:} \workSemester \\ % Nur bei Abschluss-Arbeiten
+   \titleemph{Prüfer:} \workPruefer \\
+   \titleemph{Zweitprüfer:} \workBetreuer \\ % Nur bei Abschluss-Arbeiten
+
+ % Folgenden Abschnitt nur bei Industrie-Arbeiten darstellen
+   \vlinespace{1}
+   \HRule{13pt}{1pt} \\
+   \titleemph{Firma:} \workFirma \\
+   \titleemph{Betreuer:} \workBetreuer
+%
+\end{titlepage}
