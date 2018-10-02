@@ -107,7 +107,7 @@
 ## Benötigte Neuerungen
 + Finden eines passenden Traj. Clusterings Ansatzes für die in MEC View verwendeten Luftaufnahmen
     (häufig in Lit. auch statische Kameras etc.)
-+ Extraktion von Fahrbahnen für verschiedenste Straßentopologien nötig --> eig. nie gemacht
++ Extraktion von **Fahrspuren** für verschiedenste Straßentopologien nötig --> eig. nie gemacht
 + Klassifizierung auch nie gemacht
 
 # Clustering von Fahrzeugtrajektorien
@@ -124,6 +124,13 @@
 + Probleme und deren Lösung
 
 # Bestimmung von Fahrbahnen
+
++ Idealfall ohne Überschneidungen der Fahrbahnen:
+    + Bestimmung Fahrbahnmittelpunkt
+    + Bestimmung Fahrbahn-Begrenzungen
+    + s. Vorgehen Dokument
++ Problematischer Fall von sich kreuzenden Fahrbahnen
+    + Bestimmung Fahrbahnen aus Sub-Trajektorien
 
 # Klassifizierung der Fahrbahnen
 
