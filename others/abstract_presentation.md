@@ -15,7 +15,7 @@
 Im Rahmen des vom Bundesministerium für Wirtschaft und
 Energie geförderten Forschungsprojektes MEC-View wird
 Straßenverkehr in Luftaufnahmen genau untersucht. Im Zuge
-dieser Masterarbeit wird ein Verfahren erstellt, welches es
-möglich macht, Straßen-Fahrspuren aus Trajektoriedaten von
+dieser Masterarbeit wurde ein Verfahren erstellt, welches es
+ermöglicht, Straßen-Fahrspuren aus Trajektoriedaten von
 Fahrzeugen zu extrahieren. Die erkannten Fahrspuren werden
 anschließend ihrer Topologie entsprechend klassifiziert.
