@@ -37,7 +37,8 @@ dargestellt und kann wie folgt beschrieben werden:
 \begin{itemize}
     \item[a)] Verfolgtes Objekt befindet sich zum Zeitpunkt $t$ an bekannter Position $p_1$
     \item[b)] Zum Zeitpunkt $t+1$: Anwendung des Klassifikators auf Positionen um $p_1$
-    \item[c)] Erstellen einer \textit{Confidence Map}, welche die Wahrscheinlichkeit darstellt, das verfolgte Objekt gefunden zu haben
+    \item[c)] Erstellen einer \textit{Confidence Map}, welche die Wahrscheinlichkeit darstellt,
+                das verfolgte Objekt gefunden zu haben
     \item[d)] Updaten des Trackers auf Position des Maxima der \textit{Confidence Map}
 \end{itemize}
 
@@ -49,16 +50,46 @@ dargestellt und kann wie folgt beschrieben werden:
 \end{figure}
 
 Das Erlernen eines stabilen Klassifikators in der ``Tracker-Application'' basiert auf der Arbeit
-\textit{``Real-Time Tracking via On-line Boosting''} von \cite{Grabner}.
+\textit{``Real-Time Tracking via On-line Boosting''} von \cite[]{Grabner}.
 Die Autoren verwenden einen On-line AdaBoost Algorithmus, welcher mehrere \textit{schwache}
 Klassifikatoren zu einem \textit{starken} Klassifikator kombiniert.
 Schwache Klassifikatoren müssen hierbei nur eine Erkennungsrate von mehr als 50\% besitzen und somit
 wenig besser als zufallsbedingtes Auswählen sein.
 Starke Klassifikatoren entstehen durch die Kombination von mehreren schwachen Klassifikatoren.
-Die Auswahl von schwachen Klassifikatoren erfolgt über sogenante Selektoren, welche aus einem Set
-von schwachen Klassifikatoren immer jenen auswählen, welcher die geringste Fehlerrate bei der Erkennung
+Die Auswahl von schwachen Klassifikatoren erfolgt über sogenante Selektoren, welche aus einer Menge
+immer jenen wählen, welcher die geringste Fehlerrate bei der Erkennung
 der Trainings-Objekte besitzen. Der Klassifikator mit der schlechtesten Erkennungsrate wird in jeder
-Trainingsiteration ersetzt, um das Training weiter zu verbessern.
+Trainingsiteration ersetzt, um das Training zu verbessern.
+Großer Vorteil der On-line AdaBoost Methode ist, dass sie es ermöglicht, starke Klassifikatoren während des
+eigentlichen Trackingvorganges zu erlernen. Nach jedem Trackingschritt wird das erfolgreich erkannte
+Objekt in Trainingssätze zerlegt, auf welche die Klassifikatoren angewandt werden um ihre Performance zu evaluieren.
+So wird in jedem Schritt die Menge der schwachen Klassifikatoren und der Selektoren aktualisiert. Die Wahl
+von effizient berechenbaren schwachen Klassifikatoren macht dies möglich.
+
+Die in \cite[]{Grabner} und der ``Tracker-Application'' verwendeten Klassifikatoren sind binär, das heißt,
+sie teilen Objekte in die zwei Klassen \textit{erkannt} und \textit{nicht erkannt} auf.
+Konkret werden Haar-ähnliche Bildmerkmale nach \cite[]{Viola} als schwache Klassifikatoren verwendet.
+Diese sind ein Mittel zur Identifikation von Kontrastunterschieden in Bildern, welche sich sehr gut
+zur Erkennung von Kanten und Linien eigenen. Ein Beispiel der Haar-ähnlichen Merkmale und ihres Einsatzes
+bei der Gesichtserkennung ist in Abbildung \ref{fig:grund_hair_like} dargestellt.
+
+Diese Merkmale werden als schwache Klassifikatoren mit zufälliger Skalierung, Größe und Position
+auf dem Bild platziert. Sie suchen in dieser Region anschließend nach den von dem Muster definierten
+Konturunterschieden. Eine Bereich gilt als erkannt, wenn der Betrag der Differenz der Pixelsumme des weißen und
+schwarzen Bereiches des Musters unter einem festgelegten Grenzwert liegt.
+
+\begin{figure}[H]
+    \centering
+    \subfloat[]{{
+        \includegraphics[width=0.4\linewidth]{../resources/img/grundlagen/hair_like_features}
+    }}
+    \qquad
+    \subfloat[]{{
+        \includegraphics[width=0.35\linewidth]{../resources/img/grundlagen/hair_like_features_2}
+    }}
+    \caption{a) Haar-ähnliche Merkmale b) Beispiele für erkannte Regionen in einem Gesicht \cite[]{DivyanshDwivedi2018}}
+    \label{fig:grund_hair_like}
+\end{figure}
 
 \section{Datenaufbereitung und Bereinigung}
 \label{sec:tra_preprocessing}
@@ -77,5 +108,5 @@ Trainingsiteration ersetzt, um das Training weiter zu verbessern.
 \subsection{Distanzmaße zum Vergleich von Fahrzeugtrajektorien}
 \label{sec:distance_measures}
 
-\section{Untersuchung von möglichen Straßentopologien}
+\section{Untersuchung möglicher Straßentopologien}
 \label{sec:street_topologies}
