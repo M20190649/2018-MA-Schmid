@@ -45,7 +45,7 @@ dargestellt und kann wie folgt beschrieben werden:
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.7\linewidth]{../resources/img/grundlagen/tracking}
-    \caption[Übersicht Tracking mit Klassifikator]{Übersicht Tracking mit Klassifikator [\cite{Grabner}]}
+    \caption[Übersicht Tracking mit Klassifikator]{Übersicht Tracking mit Klassifikator \cite[]{Grabner}}
     \label{fig:grund_tracking}
 \end{figure}
 
@@ -87,7 +87,7 @@ schwarzen Bereiches des Musters unter einem festgelegten Grenzwert liegt.
     \subfloat[]{{
         \includegraphics[width=0.35\linewidth]{../resources/img/grundlagen/hair_like_features_2}
     }}
-    \caption{a) Haar-ähnliche Merkmale b) Beispiele für erkannte Regionen in einem Gesicht \cite[]{DivyanshDwivedi2018}}
+    \caption[a) Haar-ähnliche Merkmale b) Beispiele für erkannte Regionen in einem Gesicht]{a) Haar-ähnliche Merkmale b) Beispiele für erkannte Regionen in einem Gesicht \cite[]{DivyanshDwivedi2018}}
     \label{fig:grund_hair_like}
 \end{figure}
 
@@ -99,10 +99,66 @@ schwarzen Bereiches des Musters unter einem festgelegten Grenzwert liegt.
 % Padding etc. (Interpolation)
 % Glättung (RANSAC, Wavelet)
 
-\section{Clusteranalyse von Trajektorien}
+\section{Clusteranalyse}
 \label{sec:tra_clustering}
 
-\subsection{Clustering Algorithmen}
+Die Clusteranalyse (kurz Clustering) ist ein wichtiges Werkzeug zur Auswertung von Daten unterschiedlichster
+Art. Sie stellt dabei kein konkretes Vorgehen oder einen Algorithmus dar, sondern beschreibt ein
+allgemeines Problem, welches auf unterschiedlichste Weise gelöst werden kann.
+Grundsätzlich ist das Ziel der Clusteranalyse, Datenobjekte aufgrund ihrer Eigenschaften und Beziehungen
+untereinander so zu gruppieren, dass sich die Objekte einer Gruppe möglichst stark ähneln und sich
+von den Objekten anderer Gruppen möglichst stark unterscheiden. Je höher die \textit{Homogenität} in einem Cluster
+und die \textit{Differenz} zwischen den Clustern, desto besser ist die gewählte Clustering Methode.
+Der Einsatz von Clustering ist in vielen Anwendungsgebieten und in den unterschiedlichsten wissenschaftlichen
+Disziplinen sehr beliebt, um ein Verständnis für Daten zu erhalten beziehungsweise diese verarbeiten zu können.
+So kommt die Clusteranalyse unter anderem in den Feldern des maschinellen Lernens, der Mustererkennung, Bildanalyse,
+der Biologie (Taxonomie) oder im Bereich Data Mining zum Einsatz. \cite[]{tan2007introduction}
+
+Die Clusteranalyse hat viel mit dem Problem der Klassifizierung von Daten gemein, insofern sie Datenobjekten
+Label zuordnet. Im Gegensatz zu \textit{überwachten} Klassifizierungsansätzen, wie dem heute populären überwachten
+Lernen, leiten Cluster-Algorithmen die Label allerdings alleine aus den vorhandenen Daten ab.
+Es kommen keine Vergleichsobjekte mit bekannten, händisch vergebenen Labeln zum Einsatz.
+Aus diesem Grund wird die Clusteranalyse auch häufig als \textit{unüberwachte Klassifizierung} bezeichnet. \cite[]{tan2007introduction} 
+
+Das Konzept eines \textit{Clusters} ist nicht genau definiert, was in einer Vielzahl an unterschiedlichen Ansichten
+und Algorithmen resultiert, welche sich jeweils für andere Anwendungsfälle eignen und verschiedene Eigenschaften
+besitzen. Hieraus ergibt sich auch die Tatsache, dass Clustering keine selbsttätiger Prozess ist, welcher sich auf
+einheitliche Weise auf unterschiedliche Probleme anwenden lässt. Jedes Problem erfordert die individuelle und sorgfältige
+Auswahl eines passenden Algorithmus, eines Distanzmaßes und der richtigen Parameter. Die Bestimmung dieser geschieht
+iterativ und nicht selten nach dem Prinzip des \textit{Trial and Error}. In Abbildung \ref{fig:grund_clustering_example}
+ist beispielhaft ein Datensatz (links) mit -- für den Menschen intuitiv ersichtlich -- 7 unterschiedlichen Clustern (rechts)
+dargestellt. Nach \cite[]{Jain2010} kann kein verfügbarer Clustering Algorithmus diese allerdings alle erkennen.
+\cite[]{Jain1999, tan2007introduction}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{../resources/img/grundlagen/clustering_example}
+    \caption[Rohdaten (links) und erwünschtes Clustering-Ergebnis (rechts)]{Rohdaten (links) und erwünschtes Clustering-Ergebnis (rechts) \cite[]{Jain2010}}
+    \label{fig:grund_clustering_example}
+\end{figure}
+
+Aufgrund der Limitationen, welche alle Cluster-Algorithmen besitzen, muss der Analyst sich vor deren Anwendung intensiv
+mit den zu verarbeitenden Daten beschäftigen. Er muss ein Verständnis dafür besitzen, welche Struktur die Daten
+besitzen, beziehungsweise annehmen können, und nach welchen Mustern zu suchen ist.
+Besonders wichtiger ist zudem auch die Auswahl der richtigen, das heißt relevanten, Datenmerkmale (\textit{``Feature-Selection''})
+und die Wahl deren Repräsentation. Die Selektion und gegebenenfalls Transformation der Daten muss in einem
+Vorverarbeitungsschritt geschehen, dessen Qualität einen maßgeblichen Einfluss auf das finale Clustering Ergebnis hat.
+Basierend auf dieser Beschreibung und \cite[]{Jain1999}, lässt sich der Ablauf einer Clusteranalyse wie folgt darstellen:
+
+% TODO: Grafik selbst neu erstellen
+% (Feature Selection --> Feature Transformation --> Ähnlichkeitsmessung --> Clustering --> Feedback)
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{../resources/img/grundlagen/clustering_workflow}
+    \caption{Ablauf einer Clusteranalyse}
+    \label{fig:grund_clustering_workflow}
+\end{figure}
+
+Einige wichtige Clustering-Ansätze sind die Vernetzungs-Modelle, Centroid-basierte-Modelle, Verteilungs-Modelle
+oder Dichte-Modelle. Diese und einige der stellvertretende Algorithmen werden in nachfolgendem Abschnitt \ref{sec:cluster_algos}
+beschrieben.
+
+\subsection{Cluster Algorithmen}
 \label{sec:cluster_algos}
 
 \subsection{Distanzmaße zum Vergleich von Fahrzeugtrajektorien}
