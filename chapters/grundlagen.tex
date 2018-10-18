@@ -110,7 +110,8 @@ untereinander so zu gruppieren, dass sich die Objekte einer Gruppe möglichst st
 von den Objekten anderer Gruppen möglichst stark unterscheiden. Je höher die \textit{Homogenität} in einem Cluster
 und die \textit{Differenz} zwischen den Clustern, desto besser ist die gewählte Clustering Methode.
 Der Einsatz von Clustering ist in vielen Anwendungsgebieten und in den unterschiedlichsten wissenschaftlichen
-Disziplinen sehr beliebt, um ein Verständnis für Daten zu erhalten beziehungsweise diese verarbeiten zu können.
+Disziplinen sehr beliebt, um ein Verständnis für Daten zu erhalten beziehungsweise diese anschließend weiter
+verarbeiten zu können.
 So kommt die Clusteranalyse unter anderem in den Feldern des maschinellen Lernens, der Mustererkennung, Bildanalyse,
 der Biologie (Taxonomie) oder im Bereich Data Mining zum Einsatz. \cite[]{tan2007introduction}
 
@@ -127,7 +128,7 @@ einheitliche Weise auf unterschiedliche Probleme anwenden lässt. Jedes Problem 
 Auswahl eines passenden Algorithmus, eines Distanzmaßes und der richtigen Parameter. Die Bestimmung dieser geschieht
 iterativ und nicht selten nach dem Prinzip des \textit{Trial and Error}. In Abbildung \ref{fig:grund_clustering_example}
 ist beispielhaft ein Datensatz (links) mit -- für den Menschen intuitiv ersichtlich -- 7 unterschiedlichen Clustern (rechts)
-dargestellt. Nach \cite[]{Jain2010} kann kein verfügbarer Clustering Algorithmus diese allerdings alle erkennen.
+dargestellt. Nach \cite[]{Jain2010} kann allerdings kein verfügbarer Clustering Algorithmus diese alle erkennen.
 \cite[]{Jain1999, tan2007introduction}
 
 \begin{figure}[H]
@@ -140,10 +141,11 @@ dargestellt. Nach \cite[]{Jain2010} kann kein verfügbarer Clustering Algorithmu
 Aufgrund der Limitationen, welche alle Cluster-Algorithmen besitzen, muss der Analyst sich vor deren Anwendung intensiv
 mit den zu verarbeitenden Daten beschäftigen. Er muss ein Verständnis dafür besitzen, welche Struktur die Daten
 besitzen, beziehungsweise annehmen können, und nach welchen Mustern zu suchen ist.
-Besonders wichtiger ist zudem auch die Auswahl der richtigen, das heißt relevanten, Datenmerkmale (\textit{``Feature-Selection''})
-und die Wahl deren Repräsentation. Die Selektion und gegebenenfalls Transformation der Daten muss in einem
+Besonders wichtiger ist zudem auch die Auswahl der richtigen, das heißt relevanten, Datenmerkmale (\textit{``Feature Selektion''})
+und die Wahl deren Repräsentation (\textit{``Feature Transformation''}).
+Die Selektion und gegebenenfalls Transformation der Daten muss in einem
 Vorverarbeitungsschritt geschehen, dessen Qualität einen maßgeblichen Einfluss auf das finale Clustering Ergebnis hat.
-Basierend auf dieser Beschreibung und \cite[]{Jain1999}, lässt sich der Ablauf einer Clusteranalyse wie folgt darstellen:
+Basierend auf vorangegangener Beschreibung und \cite[]{Jain1999}, lässt sich der Ablauf einer Clusteranalyse wie folgt darstellen:
 
 % TODO: Grafik selbst neu erstellen
 % (Feature Selection --> Feature Transformation --> Ähnlichkeitsmessung --> Clustering --> Feedback)
@@ -154,12 +156,52 @@ Basierend auf dieser Beschreibung und \cite[]{Jain1999}, lässt sich der Ablauf 
     \label{fig:grund_clustering_workflow}
 \end{figure}
 
+\subsection{Eigenschaften von Cluster-Sets}
+
+Das aus einer Analyse resultierende Set von Clustern kann in verschiedene Kategorien unterteilt werden beziehungsweise
+unterschiedliche Eigenschaften besitzen.
+Nachfolgend sind die wichtigsten Kriterien nach \cite[]{tan2007introduction} aufgeführt.
+
+\paragraph{Hierarchisch vs. Partitioniert}
+Von \textit{hierarchischen} Cluster-Sets wird gesprochen, wenn die einzelnen Cluster verschachtelt sind und dabei eine
+Baum-Struktur bilden. Cluster sind hingegen \textit{partitioniert}, wenn keine Überlagerungen zwischen ihnen existiert.
+
+\paragraph{Exklusiv vs. Überlappend vs. Fuzzy}
+\textit{Exklusive} Cluster-Sets liegen vor, wenn jedem Datenwert ein oder kein Zielcluster zugeordnet wird.
+Im Gegensatz hierzu können bei \textit{überlappenden} Cluster-Sets Objekte einer oder mehrerer Gruppen angehören.
+Bei dem sogenannten \textit{Fuzzy} oder \textit{Soft} Cluster-Sets, gehört ein Datenobjekt einem Cluster
+mit einer bestimmten Wahrscheinlichkeit oder Gewicht an. Algorithmen, welche Daten eine
+Wahrscheinlichkeit für die Zugehörigkeit zu einem Cluster zuweisen, werden \textit{probabilistische}
+Cluster-Algorithmen genannt.
+
+\paragraph{Komplett vs. Partielle}
+Von \textit{kompletten} Cluster-Sets wird gesprochen, wenn jedes Element der Eingangsdaten einem Cluster zugeordnet wird.
+Bei \textit{partiellen} Sets ist dies nicht der Fall. Hier kann ein bestimmter Anteil an Datenwerten als Ausreißer markiert
+werden, welche keine Gruppe besitzen.
+
+% TODO: evtl. Bild einfügen
+
+\subsection{Eigenschaften von Clustern}
+
+% Separiert
+% Center-basiert
+% Nähen-basiert
+% Dichten-basiert
+% Konzeptionell
+
+\subsection{Cluster-Algorithmen}
+\label{sec:cluster_algos}
+
 Einige wichtige Clustering-Ansätze sind die Vernetzungs-Modelle, Centroid-basierte-Modelle, Verteilungs-Modelle
 oder Dichte-Modelle. Diese und einige der stellvertretende Algorithmen werden in nachfolgendem Abschnitt \ref{sec:cluster_algos}
 beschrieben.
 
-\subsection{Cluster Algorithmen}
-\label{sec:cluster_algos}
+% Beschreibung der grundeigenschaften dieser Ansätze
+% Connectivity: Hierarchical
+% Centroid: K-means
+% Distribution: _
+% Desity based: DBSCAN
+
 
 \subsection{Distanzmaße zum Vergleich von Fahrzeugtrajektorien}
 \label{sec:distance_measures}
