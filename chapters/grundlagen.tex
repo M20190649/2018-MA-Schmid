@@ -213,7 +213,6 @@ Regionen umgeben sind, welche eine geringe Objektdichte besitzen. Elemente, welc
 mit geringen Dichte liegen, welche aus Ausreißer interpretiert. Dichte Bereiche werden üblicherweise
 gefunden, indem die Nachbarschaften (\textit{$\epsilon$-Neighborhoods}) von Elementen untersucht werden.
 
-
 \paragraph{Konzeptionelle Cluster}
 Eine sehr allgemeine Definition eines Clusters ist die der \textit{konzeptionellen} Gruppen. Hiermit ist
 gemeint, dass die Elemente eines Clusters einige gemeinsame Eigenschaften besitzen. Dies schließt die oben genannten
@@ -227,16 +226,74 @@ erkennen zu können, würde ein Algorithmus eine besondere Definition eines Clus
 \subsection{Cluster-Algorithmen}
 \label{sec:cluster_algos}
 
+Um mit den oben beschriebenen unterschiedlichen Cluster-Set und Cluster Definitionen umgehen zu können,
+existieren verschiedene Clustering-Modelle.
 Einige wichtige Clustering-Ansätze sind die Vernetzungs-Modelle, Centroid-basierte-Modelle, Verteilungs-Modelle
-oder Dichte-Modelle. Diese und einige der stellvertretende Algorithmen werden in nachfolgendem Abschnitt \ref{sec:cluster_algos}
-beschrieben.
+oder Dichte-Modelle. Für jedes dieser Modelle existieren unterschiedliche Algorithmen. Im Folgenden werden
+diese Modelle und jeweils exemplarisch ein Algorithmus der diese vertritt vorgestellt.  
 
-% Beschreibung der grundeigenschaften dieser Ansätze
-% Connectivity: Hierarchical
-% Centroid: K-means
-% Distribution: _
-% Desity based: DBSCAN
+\subsubsection{Vernetzungs-Modelle}
+% Agglomerative Hierarchical
 
+Vernetzungs-Modelle werden auch häufig \textit{hierarchische Cluster-Modelle} genannt. Sie beruhen auf
+der Annahme, dass Elemente, welche nahe beieinander liegen, eine höhere Gemeinsamkeit besitzen als solche,
+welche weiter entfernt liegen. Zur Bestimmung der Nähe zwischen Elementen benötigen Vernetzungs-Modelle eine
+Definition von Distanz, ein sogenanntes \textit{Distanzmaß}. Zusätzlich ist ein \textit{Link-Kriterium} notwendig,
+welches festlegt, wie genau die Distanz zwischen zwei Clustern bestimmt wird. Übliche Link-Kriterien
+sind \textit{Minimum-Linkage}, wobei die minimale Distanz zwischen den Objekten der Cluster als Distanz verwendet wird,
+oder entsprechend \textit{Maximum-Linkage} beziehungsweise \textit{Average-Linkage}. \cite[]{Jain1999, GeorgeSeif2018}
+
+Grundsätzlich teilen sich hierarchische Cluster-Algorithmen in zwei Gruppen auf:
+\textit{Agglomerative} (Bottom-Up) und \textit{Divisive} (Top-Down) Algorithmen.
+Agglomerative Ansätze weisen zu Beginn des Cluster-Vorgangs jedem Datenelement eine eigene Gruppe zu und vereinigen
+diese anschließend.
+Bei divisiven Ansätzen werden hingegen zu Beginn alle Elemente in einem Cluster zusammengefasst und
+diese in den nachfolgenden Schritten geteilt.
+
+Als Beispiel wird anschließend der Agglomerative-Hierarchische Cluster-Algorithmus etwas genauer vorgestellt.
+Sein Vorgehen lässt sich sehr gut anhand sogenannter Dendogramme oder geschachtelter Cluster-Diagramme darstellen
+(siehe Abbildung \ref{fig:grund_agglo_clustering})
+
+% TODO: Bild selbst erstellen
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\linewidth]{../resources/img/grundlagen/agglo_clustering}
+    \caption{Agglomeratives Clustering dargestellt als Dendogram und geschachteltes Cluster-Diagram}
+    \label{fig:grund_agglo_clustering}
+\end{figure}
+
+Im ersten Schritt des Algorithmus werden alle Datenpunkte als separate Cluster markiert. Diesen Schritt
+repräsentieren die Blätter des Dendograms.
+Anschließend muss ein Distanzmaß und ein Link-Kriterium gewählt werden.
+Das am häufigsten verwendete Distanzmaß ist sicherlich der euklidsche Abstand, welcher die Distanz zwischen zwei Punkten
+oder Vektoren im $n$-Dimensionalen Raum bestimmt. Er ist gegeben durch die Formel \ref{eq_dist}.
+
+\begin{equation}
+\label{eq_dist}
+    dist(p,q) = \|q-p\|_2 = \sqrt{\sum_{i=1}^n (q_i-p_i)^2}
+\end{equation}
+
+Wird als Link-Kriterium \textit{Minimum-linkage} gewählt, ist dieses definiert als:
+
+\begin{equation}
+\label{eq_linkage}
+    link(P, Q) = min\ \Big(\underset{p \in P,\ q \in Q}{dist}(p, q)\Big)
+\end{equation}
+
+Hierbei entsprechen $P$ und $Q$ zwei Clustern, welche die Elemente $p \in P$ und $q \in Q$ enthalten.
+Auf Basis des gewählten Link-Kriteriums kann nun eine Nachbarschafts-Matrix für die einzelnen Cluster
+erstellt werden.
+Die zwei Cluster mit minimalem Abstand voneinander werden anschließend zusammengeführt und die
+vorherigen Schritte werden wiederholt, bis theoretisch nur noch ein Cluster übrig ist.
+
+\subsubsection{Centroid-Modelle}
+% k means
+
+\subsubsection{Distributions-Modelle}
+% expectation maximization
+
+\subsubsection{Dichte-Modelle}
+% DBSCAN
 
 \subsection{Distanzmaße zum Vergleich von Fahrzeugtrajektorien}
 \label{sec:distance_measures}
