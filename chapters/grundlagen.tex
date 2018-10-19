@@ -156,6 +156,14 @@ Basierend auf vorangegangener Beschreibung und \cite[]{Jain1999}, lässt sich de
     \label{fig:grund_clustering_workflow}
 \end{figure}
 
+\cite[]{Jain2010} nennt einige weitere Herausforderungen, welchen man sich bei der Clusteranalyse bewusst sein muss:
+
+\begin{itemize}
+    \item Daten können Ausreißer enthalten. Wie sollen diese behandelt werden?
+    \item Die Anzahl der Zielcluster ist üblicherweise nicht bekannt.
+    \item Validierung der gefundenen Cluster
+\end{itemize}
+
 \subsection{Eigenschaften von Cluster-Sets und Clustern}
 
 Das aus einer Analyse resultierende Cluster-Set und die einzelnen Cluster selbst,
@@ -250,7 +258,7 @@ diese anschließend.
 Bei divisiven Ansätzen werden hingegen zu Beginn alle Elemente in einem Cluster zusammengefasst und
 diese in den nachfolgenden Schritten geteilt.
 
-Als Beispiel wird anschließend der Agglomerative-Hierarchische Cluster-Algorithmus etwas genauer vorgestellt.
+Als Beispiel wird anschließend der agglomerative-hierarchische Cluster-Algorithmus genauer vorgestellt.
 Sein Vorgehen lässt sich sehr gut anhand sogenannter Dendogramme oder geschachtelter Cluster-Diagramme darstellen
 (siehe Abbildung \ref{fig:grund_agglo_clustering})
 
@@ -266,28 +274,75 @@ Im ersten Schritt des Algorithmus werden alle Datenpunkte als separate Cluster m
 repräsentieren die Blätter des Dendograms.
 Anschließend muss ein Distanzmaß und ein Link-Kriterium gewählt werden.
 Das am häufigsten verwendete Distanzmaß ist sicherlich der euklidsche Abstand, welcher die Distanz zwischen zwei Punkten
-oder Vektoren im $n$-Dimensionalen Raum bestimmt. Er ist gegeben durch die Formel \ref{eq_dist}.
+oder Vektoren im $n$-dimensionalen Raum bestimmt. Er ist definiert durch die Formel \ref{eq_dist}.
 
 \begin{equation}
 \label{eq_dist}
     dist(p,q) = \|q-p\|_2 = \sqrt{\sum_{i=1}^n (q_i-p_i)^2}
 \end{equation}
 
-Wird als Link-Kriterium \textit{Minimum-linkage} gewählt, ist dieses definiert als:
+Wird als Link-Kriterium beispielsweise \textit{Minimum-Linkage} gewählt, ist dieses definiert als:
 
 \begin{equation}
 \label{eq_linkage}
-    link(P, Q) = min\ \Big(\underset{p \in P,\ q \in Q}{dist}(p, q)\Big)
+    link(P, Q) = min\{ dist(p,q) : p \in P, q \in Q\}
 \end{equation}
 
 Hierbei entsprechen $P$ und $Q$ zwei Clustern, welche die Elemente $p \in P$ und $q \in Q$ enthalten.
-Auf Basis des gewählten Link-Kriteriums kann nun eine Nachbarschafts-Matrix für die einzelnen Cluster
+Auf Basis des gewählten Link-Kriteriums kann nun eine Distanz-Matrix für die einzelnen Cluster
 erstellt werden.
 Die zwei Cluster mit minimalem Abstand voneinander werden anschließend zusammengeführt und die
-vorherigen Schritte werden wiederholt, bis theoretisch nur noch ein Cluster übrig ist.
+vorherigen Schritte werden wiederholt, bis nur noch ein Cluster beziehungsweise
+die gewünschte Clusteranzahl übrig ist. \cite[]{GeorgeSeif2018, tan2007introduction}
+
+Bei den meisten Varianten des agglomerativen Clusterings muss der Nutzer die Anzahl der Zielcluster im
+vorraus festlegen, was meist problematisch ist, da diese nicht bekannt ist. Umgangen werden kann dies nur,
+indem ein Link-Kriterium gewählt wird, das ab einer bestimmten Distanz zwischen den Clustern diese nichtmehr 
+merged \cite[]{GeorgeSeif2018}. 
+
+Die Zeitkomplexität des agglomerativen Clusterings beträgt bestenfalls $O(m^2log\ m)$, weshalb die Menge der Daten,
+welche mit ihm verarbeitet werden können erheblich begrenzt ist \cite[]{tan2007introduction}.
 
 \subsubsection{Centroid-Modelle}
 % k means
+
+Centroid basierte Cluster-Modelle betrachten im Gegensatz zu hierarchischen Modellen nicht die Distanz
+zwischen Clustern, sondern die Entfernung von Objekten zu Referenzpunkten, sogenannten \textit{Centroids}.
+
+Ein Beispiel für einen Centroid-Cluster-Algorithmus ist \textbf{k-Means}. Dieser ist aufgrund seines Alters,
+seiner Einfachheit und der vielen Weiterentwicklungen wohl der bekannteste Cluster Algorithmus überhaupt.
+
+Die Funktionsweise von k-Means ist in Abbildung \ref{fig:grund_kmeans_clustering} am Beispiel einer
+zwei-dimensionalen Punktmenge dargestellt. Die Kreuze entsprechen hierbei den Centroids.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\linewidth]{../resources/img/grundlagen/k-means}
+    \caption[Funktionsweise von k-Means]{Funktionsweise von k-Means \cite[]{tan2007introduction}}
+    \label{fig:grund_kmeans_clustering}
+\end{figure}
+
+Ausgehend von der Punktmenge $X = \{ x_1 ... x_n \}$ mit $n$ Elementen und der gesuchten Cluster-Anzahl $k$,
+werden im ersten Schritt $k$ zufällig positionierte Centroids $C = \{ c_1 ... c_k \}$ definiert.
+Anschließend wird für alle Punkte $x_i$ der nächstgelegene Centroid $c_j$ gesucht.
+
+\begin{equation}
+    \label{eq_kmeans1}
+    j = arg\ min\{ dist(x, c) : x \in X, c \in C\}
+\end{equation}
+
+$x_i$ wird daraufhin Mitglied in Cluster $K_j$. Als Distanzmaß ($dist$) kann hier wieder der euklidsche Abstand
+(Gleichung \ref{eq_dist}) verwendet werden oder aber auch beliebige andere sinnvolle Metriken.
+Nachdem alle Punkte $x_i$ einem Cluster zugewiesen wurden, werden die Centroid Positionen neu bestimmt.
+Hierzu wird der Durchschnitt aller Punkte eines Clusters berechnet:
+
+\begin{equation}
+    \label{eq_kmeans2}
+    c_j = \frac{1}{n}\ \underset{x_j \in K_j}{\sum{\ x_j}}
+\end{equation}
+
+Diese Schritte werden mehrfach wiederholt, bis das Ergebnis konvergiert, das heißt die Zuweisungen sich
+nurnoch geringfügig ändern.
 
 \subsubsection{Distributions-Modelle}
 % expectation maximization
