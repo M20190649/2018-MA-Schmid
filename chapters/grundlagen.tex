@@ -156,11 +156,15 @@ Basierend auf vorangegangener Beschreibung und \cite[]{Jain1999}, lässt sich de
     \label{fig:grund_clustering_workflow}
 \end{figure}
 
-\subsection{Eigenschaften von Cluster-Sets}
+\subsection{Eigenschaften von Cluster-Sets und Clustern}
 
-Das aus einer Analyse resultierende Set von Clustern kann in verschiedene Kategorien unterteilt werden beziehungsweise
-unterschiedliche Eigenschaften besitzen.
-Nachfolgend sind die wichtigsten Kriterien nach \cite[]{tan2007introduction} aufgeführt.
+Das aus einer Analyse resultierende Cluster-Set und die einzelnen Cluster selbst,
+können in verschiedene Kategorien unterteilt werden beziehungsweise unterschiedliche Eigenschaften besitzen.
+Nachfolgend sind die wichtigsten basierend auf \cite[]{tan2007introduction} und \cite[]{Jain1999,Jain2010} aufgeführt.
+
+\subsubsection{Cluster-Sets}
+
+Bei Cluster-Sets kann grundsätzlich zwischen nachfolgenden Eigenschaften unterschieden werden.
 
 \paragraph{Hierarchisch vs. Partitioniert}
 Von \textit{hierarchischen} Cluster-Sets wird gesprochen, wenn die einzelnen Cluster verschachtelt sind und dabei eine
@@ -181,13 +185,44 @@ werden, welche keine Gruppe besitzen.
 
 % TODO: evtl. Bild einfügen
 
-\subsection{Eigenschaften von Clustern}
+\subsubsection{Cluster}
 
-% Separiert
-% Center-basiert
-% Nähen-basiert
-% Dichten-basiert
-% Konzeptionell
+Da, wie oben erwähnt, nicht klar definiert ist, was ein Cluster ausmacht, können auch diese unterschiedliche Eigenschaften
+besitzen. Die wichtigsten Cluster-Arten sind nachfolgend erläutert.
+
+\paragraph{Klar separierte Cluster}
+Unter \textit{klar separiereten} Clustern versteht man solche, in welchen jedes Datenelement einen geringeren
+Abstand zu allen anderen Elementen des Clusters hat, als zu Elementen außerhalb des Clusters. Diese
+idealistische Definition eines Clusters ist nur dann erfüllt, wenn die in den Daten enthaltenen Cluster einen
+großen Abstand voneinander haben. Dies ist in der Realität allerdings selten der Fall.
+
+\paragraph{Prototyp basierte Cluster}
+Von einem \textit{Prototyp basierten} Cluster wird gesprochen, wenn alle Elemente einer Gruppe einen
+geringeren Abstand zu einem Prototyp oder Referenzwert des Clusters besitzen, als zu denen anderer Gruppierungen. 
+Ein solcher Prototyp ist üblicherweise der Mittelwert der Datenelemente eines Clusters (\textit{Centroid}).
+
+\paragraph{Graphen basierte Cluster}
+Die Definition eines \textit{Graphen basierten} Clusters kann immer dann verwendet werden, wenn Daten
+als vernetzter Graph dargestellt werden. In einem solchen sind die Elemente Knoten und die Kanten
+repräsentieren Beziehungen zwischen ihnen. Ein Cluster in einem solchen Graphen ist definiert als Menge von
+Knoten, welche untereinander verbunden sind, jedoch keine Verbindungen zu Elementen außerhalb des Clusters haben.
+
+\paragraph{Dichte basierte Cluster}
+\textit{Dichte basierte} Cluster sind definiert als Regionen mit einer hohen Dichte an Objekten, welche von
+Regionen umgeben sind, welche eine geringe Objektdichte besitzen. Elemente, welche in einer solchen Region
+mit geringen Dichte liegen, welche aus Ausreißer interpretiert. Dichte Bereiche werden üblicherweise
+gefunden, indem die Nachbarschaften (\textit{$\epsilon$-Neighborhoods}) von Elementen untersucht werden.
+
+
+\paragraph{Konzeptionelle Cluster}
+Eine sehr allgemeine Definition eines Clusters ist die der \textit{konzeptionellen} Gruppen. Hiermit ist
+gemeint, dass die Elemente eines Clusters einige gemeinsame Eigenschaften besitzen. Dies schließt die oben genannten
+Cluster-Arten mit ein, lässt sich allerdings beliebig erweitern. So sind beispielsweise in Abbildung XXX x)
+konzeptionelle Cluster dargestellt, die die Form zweier Kreise und eines Dreiecks haben. Um solche Muster
+erkennen zu können, würde ein Algorithmus eine besondere Definition eines Clusters benötigen.
+
+
+% TODO: Bild hinzufügen und referenzieren
 
 \subsection{Cluster-Algorithmen}
 \label{sec:cluster_algos}
