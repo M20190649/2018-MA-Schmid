@@ -9,13 +9,13 @@ mittels Luftaufnahmen, wird daher darauf eingegangen, auf welche Weise die in di
 Fahrzeugtrajektorien ermittelt werden.
 Anschließend werden Methoden vorgestellt, welche zur Bereinigung der gewonnenen Daten verwendet werden können.
 Als wichtiges Mittel zur Identifizierung von Fahrspuren aus Trajektorien werden zudem
-verschiedene Cluster-Algorithmen und Distanzmaße vorgestellt. 
+verschiedene Cluster-Algorithmen und Distanzmaße vorgestellt.
 
 \section{Verkehrsanalyse mittels Luftaufnahmen}
 \label{sec:traffic_analysis}
 
 % Beschreibung der Aus den Luftaufnahmen ermittelten (ermittelbaren) Werte
-% Vorteile der Verwendung von Luftaufnahmen zur Erstellung von Verkehrssimulationen 
+% Vorteile der Verwendung von Luftaufnahmen zur Erstellung von Verkehrssimulationen
 
 \section{Rekonstruktion von Fahrzeugtrajektorien aus Luftaufnahmen}
 \label{sec:position_extraction}
@@ -119,7 +119,7 @@ Die Clusteranalyse hat viel mit dem Problem der Klassifizierung von Daten gemein
 Label zuordnet. Im Gegensatz zu \textit{überwachten} Klassifizierungsansätzen, wie dem heute populären überwachten
 Lernen, leiten Cluster-Algorithmen die Label allerdings alleine aus den vorhandenen Daten ab.
 Es kommen keine Vergleichsobjekte mit bekannten, händisch vergebenen Labeln zum Einsatz.
-Aus diesem Grund wird die Clusteranalyse auch häufig als \textit{unüberwachte Klassifizierung} bezeichnet. \cite[]{tan2007introduction} 
+Aus diesem Grund wird die Clusteranalyse auch häufig als \textit{unüberwachte Klassifizierung} bezeichnet. \cite[]{tan2007introduction}
 
 Das Konzept eines \textit{Clusters} ist nicht genau definiert, was in einer Vielzahl an unterschiedlichen Ansichten
 und Algorithmen resultiert, welche sich jeweils für andere Anwendungsfälle eignen und verschiedene Eigenschaften
@@ -206,7 +206,7 @@ großen Abstand voneinander haben. Dies ist in der Realität allerdings selten d
 
 \paragraph{Prototyp basierte Cluster}
 Von einem \textit{Prototyp basierten} Cluster wird gesprochen, wenn alle Elemente einer Gruppe einen
-geringeren Abstand zu einem Prototyp oder Referenzwert des Clusters besitzen, als zu denen anderer Gruppierungen. 
+geringeren Abstand zu einem Prototyp oder Referenzwert des Clusters besitzen, als zu denen anderer Gruppierungen.
 Ein solcher Prototyp ist üblicherweise der Mittelwert der Datenelemente eines Clusters (\textit{Centroid}).
 
 \paragraph{Graphen basierte Cluster}
@@ -238,18 +238,19 @@ Um mit den oben beschriebenen unterschiedlichen Cluster-Set und Cluster Definiti
 existieren verschiedene Clustering-Modelle.
 Einige wichtige Clustering-Ansätze sind die Vernetzungs-Modelle, Centroid-basierte-Modelle, Verteilungs-Modelle
 oder Dichte-Modelle. Für jedes dieser Modelle existieren unterschiedliche Algorithmen. Im Folgenden werden
-diese Modelle und jeweils exemplarisch ein Algorithmus der diese vertritt vorgestellt.  
+diese Modelle und jeweils exemplarisch ein Algorithmus der diese vertritt vorgestellt.
 
 \subsubsection{Vernetzungs-Modelle}
 % Agglomerative Hierarchical
 
 Vernetzungs-Modelle werden auch häufig \textit{hierarchische Cluster-Modelle} genannt. Sie beruhen auf
 der Annahme, dass Elemente, welche nahe beieinander liegen, eine höhere Gemeinsamkeit besitzen als solche,
-welche weiter entfernt liegen. Zur Bestimmung der Nähe zwischen Elementen benötigen Vernetzungs-Modelle eine
-Definition von Distanz, ein sogenanntes \textit{Distanzmaß}. Zusätzlich ist ein \textit{Link-Kriterium} notwendig,
-welches festlegt, wie genau die Distanz zwischen zwei Clustern bestimmt wird. Übliche Link-Kriterien
-sind \textit{Minimum-Linkage}, wobei die minimale Distanz zwischen den Objekten der Cluster als Distanz verwendet wird,
-oder entsprechend \textit{Maximum-Linkage} beziehungsweise \textit{Average-Linkage}. \cite[]{Jain1999, GeorgeSeif2018}
+welche weiter voneinander entfernt sind. Zur Bestimmung der Nähe zwischen Elementen benötigen Vernetzungs-Modelle,
+wie auch andere Cluster-Modelle, eine
+Definition von Distanz. Diese legt ein sogenanntes \textit{Distanzmaß} fest. Zusätzlich ist ein \textit{Link-Kriterium} notwendig,
+welches bestimmt, wie genau die Entfernung zwischen zwei Clustern ermittelt wird. Übliche Link-Kriterien
+sind \textit{Minimum-Linkage}, welches die minimale Distanz zwischen den Objekten der Cluster als Distanz verwendet,
+oder \textit{Maximum-Linkage} beziehungsweise \textit{Average-Linkage}. \cite[]{Jain1999, GeorgeSeif2018}
 
 Grundsätzlich teilen sich hierarchische Cluster-Algorithmen in zwei Gruppen auf:
 \textit{Agglomerative} (Bottom-Up) und \textit{Divisive} (Top-Down) Algorithmen.
@@ -259,19 +260,19 @@ Bei divisiven Ansätzen werden hingegen zu Beginn alle Elemente in einem Cluster
 diese in den nachfolgenden Schritten geteilt.
 
 Als Beispiel wird anschließend der agglomerative-hierarchische Cluster-Algorithmus genauer vorgestellt.
-Sein Vorgehen lässt sich sehr gut anhand sogenannter Dendogramme oder geschachtelter Cluster-Diagramme darstellen
+Sein Vorgehen lässt sich sehr gut anhand sogenannter Dendrogramme oder geschachtelter Cluster-Diagramme darstellen
 (siehe Abbildung \ref{fig:grund_agglo_clustering})
 
 % TODO: Bild selbst erstellen
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.7\linewidth]{../resources/img/grundlagen/agglo_clustering}
-    \caption{Agglomeratives Clustering dargestellt als Dendogram und geschachteltes Cluster-Diagram}
+    \caption{Agglomeratives Clustering dargestellt als Dendrogramm und geschachteltes Cluster-Diagram}
     \label{fig:grund_agglo_clustering}
 \end{figure}
 
 Im ersten Schritt des Algorithmus werden alle Datenpunkte als separate Cluster markiert. Diesen Schritt
-repräsentieren die Blätter des Dendograms.
+repräsentieren die Blätter des Dendrogramms.
 Anschließend muss ein Distanzmaß und ein Link-Kriterium gewählt werden.
 Das am häufigsten verwendete Distanzmaß ist sicherlich der euklidsche Abstand, welcher die Distanz zwischen zwei Punkten
 oder Vektoren im $n$-dimensionalen Raum bestimmt. Er ist definiert durch die Formel \ref{eq_dist}.
@@ -292,28 +293,38 @@ Hierbei entsprechen $P$ und $Q$ zwei Clustern, welche die Elemente $p \in P$ und
 Auf Basis des gewählten Link-Kriteriums kann nun eine Distanz-Matrix für die einzelnen Cluster
 erstellt werden.
 Die zwei Cluster mit minimalem Abstand voneinander werden anschließend zusammengeführt und die
-vorherigen Schritte werden wiederholt, bis nur noch ein Cluster beziehungsweise
+vorherigen Schritte werden wiederholt, bis nur noch ein Cluster (Wurzel des Dendrogramms) beziehungsweise
 die gewünschte Clusteranzahl übrig ist. \cite[]{GeorgeSeif2018, tan2007introduction}
 
 Bei den meisten Varianten des agglomerativen Clusterings muss der Nutzer die Anzahl der Zielcluster im
-vorraus festlegen, was meist problematisch ist, da diese nicht bekannt ist. Umgangen werden kann dies nur,
-indem ein Link-Kriterium gewählt wird, das ab einer bestimmten Distanz zwischen den Clustern diese nichtmehr 
-merged \cite[]{GeorgeSeif2018}. 
+vorraus festlegen, was problematisch ist, da diese meist nicht bekannt ist. Umgangen werden kann dies nur,
+indem ein Link-Kriterium gewählt wird, das ab einer bestimmten Distanz zwischen den Clustern diese nichtmehr
+fusioniert \cite[]{GeorgeSeif2018}.
 
 Die Zeitkomplexität des agglomerativen Clusterings beträgt bestenfalls $O(m^2log\ m)$, weshalb die Menge der Daten,
 welche mit ihm verarbeitet werden können erheblich begrenzt ist \cite[]{tan2007introduction}.
 
 \subsubsection{Centroid-Modelle}
-% k means
 
 Centroid basierte Cluster-Modelle betrachten im Gegensatz zu hierarchischen Modellen nicht die Distanz
 zwischen Clustern, sondern die Entfernung von Objekten zu Referenzpunkten, sogenannten \textit{Centroids}.
 
 Ein Beispiel für einen Centroid-Cluster-Algorithmus ist \textbf{k-Means}. Dieser ist aufgrund seines Alters,
-seiner Einfachheit und der vielen Weiterentwicklungen wohl der bekannteste Cluster Algorithmus überhaupt.
+seiner Einfachheit und der vielen Weiterentwicklungen wohl der bekannteste Cluster-Algorithmus überhaupt.
 
-Die Funktionsweise von k-Means ist in Abbildung \ref{fig:grund_kmeans_clustering} am Beispiel einer
-zwei-dimensionalen Punktmenge dargestellt. Die Kreuze entsprechen hierbei den Centroids.
+Das Ziel von k-Mean ist es, für eine n-dimensionale Punktmenge $X = \{ x_1 ... x_n \}$ ein Cluster-Set $C = \{ c_1 ... c_k \}$
+zu finden, welches die Summe der quadratischen Abweichung (Gleichung \ref{eq_kmeans1}) zwischen allein Punkten in einem Cluster und deren
+Mittelwert $\mu_k$ (Centroids) minimiert.
+
+\begin{equation}
+    \label{eq_kmeans1}
+    J(c_k) = \sum_{k=1}^K \sum_{x_i \in c_k} || x_i - \mu_k ||^2
+\end{equation}
+
+Eine Lösung für dieses Problem zu finden, ist NP-Schwer. Aus diesem Grund
+ist k-Means ein approximativer Ansatz, welcher nicht garantieren kann, ein globales Minimum zu finden.
+Die Funktionsweise des Algorithmus ist in Abbildung \ref{fig:grund_kmeans_clustering} dargestellt.
+Die Kreuze entsprechen hierbei den Centroids.
 
 \begin{figure}[H]
     \centering
@@ -322,27 +333,36 @@ zwei-dimensionalen Punktmenge dargestellt. Die Kreuze entsprechen hierbei den Ce
     \label{fig:grund_kmeans_clustering}
 \end{figure}
 
-Ausgehend von der Punktmenge $X = \{ x_1 ... x_n \}$ mit $n$ Elementen und der gesuchten Cluster-Anzahl $k$,
-werden im ersten Schritt $k$ zufällig positionierte Centroids $C = \{ c_1 ... c_k \}$ definiert.
-Anschließend wird für alle Punkte $x_i$ der nächstgelegene Centroid $c_j$ gesucht.
+Ausgehend von der Punktmenge $X$ und der gesuchten Cluster-Anzahl $k$,
+werden im ersten Schritt $k$ zufällig positionierte Centroids $\mu_k$ definiert.
+Anschließend wird für alle Punkte $x_i$ der nächstgelegene Centroid $\mu_j$ gesucht.
 
 \begin{equation}
-    \label{eq_kmeans1}
-    j = arg\ min\{ dist(x, c) : x \in X, c \in C\}
+    \label{eq_kmeans2}
+    j = arg\ min(dist(x_i, \mu_j))
 \end{equation}
 
-$x_i$ wird daraufhin Mitglied in Cluster $K_j$. Als Distanzmaß ($dist$) kann hier wieder der euklidsche Abstand
+$x_i$ wird daraufhin Mitglied in Cluster $C_j$. Als Distanzmaß ($dist$) kann hier wieder der euklidsche Abstand
 (Gleichung \ref{eq_dist}) verwendet werden oder aber auch beliebige andere sinnvolle Metriken.
 Nachdem alle Punkte $x_i$ einem Cluster zugewiesen wurden, werden die Centroid Positionen neu bestimmt.
 Hierzu wird der Durchschnitt aller Punkte eines Clusters berechnet:
 
 \begin{equation}
-    \label{eq_kmeans2}
-    c_j = \frac{1}{n}\ \underset{x_j \in K_j}{\sum{\ x_j}}
+    \label{eq_kmeans3}
+    c_j = \frac{1}{n} \sum_{x_j \in C_j} x_j
 \end{equation}
 
-Diese Schritte werden mehrfach wiederholt, bis das Ergebnis konvergiert, das heißt die Zuweisungen sich
-nurnoch geringfügig ändern.
+Diese zwei Schritte werden mehrfach wiederholt, bis das Ergebnis konvergiert, das heißt die Zuweisungen sich
+nurnoch geringfügig ändern. \cite[]{Jain2010}
+
+Der primäre Nachteil des k-Means Algorithmus ist, das auch bei ihm die Anzahl der Zielcluster spezifiziert
+werden muss. Desweiteren ist sein Ergebnis aufgrund der zufälligen Initialisierung der Centroids
+nicht deterministisch. Vorteil von k-Means ist hingegen, dass seine Zeitkomplexität bei $O(n)$ liegt.
+
+Um die genannten Nachteile, zumindest in Teilen, umgehen zu können, existieren diverse Weiterentwicklungen des k-Mean
+Algorithmus. So stammen beispielsweise von \cite[]{Hamerly} und \cite[]{Pelleg} die Algorithmen \textit{g-Means}
+beziehungsweise \textit{x-Means}, welche die Clusteranzahl $k$ auf Basis mehrerer k-Means Durchläufe und
+statistischer Kennzahlen bestimmen.
 
 \subsubsection{Distributions-Modelle}
 % expectation maximization
