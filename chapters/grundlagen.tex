@@ -14,82 +14,18 @@ verschiedene Cluster-Algorithmen und Distanzmaße vorgestellt.
 \section{Verkehrsanalyse mittels Luftaufnahmen}
 \label{sec:traffic_analysis}
 
-% Beschreibung der Aus den Luftaufnahmen ermittelten (ermittelbaren) Werte
+% Beschreibung der aus den Luftaufnahmen ermittelten (ermittelbaren) Werte
 % Vorteile der Verwendung von Luftaufnahmen zur Erstellung von Verkehrssimulationen
 
 \section{Rekonstruktion von Fahrzeugtrajektorien aus Luftaufnahmen}
 \label{sec:position_extraction}
 
 % Beschreibung des kompletten Vorgangs bis Bewegungsbahnen der Autos vorliegen
-% Tracking --> World-Matching --> Glättung
+% Tracking --> World-Matching --> initiale Glättung
 
 Die in dieser Arbeit verwendeten Fahrzeugtrajektorien stammen aus der Anwendung ``Tracker-Application''
 des MEC-View Teilprojektes \textit{Luftbeobachtung}. Nachfolgend wird beschrieben, wie diese aus den Videoaufnahmen
 rekonstruiert werden.
-
-Die Verfolgung von bewegten Objekten beziehungsweise Fahrzeugen, wird in der ``Tracker-Application'' mittels
-\textit{Supervised Tracking} umgesetzt. Bei diesem Verfahren wird ein initial manuell ausgewählter Bildbereich
-automatisch mit Hilfe eines erlernten Klassifikators verfolgt. Der Klassifikator muss hierbei zwischen
-Fahrzeugen und der Umgebung unterscheiden können.
-Das grundlegende Vorgehen dieses Tracking-Ansatzes ist in Abbildung \ref{fig:grund_tracking}
-dargestellt und kann wie folgt beschrieben werden:
-
-\begin{itemize}
-    \item[a)] Verfolgtes Objekt befindet sich zum Zeitpunkt $t$ an bekannter Position $p_1$
-    \item[b)] Zum Zeitpunkt $t+1$: Anwendung des Klassifikators auf Positionen um $p_1$
-    \item[c)] Erstellen einer \textit{Confidence Map}, welche die Wahrscheinlichkeit darstellt,
-                das verfolgte Objekt gefunden zu haben
-    \item[d)] Updaten des Trackers auf Position des Maxima der \textit{Confidence Map}
-\end{itemize}
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.7\linewidth]{../resources/img/grundlagen/tracking}
-    \caption[Übersicht Tracking mit Klassifikator]{Übersicht Tracking mit Klassifikator \cite[]{Grabner}}
-    \label{fig:grund_tracking}
-\end{figure}
-
-Das Erlernen eines stabilen Klassifikators in der ``Tracker-Application'' basiert auf der Arbeit
-\textit{``Real-Time Tracking via On-line Boosting''} von \cite[]{Grabner}.
-Die Autoren verwenden einen On-line AdaBoost Algorithmus, welcher mehrere \textit{schwache}
-Klassifikatoren zu einem \textit{starken} Klassifikator kombiniert.
-Schwache Klassifikatoren müssen hierbei nur eine Erkennungsrate von mehr als 50\% besitzen und somit
-wenig besser als zufallsbedingtes Auswählen sein.
-Starke Klassifikatoren entstehen durch die Kombination von mehreren schwachen Klassifikatoren.
-Die Auswahl von schwachen Klassifikatoren erfolgt über sogenante Selektoren, welche aus einer Menge
-immer jenen wählen, welcher die geringste Fehlerrate bei der Erkennung
-der Trainings-Objekte besitzen. Der Klassifikator mit der schlechtesten Erkennungsrate wird in jeder
-Trainingsiteration ersetzt, um das Training zu verbessern.
-Großer Vorteil der On-line AdaBoost Methode ist, dass sie es ermöglicht, starke Klassifikatoren während des
-eigentlichen Trackingvorganges zu erlernen. Nach jedem Trackingschritt wird das erfolgreich erkannte
-Objekt in Trainingssätze zerlegt, auf welche die Klassifikatoren angewandt werden um ihre Performance zu evaluieren.
-So wird in jedem Schritt die Menge der schwachen Klassifikatoren und der Selektoren aktualisiert. Die Wahl
-von effizient berechenbaren schwachen Klassifikatoren macht dies möglich.
-
-Die in \cite[]{Grabner} und der ``Tracker-Application'' verwendeten Klassifikatoren sind binär, das heißt,
-sie teilen Objekte in die zwei Klassen \textit{erkannt} und \textit{nicht erkannt} auf.
-Konkret werden Haar-ähnliche Bildmerkmale nach \cite[]{Viola} als schwache Klassifikatoren verwendet.
-Diese sind ein Mittel zur Identifikation von Kontrastunterschieden in Bildern, welche sich sehr gut
-zur Erkennung von Kanten und Linien eigenen. Ein Beispiel der Haar-ähnlichen Merkmale und ihres Einsatzes
-bei der Gesichtserkennung ist in Abbildung \ref{fig:grund_hair_like} dargestellt.
-
-Diese Merkmale werden als schwache Klassifikatoren mit zufälliger Skalierung, Größe und Position
-auf dem Bild platziert. Sie suchen in dieser Region anschließend nach den von dem Muster definierten
-Konturunterschieden. Eine Bereich gilt als erkannt, wenn der Betrag der Differenz der Pixelsumme des weißen und
-schwarzen Bereiches des Musters unter einem festgelegten Grenzwert liegt.
-
-\begin{figure}[H]
-    \centering
-    \subfloat[]{{
-        \includegraphics[width=0.4\linewidth]{../resources/img/grundlagen/hair_like_features}
-    }}
-    \qquad
-    \subfloat[]{{
-        \includegraphics[width=0.35\linewidth]{../resources/img/grundlagen/hair_like_features_2}
-    }}
-    \caption[a) Haar-ähnliche Merkmale b) Beispiele für erkannte Regionen in einem Gesicht]{a) Haar-ähnliche Merkmale b) Beispiele für erkannte Regionen in einem Gesicht \cite[]{DivyanshDwivedi2018}}
-    \label{fig:grund_hair_like}
-\end{figure}
 
 \section{Datenaufbereitung und Bereinigung}
 \label{sec:tra_preprocessing}
@@ -242,7 +178,6 @@ oder Dichte-Modelle. Für jedes dieser Modelle existieren unterschiedliche Algor
 diese Modelle und jeweils exemplarisch ein Algorithmus der diese vertritt vorgestellt.
 
 \subsubsection{Vernetzungs-Modelle}
-% Agglomerative Hierarchical
 
 Vernetzungs-Modelle werden auch häufig \textit{hierarchische Cluster-Modelle} genannt. Sie beruhen auf
 der Annahme, dass Elemente, welche nahe beieinander liegen, eine höhere Gemeinsamkeit besitzen als solche,
@@ -278,17 +213,21 @@ Anschließend muss ein Distanzmaß und ein Link-Kriterium gewählt werden.
 Das am häufigsten verwendete Distanzmaß ist sicherlich der euklidsche Abstand, welcher die Distanz zwischen zwei Punkten
 oder Vektoren im $n$-dimensionalen Raum bestimmt. Er ist definiert durch die Formel \ref{eq_dist}.
 
-\begin{equation}
+\begin{ceqn}
+\begin{align}
 \label{eq_dist}
     dist(p,q) = \|q-p\|_2 = \sqrt{\sum_{i=1}^n (q_i-p_i)^2}
-\end{equation}
+\end{align}
+\end{ceqn}
 
 Wird als Link-Kriterium beispielsweise \textit{Minimum-Linkage} gewählt, ist dieses definiert als:
 
-\begin{equation}
+\begin{ceqn}
+\begin{align}
 \label{eq_linkage}
     link(P, Q) = min\{ dist(p,q) : p \in P, q \in Q\}
-\end{equation}
+\end{align}
+\end{ceqn}
 
 Hierbei entsprechen $P$ und $Q$ zwei Clustern, welche die Elemente $p \in P$ und $q \in Q$ enthalten.
 Auf Basis des gewählten Link-Kriteriums kann nun eine Distanz-Matrix für die einzelnen Cluster
@@ -317,10 +256,12 @@ Das Ziel von k-Mean ist es, für eine n-dimensionale Punktmenge $X = \{ x_1 ... 
 zu finden, welches die Summe der quadratischen Abweichung (Gleichung \ref{eq_kmeans1}) zwischen allein Punkten in einem Cluster und deren
 Mittelwert $\mu_k$ (Centroids) minimiert.
 
-\begin{equation}
+\begin{ceqn}
+\begin{align}
     \label{eq_kmeans1}
     J(c_k) = \sum_{k=1}^K \sum_{x_i \in c_k} || x_i - \mu_k ||^2
-\end{equation}
+\end{align}
+\end{ceqn}
 
 Eine Lösung für dieses Problem zu finden, ist NP-Schwer. Aus diesem Grund
 ist k-Means ein approximativer Ansatz, welcher nicht garantieren kann, ein globales Minimum zu finden.
@@ -338,20 +279,24 @@ Ausgehend von der Punktmenge $X$ und der gesuchten Cluster-Anzahl $k$,
 werden im ersten Schritt $k$ zufällig positionierte Centroids $\mu_k$ definiert.
 Anschließend wird für alle Punkte $x_i$ der nächstgelegene Centroid $\mu_j$ gesucht.
 
-\begin{equation}
+\begin{ceqn}
+\begin{align}
     \label{eq_kmeans2}
     j = arg\ min(dist(x_i, \mu_j))
-\end{equation}
+\end{align}
+\end{ceqn}
 
 $x_i$ wird daraufhin Mitglied in Cluster $C_j$. Als Distanzmaß ($dist$) kann hier wieder der euklidsche Abstand
 (Gleichung \ref{eq_dist}) verwendet werden oder aber auch beliebige andere sinnvolle Metriken.
 Nachdem alle Punkte $x_i$ einem Cluster zugewiesen wurden, werden die Centroid Positionen neu bestimmt.
 Hierzu wird der Durchschnitt aller Punkte eines Clusters berechnet:
 
-\begin{equation}
+\begin{ceqn}
+\begin{align}
     \label{eq_kmeans3}
     c_j = \frac{1}{n} \sum_{x_j \in C_j} x_j
-\end{equation}
+\end{align}
+\end{ceqn}
 
 Diese zwei Schritte werden mehrfach wiederholt, bis das Ergebnis konvergiert, das heißt die Zuweisungen sich
 nurnoch geringfügig ändern. \cite[]{Jain2010}
@@ -366,7 +311,6 @@ beziehungsweise \textit{x-Means}, welche die Clusteranzahl $k$ auf Basis mehrere
 statistischer Kennzahlen bestimmen.
 
 \subsubsection{Distributions-Modelle}
-% expectation maximization
 
 Distributions-Cluster-Modelle basieren auf der Verwendung von statistischen Wahrscheinlichkeitsverteilungen wie
 beispielsweise der Gauß-Verteilung. Cluster werden darüber definiert, wie wahrscheinlich es ist, dass Objekte
@@ -430,10 +374,12 @@ Als Vertreter der Dichte-basierten Ansätze wird nachfolgend der \textbf{DBSCAN}
 Er verwendet als Maß für die Dichte einer Region die sogenannte \textit{$\epsilon$ -Nachbarschaft} (\textit{Eps}).
 Diese selektiert für ein Objekt $p$ alle Objekte, welche innerhalb des Radius $\epsilon$ um dieses liegen:
 
-\begin{equation}
+\begin{ceqn}
+\begin{align}
     \label{eq_dbscan_1}
     N_{\epsilon}(p) = \{ q | dist(p,q) \leq \epsilon \}
-\end{equation}
+\end{align}
+\end{ceqn}
 
 Eine $\epsilon$ -Nachbarschaft besitzt eine hohe Dichte, wenn in ihr mindestens $MinPts$ Objekte liegen.
 
@@ -482,7 +428,7 @@ Der DBSCAN Algorithmus lässt sich, basierend auf den obigen Definitionen, infor
 \end{description}
 
 DBSCAN besitzt die oben beschriebenen Vorteile Dichte-basierter Cluster-Algorithmen. Dank einer Zeitkomplexität
-von $O(n log n)$ kann er außerdem auch auf große Datensätze angewendet werden.
+von $O(n\ log\ n)$ kann er außerdem auch auf große Datensätze angewendet werden.
 Nachteil des Ansatzes ist hingegen, dass er schlecht mit Clustern umgehen kann, welche unterschiedliche Dichten besitzen. 
 
 \subsection{Distanzmaße zum Vergleich von Fahrzeugtrajektorien}
