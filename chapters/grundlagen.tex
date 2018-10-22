@@ -259,7 +259,7 @@ diese anschließend.
 Bei divisiven Ansätzen werden hingegen zu Beginn alle Elemente in einem Cluster zusammengefasst und
 diese in den nachfolgenden Schritten geteilt.
 
-Als Beispiel wird anschließend der agglomerative-hierarchische Cluster-Algorithmus genauer vorgestellt.
+Als Beispiel wird anschließend der \textbf{agglomerative-hierarchische Cluster-Algorithmus} genauer vorgestellt.
 Sein Vorgehen lässt sich sehr gut anhand sogenannter Dendrogramme oder geschachtelter Cluster-Diagramme darstellen
 (siehe Abbildung \ref{fig:grund_agglo_clustering})
 
@@ -366,6 +366,56 @@ statistischer Kennzahlen bestimmen.
 
 \subsubsection{Distributions-Modelle}
 % expectation maximization
+
+Distributions-Cluster-Modelle basieren auf der Verwendung von statistischen Wahrscheinlichkeitsverteilungen wie
+beispielsweise der Gauß-Verteilung. Cluster werden darüber definiert, wie wahrscheinlich es ist, dass Objekte
+der selben Verteilung angehören. Problematisch ist die Verwendung dieser Cluster-Methodik, da sie anfällig für
+das Problem des \textit{``Overfitting''} ist, wenn die Komplexität der verwendeten Modelle nicht beschränkt wird.
+Zudem ist die Annahme, dass vielen realen Datensätzen ein statistisches Verteilungsmodell zugrundeliegt, gefährlich.
+Ist diese These jedoch berechtigt, haben die Modelle den Vorteil, dass sie neben der Zuweisung von Objekten zu Clustern
+auch Korrelationen zwischen einzelnen Attributen aufzeigen können. \cite[]{AndersDrachen2014}
+
+Nachfolgend wird der bekannteste Vertreter der Distributions-Cluter-Algorithmen vorgestellt:
+das \textit{Expectation–maximization} (EM) Verfahren unter Verwendung sogenannter \textit{Gaussian-Mixture-Models} (GMM).
+Die Funktionsweise des EM-Algorithmus hat grundsätzlich viel gemein mit der des k-Mean Ansatzes.
+Es wird ebenfalls mit einer festen Anzahl zufällig initialisierter Modelle gestartet, welche anschließend über mehrere Iterationen
+an die Daten angepasst werden. Im Gegensatz zu k-Means, sind die gewählten Modelle hingegen Gauß-Verteilungen,
+welche zwei Paramter besitzen: ihren Mittelwert und die Standardabweichung.
+Das Vorgehen des EM-Algorithmus ist nachfolgend, basierend auf \cite[]{GeorgeSeif2018}, beschrieben und in
+Abbildung \ref{fig:grund_em_clustering} grafisch dargestellt.
+
+\begin{description}
+    \item[1)] Wahl der Clusteranzahl $k$ und Initialisierung der Gauß-Modelle für die entsprechenden Cluster
+    \item[2)] Berechnung der Wahrscheinlichkeit, dass ein Datenpunkt zu einem Cluster gehört. Je näher
+              ein Datenpunkt dem Zentrum einer Gauß-Verteilung ist, desto höher die Wahrscheinlichkeit für dessen Zugehörigkeit.
+    \item[3)] Basierend auf den Wahrscheinlichkeiten werden die Parameter der Verteilungen neu berechnet.
+              Hierzu wird die gewichtete Summe der Datenpunkt-Positionen errechnet. Die Gewichte entsprechen dabei
+              den Wahrscheinlichkeiten, dass ein Element zu einem Cluster gehört. Hierdurch werden die Gauß-Modelle automatisch
+              den in den Daten enthaltenen Clustern angepasst.
+    \item[4)] Die Schritte 2) und 3) werden solang wiederholt, bis das Clustering-Ergebnis konvergiert.
+\end{description}
+
+\begin{figure}[H]
+    \centering
+    \subfloat[Iteration 1]{{
+        \includegraphics[width=0.2\linewidth]{../resources/img/grundlagen/clustering_EM/EM1}
+    }}
+    \qquad
+    \subfloat[Iteration 2]{{
+        \includegraphics[width=0.2\linewidth]{../resources/img/grundlagen/clustering_EM/EM2}
+    }}
+    \subfloat[Iteration 3]{{
+        \includegraphics[width=0.2\linewidth]{../resources/img/grundlagen/clustering_EM/EM3}
+    }}
+    \subfloat[Iteration 4]{{
+        \includegraphics[width=0.2\linewidth]{../resources/img/grundlagen/clustering_EM/EM4}
+    }}
+    \caption[Darstellung des EM-Cluster-Algorithmus über mehrere Iterationen]{Darstellung des EM-Cluster-Algorithmus über mehrere Iterationen \cite[]{GeorgeSeif2018}}
+    \label{fig:grund_em_clustering}
+\end{figure}
+
+Ziel des EM-Algorithmus ist es, die Parameter der Gauß-Modelle so zu optimieren, dass diese die Verteilung der Daten bestmöglich beschreiben.
+Am Ende des Clusterings besitzt jeder Datenwert die Zugehörigkeit-Wahrscheinlichkeiten für die einzelnen Cluster.
 
 \subsubsection{Dichte-Modelle}
 % DBSCAN
