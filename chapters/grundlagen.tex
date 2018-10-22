@@ -219,9 +219,10 @@ Knoten, welche untereinander verbunden sind, jedoch keine Verbindungen zu Elemen
 \textit{Dichte basierte} Cluster sind definiert als Regionen mit einer hohen Dichte an Objekten, welche von
 Regionen umgeben sind, welche eine geringe Objektdichte besitzen. Elemente, welche in einer solchen Region
 mit geringen Dichte liegen, welche aus Ausreißer interpretiert. Dichte Bereiche werden üblicherweise
-gefunden, indem die Nachbarschaften (\textit{$\epsilon$-Neighborhoods}) von Elementen untersucht werden.
+gefunden, indem die Nachbarschaften von Elementen untersucht werden.
 
 \paragraph{Konzeptionelle Cluster}
+% TODO: Verweis Bild hinzufügen
 Eine sehr allgemeine Definition eines Clusters ist die der \textit{konzeptionellen} Gruppen. Hiermit ist
 gemeint, dass die Elemente eines Clusters einige gemeinsame Eigenschaften besitzen. Dies schließt die oben genannten
 Cluster-Arten mit ein, lässt sich allerdings beliebig erweitern. So sind beispielsweise in Abbildung XXX x)
@@ -375,40 +376,39 @@ Zudem ist die Annahme, dass vielen realen Datensätzen ein statistisches Verteil
 Ist diese These jedoch berechtigt, haben die Modelle den Vorteil, dass sie neben der Zuweisung von Objekten zu Clustern
 auch Korrelationen zwischen einzelnen Attributen aufzeigen können. \cite[]{AndersDrachen2014}
 
-Nachfolgend wird der bekannteste Vertreter der Distributions-Cluter-Algorithmen vorgestellt:
+Nachfolgend wird der bekannteste Vertreter der Distributions-Cluster-Algorithmen vorgestellt:
 das \textit{Expectation–maximization} (EM) Verfahren unter Verwendung sogenannter \textit{Gaussian-Mixture-Models} (GMM).
 Die Funktionsweise des EM-Algorithmus hat grundsätzlich viel gemein mit der des k-Mean Ansatzes.
 Es wird ebenfalls mit einer festen Anzahl zufällig initialisierter Modelle gestartet, welche anschließend über mehrere Iterationen
 an die Daten angepasst werden. Im Gegensatz zu k-Means, sind die gewählten Modelle hingegen Gauß-Verteilungen,
-welche zwei Paramter besitzen: ihren Mittelwert und die Standardabweichung.
+welche zwei Parameter besitzen: ihren Mittelwert und die Standardabweichung.
 Das Vorgehen des EM-Algorithmus ist nachfolgend, basierend auf \cite[]{GeorgeSeif2018}, beschrieben und in
 Abbildung \ref{fig:grund_em_clustering} grafisch dargestellt.
 
 \begin{description}
-    \item[1)] Wahl der Clusteranzahl $k$ und Initialisierung der Gauß-Modelle für die entsprechenden Cluster
+    \item[1)] Wahl der Clusteranzahl $k$ und Initialisierung der Gauß-Modelle für die entsprechenden Cluster.
     \item[2)] Berechnung der Wahrscheinlichkeit, dass ein Datenpunkt zu einem Cluster gehört. Je näher
               ein Datenpunkt dem Zentrum einer Gauß-Verteilung ist, desto höher die Wahrscheinlichkeit für dessen Zugehörigkeit.
     \item[3)] Basierend auf den Wahrscheinlichkeiten werden die Parameter der Verteilungen neu berechnet.
               Hierzu wird die gewichtete Summe der Datenpunkt-Positionen errechnet. Die Gewichte entsprechen dabei
               den Wahrscheinlichkeiten, dass ein Element zu einem Cluster gehört. Hierdurch werden die Gauß-Modelle automatisch
               den in den Daten enthaltenen Clustern angepasst.
-    \item[4)] Die Schritte 2) und 3) werden solang wiederholt, bis das Clustering-Ergebnis konvergiert.
+    \item[4)] Wiederholdung der Schritte 2) und 3), bis das Clustering-Ergebnis konvergiert.
 \end{description}
 
 \begin{figure}[H]
     \centering
     \subfloat[Iteration 1]{{
-        \includegraphics[width=0.2\linewidth]{../resources/img/grundlagen/clustering_EM/EM1}
+        \includegraphics[width=0.22\linewidth]{../resources/img/grundlagen/clustering_EM/EM1}
     }}
-    \qquad
     \subfloat[Iteration 2]{{
-        \includegraphics[width=0.2\linewidth]{../resources/img/grundlagen/clustering_EM/EM2}
+        \includegraphics[width=0.22\linewidth]{../resources/img/grundlagen/clustering_EM/EM2}
     }}
     \subfloat[Iteration 3]{{
-        \includegraphics[width=0.2\linewidth]{../resources/img/grundlagen/clustering_EM/EM3}
+        \includegraphics[width=0.22\linewidth]{../resources/img/grundlagen/clustering_EM/EM3}
     }}
     \subfloat[Iteration 4]{{
-        \includegraphics[width=0.2\linewidth]{../resources/img/grundlagen/clustering_EM/EM4}
+        \includegraphics[width=0.22\linewidth]{../resources/img/grundlagen/clustering_EM/EM4}
     }}
     \caption[Darstellung des EM-Cluster-Algorithmus über mehrere Iterationen]{Darstellung des EM-Cluster-Algorithmus über mehrere Iterationen \cite[]{GeorgeSeif2018}}
     \label{fig:grund_em_clustering}
@@ -416,9 +416,74 @@ Abbildung \ref{fig:grund_em_clustering} grafisch dargestellt.
 
 Ziel des EM-Algorithmus ist es, die Parameter der Gauß-Modelle so zu optimieren, dass diese die Verteilung der Daten bestmöglich beschreiben.
 Am Ende des Clusterings besitzt jeder Datenwert die Zugehörigkeit-Wahrscheinlichkeiten für die einzelnen Cluster.
+Ein Element wird jenem Cluster zugeordnet, für welches es die höchste Wahrscheinlichkeit besitzt.
 
 \subsubsection{Dichte-Modelle}
-% DBSCAN
+
+Dichte basierte Cluster sind, wie oben beschrieben, definiert als Regionen hoher Objekt-Dichte, welche
+von Bereichen geringer Dichte umgeben sind. Dichte-Clustering-Modelle suchen nach eben solchen Regionen.
+Großer Vorteil der Algorithmen dieser Klasse ist, dass sie Cluster beliebiger Formen finden können,
+nicht auf die Vorgabe einer Clusteranzahl angewiesen sind und mit Ausreißern umgehen können.
+
+Als Vertreter der Dichte-basierten Ansätze wird nachfolgend der \textbf{DBSCAN} Algorithmus
+(\textit{Density-Based Spatial Clustering of Applications with Noise}), wie in \cite[]{Gao2012} beschrieben, vorgestellt.
+Er verwendet als Maß für die Dichte einer Region die sogenannte \textit{$\epsilon$ -Nachbarschaft} (\textit{Eps}).
+Diese selektiert für ein Objekt $p$ alle Objekte, welche innerhalb des Radius $\epsilon$ um dieses liegen:
+
+\begin{equation}
+    \label{eq_dbscan_1}
+    N_{\epsilon}(p) = \{ q | dist(p,q) \leq \epsilon \}
+\end{equation}
+
+Eine $\epsilon$ -Nachbarschaft besitzt eine hohe Dichte, wenn in ihr mindestens $MinPts$ Objekte liegen.
+
+Basierend auf der Definition von \textit{Eps}, werden die in einem Datensatz vorhandenen Elemente in
+drei Klassen unterteilt. Sie sind entweder \textit{Kern-}, \textit{Rand-} oder \textit{Ausreißer-} Objekte.
+Ein Kernobjekt hat mindestens $MinPts$ andere Punkte in \textit{Eps}.  
+Randobjekte besitzen weniger als $MinPts$ in \textit{Eps}, liegen aber in der Nachbarschaft eines Kernobjektes.
+Ausreißerobjekte sind weder Kern- noch Randobjekte.
+
+\begin{figure}[H]
+    \centering
+    \subfloat[]{{
+        \includegraphics[width=0.3\linewidth]{../resources/img/grundlagen/clustering_dbscan/dbscan1}
+    }}
+    \subfloat[]{{
+        \includegraphics[width=0.3\linewidth]{../resources/img/grundlagen/clustering_dbscan/dbscan2}
+    }}
+    \subfloat[]{{
+        \includegraphics[width=0.3\linewidth]{../resources/img/grundlagen/clustering_dbscan/dbscan3}
+    }}
+    \caption[Schritte des DBSCAN Algorithmus]{Schritte des DBSCAN Algorithmus, a) Rohdaten, b) Klassifizierung in Kern- (grün), Rand- (blau) und Ausreißer- (rot) Punkte, c) Cluster Ergebnis \cite[]{Gao2012}}
+    \label{fig:grund_dbscan_clustering}
+\end{figure}
+
+Auf Basis der drei Objektklassen, lässt sich das Prinzip der dichte-basierten \textit{Erreichbarkeit} definieren.
+Ein Objekt $q$ ist von $p$ \textit{direkt} erreichbar, wenn $p$ ein Kernobjekt ist und $q$ in dessen \textit{Eps} liegt.
+In Abbildung \ref{fig:grund_dbscan_reachability} gilt dies beispielsweise für $p$ und $p_2$.
+Zwei Elemente sind \textit{indirekt} erreichbar, wenn sie über eine Reihe von Zwischenschritten (direkte Relationen)
+verbunden sind (transitiv). Dies ist in Abbildung \ref{fig:grund_dbscan_reachability} für $q$ und $p$ der Fall.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.32\linewidth]{../resources/img/grundlagen/clustering_dbscan/reachability}
+    \caption[Erreichbarkeit in DBSCAN]{Erreichbarkeit in DBSCAN \cite[]{Gao2012}}
+    \label{fig:grund_dbscan_reachability}
+\end{figure}
+
+Der DBSCAN Algorithmus lässt sich, basierend auf den obigen Definitionen, informell wie folgt beschreiben:
+
+\begin{description}
+    \item[1)] Unterteilung der Objekte in die drei Objektklassen. (Abb. \ref{fig:grund_dbscan_clustering} b))
+    \item[2)] Aussortierung der Ausreißer-Objekte.
+    \item[3)] Wahl eines nicht zugewiesenen Kernobjektes.
+    \item[4)] Erstellung eines neuen Clusters für das Kernobjekt und alle von ihm ausgehend direkt oder indirekt erreichbaren Objekte
+    \item[5)] Wiederholdung der Schritte 3) und 4), bis alle Kern- und Randobjekte einem Cluster zugewiesen sind. (Abb. \ref{fig:grund_dbscan_clustering} c))
+\end{description}
+
+DBSCAN besitzt die oben beschriebenen Vorteile Dichte-basierter Cluster-Algorithmen. Dank einer Zeitkomplexität
+von $O(n log n)$ kann er außerdem auch auf große Datensätze angewendet werden.
+Nachteil des Ansatzes ist hingegen, dass er schlecht mit Clustern umgehen kann, welche unterschiedliche Dichten besitzen. 
 
 \subsection{Distanzmaße zum Vergleich von Fahrzeugtrajektorien}
 \label{sec:distance_measures}
