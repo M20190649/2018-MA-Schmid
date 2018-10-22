@@ -216,7 +216,7 @@ oder Vektoren im $n$-dimensionalen Raum bestimmt. Er ist definiert durch die For
 \begin{ceqn}
 \begin{align}
 \label{eq_dist}
-    dist(p,q) = \|q-p\|_2 = \sqrt{\sum_{i=1}^n (q_i-p_i)^2}
+    dist(p,q) = ||q-p||_2 = \sqrt{\sum_{i=1}^n (q_i-p_i)^2}
 \end{align}
 \end{ceqn}
 
@@ -431,8 +431,24 @@ DBSCAN besitzt die oben beschriebenen Vorteile Dichte-basierter Cluster-Algorith
 von $O(n\ log\ n)$ kann er außerdem auch auf große Datensätze angewendet werden.
 Nachteil des Ansatzes ist hingegen, dass er schlecht mit Clustern umgehen kann, welche unterschiedliche Dichten besitzen. 
 
-\subsection{Distanzmaße zum Vergleich von Fahrzeugtrajektorien}
+\section{Ähnlichkeitsmaße zum Vergleich von Fahrzeugtrajektorien}
 \label{sec:distance_measures}
+
+Bei der Clusteranalyse ist neben der Wahl des passenden Cluster-Algorithmus insbesondere
+die Entscheidung, welches Ähnlichkeits- beziehungsweise Distanzmaß verwendet wird, ausschlaggebend.
+Im obigen Abschnitt wurden bereits die euklidsche Distanz (Gleichung \ref{eq_dist}) als ein mögliches Distanzmaß
+definiert. Dieses kann jedoch nur zur Bestimmung der Distanz zwischen $n$-dimensionalen Punkten im euklidschen Raum verwendet
+werden. Dies gilt ebenso für andere einfache Maße wie die Manhatten-Distanz oder die Pearson-Distanz.
+
+Um Fahrzeugtrajektorien korrekt gruppieren zu können, ist ein Ähnlichkeitsmaß notwendig, welches
+Lage, Form und Länge der Trajektorien vergleichen kann. Nachfolgend werden exemplarisch drei Ähnlichkeitsmaße
+und deren Eigenschaften vorgestellt.
+
+% TODO: Bild Trajektorien (prototypisch)
+
+\subsection{HU Distanz}
+\subsection{Hausdorff Distanz}
+\subsection{Longest-Common-Subsequence}
 
 \section{Untersuchung möglicher Straßentopologien}
 \label{sec:street_topologies}

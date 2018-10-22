@@ -6,18 +6,40 @@
 \label{cha:realisation_clustering}
 
 % Feature Selection (Positionen Relevant)
+% Beispiel für Rohdaten (Kreuzung)
 
 \section{Vorverarbeitung der Roh-Trajektorien}
 \label{sec:realisation_preprocessing}
 
+% Resampling
+% Aussortierung zu kurzer Trajektorien
+% Aussortierung stehender Trajektorien
+% Trimmen Truck-Trajektories
 
 \section{Gruppierung der Trajektorien}
 \label{sec:realisation_clustering}
+
+% genaue Beschreibung des Vorgehens, bis finale Clustering Lösung erreicht wurde
+% Ansätze: Gründe, Stärken, tatsächliche Problem
+% Ansatz A:
+%   Mod. Hausdorff Distanz und Spectral Clustering (bas. auf Avet et al.)
+%   Weil: SC performant, deterministisch, oft verwendet
+%   Probleme: Clusteranzahl Bestimmung, Umgehen mit Ausreißern, Tatsächliche Ergebnisse nicht gut
+% Ansatz B:
+%   LCSS Distanz (in anderen Papern gute Ergebnisse) (impl. mittels bottom up dyna. programmierung, Verwendung Eucl. Dist.)
+%   Wieso D2 aus Vlachos et al. verwendet? (Verschiebung unerwünscht)
+%   DBSCAN Clustering
+%   --> DM kann besser mit Ausreißern umgehen und DBSCAN berücksichtigt diese auch
+%   bessere Ergebnisse
 
 
 \chapter{Fahrbahn-Bestimmung aus Trajektorie-Clustern}
 \label{cha:lane_definition}
 
+% Cluster-Bereinigung: Entfernen von Outliern (Spurwechselvorgänge)
+% Bestimmung Referenz-Trajektorie
+% Bestimmung von Spur-Envelopes
+% Partitionierung der initialen Spur-Schätzungen
 
 \chapter{Fahrbahn Klassifizierung}
 \label{cha:realisation_lane_classification}
