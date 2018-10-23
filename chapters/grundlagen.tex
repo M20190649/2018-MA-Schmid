@@ -266,7 +266,7 @@ Mittelwert $\mu_k$ (Centroids) minimiert.
 Eine Lösung für dieses Problem zu finden, ist NP-Schwer. Aus diesem Grund
 ist k-Means ein approximativer Ansatz, welcher nicht garantieren kann, ein globales Minimum zu finden.
 Die Funktionsweise des Algorithmus ist in Abbildung \ref{fig:grund_kmeans_clustering} dargestellt.
-Die Kreuze entsprechen hierbei den Centroids.
+Die Kreuze entsprechen hierbei den Centroids, welche sich über die Iterationen hinweg verschieben.
 
 \begin{figure}[H]
     \centering
@@ -440,14 +440,82 @@ Im obigen Abschnitt wurden bereits die euklidsche Distanz (Gleichung \ref{eq_dis
 definiert. Dieses kann jedoch nur zur Bestimmung der Distanz zwischen $n$-dimensionalen Punkten im euklidschen Raum verwendet
 werden. Dies gilt ebenso für andere einfache Maße wie die Manhatten-Distanz oder die Pearson-Distanz.
 
-Um Fahrzeugtrajektorien korrekt gruppieren zu können, ist ein Ähnlichkeitsmaß notwendig, welches
-Lage, Form und Länge der Trajektorien vergleichen kann. Nachfolgend werden exemplarisch drei Ähnlichkeitsmaße
-und deren Eigenschaften vorgestellt.
+Um Fahrzeugtrajektorien korrekt gruppieren zu können, ist ein Ähnlichkeitsmaß notwendig, welches je nach Anforderungen
+die unterschiedlichen Aspekte der Trajektorien vergleicht. Häufig werden die Eigenschaften Lage, Form und Länge
+hierzu herangezogen. In der Literatur werden diverse Maße zum Vergleich von Trajektorien vorgestellt. Diese besitzen
+alle unterschiedliche Eigenschaften, Vor- und Nachteile.
+
+Nachfolgend werden exemplarisch drei Ähnlichkeitsmaße vorgestellt, anhand welcher ersichtlich ist, welche Abwägungen
+bei der Wahl des Maßes gemacht werden müssen.
+In allen drei Fällen werden die Trajektorien als Reihen 2-dimensionaler Punkte mit Länge $n$ interpretiert: $t_i = \{(x_1, y_1), (x_2, y_2), ..., (x_n, y_n)\}$.
+Der $n$-te Punkt einer Trajektorie ist gegeben über $t_i(n)$ und deren Punkt-Länge über $len(t_i)$.
+Die Menge der zu vergleichenden Trajektorien ist $T = \{t_1, t_2, ..., t_m\}$.
 
 % TODO: Bild Trajektorien (prototypisch)
 
 \subsection{HU Distanz}
+
+Die HU Distanz wurde erstmals in der Arbeit \textit{``Similarity based vehicle trajectory clustering and anomaly detection''}
+von \cite[]{Hu2005} vorgestellt. Sie ist ein sehr einfaches Distanzmaß, welches auf der mittleren euklidschen Distanz
+zwischen zwei Trajektorien basiert. Berechnet wird die HU Distanz für zwei Trajektorien $t_1$ und $t_2$ wie folgt:
+
+\begin{ceqn}
+\begin{align}
+\label{eq_hu_distance1}
+    D_{HU}(t_1, t_2) &= \frac{1}{N} \sum_{n = 1}^N dist(t_1(n), t_2(n)) \\
+\label{eq_hu_distance2}
+    wobei\ N &= min(len(t_1), len(t_2))
+\end{align}
+\end{ceqn}
+
+Aus dieser Formel lassen sich die Vor- und Nachteile der HU Distanz ableiten. Der klare Vorteile der
+HU Distanz ist deren Einfachheit und die Effizienz von $O(n)$.
+Nachteil ist hingegen, dass das Distanzmaß nur gut funktioniert, wenn die Trajektorien bestimmte
+Kriterien erfüllen. So sollten Trajektorien, welche einem Cluster angehören, auch immer möglichst auf selber Höhe beginnen,
+damit deren mittlerer Abstand nicht, aufgrund einer Verschiebung, erhöht wird.
+Außerdem ist es notwendig, die Abstände zwischen den Punkten der Trajektorien auf die selbe Länge zu bringen,
+damit beim paarweisen Vergleich immer Elemente verglichen werden, welche gleichweit vom Start der Spuren entfernt sind. 
+Diese Eigenschaften der Trajektorien müssen über einen Vorverarbeitungsschritt geschaffen werden. 
+Problematisch bei der Verwendung der HU Distanz ist außerdem, dass beim Vergleich zweier Trajektorien immer nur
+die ersten $N$ Punkte (s. Gleichung \ref{eq_hu_distance2}) betrachtet werden. Die kann dazu führen, dass zwei
+Trajektorien, welche sich zu Beginn sehr ähneln und später auseinanderlaufen, einen sehr Hohen Ähnlichkeitswert besitzen
+(siehe Trajektorien $t_X$ und $t_Y$ in Abbildung XXXX). % TODO: Verweis hinzufügen
+
+Die HU Distanz kann aufgrund der genannten Einschränken nur in speziellen Fällen oder unter Verwendung eines
+Vorverarbeitungsschrittes angewandt werden. Sie liefert ansonsten suboptimale Clustering Ergebnisse.
+
 \subsection{Hausdorff Distanz}
+
+Die Hausdorff Distanz ist ein komplexeres Maß zur Bestimmung der Ähnlichkeit zwischen zwei Trajektorien.
+Sie misst grundsätzlich den Abstand zwischen zwei nicht-leeren, ungeordneten Teilmengen $A$ und $B$ und ist für
+Trajektorien definiert über die Gleichungen \cite[]{Atev2010}:
+
+\begin{ceqn}
+\begin{align}
+\label{eq_hausdorff1}
+    D_{HD}(t_1, t_2) &= max(h(t_1, t_2), h(t_2, t_1)) \\
+\label{eq_hausdorff2}
+    h(t_1, t_2) &= \underset{i\ \in\ t_1}{max}\ \underset{j\ \in\ t_2}{min}\ dist(i, j)
+\end{align}
+\end{ceqn}
+
+$h(t_1, t_2)$ wird als gerichtete Hausdorff Distanz \textit{von} $t_1$ \textit{nach} $t_2$ bezeichnet.
+Sie findet die maximale Distanz einer Trajektorie zum nächsten Punkt der anderen Trajektorie \cite[]{Huttenlocher}.
+Da $h$ gerichtet ist, gilt $h(t_1, t_2) \neq h(t_2, t_1)$. Aus diesem Grund wird die Hausdorff Distanz
+\textit{zwischen} zwei Trajektorien mittels $D_{HD}$ bestimmt. $dist$ kann ein beliebiges Maß für die Distanz zweier
+Punkte sein, wie beispielsweise die euklidsche Distanz.
+Grundsätzlich lässt sich über die Hausdorff Distanz die Form zweier Trajektorien vergleichen. Diese sind ähnlich,
+wenn jeder Punkt einer Trajektorie einen nahegelegenen Punkt in der anderen besitzt.
+
+Vorteil der Hausdorff Distanz im Vergleich zur HU Distanz ist, dass diese immer vollständige Trajektorien vergleicht
+und nicht nur Teile. Außerdem ist bei ihrer Verwendung keine Vorverarbeitung in Form von Resampling et cetera notwendig.
+Problematisch ist das Distanzmaß hingegen, da es mit ungeordneten Sets arbeitet und somit im Fall von Trajektorien deren
+Orientierung nicht beachtet. Zwei parallel aber in entgegengesetzte Richtungen laufende Trajektorien würden
+nach Hausdorff daher eine hohe Ähnlichkeit besitzen.
+Zudem kann das Distanzmaß schlecht mit Ausreißern umgehen, da bereits ein einzelner dieser Punkte, bei ansonsten identischen
+Trajektorien, zu einer beliebig kleinen Ähnlichkeit führen kann.
+Von Nachteil ist auch, dass die Zeitkomplexität der Hausdorff-Distanz bei $O(n\ m)$ liegt.
+
 \subsection{Longest-Common-Subsequence}
 
 \section{Untersuchung möglicher Straßentopologien}
