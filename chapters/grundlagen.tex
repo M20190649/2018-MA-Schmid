@@ -559,6 +559,46 @@ Zudem berücksichtigt das LCSS Maß die Orientierung der Trajektorien, solange $
 Die rekursive Definition des LCSS Algorithmus aus Gleichung \ref{eq_lcss} lässt sich mittels dynamischer Programmierung
 mit Zeitkomplexität $O(n\ m)$ berechnen.
 
+\subsubsection{Übersicht Ähnlichkeitsmaße}
+
+Anhand der drei ausgewählten und oben exemplarisch beschriebenen Ähnlichkeitsmaße, ist bereits ersichtlich,
+dass die Wahl eines passenden Maßes nicht trivial ist. Es muss die Qualität und Form der Daten berücksichtigt werden
+und abgewogen werden, in wieweit es möglich beziehungsweise gewünscht ist, die Daten vorzuverarbeiten.
+Das primäre Auswahlkriterium ist allerdings natürlich die situationsabhängige Definition von ``Ähnlichkeit'':
+Sind sich Trajektorien ähnlich, wenn sie lediglich die selbe Form haben und ansonsten irgendwo im Raum liegen? Sind sie
+sich ähnlich, wenn sie die selbe Form haben und im Raum nahe beieinander liegen? Ist ihre Orientierung relevant?
+Dies sind wichtige Fragen, welche vor der Wahl eines Ähnlichkeitsmaßes geklärt werden müssen.
+Da die Maße als Distanzfunktionen bei der Clusteranalyse verwendet werden, ist ihr Verhalten ausschlaggebend
+für den Erfolg der Gruppierung.
+
+Wichtige Eigenschaften einiger in der Literatur häufig verwendeten Vergleichsmaße, inklusive der drei oben beschriebenen,
+sind nachfolgend nochmals in tabellarischer Form festgehalten.
+
+\begin{table}[H]
+    \caption{Parallelen Bienenkolonie und Cloud Load-Balancing}
+    \label{tab:parallelen}
+    \centering
+    \begin{tabular}{l|ccc}
+        \toprule
+        \textbf{Ähnlichkeitsmaß} & \textbf{gerichtet} & \textbf{Form agnostisch} & \textbf{Ausreißer-resistent} \\
+        \midrule \addlinespace
+        HU \cite[]{Hu2005} & \cmark & \cmark & \cmark \\
+        \addlinespace
+        PCA \cite[]{Bashir2003} & \cmark & \cmark & \cmark \\
+        \addlinespace
+        DTW \cite[]{Keogh2000} & \cmark & \xmark & \xmark \\
+        \addlinespace
+        HD \cite[]{Chen2011} & \xmark & \xmark & \xmark \\
+        \addlinespace
+        mod. HD \cite[]{Atev2010} & \cmark & \xmark & \cmark \\
+        \addlinespace
+        PF \cite[]{Piciarelli2006} & \cmark & \xmark & \xmark \\
+        \addlinespace
+        LCSS \cite[]{Vlachos} & \cmark & \xmark & \cmark \\
+        \addlinespace
+        \bottomrule
+    \end{tabular}
+\end{table}
 
 \section{Untersuchung möglicher Straßentopologien}
 \label{sec:street_topologies}
