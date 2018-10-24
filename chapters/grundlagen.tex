@@ -81,13 +81,11 @@ Besonders wichtiger ist zudem auch die Auswahl der richtigen, das heißt relevan
 und die Wahl deren Repräsentation (\textit{``Feature Transformation''}).
 Die Selektion und gegebenenfalls Transformation der Daten muss in einem
 Vorverarbeitungsschritt geschehen, dessen Qualität einen maßgeblichen Einfluss auf das finale Clustering Ergebnis hat.
-Basierend auf vorangegangener Beschreibung und \cite[]{Jain1999}, lässt sich der Ablauf einer Clusteranalyse wie folgt darstellen:
+Basierend auf vorangegangener Beschreibung und \cite[]{Jain1999}, lässt sich der Ablauf einer Clusteranalyse wie folgt darstellen: \\
 
-% TODO: Grafik selbst neu erstellen
-% (Feature Selection --> Feature Transformation --> Ähnlichkeitsmessung --> Clustering --> Feedback)
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\linewidth]{../resources/img/grundlagen/clustering_workflow}
+    \includegraphics[width=\linewidth]{../resources/img/grundlagen/clustering_flow}
     \caption{Ablauf einer Clusteranalyse}
     \label{fig:grund_clustering_workflow}
 \end{figure}
@@ -385,7 +383,7 @@ Eine $\epsilon$ -Nachbarschaft besitzt eine hohe Dichte, wenn in ihr mindestens 
 
 Basierend auf der Definition von \textit{Eps}, werden die in einem Datensatz vorhandenen Elemente in
 drei Klassen unterteilt. Sie sind entweder \textit{Kern-}, \textit{Rand-} oder \textit{Ausreißer-} Objekte.
-Ein Kernobjekt hat mindestens $MinPts$ andere Punkte in \textit{Eps}.  
+Ein Kernobjekt hat mindestens $MinPts$ andere Punkte in \textit{Eps}.
 Randobjekte besitzen weniger als $MinPts$ in \textit{Eps}, liegen aber in der Nachbarschaft eines Kernobjektes.
 Ausreißerobjekte sind weder Kern- noch Randobjekte.
 
@@ -429,7 +427,7 @@ Der DBSCAN Algorithmus lässt sich, basierend auf den obigen Definitionen, infor
 
 DBSCAN besitzt die oben beschriebenen Vorteile Dichte-basierter Cluster-Algorithmen. Dank einer Zeitkomplexität
 von $O(n\ log\ n)$ kann er außerdem auch auf große Datensätze angewendet werden.
-Nachteil des Ansatzes ist hingegen, dass er schlecht mit Clustern umgehen kann, welche unterschiedliche Dichten besitzen. 
+Nachteil des Ansatzes ist hingegen, dass er schlecht mit Clustern umgehen kann, welche unterschiedliche Dichten besitzen.
 
 \section{Ähnlichkeitsmaße zum Vergleich von Fahrzeugtrajektorien}
 \label{sec:distance_measures}
@@ -480,8 +478,8 @@ Nachteil ist hingegen, dass das Distanzmaß nur gut funktioniert, wenn die Traje
 Kriterien erfüllen. So sollten Trajektorien, welche einem Cluster angehören, auch immer möglichst auf selber Höhe beginnen,
 damit deren mittlerer Abstand nicht, aufgrund einer Verschiebung, erhöht wird.
 Außerdem ist es notwendig, die Abstände zwischen den Punkten der Trajektorien auf die selbe Länge zu bringen,
-damit beim paarweisen Vergleich immer Elemente verglichen werden, welche gleichweit vom Start der Spuren entfernt sind. 
-Diese Eigenschaften der Trajektorien müssen über einen Vorverarbeitungsschritt geschaffen werden. 
+damit beim paarweisen Vergleich immer Elemente verglichen werden, welche gleichweit vom Start der Spuren entfernt sind.
+Diese Eigenschaften der Trajektorien müssen über einen Vorverarbeitungsschritt geschaffen werden.
 Problematisch bei der Verwendung der HU Distanz ist außerdem, dass beim Vergleich zweier Trajektorien immer nur
 die ersten $N$ Punkte (s. Gleichung \ref{eq_hu_distance2}) betrachtet werden. Die kann dazu führen, dass zwei
 Trajektorien, welche zu Beginn fast identisch sind und später auseinanderlaufen, trotzdem einen hohen Ähnlichkeitswert besitzen
