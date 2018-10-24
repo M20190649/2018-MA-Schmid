@@ -450,8 +450,14 @@ bei der Wahl des Maßes gemacht werden müssen.
 In allen drei Fällen werden die Trajektorien als Reihen 2-dimensionaler Punkte mit Länge $n$ interpretiert: $t_i = \{(x_1, y_1), (x_2, y_2), ..., (x_n, y_n)\}$.
 Der $n$-te Punkt einer Trajektorie ist gegeben über $t_i(n)$ und deren Punkt-Länge über $len(t_i)$.
 Die Menge der zu vergleichenden Trajektorien ist $T = \{t_1, t_2, ..., t_m\}$.
+Abbildung \ref{fig:grund_trajectories} zeigt eine Auswahl möglicher Trajektorien.
 
-% TODO: Bild Trajektorien (prototypisch)
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.6\linewidth]{../resources/img/grundlagen/trajectories}
+\caption{Trajektorien im 2-dimensionalen Raum}
+\label{fig:grund_trajectories}
+\end{figure}
 
 \subsection{HU Distanz}
 
@@ -479,7 +485,7 @@ Diese Eigenschaften der Trajektorien müssen über einen Vorverarbeitungsschritt
 Problematisch bei der Verwendung der HU Distanz ist außerdem, dass beim Vergleich zweier Trajektorien immer nur
 die ersten $N$ Punkte (s. Gleichung \ref{eq_hu_distance2}) betrachtet werden. Die kann dazu führen, dass zwei
 Trajektorien, welche zu Beginn fast identisch sind und später auseinanderlaufen, trotzdem einen hohen Ähnlichkeitswert besitzen
-(siehe Trajektorien $t_X$ und $t_Y$ in Abbildung XXXX). % TODO: Verweis hinzufügen
+(siehe $t_5$ und $t_6$ in Abbildung \ref{fig:grund_trajectories}).
 
 Die HU Distanz kann aufgrund der genannten Einschränken nur in speziellen Fällen oder unter Verwendung eines
 Vorverarbeitungsschrittes angewandt werden. Sie liefert ansonsten suboptimale Clustering Ergebnisse.
@@ -580,7 +586,7 @@ sind nachfolgend nochmals in tabellarischer Form festgehalten.
     \centering
     \begin{tabular}{l|ccc}
         \toprule
-        \textbf{Ähnlichkeitsmaß} & \textbf{gerichtet} & \textbf{Form agnostisch} & \textbf{Ausreißer-resistent} \\
+        \textbf{Ähnlichkeitsmaß} & \textbf{gerichtet} & \textbf{PreProc. nötig} & \textbf{Ausreißer-resistent} \\
         \midrule \addlinespace
         HU \cite[]{Hu2005} & \cmark & \cmark & \cmark \\
         \addlinespace
