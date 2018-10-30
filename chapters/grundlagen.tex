@@ -461,6 +461,7 @@ Abbildung \ref{fig:grund_trajectories} zeigt eine Auswahl möglicher Trajektorie
 \end{figure}
 
 \subsection{HU Distanz}
+\label{sec:hu_distance}
 
 Die HU Distanz wurde erstmals in der Arbeit \textit{``Similarity based vehicle trajectory clustering and anomaly detection''}
 von \cite[]{Hu2005} verwendet. Es ist ein sehr einfaches Distanzmaß, welches auf der mittleren euklidschen Distanz
@@ -492,6 +493,7 @@ Die HU Distanz kann aufgrund der genannten Einschränken nur in speziellen Fäll
 Vorverarbeitungsschrittes angewandt werden. Sie liefert ansonsten suboptimale Clustering Ergebnisse.
 
 \subsection{Hausdorff Distanz}
+\label{sec:hausdorff_distance}
 
 Die Hausdorff Distanz ist ein komplexeres Maß zur Bestimmung der Ähnlichkeit zwischen zwei Trajektorien.
 Sie misst grundsätzlich den Abstand zwischen zwei nicht-leeren, ungeordneten Teilmengen $A$ und $B$ und ist für
@@ -524,6 +526,7 @@ Trajektorien, zu einer beliebig kleinen Ähnlichkeit führen kann.
 Von Nachteil ist auch, dass die Zeitkomplexität der Hausdorff-Distanz bei $O(n\ m)$ liegt.
 
 \subsection{Longest-Common-Subsequence}
+\label{sec:lcss_distance}
 
 Das \textit{Longest-Common-Subsequence} (LCSS) Ähnlichkeitsmaß basiert auf dem allgemeinen Problem der Findung
 einer längsten gemeinsamen Subsequenz zwischen zwei Sequenzen. Da Trajektorien, nach obiger Definition, lediglich Punktfolgen sind,

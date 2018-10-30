@@ -14,27 +14,64 @@ spezifischen Neuerungen für die Umsetzung dieser Arbeit nötig sind.
 
 \section{Clusteranalyse von Trajektorien}
 \label{sec:rw_clustering}
-% Hier Arbeiten und Verfahren vorstellen, welche Clustering von Trajektoriedaten vornehmen
-% Verschiedene Ansätze:
-%   verschiedene Distanzmaße
-%   verschiedene Repräsentationen von Trajektorien
-%   verschiedene Domänen und Anwendungsszenarien
-
 % Einleitung: Wichtigkeit und Informationsreichtum Trajektorien; Daher Analyse seit geraumer Zeit;
 % In verschiedenen Anwendungsgebieten und mit unterschiedlichsten Zielen; Hier vorstellung verfahren, anhand dessen ersichtlich
 % werden soll, wie probleme auf unterschiedliche Art gelöst werden.
 
+Aufgrund der großen Menge an Informationen, welche sich auf Basis von Trajektoriedaten ermitteln lassen, ist ihre
+Analyse schon seit geraumer Zeit Gegenstand wissenschaftlicher Untersuchungen.
+Nachfolgend werden einige Arbeiten vorgestellt, welche sich mit der Clusteranalyse von Trajektorien beschäftigen.
+Die Auswahl zeigt prototypisch, wie unterschiedliche die Anwendungsszenarien und Ziele bei solchen Analyse sind.
+
 % Fu et al., 2005
-%   "gewöhnliches" Clustern von Trajektorien,
-%   verwendung einfaches metrischen DMs
-%   Starke Vorverarbeitung der Trajektorien 
-%   hierarchischer Clusteransatz Ansatz (Spectral. Nach Vergleich mit Fuzzy K-Means --> Determinismus)
+\subsubsection*{Similarity based vehicle trajectory clustering and anomaly detection}
+Eine Arbeit, welche ein sehr typisches Anwendungszenario behandelt, stammt von \cite[]{Hu2005}. Die Autoren
+beschreiben in dieser Veröffentlichung ein Verfahren zur Clusteranalyse von Fahrzeugtrajektorien. Ziel dieser
+ist es, auf Basis der entdeckten Spur-Cluster, anormale Verkehrsmanöver in Live-Aufnahmen von Straßenabschnitten
+detektieren zu können. Solche Manöver sind beispielsweise ``Fahren abseits der üblichen Bahnen'' oder
+``zu schnelles/langsames Fahren''.
+Die Fahrzeugtrajektorien sind in dieser Arbeit als Sequenzen zwei-dimensionaler Punkte definiert.
+Um diese zu gruppieren, setzen Hu et al. auf klassische Clusterverfahren und die Verwendung eines
+einfachen, metrischen Distanzmaßes. Dieses Maß, bekannt als HU Distanz (siehe Abschnitt \ref{sec:hu_distance}),
+vergleicht Trajektorien über den mittleren Abstand zwischen zusammengehörigen Punktpaaren. 
+Da dies nur zuverlässig möglich ist, wenn die Trajektorien einige Bedingungen erfüllen, müssen die
+Autoren diese vorverarbeiten. Sie vereinheitlichen daher die Abstände der Punkte einer Trajektorie und erweitern
+sie zudem in Richtung der Szenen-Grenzen.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{../resources/img/RelatedWork/Fu_HierarchicalClustering}
+    \caption[Zweistufiger Clustering-Vorgang von Hu et al.]{Zweistufiger Clustering-Vorgang von Hu et al. \cite[]{Hu2005}}
+    \label{fig:relw_hu_two_step_cluster}
+\end{figure}
+
+Unter Verwendung des definierten Distanzmaßes werden die Trajektorien in einem zweistufigen Verfahren verarbeitet.
+In den zwei Phasen werden, wie in Abbildung \ref{fig:relw_hu_two_step_cluster} dargestellt, zuerst dominante
+Fahrpfade extrahiert, welche anschließend weiter in einzelne Fahrspuren untergliedert werden.
+Als eigentliche Cluster-Algorithmen vergleichen die Autoren den \textit{Spectral-Clustering} Ansatz \cite[]{Ng2002}
+mit einem \textit{Fuzzy-k-Means} Verfahren \cite[]{xie1991validity}.
+Die Untersuchungen zeigen, dass der Spectral Clustering Ansatz nicht nur bessere Ergebnisse liefert, sonderen diese
+über mehrere Durchläufe hinweg auch stabil sind, wohingegen die Resultate des Fuzzy-Ansatzes variieren.
+
 
 % Junejo et al., 2004
-%   Arbeit aus etwas anderen Domäne. Erkennung und Zuordnung von Bewegungsbahnen von Fußgängern zu Pfaden
-%   Erkennung von anormalem Verhalten
-%   Hier Richtung nicht wichtig, daher Verwendung von Hausdorff Distanz und Min-Cut Algorithmus
-%   Repräsentation von Pfad als Cluster mit Clustermittelpunkt und Envelope, welcher Varianz beschreibt
+\subsubsection*{Multi Feature Path Modeling for Video Surveillance}
+Eine weitere Arbeit, welche das Ziel hat, anormale Bewegungsmuster auf Basis von Trajektorien zu entdecken,
+stammt von \cite[]{Junejo2004}. In diesem Fall geht es den Autoren allerdings nicht um das Finden von Fahrzeug-Fahrspuren,
+sondern um die Extraktion von Bewegungspfaden von Fußgängern.
+Die Bewegungsbahnen der Passanten werden aus Aufnahmen stationärer Überwachungskameras gewonnen und
+über zwei-dimensionale Punktreihen repräsentiert.
+Als Ähnlichkeitsmaß für die Trajektorien verwenden die Autoren die Hausdorff Distanz. Die üblicherweise
+negativen Eigenschaften dieses
+Vergleichkriteriums (siehe Abschnitt \ref{sec:hausdorff_distance}), konkret die Missachtung der
+Trajektorie-Orientierung, sind bei diesem Anwendungsfall kein Nachteil sondern ein Vorteil.
+Da Fußgänger auf einem Pfad oder Weg in entgegengesetzte Richtungen gehen können, muss die Orientierung
+ihrer Trajektorien ignoriert werden.
+Auf Basis der Hausdorff Distanz erstellen Junejo et al. einen Graphen, in welchem die Knoten Trajektorien
+und die gewichteten Kanten den Distanzen zwischen Trajektorien entsprechen.
+Sie zerlegen diesen Graphen mit Hilfe des Graph-Cut Algorithmus und erhalten so die Cluster für die
+extrahierten Fußgänger-Trajektorien.  
+
 
 % Atev et al., 2010
 %   Hier wiederum Erkennung von Fahrzeugtrajektorie-Clustern
@@ -91,3 +128,8 @@ spezifischen Neuerungen für die Umsetzung dieser Arbeit nötig sind.
 
 \section{Defizite vorhandener Lösungen und benötigte Neuerungen}
 \label{sec:rw_deficites}
+
+% Eigentlich nichts zur Spurerkennung auf bspw. Kreuzungen etc.
+%   Wenn Spur dann immer nur Spur für gesamtes Cluster (kein Partitioning)
+
+% Meiste Aufnahmen sind Frontal-Aufnahmen auf Straße --> keine Verzerrungen
