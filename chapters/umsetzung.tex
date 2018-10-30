@@ -11,9 +11,9 @@
 \section{Vorverarbeitung der Roh-Trajektorien}
 \label{sec:realisation_preprocessing}
 
-% Resampling
+% Resampling (wichtig Datenmenge)
 % Aussortierung zu kurzer Trajektorien
-% Aussortierung stehender Trajektorien
+% Aussortierung stehender Trajektorien (Beschreibung: Über Speed)
 % Trimmen Truck-Trajektories
 
 \section{Gruppierung der Trajektorien}
@@ -25,6 +25,7 @@
 %   Mod. Hausdorff Distanz und Spectral Clustering (bas. auf Avet et al.) (Erklärung Grundfunktionsweise Spectral-Clustering)
 %   Weil: SC performant, deterministisch, oft verwendet
 %   Probleme: Clusteranzahl Bestimmung, Umgehen mit Ausreißern, Tatsächliche Ergebnisse nicht gut
+%   --> Performance / Qualität des Ansatzes konnte für vorhandene Daten nicht bestätigt werden
 % Ansatz B:
 %   LCSS Distanz (in anderen Papern gute Ergebnisse) (impl. mittels bottom up dyna. programmierung, Verwendung Eucl. Dist.)
 %   Wieso D2 aus Vlachos et al. verwendet? (Verschiebung unerwünscht)
@@ -32,14 +33,20 @@
 %   --> DM kann besser mit Ausreißern umgehen und DBSCAN berücksichtigt diese auch
 %   bessere Ergebnisse
 
+% Probleme: Erkennung von Abbiegespuren, mit wenig Fahrzeugen und Abbiegevorgängen auf mehrere Spuren
+%   Dafür: Weitere Verarbeitung der Clustering Outlier
+%   Beschreibung Verfahren (dichte-basiert, suchen von initial Dichten Regionen, Verfolgung bis Ausdünnung)
 
 \chapter{Fahrbahn-Bestimmung aus Trajektorie-Clustern}
 \label{cha:lane_definition}
 
 % Cluster-Bereinigung: Entfernen von Outliern (Spurwechselvorgänge)
+%   Beschreibung Probleme: Performance, Zuverlässigkeit (initial Distanzbasiert, erweitert Dichtebasiert --> Ähnliche Ergebnisse und Performance)
+%   Verfahren mit evtl. besseren Resultaten noch aufwendiger und basierend meist auf selben Ideen (Distanzmaße, Dichten etc.)
 % Bestimmung Referenz-Trajektorie
 % Bestimmung von Spur-Envelopes
 % Partitionierung der initialen Spur-Schätzungen
+% Alignment der Spuren
 
 \chapter{Fahrbahn Klassifizierung}
 \label{cha:realisation_lane_classification}

@@ -1,13 +1,90 @@
 %!TEX root = ../Thesis.tex
 
-\chapter{Stand der Technik}
+\chapter{Verwandte Arbeiten}
 \label{cha:related_work}
 
-\section{Clustering von Trajektoriedaten}
+Das folgende Kapitel gibt eine Überblick über einige wichtige und interessante wissenschaftliche
+Arbeiten, welche sich mit der Analyse von Trajektoriedaten und insbesondere Fahrzeugtrajektorien beschäftigen.
+Zu Beginn werden diverse Arbeiten vorgestellt, welche sich mit der Clusteranalyse von Trajektorien befassen.
+Anschließend wird betrachtet, wie in der Literatur die Erkennung von Fahrspuren, vorzugsweise auf Basis
+von Trajektorien, umgesetzt wird.
+Zudem werden Arbeiten untersucht, welche sich bereits mit der Klassifizierung von Fahrspuren befassen. % TODO: Evtl. entfernen
+Am Ende des Kapitels werden Defizite der existierenden Lösungen festgehalten und analysiert, welche
+spezifischen Neuerungen für die Umsetzung dieser Arbeit nötig sind.
+
+\section{Clusteranalyse von Trajektorien}
 \label{sec:rw_clustering}
+% Hier Arbeiten und Verfahren vorstellen, welche Clustering von Trajektoriedaten vornehmen
+% Verschiedene Ansätze:
+%   verschiedene Distanzmaße
+%   verschiedene Repräsentationen von Trajektorien
+%   verschiedene Domänen und Anwendungsszenarien
+
+% Einleitung: Wichtigkeit und Informationsreichtum Trajektorien; Daher Analyse seit geraumer Zeit;
+% In verschiedenen Anwendungsgebieten und mit unterschiedlichsten Zielen; Hier vorstellung verfahren, anhand dessen ersichtlich
+% werden soll, wie probleme auf unterschiedliche Art gelöst werden.
+
+% Fu et al., 2005
+%   "gewöhnliches" Clustern von Trajektorien,
+%   verwendung einfaches metrischen DMs
+%   Starke Vorverarbeitung der Trajektorien 
+%   hierarchischer Clusteransatz Ansatz (Spectral. Nach Vergleich mit Fuzzy K-Means --> Determinismus)
+
+% Junejo et al., 2004
+%   Arbeit aus etwas anderen Domäne. Erkennung und Zuordnung von Bewegungsbahnen von Fußgängern zu Pfaden
+%   Erkennung von anormalem Verhalten
+%   Hier Richtung nicht wichtig, daher Verwendung von Hausdorff Distanz und Min-Cut Algorithmus
+%   Repräsentation von Pfad als Cluster mit Clustermittelpunkt und Envelope, welcher Varianz beschreibt
+
+% Atev et al., 2010
+%   Hier wiederum Erkennung von Fahrzeugtrajektorie-Clustern
+%   Vorstellung eines neuen DM's (mod. Hausdorff) (--> Berücksichtigung Orientierung)
+%   Vergleich von verschiedenen DM's und Cluster Algos (mod HD, LCSS(siehe Grundlagen), DTW)
+%   Spectral-Clustering mit eig. mod. HD liefert nach Atev. beste Ergebnisse (ebenso Erweiterung zur Bestimmung von k)
+
+% Chen et al., 2011
+%   Clustering von Hurrikan Daten
+%   Hier Orientierung ebenfalls relevant aber trotzdem Verwendung einfacher HD
+%   Nicht relevant: Position der Trajektorien in Datensatz
+%   Daher: Darstellung Trajektorien als Flow-Vektoren (Normiert!)
+
+% Vlachos et al., 2002
+%   Nicht metrisches Distanzmaß (Verschiebungen möglich) (LCSS basiert)
+%   Für Erkennung von Zeichensprach Symbolen
+%   Eig. sehr aufwendig. Beschreibung eines performanten Algorithmus
+%   Kompliziert im Vergleich zu Chen et al.
+
+% Melo et al., 2014
+%   Weiterer etwas anderer Ansatz
+%   Extraktion von Fahrzeugen und deren Position als Graph
+%   Beschreibung von Trajektorien als Polynome niedrigen Grades (Meth. kl. Quadrate) (übl. 3te Grad)
+%   Verwendung von rough-k-means Clustering um bereits Ausreißer (Spurwechsel) ausfiltern zu können
+%   Einfache HD Distanz
+%   Initiale Spur-Mitte über Aktivitäts Map bestimmt --> Vergleich der Spuren hierzu
+
+
 
 \section{Erkennung von Fahrspuren}
 \label{sec:rw_lane_detection}
+% Hier Arbeiten vorstellen, welche (prim. auf Basis von Traj.Clustern) versuchen Fahrspuren / Fahrbahnen
+% zu erkennen
+% Auch übliche Ansätze vorstellen, welche nicht mit Traj. arbeiten (erwähnen häufig optisch / aus Fahrzeugen)
+
+% Zuerst Ansätze, welche auf anderen (visuellen) Methoden basieren
+
+% Melo et al.
+%   repräsentiert Fahrspuren nur über Spurmittelpunkte (Clustering-Ergebnis)
+%   Bestimmt Zugehörigkeit über Nähe zu Mittellinie 
+
+% Chen et al.
+%   Spur ebenfalls "nur" über Fahrbahnmittelpunkt repräsentiert.
+%   Ermittelt über "polynom curve fitting" auf Clusterpunkte
+
+% Fu et al. & Junejo et al.
+%   Clustering und dann Bestimmung Envelopes basierend auf Varianz der Trajektorien in Cluster
+
+% Hsieh et al., 2006
+% Automatic Traffic Surveillance System for Vehicle Tracking and Classification
 
 \section{Klassifizierung von Fahrspuren}
 \label{sec:rw_lane_classification}

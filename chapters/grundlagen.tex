@@ -22,6 +22,9 @@ verschiedene Cluster-Algorithmen und Distanzmaße vorgestellt.
 
 % Beschreibung des kompletten Vorgangs bis Bewegungsbahnen der Autos vorliegen
 % Tracking --> World-Matching --> initiale Glättung
+% Resultat beschreiben: Koordinaten der Fahrzeuge in World-Koord.-System --> Distanzen in Metern (ermöglicht "Plausibilitätskontrollen")
+% Verwendung von Bounding-Boxes (Mittelpunkt bzw. Front-Punkt identifiziert Fahrzeugposition)
+% --> evlt. Problem bei Aufnahmen mit niedrigem Kamera-Winkel 
 
 Die in dieser Arbeit verwendeten Fahrzeugtrajektorien stammen aus der Anwendung ``Tracker-Application''
 des MEC-View Teilprojektes \textit{Luftbeobachtung}. Nachfolgend wird beschrieben, wie diese aus den Videoaufnahmen
@@ -554,7 +557,7 @@ D_{LCSS}(t_1, t_2) = 1 - \frac{LCSS(t_1, t_2)}{min(len(t_1), len(t_2))}
 \end{align}
 \end{ceqn}
 
-% TODO: Bild hinzufügen und referenzieren
+% TODO: Bild (LCSS Parametererläuterung) hinzufügen und referenzieren (Vlachos et al.)
 
 Vorteile der LCSS Ähnlichkeitdefinition sind, dass sie mit kompletten Trajektorien arbeitet und robust
 gegenüber Ausreißern ist, da nicht für alle Punkte Übereinstimmungen in den Trajektorien gefunden werden müssen.
