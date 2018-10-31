@@ -532,7 +532,7 @@ Das \textit{Longest-Common-Subsequence} (LCSS) Ähnlichkeitsmaß basiert auf dem
 einer längsten gemeinsamen Subsequenz zwischen zwei Sequenzen. Da Trajektorien, nach obiger Definition, lediglich Punktfolgen sind,
 lässt sich das Verfahren sehr gut auf diese anwenden. Aufgrund einiger kleiner Erweiterungen des Basis-Algorithmus, besitzt
 das LCSS Ähnlichkeitsmaß einige besondere Eigenschaften. Der LCSS Algorithmus für Trajektorien ist grundsätzlich
-wie folgt definiert \cite[]{Vlachos}:
+wie folgt definiert \cite[]{Vlachos2002}:
 
 \begin{ceqn}
 \begin{align}
@@ -552,11 +552,11 @@ Vergleichs-Verhalten des Algorithmus. Über $\epsilon$ wird definiert, wieweit z
 können, um immer noch als ``übereinstimmend'' zu gelten. $\delta$ bestimmt hingegen, wieweit man in der Zeit gehen darf, um einen
 übereinstimmenden Punkt zu finden. Abbildung XXX veranschaulicht die Bedeutung von $\epsilon$ und $\delta$.
 Da die obige LCSS Funktion nur ein diskretes Zählmaß definiert, ist das eigentliche LCSS Ähnlichkeitsmaß üblicherweise
-wie folgt definiert \cite[]{Vlachos}:
+gegeben über \cite[]{Vlachos2002}:
 
 \begin{ceqn}
 \begin{align}
-D_{LCSS}(t_1, t_2) = 1 - \frac{LCSS(t_1, t_2)}{min(len(t_1), len(t_2))}
+    D_{LCSS}(\delta, \epsilon, t_1, t_2) = 1 - \frac{LCSS_{\delta, \epsilon}(t_1, t_2)}{min(len(t_1), len(t_2))}
 \end{align}
 \end{ceqn}
 

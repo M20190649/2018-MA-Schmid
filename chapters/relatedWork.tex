@@ -165,10 +165,42 @@ Sie können so die üblichen Bewegungsbahnen von Hurrikans über dem Atlantik be
 
 
 % Vlachos et al., 2002
-%   Nicht metrisches Distanzmaß (Verschiebungen möglich) (LCSS basiert)
-%   Für Erkennung von Zeichensprach Symbolen
-%   Eig. sehr aufwendig. Beschreibung eines performanten Algorithmus
-%   Kompliziert im Vergleich zu Chen et al.
+\subsubsection*{Discovering Similar Multidimensional Trajectories}
+Die Arbeit \cite[]{Vlachos2002} thematisiert nicht direkt die Clusteranalyse von Trajektorien sondern
+beschäftigt sich mit dem Vergleich von Bewegungsbahnen im drei-dimensionalen Raum. Konkret ist ihr Ziel,
+Trajektorien vergleichen zu können, welche etwa die Handbewegungen beim Ausführen von Zeichensprache beschreiben.
+Hierzu definieren die Autoren erstmals die Grundversion des LCSS Ähnlichkeitsmaßes, welches in vielen Arbeiten zum Einsatz
+kommt \cite[]{Atev2006, Buzan2004, Chen2005}. Auf dessen Basis erstellen sie ein Distanzmaß, welche es ermöglicht
+formgleiche aber im Raum verschobene Trajektorien zu finden.
+Die Grundversion des LCSS Ähnlichkeitsmaßes und ein darauf basierendes einfaches Distanzmaß ist, nach Vlachos et al.,
+bereits in Abschnitt \ref{sec:lcss_distance} definiert worden.
+Dieses Maß erweitern die Autoren zudem wie folgt:
+
+\begin{ceqn}
+\begin{align}
+    D2_{LCSS}(\delta, \epsilon, A, B) = 1 - \underset{f_{c,d} \in F}{max}\ D_{LCSS}(\delta, \epsilon, A, f_{c,d}(B))
+\end{align}
+\end{ceqn}
+
+Hierbei ist $F$ eine Menge von Translations-Funktionen, welche die Trajektorien entlang der Achsen verschieben.
+Sie besitzen die Form
+
+\begin{ceqn}
+\begin{align}
+    f_{c, d}(A) = ((a_{x, 1} + c, a_{y, 1} + d), ..., (a_{x, n} + c, a_{y, n} + d))
+\end{align}
+\end{ceqn}
+
+Abbildung \ref{fig:relw_vlachos_translation} veranschaulicht die Funktionsweise des Distanzmaßes. Es eignet sich immer dann, wenn Trajektorien
+mit ähnlicher Form gefunden werden sollen, welche zudem eine gewisse räumliche Verschiebung aufweisen können.
+Diese kann über die Größe von $F$ gesteuert werden.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.55\linewidth]{../resources/img/RelatedWork/vlachos_translation}
+    \caption[Verschiebung einer Trajektorie im Raum]{Verschiebung einer Trajektorie im Raum \cite[]{Vlachos2002}}
+    \label{fig:relw_vlachos_translation}
+\end{figure}
 
 % Melo et al., 2014
 %   Weiterer etwas anderer Ansatz
