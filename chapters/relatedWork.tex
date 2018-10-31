@@ -56,28 +56,66 @@ Die Untersuchungen zeigen, dass der Spectral Clustering Ansatz nicht nur bessere
 
 % Junejo et al., 2004
 \subsubsection*{Multi Feature Path Modeling for Video Surveillance}
-Eine weitere Arbeit, welche das Ziel hat, anormale Bewegungsmuster auf Basis von Trajektorien zu entdecken,
+Eine weitere Arbeit welche das Ziel hat, anormale Bewegungsmuster auf Basis von Trajektorien zu entdecken,
 stammt von \cite[]{Junejo2004}. In diesem Fall geht es den Autoren allerdings nicht um das Finden von Fahrzeug-Fahrspuren,
-sondern um die Extraktion von Bewegungspfaden von Fußgängern.
+sondern um die Extraktion von Laufpfaden von Fußgängern.
 Die Bewegungsbahnen der Passanten werden aus Aufnahmen stationärer Überwachungskameras gewonnen und
-über zwei-dimensionale Punktreihen repräsentiert.
-Als Ähnlichkeitsmaß für die Trajektorien verwenden die Autoren die Hausdorff Distanz. Die üblicherweise
-negativen Eigenschaften dieses
+als zwei-dimensionale Punktreihen repräsentiert.
+Um die Trajektorien zu vergleichen, verwenden die Autoren die Hausdorff Distanz als Ähnlichkeitsmaß. 
+Die üblicherweise negativen Eigenschaften dieses
 Vergleichkriteriums (siehe Abschnitt \ref{sec:hausdorff_distance}), konkret die Missachtung der
-Trajektorie-Orientierung, sind bei diesem Anwendungsfall kein Nachteil sondern ein Vorteil.
+Trajektorie-Orientierung, sind bei diesem Anwendungsfall kein Nachteil sondern gewünscht.
 Da Fußgänger auf einem Pfad oder Weg in entgegengesetzte Richtungen gehen können, muss die Orientierung
 ihrer Trajektorien ignoriert werden.
-Auf Basis der Hausdorff Distanz erstellen Junejo et al. einen Graphen, in welchem die Knoten Trajektorien
+Auf Basis der Hausdorff Distanz erstellen Junejo et al. einen vollständigen Graphen, in welchem die Knoten Trajektorien
 und die gewichteten Kanten den Distanzen zwischen Trajektorien entsprechen.
-Sie zerlegen diesen Graphen mit Hilfe des Graph-Cut Algorithmus und erhalten so die Cluster für die
-extrahierten Fußgänger-Trajektorien.  
-
+Sie zerlegen diesen Graphen mit Hilfe eines rekursiven \textit{min-cut}-Graphen-Algorithmus, welcher sich
+an der Arbeit von \cite[]{boykov2004experimental} orientiert, und erhalten so die Cluster für die
+extrahierten Fußgänger-Trajektorien.
 
 % Atev et al., 2010
-%   Hier wiederum Erkennung von Fahrzeugtrajektorie-Clustern
-%   Vorstellung eines neuen DM's (mod. Hausdorff) (--> Berücksichtigung Orientierung)
-%   Vergleich von verschiedenen DM's und Cluster Algos (mod HD, LCSS(siehe Grundlagen), DTW)
-%   Spectral-Clustering mit eig. mod. HD liefert nach Atev. beste Ergebnisse (ebenso Erweiterung zur Bestimmung von k)
+\subsubsection*{Clustering of Vehicle Trajectories}
+In der Arbeit \cite[]{Atev2010} ist das Ziel der Autoren, ein Verfahren zu finden, mit welchem Fahrzeugtrajektorien
+bestmöglich gruppiert werden können, ohne diese im Voraus anpassen zu müssen.
+Sie vergleichen hierzu die Performance von drei unterschiedlicher Distanzmaße unter Verwendung von zwei Cluster-Algorithmen.
+Primäres Augenmerk legen die Autoren auf ein von ihnen bereits in \cite[]{Atev2006} entwickeltes Distanzmaß, 
+welches auf der Hausdorff Distanz basiert und sowohl die Orientierung von Trajektorien berücksichtigt
+als auch robust gegenüber Ausreißern ist. Dieses neue Ähnlichkeitsmaß ist für zwei Trajektorien $P$ und $Q$
+wie folgt definiert:
+
+\begin{ceqn}
+\begin{align}
+    h_{\alpha, N, C}(P, Q) = \overset{\alpha}{\underset{p \in P}{ord}}\ \Big\{ \underset{q \in N_Q(C_{P,Q}(P))}{min} d(p, q) \Big\}
+\end{align}
+\end{ceqn}
+
+Hierbei entspricht $C_{P,Q}$ einem Mapping $P \rightarrow Q$, welches einem Punkt $p \in P$ einen entsprechenden
+Punkt $q \in Q$ zuweist, welcher die selbe relative Position in $Q$ besitzt wie $p$ in $P$.
+$N_Q$ definiert ein Subset von $Q$ als Nachbarschaft des Punktes $q$. Zusammen definieren $N_Q$ und $C_{P,Q}$ eine
+Struktur, in welcher der Abgleich der Trajektorien stattfindet. Dies ist visuell auch nochmals in Abbildung
+\ref{fig:relw_atev_modh} dargestellt. Der Operator $ord_{p \in P}^{\alpha} f(p)$ selektiert jenen Wert aus $f(p)$, welcher
+größer ist als $\alpha$-Prozent der Werte. 
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\linewidth]{../resources/img/RelatedWork/Atev_modHausdorff}
+    \caption[Funktionsweise der modifizierten Hausdorff Distanz]{Funktionsweise der modifizierten Hausdorff Distanz \cite[]{Atev2010}}
+    \label{fig:relw_atev_modh}
+\end{figure}
+
+Dank dieser Modifizierungen eignet sich das neue Ähnlichkeitsmaß gut für den Vergleich von Trajektorien:
+$C_{P,Q}$ sorgt für den Einbezug der Orientierungen und über die Nachbarschaft $N_Q$ und $ord_{p \in P}^{\alpha} f(p)$
+kann mit Ausreißern umgegangen werden.
+
+Dieses Distanzmaß vergleichen Atev et al. unter Verwendung eines Spectral und eines Agglomerativen
+Cluster-Algorithmus mit der \textit{Longest-Common Subsequence} (LCSS) und \textit{Dynamic Time Warping} (DTW) Distanz.
+Die Ergebnisse der Untersuchungen für vier verschiedene Datensätze zeigen, dass die beste Cluster-Performance
+mit Hilfe der modifizierten Hausdorff Distanz und des Spectral-Clustering erreicht wird.
+Unter Verwendung der LCSS und DTW Distanzmaße, könnten die Autoren nicht die selben Resultate erzielen.
+
+Dass das von Atev et al. vorgeschlagene Distanzmaß sehr gute Clusterergebnisse produziert, wurde auch von \cite{Morris2009}
+bewiesen. In ihrer Untersuchung waren alledings die Ergebnisse, welche mithilfe des LCSS Maßes erreicht wurden,
+ebenso gut, beziehungsweise teilweise sogar besser.
 
 % Chen et al., 2011
 %   Clustering von Hurrikan Daten
