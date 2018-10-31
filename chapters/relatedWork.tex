@@ -38,6 +38,7 @@ Da dies nur zuverlässig möglich ist, wenn die Trajektorien einige Bedingungen 
 Autoren diese vorverarbeiten. Sie vereinheitlichen daher die Abstände der Punkte einer Trajektorie und erweitern
 sie zudem in Richtung der Szenen-Grenzen.
 
+% TODO: Figure anpassen
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\linewidth]{../resources/img/RelatedWork/Fu_HierarchicalClustering}
@@ -118,10 +119,50 @@ bewiesen. In ihrer Untersuchung waren alledings die Ergebnisse, welche mithilfe 
 ebenso gut, beziehungsweise teilweise sogar besser.
 
 % Chen et al., 2011
-%   Clustering von Hurrikan Daten
-%   Hier Orientierung ebenfalls relevant aber trotzdem Verwendung einfacher HD
-%   Nicht relevant: Position der Trajektorien in Datensatz
-%   Daher: Darstellung Trajektorien als Flow-Vektoren (Normiert!)
+\subsubsection*{Clustering of trajectories based on Hausdorff Distance}
+Eine weitere interessante Arbeit zur Clusteranalyse von Trajektorien stammt von \cite[]{Chen2011}.
+Die Autoren haben das Ziel, Muster in den Bewegungsbahnen von Hurrikans, welche im Zeitraum von 1850 bis 2010
+über den Atlantik zogen, zu erkennen.
+Sie verwenden hierzu einen angepassten DBSCAN Cluster-Algorithmus und das Hausdorff Distanzmaß.
+Um die Missachtung der Orientierung kompensieren zu können, und zudem auch Ähnlichkeiten
+in Sub-Trajektorien zu erkennen, wählen die Autoren eine etwas andere Darstellung der Trajektorien.
+Sie definieren eine Bewegungsbahn als eine Folge sogenannter \textit{``Flow-Vektoren''}, welche neben
+Positions- auch Richtungsinformationen enthalten. Ein solcher Vektor ist definiert über:
+
+\begin{ceqn}
+\begin{align}
+    f_i = (x_i, y_i, dx_i, dy_i)
+\end{align}
+\end{ceqn}
+
+wobei gilt:
+
+\begin{ceqn}
+\begin{align}
+    dx_i = (x_{i+1} - x_i)/\sqrt{(x_{i+1} - x_i)^2 + (y_{i+1} - y_i)^2} \\
+    dy_i = (y_{i+1} - y_i)/\sqrt{(x_{i+1} - x_i)^2 + (y_{i+1} - y_i)^2}
+\end{align}
+\end{ceqn}
+
+Die Distanz zwischen zwei \textit{Flow-Vektoren} ist ihr euklidscher Abstand. Auf diese Weise wird bei
+der Berechnung der Hausdorff Distanz (siehe Abschnitt \ref{sec:hausdorff_distance}) auch die Richtung
+der Trajektorien berücksichtigt.
+Um ähnliche Sub-Trajektorien entdecken zu können, teilen Chen et al. die Trajektorien an den Positionen
+``charakteristischer'' Vektoren. Diese beschreiben Richtungsänderungen in einer
+Bewegungsbahn und werden identifiziert über die Abweichungen in den Richtungskomponenten zweier
+aufeinanderfolgender Flow-Vektoren. Dies ist anschaulich in Abbildung \ref{fig:relw_chen_flow_vector} dargestellt.
+
+% TODO: Figure anpassen
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.45\linewidth]{../resources/img/RelatedWork/Chen_trajectory_splitting}
+    \caption[Zerlegung einer Trajektorie in Sub-Trajektorien]{Zerlegung einer Trajektorie in Sub-Trajektorien \cite[]{Chen2011}}
+    \label{fig:relw_chen_flow_vector}
+\end{figure}
+
+Die auf diese Weise erhaltenen Sub-Trajektorien werden von den Autoren mittels eines DBSCAN Algorithmus gebündelt.
+Sie können so die üblichen Bewegungsbahnen von Hurrikans über dem Atlantik bestimmen.
+
 
 % Vlachos et al., 2002
 %   Nicht metrisches Distanzmaß (Verschiebungen möglich) (LCSS basiert)
