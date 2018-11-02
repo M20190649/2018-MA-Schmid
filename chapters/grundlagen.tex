@@ -250,7 +250,7 @@ welche mit ihm verarbeitet werden können erheblich begrenzt ist \cite[]{tan2007
 Centroid basierte Cluster-Modelle betrachten im Gegensatz zu hierarchischen Modellen nicht die Distanz
 zwischen Clustern, sondern die Entfernung von Objekten zu Referenzpunkten, sogenannten \textit{Centroids}.
 
-Ein Beispiel für einen Centroid-Cluster-Algorithmus ist \textbf{k-Means}. Dieser ist aufgrund seines Alters,
+Ein Beispiel für einen Centroid-Cluster-Algorithmus ist \textit{k-Means}. Dieser ist aufgrund seines Alters,
 seiner Einfachheit und der vielen Weiterentwicklungen wohl der bekannteste Cluster-Algorithmus überhaupt.
 
 Das Ziel von k-Mean ist es, für eine n-dimensionale Punktmenge $X = \{ x_1 ... x_n \}$ ein Cluster-Set $C = \{ c_1 ... c_k \}$
@@ -370,7 +370,7 @@ von Bereichen geringer Dichte umgeben sind. Dichte-Clustering-Modelle suchen nac
 Großer Vorteil der Algorithmen dieser Klasse ist, dass sie Cluster beliebiger Formen finden können,
 nicht auf die Vorgabe einer Clusteranzahl angewiesen sind und mit Ausreißern umgehen können.
 
-Als Vertreter der Dichte-basierten Ansätze wird nachfolgend der \textbf{DBSCAN} Algorithmus
+Als Vertreter der Dichte-basierten Ansätze wird nachfolgend der \textit{DBSCAN} Algorithmus
 (\textit{Density-Based Spatial Clustering of Applications with Noise}), wie in \cite[]{Gao2012} beschrieben, vorgestellt.
 Er verwendet als Maß für die Dichte einer Region die sogenannte \textit{$\epsilon$ -Nachbarschaft} (\textit{Eps}).
 Diese selektiert für ein Objekt $p$ alle Objekte, welche innerhalb des Radius $\epsilon$ um dieses liegen:
@@ -600,11 +600,11 @@ sind nachfolgend nochmals in tabellarischer Form festgehalten.
         \addlinespace
         HD \cite[]{Chen2011} & \xmark & \xmark & \xmark \\
         \addlinespace
-        mod. HD \cite[]{Atev2010} & \cmark & \xmark & \cmark \\
+        mod. HD \cite[]{Atev2006} & \cmark & \xmark & \cmark \\
         \addlinespace
         PF \cite[]{Piciarelli2006} & \cmark & \xmark & \xmark \\
         \addlinespace
-        LCSS \cite[]{Vlachos} & \cmark & \xmark & \cmark \\
+        LCSS \cite[]{Vlachos2002} & \cmark & \xmark & \cmark \\
         \addlinespace
         \bottomrule
     \end{tabular}

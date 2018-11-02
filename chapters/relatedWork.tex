@@ -1,4 +1,4 @@
-%!TEX root = ../Thesis.tex
+﻿%!TEX root = ../Thesis.tex
 
 \chapter{Verwandte Arbeiten}
 \label{cha:related_work}
@@ -257,7 +257,7 @@ anhand Gleichung \ref{eq_ren_rough} errechnet.
 
 Als Gewichtungen $w_l$ verwenden Ren et al. Werte im Bereich $[0.5, 1]$. $| \cdot |$ entspricht hier der Kardinalität einer Menge.
 
-Unter Verwendung dieser Clustering-Methode, ist es den Autoren von \cite[]{Ren2014} möglich, auch bei einer hohen Anzahl von
+Unter Verwendung dieser Clustering-Methode ist es den Autoren von \cite[]{Ren2014} möglich, auch bei einer hohen Anzahl von
 Ausreißern und Spurwechselvorgängen, stabile Spurmittellinien zu bestimmen. Ergebnisse, welche dies zeigen, sind in Abbildung
 \ref{fig:relw_ren_example_detection} dargestellt.
 
@@ -275,24 +275,44 @@ Ausreißern und Spurwechselvorgängen, stabile Spurmittellinien zu bestimmen. Er
 % zu erkennen
 % Auch übliche Ansätze vorstellen, welche nicht mit Traj. arbeiten (erwähnen häufig optisch / aus Fahrzeugen)
 
-% Zuerst Ansätze, welche auf anderen (visuellen) Methoden basieren
+Primäres Ziel dieser Arbeit ist es, Fahrspuren zuverlässig in Videoaufnahmen erkennen zu können. Dieser Abschnitt
+geht daher auf einige Arbeiten ein, welche ähnliches ebenfalls versuchen.
 
-% Melo et al.
-%   repräsentiert Fahrspuren nur über Spurmittelpunkte (Clustering-Ergebnis)
-%   Bestimmt Zugehörigkeit über Nähe zu Mittellinie 
+Die Mehrzahl der Veröffentlichungen in diesem Bereich, löst das Problem, indem sie nach visuellen Merkmalen,
+primär Spurtrennlinien, in Videoaufnahmen suchen. Die Aufnahmen werden dabei entweder von stationären Kameras,
+von bemannten oder unbemannten Luftfahrzeugen oder einem Fahrzeug selbst gemacht. Zur Extraktion der Merkmale werden
+üblicherweise Methoden aus den Gebieten des maschinellen Sehen (CV) oder maschinellen Lernens (ML) verwendet. % TODO: Abkzg.
+Arbeiten, welche CV-basierte Ansätze verfolgen, stammen beispielsweise von \cite[]{Lai2000}, \cite[]{McCall2006} oder \cite[]{Aly2008}.
+ML-gestützte Arbeiten wurden dahingegend unter anderem von \cite[]{Kim2008} und \cite[]{Gopalan2012} veröffentlicht.
+% Ein mögliches Anwendungsgebiet für solche Ansätze ist Beispiel die Entwicklung eines Spurhalte-Assistenten.
 
-% Chen et al.
-%   Spur ebenfalls "nur" über Fahrbahnmittelpunkt repräsentiert.
-%   Ermittelt über "polynom curve fitting" auf Clusterpunkte
+Da oben genannte Ansätze, wie bereits zu Beginn der Arbeit erläutert, aufgrund von Verdeckungen oder Änderungen
+in der Belichtung problematisch sind, werden nachfolgend ausschließlich Arbeiten vorgestellt, welche Fahrspuren
+aus Trajektoriedaten extrahieren. Hierbei setzten sie als ersten Schritt alle auf eine Clusteranalyse von Trajektorien.
+In der Repräsentation und Extraktion der Fahrspuren variieren die Ansätze hingegen.
+
 
 % Fu et al. & Junejo et al.
 %   Clustering und dann Bestimmung Envelopes basierend auf Varianz der Trajektorien in Cluster
+\subsubsection*{Similarity based vehicle trajectory clustering and anomaly detection}
+% Envelope (Covarianz) aus Clustern
+
+
+% Makris et al., 2005
+\subsubsection*{Learning Semantic Scene Models From Observing Activity in Visual Surveillance}
+% Erstellen Hüllen für Traj. --> Traj zu Bahn zuordnen
+
+
+% Morris et al., 2011
+\subsubsection*{Trajectory Learning for Activity Understanding: Unsupervised, Multilevel, and Long-Term Adaptive Approach}
+% HMM
+
 
 % Hsieh et al., 2006
 % Automatic Traffic Surveillance System for Vehicle Tracking and Classification
+\subsubsection*{Automatic Traffic Surveillance System for Vehicle Tracking and Classification}
+% Heat Map --> Spurmittellinien --> Begrenzer aus Mittellinien bestimmen
 
-\section{Klassifizierung von Fahrspuren}
-\label{sec:rw_lane_classification}
 
 \section{Defizite vorhandener Lösungen und benötigte Neuerungen}
 \label{sec:rw_deficites}
