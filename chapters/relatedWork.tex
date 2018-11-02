@@ -202,14 +202,71 @@ Diese kann über die Größe von $F$ gesteuert werden.
     \label{fig:relw_vlachos_translation}
 \end{figure}
 
-% Melo et al., 2014
-%   Weiterer etwas anderer Ansatz
-%   Extraktion von Fahrzeugen und deren Position als Graph
-%   Beschreibung von Trajektorien als Polynome niedrigen Grades (Meth. kl. Quadrate) (übl. 3te Grad)
-%   Verwendung von rough-k-means Clustering um bereits Ausreißer (Spurwechsel) ausfiltern zu können
-%   Einfache HD Distanz
-%   Initiale Spur-Mitte über Aktivitäts Map bestimmt --> Vergleich der Spuren hierzu
+% Ren et al., 2014
+\subsubsection*{Lane Detection in Video-Based Intelligent Transportation Monitoring via Fast Extracting and Clustering of Vehicle Motion Trajectories}
 
+\cite[]{Ren2014} stellen in ihrer Arbeit ein interessantes Vorgehen zur Clusteranalyse von Trajektorien vor,
+welches auf der \textit{Rough-Set}-Theorie beruht. Sie extrahieren Fahrzeugpositionen aus Aufnahmen stationärer
+Überwachungskameras und stellen diese, wie die meisten Autoren, als Sequenzen zwei-dimensionaler
+Punkte dar. Ihr Ziel ist anschließend, anhand einer Gruppierung der gewonnenen Fahrzeugtrajektorien,
+die Spurmittelpunkte der Fahrbahnen zu bestimmen. Da ein nicht unerheblicher Anteil der Trajektorien Spurwechselvorgänge
+enthält, welche eine Extraktion der Mittellinien erschweren, verwenden Ren et al. einen iterativen \textit{Rough-k-Means}
+Algorithmus zur Clusterung der Trajektorien. Hierbei wird jedes Cluster über eine obere und untere Approximation beschrieben.
+Die untere Approximation enthält dabei die Trajektorien, welche eindeutig der Spur zugeordnet werden können.
+Die obere Näherung hingegen jene, welche Spurwechsel et cetera beschreiben. Bei der Berechnung der Spurmitten, werden
+die Trajektorien der unteren Approximation höher gewichtet, als die der oberen. Ein sehr ähnlicher Cluster-Ansatz wurde
+bereits in \cite[]{Lingras2004} vorgestellt.
+Die initialen Mittellinien bestimmen die Autoren anhand einer \textit{Aktivitäts}- oder \textit{Heat}-Map,
+welche sie während der Extraktion der Fahrzeugpositionen erstellen. Die Clusteranzahl $k$ muss händisch definiert werden.
+
+Als Maß für die Distanz zwischen einer Trajektorie $A_x$ und einer Spurmitte $c_i$ verwenden Ren et al. die
+Hausdorff Distanz $h(A_x, c_i)$. Für eine Trajektorie wird somit die nächste Mittellinie wie folgt gefunden:
+
+\begin{ceqn}
+\begin{align}
+    h(A_x, c_m) = \underset{i = 1 ... k}{min}\ h(A_x, c_i)
+\end{align}
+\end{ceqn}
+
+Hieraus ergibt sich die nachfolgende Definition für die Zuordnung der Bewegungsbahnen zu den Cluster-Näherungen:
+
+\begin{ceqn}
+\begin{align}
+    \begin{cases}
+        A_x \in \overline{C_m} \land A_x \in \overline{C_j} & \text{if } j \neq m \land \frac{h(A_x, c_j)}{h(A_x, c_m)} \leq \lambda \\
+        A_x \in \underline{C_m} & \text{otherwise}
+    \end{cases}
+\end{align}
+\end{ceqn}
+
+Es gilt $1 \leq \lambda \leq 1.5$. $\overline{C_m}$ und $\underline{C_m}$ entsprechen der oberen und unteren
+Näherung des $m$-ten Clusters und $\underline{C_m} \subseteq \overline{C_m}$.
+Nachdem in jeder Iteration des Cluster-Vorgangs die Näherungen auf diese Weise bestimmt wurden, werden die neue Mittellinien
+anhand Gleichung \ref{eq_ren_rough} errechnet.
+
+\begin{ceqn}
+\begin{align}
+    \label{eq_ren_rough}
+    c_i =
+    \begin{cases}
+        \frac{w_l \sum_{A_x \in \underline{C_i}} A_x}{|\underline{C_i}|} + \frac{(1 - w_l) \sum_{A_x \in (\overline{C_i} - \underline{C_i})} A_x}{|\overline{C_i} - \underline{C_i}|} & \text{if } \overline{C_i} \neq \underline{C_i} \\
+        \frac{\sum_{A_x \in \underline{C_i}} A_x}{|\underline{C_i|}} & \text{otherwise}
+    \end{cases}
+\end{align}
+\end{ceqn}
+
+Als Gewichtungen $w_l$ verwenden Ren et al. Werte im Bereich $[0.5, 1]$. $| \cdot |$ entspricht hier der Kardinalität einer Menge.
+
+Unter Verwendung dieser Clustering-Methode, ist es den Autoren von \cite[]{Ren2014} möglich, auch bei einer hohen Anzahl von
+Ausreißern und Spurwechselvorgängen, stabile Spurmittellinien zu bestimmen. Ergebnisse, welche dies zeigen, sind in Abbildung
+\ref{fig:relw_ren_example_detection} dargestellt.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\linewidth]{../resources/img/RelatedWork/ren_examples_detection}
+    \caption[Ergebnisse der Spurmittellinien-Erkennung (Ren et al.)]{Ergebnisse der Spurmittellinien-Erkennung \cite[]{Ren2014}}
+    \label{fig:relw_ren_example_detection}
+\end{figure}
 
 
 \section{Erkennung von Fahrspuren}
