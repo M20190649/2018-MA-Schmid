@@ -33,7 +33,7 @@ detektieren zu können. Solche Manöver sind beispielsweise ``Fahren abseits der
 Die Fahrzeugtrajektorien sind in dieser Arbeit als Sequenzen zwei-dimensionaler Punkte definiert.
 Um diese zu gruppieren, setzen Hu et al. auf klassische Clusterverfahren und die Verwendung eines
 einfachen, metrischen Distanzmaßes. Dieses Maß, bekannt als HU Distanz (siehe Abschnitt \ref{sec:hu_distance}),
-vergleicht Trajektorien über den mittleren Abstand zwischen zusammengehörigen Punktpaaren. 
+vergleicht Trajektorien über den mittleren Abstand zwischen zusammengehörigen Punktpaaren.
 Da dies nur zuverlässig möglich ist, wenn die Trajektorien einige Bedingungen erfüllen, müssen die
 Autoren diese vorverarbeiten. Sie vereinheitlichen daher die Abstände der Punkte einer Trajektorie und erweitern
 sie zudem in Richtung der Szenen-Grenzen.
@@ -62,7 +62,7 @@ stammt von \cite[]{Junejo2004}. In diesem Fall geht es den Autoren allerdings ni
 sondern um die Extraktion von Laufpfaden von Fußgängern.
 Die Bewegungsbahnen der Passanten werden aus Aufnahmen stationärer Überwachungskameras gewonnen und
 als zwei-dimensionale Punktreihen repräsentiert.
-Um die Trajektorien zu vergleichen, verwenden die Autoren die Hausdorff Distanz als Ähnlichkeitsmaß. 
+Um die Trajektorien zu vergleichen, verwenden die Autoren die Hausdorff Distanz als Ähnlichkeitsmaß.
 Die üblicherweise negativen Eigenschaften dieses
 Vergleichkriteriums (siehe Abschnitt \ref{sec:hausdorff_distance}), konkret die Missachtung der
 Trajektorie-Orientierung, sind bei diesem Anwendungsfall kein Nachteil sondern gewünscht.
@@ -79,7 +79,7 @@ extrahierten Fußgänger-Trajektorien.
 In der Arbeit \cite[]{Atev2010} ist das Ziel der Autoren, ein Verfahren zu finden, mit welchem Fahrzeugtrajektorien
 bestmöglich gruppiert werden können, ohne diese im Voraus anpassen zu müssen.
 Sie vergleichen hierzu die Performance von drei unterschiedlicher Distanzmaße unter Verwendung von zwei Cluster-Algorithmen.
-Primäres Augenmerk legen die Autoren auf ein von ihnen bereits in \cite[]{Atev2006} entwickeltes Distanzmaß, 
+Primäres Augenmerk legen die Autoren auf ein von ihnen bereits in \cite[]{Atev2006} entwickeltes Distanzmaß,
 welches auf der Hausdorff Distanz basiert und sowohl die Orientierung von Trajektorien berücksichtigt
 als auch robust gegenüber Ausreißern ist. Dieses neue Ähnlichkeitsmaß ist für zwei Trajektorien $P$ und $Q$
 wie folgt definiert:
@@ -95,7 +95,7 @@ Punkt $q \in Q$ zuweist, welcher die selbe relative Position in $Q$ besitzt wie 
 $N_Q$ definiert ein Subset von $Q$ als Nachbarschaft des Punktes $q$. Zusammen definieren $N_Q$ und $C_{P,Q}$ eine
 Struktur, in welcher der Abgleich der Trajektorien stattfindet. Dies ist visuell auch nochmals in Abbildung
 \ref{fig:relw_atev_modh} dargestellt. Der Operator $ord_{p \in P}^{\alpha} f(p)$ selektiert jenen Wert aus $f(p)$, welcher
-größer ist als $\alpha$-Prozent der Werte. 
+größer ist als $\alpha$-Prozent der Werte.
 
 \begin{figure}[H]
     \centering
@@ -327,6 +327,52 @@ wiederspiegeln. Sie sind deutlich schmaler.
 % Makris et al., 2005
 \subsubsection*{Learning Semantic Scene Models From Observing Activity in Visual Surveillance}
 % Erstellen Hüllen für Traj. --> Traj zu Bahn zuordnen
+In \cite[]{Makris2005} extrahieren die Autoren übliche Bewegungsbahnen von Fußgängern aus stationären Videoaufnahmen.
+Sie verwenden hierzu keine klassische Clusteranalyse, sondern ein iteratives und adaptives Online Verfahren,
+welches neue Bewegungstrajektorien automatisch bestehenden Routen zuordnet oder neue initialisiert,
+falls zu hohe Abweichungen zwischen der Trajektorie und den existierenden Bahnen bestehen.
+Routen definieren Makris et al. hierbei als eine Sequenz von Knoten, welche folgende Merkmale besitzen:
+
+\begin{itemize}
+    \item 2D-Mittelpunkt
+    \item Gewichtung (Anzahl der Trajektorien im Bereich des Knoten)
+    \item Zwei Hüll-Punkte (Maximale- beziehungsweise Standardabweichung der Trajektorien der Route im Bereich des Knoten)
+\end{itemize}
+
+Abbildung \ref{fig:relw_hu_example_envelope} a) veranschaulicht nochmals die Definition einer Route.
+Um aus einfachen Bewegungsbahnen Routen zu erstellen, verwenden die Autoren das nachfolgend beschriebene Verfahren,
+welches dem agglomerativen Cluster-Ansatz ähnelt.
+
+\begin{enumerate}
+    \item Erste Trajektorie initialisiert erste Route
+    \item Neue Trajektorien werden mit bestehenden Bahnen abgeglichen
+    \begin{enumerate}
+        \item Bei Übereinstimmung wird Route aktualisiert
+        \item Bei keiner Übereinstimmung wird neue Route erzeugt
+    \end{enumerate}
+    \item Aktualisierte Routen werden auf definierten Knotenabstand $r$ gebracht
+    \item Alle Routen werden miteinander verglichen
+    \begin{enumerate}
+        \item Bei Überlagerung der Routen werden diese fusioniert
+    \end{enumerate}
+\end{enumerate}
+
+Als Vergleichsmaß für die Trajektorien und Routen, verwenden Makris et al. die maximale Distanz zwischen einer Trajektorie und
+einer Routen-Hülle. Diese muss sich unterhalb eines bestimmten Grenzwertes befinden.
+Ein Ergebnis des Verfahrens ist in Abbildung \ref{fig:relw_hu_example_envelope} b) dargestellt.
+
+% TODO: Bild updaten
+\begin{figure}[H]
+    \centering
+    \subfloat[]{{
+        \includegraphics[width=0.49\linewidth]{../resources/img/RelatedWork/makris_route}
+    }}
+    \subfloat[]{{
+        \includegraphics[width=0.49\linewidth]{../resources/img/RelatedWork/makris_result}
+    }}
+    \caption[Routen-Definition und Ergebnisse Routen-Erkennung (Makris et al.)]{a) Routen Definition, b) Ergebnisse Routen-Erkennung \cite[]{Makris2005}}
+    \label{fig:relw_hu_example_envelope}
+\end{figure}
 
 
 % Morris et al., 2011
