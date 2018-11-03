@@ -288,14 +288,40 @@ ML-gestützte Arbeiten wurden dahingegend unter anderem von \cite[]{Kim2008} und
 
 Da oben genannte Ansätze, wie bereits zu Beginn der Arbeit erläutert, aufgrund von Verdeckungen oder Änderungen
 in der Belichtung problematisch sind, werden nachfolgend ausschließlich Arbeiten vorgestellt, welche Fahrspuren
-aus Trajektoriedaten extrahieren. Hierbei setzten sie als ersten Schritt alle auf eine Clusteranalyse von Trajektorien.
+aus Trajektoriedaten extrahieren. Hierbei setzten die meisten als ersten Schritt auf eine Clusteranalyse von Trajektorien.
 In der Repräsentation und Extraktion der Fahrspuren variieren die Ansätze hingegen.
 
 
 % Fu et al. & Junejo et al.
 %   Clustering und dann Bestimmung Envelopes basierend auf Varianz der Trajektorien in Cluster
-\subsubsection*{Similarity based vehicle trajectory clustering and anomaly detection}
-% Envelope (Covarianz) aus Clustern
+\subsubsection*{A System for Learning Statistical Motion Patterns}
+Die Arbeit \cite[]{WeimingHu2006} basiert auf dem bereits früher veröffentlichten Artikel \cite[]{Hu2005} der selben Autoren,
+welcher oben beschrieben wurde. In dieser Publikation gehen Hu et al. nun genauer darauf ein, wie sie auf Basis
+der Ergebnisse der Clusteranalyse, statistische Informationen über die Fahrbahnen der Fahrzeuge berechnen.
+Hierzu wird für jedes Cluster zuerst eine Referenz-Trajektorie $T_r$ bestimmt. Dies ist jene Bewegungsbahn,
+bei welcher die Summe der Distanzen zu allen anderen Trajektorien des Clusters minimal ist. Das verwendete
+Distanzmaß ist hierbei des selbe, welches auch bei der Clusteranalyse zum Einsatz kam.
+Die Autoren berechnen anschließend für jede Trajektorie-Gruppe eine Kette Gausscher-Wahrscheinlichkeits-Verteilungen
+$\{ \varphi_1, \varphi_2, ..., \varphi_l \}$, wobei $l$ die Anzahl der Punkte der Referenz-Trajektorie ist.
+Für jedes $\varphi_i$ wird der Mittelwert und die Kovarianz, basierend auf den Trajektorie-Punkten, welche dem
+$i$-ten Punkt von $T_r$ am nächsten liegen, berechnet.
+Anhand der Kovarianz Werte erstellen die Autoren Hüllen für die Fahrbahnen. Ergebnisse dieses Vorgehens sind in
+Abbildung \ref{fig:relw_hu_example_envelope} dargestellt.
+
+\begin{figure}[H]
+    \centering
+    \subfloat{{
+        \includegraphics[width=0.49\linewidth]{../resources/img/RelatedWork/hu_example_envelope}
+    }}
+    \subfloat{{
+        \includegraphics[width=0.49\linewidth]{../resources/img/RelatedWork/hu_example_envelope2}
+    }}
+    \caption[Spurhüllen in Hu et al., 2006]{Spurhüllen in \cite[]{WeimingHu2006}}
+    \label{fig:relw_hu_example_envelope}
+\end{figure}
+
+Anzumerken ist, dass die extrahierten Spurhüllen nicht die tatsächliche Form, insbesondere die Breite, einer Fahrspuren
+wiederspiegeln. Sie sind deutlich schmaler.
 
 
 % Makris et al., 2005
