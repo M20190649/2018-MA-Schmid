@@ -2,11 +2,16 @@
 
 % Umsetzung
 
-\chapter{Clustering von Fahrzeugtrajektorien}
+\chapter{Clusteranalyse von Fahrzeugtrajektorien}
 \label{cha:realisation_clustering}
 
 % Feature Selection (Positionen Relevant)
+% Darstellung der Trajektorien
+%   2D Point Sequenz (Welt-Koordinaten, Metrisch in Meter)
+%   reale Länge
+%   rel. Positionen
 % Beispiel für Rohdaten (Kreuzung)
+% Verweis auf Veusz (Verwendet zur Analyse der Ergebnisse über kompletten Entwicklungsprozess hinweg)
 
 \section{Vorverarbeitung der Roh-Trajektorien}
 \label{sec:realisation_preprocessing}
@@ -16,7 +21,7 @@
 % Aussortierung stehender Trajektorien (Beschreibung: Über Speed)
 % Trimmen Truck-Trajektories
 
-\section{Gruppierung der Trajektorien}
+\section{Clustering der Trajektorien}
 \label{sec:realisation_clustering}
 
 % genaue Beschreibung des Vorgehens, bis finale Clustering Lösung erreicht wurde
@@ -26,6 +31,7 @@
 %   Weil: SC performant, deterministisch, oft verwendet
 %   Probleme: Clusteranzahl Bestimmung, Umgehen mit Ausreißern, Tatsächliche Ergebnisse nicht gut
 %   --> Performance / Qualität des Ansatzes konnte für vorhandene Daten nicht bestätigt werden
+%   --> Problematisch auch Umgang mit vielen Parametern
 % Ansatz B:
 %   LCSS Distanz (in anderen Papern gute Ergebnisse) (impl. mittels bottom up dyna. programmierung, Verwendung Eucl. Dist.)
 %   Wieso D2 aus Vlachos et al. verwendet? (Verschiebung unerwünscht)
@@ -47,6 +53,3 @@
 % Bestimmung von Spur-Envelopes
 % Partitionierung der initialen Spur-Schätzungen
 % Alignment der Spuren
-
-\chapter{Fahrbahn Klassifizierung}
-\label{cha:realisation_lane_classification}
