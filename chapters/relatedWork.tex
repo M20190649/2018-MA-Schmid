@@ -263,7 +263,7 @@ Ausreißern und Spurwechselvorgängen, stabile Spurmittellinien zu bestimmen. Er
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.9\linewidth]{../resources/img/RelatedWork/ren_examples_detection}
+    \includegraphics[width=0.95\linewidth]{../resources/img/RelatedWork/ren_examples_detection}
     \caption[Ergebnisse der Spurmittellinien-Erkennung (Ren et al.)]{Ergebnisse der Spurmittellinien-Erkennung \cite[]{Ren2014}}
     \label{fig:relw_ren_example_detection}
 \end{figure}
@@ -381,9 +381,64 @@ Ein Ergebnis des Verfahrens ist in Abbildung \ref{fig:relw_hu_example_envelope} 
 
 
 % Hsieh et al., 2006
-% Automatic Traffic Surveillance System for Vehicle Tracking and Classification
 \subsubsection*{Automatic Traffic Surveillance System for Vehicle Tracking and Classification}
 % Heat Map --> Spurmittellinien --> Begrenzer aus Mittellinien bestimmen
+
+\cite[]{Hsieh2006} stellen in ihrer Arbeit ein System zur Extraktion von Fahrzeugpositionen aus Aufnahmen
+stationärer Verkehrskameras vor. Auf diesen aufbauend definieren sie einen Algorithmus, mit dessen Hilfe es
+möglich ist, Spurmittel- und Begrenzungs-Linien zu entdecken.
+Hierzu erzeugen Hsieh et al. ein Histogramm $H_{vehicle}(x,y)$, welches die Häufigkeit abbildet, das ein Fahrzeug sich über eine
+bestimmte Pixel-Position $(x, y)$ bewegt. Ein solches ist in Abbildung \ref{fig:relw_hsieh_results} a) dargestellt.
+Die Autoren gehen davon aus, dass die Fahrzeugpositionen sich mehrheitlich in der Mitte einer Spur befinden und
+ein Histogramm, welches für eine Fahrbahn mit $L_n$ Spuren erstellt wurde, $L_n$ Maxima in jeder Zeile besitzt,
+welche die Spurmitten darstellen.
+Sie isolieren daher die Maxima in $H_{vehicle}$ als Mittellinien. Es sei anschließend $C_{L_k}^{j}$ die $k$-te Spurmittellinie
+in Zeile $j$ des Histogramms. Daraus berechnen Hsieh et al. die Spurbegrenzungslinien. Alle innen liegenden
+Begrenzungen ergeben sich aus Gleichung \ref{eq_hsieh1}. $DL_{k}^{j}$ entspricht hierbei einem Punkt
+in der $j$-ten Reihe der $k$-ten Begrenzung.
+
+\begin{ceqn}
+\begin{align}
+\label{eq_hsieh1}
+    DL_{k}^{j} = \frac{1}{2} (C_{L_{k-1}}^{j} + C_{L_{k}}^{j})
+\end{align}
+\end{ceqn}
+
+Die Breite $w_{L_k}^{j}$ der $k$-ten Fahrspur ergibt sich zudem wie folgt:
+
+\begin{ceqn}
+\begin{align}
+\label{eq_hsieh2}
+    w_{L_k}^{j} = | C_{L_{k}}^{j} - C_{L_{k-1}}^{j} |
+\end{align}
+\end{ceqn}
+
+Die Positionen der äußeren Spurbegrenzungen einer Fahrbahn ergeben sich für die $j$-te Zeile des Histogramms
+aus den Gleichungen \ref{eq_hsieh3} und \ref{eq_hsieh4}.
+
+\begin{ceqn}
+\begin{align}
+\label{eq_hsieh3}
+    (x_{DL_0^j}, j) &= (x_{DL_1^j - w_{L_0}^j}, j) \\
+\label{eq_hsieh4}
+    (x_{DL_{N_L}^j}, j) &= (x_{DL_{N_{L-1}}^j + w_{L_0}^j}, j)
+\end{align}
+\end{ceqn}
+
+Ein Beispiel für die Ergebnisse der Spurerkennung von Hsieh et al. ist in Abbildung \ref{fig:relw_hsieh_results} b) dargestellt.
+Das Verfahren funktioniert grundlegend gut, wenn Fahrspuren nebeneinader und parallel zueinander liegen.
+
+\begin{figure}[H]
+    \centering
+    \subfloat[]{{
+        \includegraphics[width=0.33\linewidth]{../resources/img/RelatedWork/hsieh_histogram}
+    }}
+    \subfloat[]{{
+        \includegraphics[width=0.68\linewidth]{../resources/img/RelatedWork/hsieh_centers_and_borders}
+    }}
+    \caption[Ergebnisse Histogramm Erstellung und Spurextraktion (Hsieh et al.)]{a) Fahrzeugpositions Histogramm, b) Spurmittellinien und Spurbegrenzungslinien \cite[]{Hsieh2006}}
+    \label{fig:relw_hsieh_results}
+\end{figure}
 
 
 \section{Defizite vorhandener Lösungen und benötigte Neuerungen}
