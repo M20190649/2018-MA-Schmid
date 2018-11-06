@@ -8,7 +8,7 @@ Grundlagenthemen vorgestellt. Nach einer kurzen Erläuterung der Möglichkeiten 
 mittels Luftaufnahmen, wird daher darauf eingegangen, auf welche Weise die in dieser Arbeit verwendeten
 Fahrzeugtrajektorien ermittelt werden.
 Anschließend werden Methoden vorgestellt, welche zur Bereinigung der gewonnenen Daten verwendet werden können.
-Als wichtiges Mittel zur Identifizierung von Fahrspuren aus Trajektorien werden zudem
+Als wichtiges Mittel zur Ableitung von Fahrspuren aus Trajektorien werden zudem
 verschiedene Cluster-Algorithmen und Distanzmaße vorgestellt.
 
 \section{Rekonstruktion von Fahrzeugtrajektorien aus Luftaufnahmen}
@@ -190,7 +190,7 @@ diese anschließend.
 Bei divisiven Ansätzen werden hingegen zu Beginn alle Elemente in einem Cluster zusammengefasst und
 diese in den nachfolgenden Schritten geteilt.
 
-Als Beispiel wird anschließend der \textbf{agglomerative-hierarchische Cluster-Algorithmus} genauer vorgestellt.
+Als Beispiel wird anschließend der \textit{agglomerative-hierarchische Cluster-Algorithmus} genauer vorgestellt.
 Sein Vorgehen lässt sich sehr gut anhand sogenannter Dendrogramme oder geschachtelter Cluster-Diagramme darstellen
 (siehe Abbildung \ref{fig:grund_agglo_clustering})
 
@@ -338,16 +338,16 @@ Abbildung \ref{fig:grund_em_clustering} grafisch dargestellt.
 \begin{figure}[H]
     \centering
     \subfloat[Iteration 1]{{
-        \includegraphics[width=0.22\linewidth]{../resources/img/grundlagen/clustering_EM/EM1}
+        \includegraphics[align=c, width=0.22\linewidth]{../resources/img/grundlagen/clustering_EM/EM1}
     }}
     \subfloat[Iteration 2]{{
-        \includegraphics[width=0.22\linewidth]{../resources/img/grundlagen/clustering_EM/EM2}
+        \includegraphics[align=c, width=0.22\linewidth]{../resources/img/grundlagen/clustering_EM/EM2}
     }}
     \subfloat[Iteration 3]{{
-        \includegraphics[width=0.22\linewidth]{../resources/img/grundlagen/clustering_EM/EM3}
+        \includegraphics[align=c, width=0.22\linewidth]{../resources/img/grundlagen/clustering_EM/EM3}
     }}
     \subfloat[Iteration 4]{{
-        \includegraphics[width=0.22\linewidth]{../resources/img/grundlagen/clustering_EM/EM4}
+        \includegraphics[align=c, width=0.22\linewidth]{../resources/img/grundlagen/clustering_EM/EM4}
     }}
     \caption[Darstellung des EM-Cluster-Algorithmus über mehrere Iterationen]{Darstellung des EM-Cluster-Algorithmus über mehrere Iterationen \cite[]{GeorgeSeif2018}}
     \label{fig:grund_em_clustering}
@@ -387,13 +387,13 @@ Ausreißerobjekte sind weder Kern- noch Randobjekte.
 \begin{figure}[H]
     \centering
     \subfloat[]{{
-        \includegraphics[width=0.3\linewidth]{../resources/img/grundlagen/clustering_dbscan/dbscan1}
+        \includegraphics[align=c, width=0.3\linewidth]{../resources/img/grundlagen/clustering_dbscan/dbscan1}
     }}
     \subfloat[]{{
-        \includegraphics[width=0.3\linewidth]{../resources/img/grundlagen/clustering_dbscan/dbscan2}
+        \includegraphics[align=c, width=0.3\linewidth]{../resources/img/grundlagen/clustering_dbscan/dbscan2}
     }}
     \subfloat[]{{
-        \includegraphics[width=0.3\linewidth]{../resources/img/grundlagen/clustering_dbscan/dbscan3}
+        \includegraphics[align=c, width=0.3\linewidth]{../resources/img/grundlagen/clustering_dbscan/dbscan3}
     }}
     \caption[Schritte des DBSCAN Algorithmus]{Schritte des DBSCAN Algorithmus, a) Rohdaten, b) Klassifizierung in Kern- (grün), Rand- (blau) und Ausreißer- (rot) Punkte, c) Cluster Ergebnis \cite[]{Gao2012}}
     \label{fig:grund_dbscan_clustering}
