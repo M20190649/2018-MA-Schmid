@@ -18,7 +18,7 @@ verschiedene Cluster-Algorithmen und Distanzmaße vorgestellt.
 % Tracking --> World-Matching --> initiale Glättung
 % Resultat beschreiben: Koordinaten der Fahrzeuge in World-Koord.-System --> Distanzen in Metern (ermöglicht "Plausibilitätskontrollen")
 % Verwendung von Bounding-Boxes (Mittelpunkt bzw. Front-Punkt identifiziert Fahrzeugposition)
-% --> evlt. Problem bei Aufnahmen mit niedrigem Kamera-Winkel 
+% --> evlt. Problem bei Aufnahmen mit niedrigem Kamera-Winkel
 
 Die in dieser Arbeit verwendeten Fahrzeugtrajektorien stammen aus der Anwendung ``Tracker-Application''
 des MEC-View Teilprojektes \textit{Luftbeobachtung}. Nachfolgend wird beschrieben, wie diese aus den Videoaufnahmen
@@ -156,11 +156,36 @@ gefunden, indem die Nachbarschaften von Elementen untersucht werden.
 % TODO: Verweis Bild hinzufügen
 Eine sehr allgemeine Definition eines Clusters ist die der \textit{konzeptionellen} Gruppen. Hiermit ist
 gemeint, dass die Elemente eines Clusters einige gemeinsame Eigenschaften besitzen. Dies schließt die oben genannten
-Cluster-Arten mit ein, lässt sich allerdings beliebig erweitern. So sind beispielsweise in Abbildung XXX x)
+Cluster-Arten mit ein, lässt sich allerdings beliebig erweitern. So sind beispielsweise in Abbildung \ref{fig:basic_cluster_style} e)
 konzeptionelle Cluster dargestellt, die die Form zweier Kreise und eines Dreiecks haben. Um solche Muster
 erkennen zu können, würde ein Algorithmus eine besondere Definition eines Clusters benötigen.
 
-
+\begin{figure}[H]
+    \centering
+    \subfloat[Klar separierte Cluster]{{
+        \includegraphics[align=c, width=0.3\linewidth]{../resources/img/grundlagen/cluster/Cluster01}
+    }}
+    \qquad
+    \qquad
+    \subfloat[Centroid-basierte Cluster]{{
+        \includegraphics[align=c, width=0.3\linewidth]{../resources/img/grundlagen/cluster/Cluster02}
+    }}
+    \hfill
+    \subfloat[Graphen-basierte Cluster]{{
+        \includegraphics[align=c, width=0.3\linewidth]{../resources/img/grundlagen/cluster/Cluster03}
+    }}
+    \qquad
+    \qquad
+    \subfloat[Dichte-basierte Cluster]{{
+        \includegraphics[align=c, width=0.3\linewidth]{../resources/img/grundlagen/cluster/Cluster04}
+    }}
+    \hfill
+    \subfloat[Konzeptionelle Cluster]{{
+        \includegraphics[align=c, width=0.6\linewidth]{../resources/img/grundlagen/cluster/Cluster05}
+    }}
+    \caption[Visualisierung verschiedener Clusterarten]{Visualisierung verschiedener Clusterarten (basierend auf \cite[]{tan2007introduction})}
+    \label{fig:basic_cluster_style}
+\end{figure}
 % TODO: Bild hinzufügen und referenzieren
 
 \subsection{Cluster-Algorithmen}
