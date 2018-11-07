@@ -8,7 +8,7 @@
     IT-Designers GmbH, Esslingen-Zell
 
 + Betreuer-Firma:
-    M. Sc. Stefan Kaufmann
+    Dr. Stefan Kaufmann
 
 + Abstract:
 

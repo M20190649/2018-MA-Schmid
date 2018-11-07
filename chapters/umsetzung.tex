@@ -16,7 +16,9 @@ auf JavaFX. Das in dieser Arbeit erstellte Modul \textit{Spurerkennung} wird kom
 
 Die Ergebnisse der Fahrzeugverfolgung (siehe Abschnitt \ref{sec:position_extraction}) werden
 in der \textit{TrackingApplication} in Form sogenannter \textit{TrackedObject}`s gespeichert.
-Ein solches Objekt repräsentiert eine zusammenhängende, nicht-unterbrochene Verfolgung eines Fahrzeugs.
+Ein solches Objekt repräsentiert eine zusammenhängende, nicht unterbrochene Verfolgung eines Fahrzeugs.
+Wird eine Verfolgung, beispielsweise aufgrund einer Überdeckungen, unterbrochen, so existieren für ein
+Kraftfahrzeug mehrere Objekte, welche sich einander nicht zuordnen lassen.
 Die wichtigsten Informationen, die ein \textit{TrackedObject} beinhaltet, sind eine eindeutige ID,
 die Frame-Positionen des Starts und Endes der Verfolgung und die Objekt-Klasse des Fahrzeugs. Es wird
 zwischen den vier Klassen \textit{``Auto''}, \textit{``Lastwagen''}, \textit{``Transporter''}
@@ -40,7 +42,7 @@ Abbildung \ref{fig:real_trajectory_classDia} zeigt den Aufbau einer Trajektorie 
 Die Felder \textit{id} und \textit{objectClass} werden aus dem der Trajektorie zugrundeliegenden \textit{TrackedObject}
 übernommen. 
 Die Positionen eines Fahrzeugs werden in Form von 2D-Welt-Koordinaten (siehe Abschnitt \ref{sec:position_extraction})
-in \textit{positions} gespeichert.
+in \textit{positions} gespeichert und die Anzahl der Koordinaten zusätzlich in \textit{pointLength}.
 Die Sequenz \textit{distToStart} enthält für jeden Punkt der Bewegungsbahn die Distanz zum Start der Trajektorie in Metern.
 Die Werte ergeben sich aus Formel \ref{eq_real_distToStart}, wobei $p_n$ dem $n$-ten Punkt in der Trajektorie entspricht
 und $dist$ der euklidschen Distanz zwischen zwei Punkten.
@@ -67,7 +69,7 @@ In Abbildung \ref{fig:real_neckartor} ist ein Ausschnitt der entsprechenden Aufn
 
 \begin{figure}[H]
 \centering
-    \includegraphics[width=0.55\linewidth]{../resources/img/umsetzung/U1/Plot_RawTrajectories_Neckartor}
+    \includegraphics[width=0.5\linewidth]{../resources/img/umsetzung/U1/Plot_RawTrajectories_Neckartor}
 \caption{Unverarbeitete Trajektorien vom Stuttgarter Neckartor}
 \label{fig:real_trajs_raw_neckartor}
 \end{figure}
@@ -106,7 +108,6 @@ Um von diesen und weiteren Effekten bei der Clusteranalyse nicht beeinflusst zu 
 
 \section{Vorverarbeitung der Trajektorien}
 \label{sec:realisation_preprocessing}
-
 % Aussortierung zu kurzer Trajektorien
 %   Stehend, Teiltrajectorien etc.
 % Resampling (wichtig Datenmenge)
@@ -115,9 +116,117 @@ Um von diesen und weiteren Effekten bei der Clusteranalyse nicht beeinflusst zu 
 %   Unterbrochene Traj. ausfiltern
 % Trimmen Truck-Trajektories
 
-% Wird eine Fahrzeugverfolgung, beispielsweise aufgrund von Überdeckungen, unterbrochen, so wird ein
-% Kraftfahrzeug von mehreren \textit{TrackedObjects} repräsentiert, welche sich allerdings nicht einander
-% zuordnen lassen.
+Die verschiedenen Schritte, welche zur Vorverarbeitung und Bereinigung der Roh-Trajektorien angewandt werden,
+sind in diesem Abschnitt geschildert. Das primäre Ziel der Vorverarbeitung ist es, Ausreißer aus der
+Trajektorie-Menge zu entfernen, welche die Ergebnisse der Clusteranalyse negativ beeinflussen würden.
+
+In nachfolgender Auflistung sind die vier wichtigsten Vorverarbeitungsschritte und ihre Anwendungsreihenfolge
+aufgeführt. Die einzelnen Schritte und ihr Hintergrund werden anschließend noch genauer erläutert.
+
+\begin{enumerate}
+    \item Resampling von Trajektorien auf minimale Punktdistanz
+    \item Entfernung zu kurzer Trajektorien
+    \item Entfernung unterbrochener Trajektorien
+    \item Anpassung der Trajektorien bei niedrigen Aufnahmewinkeln
+\end{enumerate}
+
+\subsubsection*{Resampling von Trajektorien auf minimale Punktdistanz}
+% Entfernung von Punktwolken, Reduzierung der Datenmenge (Auswirkung auf Cluster-Performance)
+% insb. in innerstädtischem Verkehr mit langsamen geschwindigkeiten viele Punkte mit hoher Redundanz
+% für Beschreibung einer Bewegungsbahn weniger Punkte nötig
+
+% Beispiel Zahlen für Reduzierung der Punktmenge
+% Beispiel-Bilder (Alle Trajectories, Punktwolken)
+
+Der erste Vorverarbeitungsschritt reduziert die Anzahl der Koordinaten, welche eine Bewegungsbahn beschreiben, erheblich
+ohne dabei jedoch wichtige Informationen zu verlieren. Insbesondere dann, wenn sich Fahrzeuge mit niedrigen
+Geschwindigkeiten bewegen oder teilweise von Ampeln et cetera. stehen, bestehen die Roh-Trajektorien aus sehr vielen
+Punkten, welche oft beinahe identische Positionsinformationen darstellen, das heist nur sehr geringe
+Abstände voneinander haben. Für die Beschreibung einer Bewegungsbahn ist diese Punktdichte nicht notwendig
+und sogar kontraproduktiv, da sie die Performance der nachfolgenden Schritte stark erhöht. Hiervon ist insbesonders
+die Clusteranalyse betroffen.
+
+Aus diesen Gründen werden im ersten Vorverarbeitungsschritt Trajektorien auf eine minimale Punktdistanz
+von $0.5m$ gebracht. Der hierzu verwendete Algorithmus ist in Listing \ref{lst:pseudo_resampling} dargestellt.
+Er verwirft alle aufeinanderfolgende Punkte, welche von einem Referenzpunkt weniger als den geforderten Abstand haben.
+
+\begin{lstlisting}[caption=Pseudocode Trajektorie Resampling, language=FSharp, label=lst:pseudo_resampling]
+algorithm resampleTrajectory:
+  input:  lastRefPoint
+          newTrajPoints
+          oldTrajPoints
+  output: resampled trajectory points
+
+  while oldTrajPoints is not empty do:
+    nextPoint := Head(oldTrajPoints)
+    remPoints := Tail(oldTrajPoints)
+
+    if dist(lastRefPoint, nextPoint) < 0.5:
+      resampleTrajectory(lastRefPoint, newTrajPoints, remPoints)
+    else:
+      resampleTrajectory(nextPoint, newTrajPoint ++ nextPoint, remPoints)
+
+  return newTrajPoints
+\end{lstlisting}
+
+Nach Anwendung des Algorithmus ist im Fall der Neckartor Aufnahme die durchschnittliche Punktlänge
+der Trajektorien von 1094 Koordinaten auf 160 gesunken. Die realen Längen der Bewegungsbahnen bleiben
+hingegen nahezu gleich. Die Punktwolken, welche stehende Fahrzeuge erzeugen, werden mittels dieses
+Schritts ebenfalls entfernt (siehe Abb. \ref{fig:real_result_2nd_Prepro} b)).
+
+
+\subsubsection*{Entfernung zu kurzer Trajektorien}
+% wichtig zur entfernung von Ausreißern. Einfach aber effizient
+Der zweite Verarbeitungsschritt ist sehr einfach aber dennoch sehr effektiv, da mit seiner Hilfe viele
+Trajektorien von beispielsweise stehenden Fahrzeugen oder kurz auftretende Tracking-Fehler entfernt
+werden können. Hierzu werden die Längen aller Trajektorien überprüft und jene entfernt, welche
+unter bestimmten Grenzwerten liegen. Die hierzu verwendete boolesche Überprüfung ist in Gleichung 
+\ref{eq_isShortTrajectory} gegeben. Die Grenzwerte würden experimentell bestimmt und lieferten für die
+Testaufnahmen gute Ergebnisse.
+
+\begin{ceqn}
+\begin{align}
+\label{eq_isShortTrajectory}
+    isShortTrajectory(t) =
+    \begin{cases}
+        1 & \text{if } t.pointLength < 50 \lor t.realLength < 10.0 \\
+        0 & \text{otherwise}
+    \end{cases}
+\end{align}
+\end{ceqn}
+
+Das Ergebnis der ersten beiden Vorverarbeitungsschritte ist in Abbildung \ref{fig:real_result_2nd_Prepro} dargestellt.
+Die Trajektorien stehender Fahrzeuge, sowie die Punktwolken vor Lichtsignalanlagen und weitere Defekte aufgrund
+kleiner Tracking-Fehler wurden entfernt. 
+
+\begin{figure}[H]
+    \centering
+    \subfloat[]{{
+        \includegraphics[align=c, width=0.45\linewidth]{../resources/img/umsetzung/U1/trajectories_resampledFiltered}
+    }}
+    \subfloat[]{{
+        \includegraphics[align=c, width=0.37\linewidth]{../resources/img/umsetzung/U1/trajectories_resampled_cleared}
+    }}
+    \caption{Ergebnisse der zwei ersten Vorverarbeitungsschritte}
+    \label{fig:real_result_2nd_Prepro}
+\end{figure}
+
+\subsubsection*{Entfernung unterbrochener Trajektorien}
+% erklärung Annahem: nicht defekte Bewegungsbahnen (vollständig) beginnen und enden in der Nähe einer
+% Szenengrenze
+% Andere (unterbrochene) Trajektorien (entweder aufgrund von Überdeckungen oder da Fahrzeug sich zu
+% Beginn oder Ende der Aufnahme in der Mitte der Szene befindet)
+% Relevant für Spurerkennung: Nur komplette Trajektorien, die die gesamte Spur beschreiben
+
+% Bild: Visualisierung des Vorgehens (Einfärbung der Scenen-Ränder)
+
+\subsubsection*{Anpassung der Trajektorien bei niedrigen Aufnahmewinkeln}
+
+
+
+% Endnotes:
+%   Problematisch auch Spurwechsel. Hier schwer auszufiltern, da sie Ausreißer in Bezug auf eine Spur darstellen
+%   und nicht generelle Ausreißer
 
 \section{Clustering der Trajektorien}
 \label{sec:realisation_clustering}
