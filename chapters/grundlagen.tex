@@ -20,9 +20,19 @@ verschiedene Cluster-Algorithmen und Distanzmaße vorgestellt.
 % Verwendung von Bounding-Boxes (Mittelpunkt bzw. Front-Punkt identifiziert Fahrzeugposition)
 % --> evlt. Problem bei Aufnahmen mit niedrigem Kamera-Winkel
 
-Die in dieser Arbeit verwendeten Fahrzeugtrajektorien stammen aus der Anwendung ``Tracker-Application''
-des MEC-View Teilprojektes \textit{Luftbeobachtung}. Nachfolgend wird beschrieben, wie diese aus den Videoaufnahmen
-rekonstruiert werden.
+% Die in dieser Arbeit verwendeten Fahrzeugtrajektorien stammen aus der Anwendung ``Tracker-Application''
+% des MEC-View Teilprojektes \textit{Luftbeobachtung}. Nachfolgend wird beschrieben, wie diese aus den Videoaufnahmen
+% rekonstruiert werden.
+
+% allgemein: Es existieren unterschiedliche Ansätze zur Identifikation und Tracking von Fahrzeugen in Aufnahmen
+% Einerseits: Supervised Tracking (alter Ansatz)
+% Oder: Hintergrund Subtraktionsverfahren (???) (Eher nicht)
+% Oder: Unsupervised Tracking. Object Detection API Tensorflow. So in TrackerApplication
+%     Erkennung von Fahrzeugen in jedem einzelnen Frame des Video
+%     Erstellen von Bounding Boxes --> Daraus Positionen
+% Positionen in Bildkoordinaten
+% Umwandlung in Weltkoordinaten (Weltkoordinaten System, Kameramodell etc.. siehe Arbeit Stefan)
+% Endergebnis: Fahrzeugpositionen in Weltkoordinatensystem mit Einheit Meter
 
 \section{Datenaufbereitung und Bereinigung}
 \label{sec:tra_preprocessing}

@@ -4,11 +4,41 @@
 \label{cha:street_topologies}
 
 % Beschreibung möglicher (Auswahl) Straßentopologien und ihrer Herausforderungen für die Erkennung von Fahrbahnen
+% Idealerweise immer Bild einer entsprechenden Topologie und der entsprechenden Roh-Trajektorien
+
+% Erläuterung: Was ist eine "Fahrspur" in dieser Arbeit. (d.h. nicht notwendigerweise eine Spur, wie sie auf Straße markiert ist. Beschreibt übliche Fahrbahn eines Fahrzeugs?!)
+
 % Landstraßen (ein / zweispurig),
 \section{Landstraßen}
+
+% einfachste Straßentopologie, daher einfach darin Fahrspuren zu identifizieren
+% entweder klar separierte Fahrspuren, welche parallel zueinander laufen oder eine (breite) Spur, welche in beide Richtungen genutzt wird
+% üblicherweise wenig Abzweigungen, Einfahren etc.
+
+% Bild einer leicht gekrümmten / gewundenen Landstraße
+
+
 % Autobahnen (inkl. Auffahrten, Abfahrten)
 \section{Autobahnen}
+
+% ähneln Landstraße, Spuren hier immer separiert. Fahrzeuge fahren in auf einer Spur in eine Richtung
+% Bahnen üblicherweise breiter.
+% Auffahrten und Abfahren existieren
+
+% Bild Entennest
+
+
 % Kreuzungen (inkl. Abbiegespuren)
 \section{Kreuzungen}
+
+% Fahrbahnen kreuzen sich, geregelt über Ampelanlagen oder Rechts-vor-Links
+% Abbiegespuren
+% Fahrspuren überlagern sich. Sinnvolle Aufteilung
+
 % Kreisverkehre
-\section{Kreisverkehre} 
+\section{Kreisverkehre}
+
+% 12 Bewegungsbahnen durch Kreisverkehr (ausgenommen 360Grad Wendungen etc.)
+% schwierig zu definieren, wie fahrspuren durch Kreisverkehr verlaufen
+% Welche partitionieren
+% Werden alle Bahnen richtig erkannt? Viele Überdeckungen. Richtig geclusterd?
