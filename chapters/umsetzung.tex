@@ -251,7 +251,7 @@ diese durch das Verfahren vollständig entfernt und eine Extraktion der Spur ist
 %   Problematisch auch Spurwechsel. Hier schwer auszufiltern, da sie Ausreißer in Bezug auf eine Spur darstellen
 %   und nicht generelle Ausreißer
 
-\section{Clustering der Trajektorien}
+\section{Clusteranalyse}
 \label{sec:realisation_clustering}
 
 % genaue Beschreibung des Vorgehens, bis finale Clustering Lösung erreicht wurde
@@ -272,6 +272,114 @@ diese durch das Verfahren vollständig entfernt und eine Extraktion der Spur ist
 % Probleme: Erkennung von Abbiegespuren, mit wenig Fahrzeugen und Abbiegevorgängen auf mehrere Spuren
 %   Dafür: Weitere Verarbeitung der Clustering Outlier
 %   Beschreibung Verfahren (dichte-basiert, suchen von initial Dichten Regionen, Verfolgung bis Ausdünnung)
+
+Nachdem im vorherigen Abschnitt beschrieben wurde, wie die Roh-Trajektorien vorverarbeitet und gefiltert
+werden, folgt nun die Erläuterung der verwendeten Ansätze zur Clusteranalyse der bereinigten Trajektorien.
+
+\subsection{Spectral-Clustering und modifizierte Hausdorff-Distanz}
+% Wieso? (Gute Ergebnisse in Atev et al und Morris et al., Spectral Clustering Performant und Stabil (Fu et al.))
+% Genauere Erläuterung mod Hausdorff (algo und benötigte Parameter)
+% Erläuterung Spectral Clustering und K-estimate
+% Ergebnisse und Fazit
+
+Als erster Ansatz für die Clusteranalyse wurde das von \cite[]{Atev2010} vorgestellte Verfahren untersucht.
+Es wurde gewählt, da es sowohl in der Arbeit von Atev et al. selbst, sowie auch in\cite[]{Morris2009}, gute Ergebnisse
+bei der Clusteranalyse brachte.
+Das Verfahren beruht auf der in \cite[]{Atev2006} vorgestellten modifizierten Hausdorff Distanz und dem
+Spectral-Clustering-Algorithmus. Die Grundlagen des Distanzmaßes wurden bereits in Abschnitt
+\ref{sec:atev_et_al} beschrieben. Nachfolgend wird zuerst genauer beschrieben, wie die
+modifizierte Hausdorff Distanz berechnet wird und auch in dieser Arbeit implementiert wurde. Anschließend
+wird der eingesetzte Spectral-Cluster-Algorithmus erläutert. 
+
+Grundlegend war die modifizierte Hausdorff Distanz nach Atev et al., wie in Gleichung \ref{eq_modHausdorff}
+bereits festgehalten, definiert über:
+
+\begin{ceqn}
+\begin{align*}
+    h_{\alpha, N, C}(P, Q) = \overset{\alpha}{\underset{p \in P}{ord}}\ \Big\{ \underset{q \in N_Q(C_{P,Q}(p))}{min} d(p, q) \Big\}
+\end{align*}
+\end{ceqn}
+
+Um die Distanz zwischen zwei Trajektorien $P$ und $Q$ zu bestimmen, müssen zuerst die minimalen Distanzen
+zwischen allen Punkten $p \in P$ und deren Nachbarschaften $N_Q(C_{P,Q}(p))$ in $Q$ bestimmt werden.
+Eine Nachbarschaft in $Q$ um den Punkt $q_0$ ist in Abhängigkeit des Parameters $w$ definiert als:
+
+\begin{ceqn}
+\begin{align}
+    N_Q(q_0) = \{ q \in Q |\ |\pi_Q(q_0) - \pi_Q(q)| \le w/2 \}
+\end{align}
+\end{ceqn}
+
+$\pi_Q(q)$ entspricht hierbei der relativen Position von $q$ in $Q$, welche in Gleichung \ref{eq_atev_relPos} definiert ist.
+$|Q_j|$ steht für die Länge einer Trajektorie bis zum Punkt $j$ und $|Q|$ für die Gesamtlänge einer Bewegungsbahn.
+Diese Längeninformationen sind beide in der verwendeten Trajektorie-Definition aus Abbildung
+\ref{fig:real_trajectory_classDia} enthalten.
+
+\begin{ceqn}
+\begin{align}
+\label{eq_atev_relPos}
+    \pi_Q(q_j) = \frac{|Q_j|}{|Q|}
+\end{align}
+\end{ceqn}
+
+Die Nachbarschaften werden um den Referenzpunkt $q \in Q$ gebildet, welcher die selbe relative Position
+in $Q$ besitzt wie $p \in P$. Der Index dieses Punktes ergibt sich aus dem Mapping $C_{P,Q}$ wie folgt:
+
+\begin{ceqn}
+\begin{align}
+    C_{P,Q}(p) = arg\ \underset{q \in Q}{min}\ |\pi_P(p) - \pi_Q(q)|
+\end{align}
+\end{ceqn}
+
+Zur Berechnung der Distanzen $d(p,q)$ zwischen $p$ und allen Punkte $q \in N_Q(C_{P,Q}(p))$, wird die euklidsche
+Distanz verwendet. Wurden auf diese Weise alle minimalen Distanzen zwischen Punkten und ihren Nachbarschaften in
+der Vergleichs-Trajektorie bestimmt, so wird aus ihnen der finale Distanzwert bestimmt. Der Operator
+$ord_{p \in P}^{\alpha}$ wählt hierfür jene Distanz, welche größer ist als $\alpha$-Prozent aller Werte.
+Mit Hilfe dieses Distanzmaßes, wird eine Distanz-Matrix $D$ konstruiert, welche die Distanzen
+aller Trajektorie-Kombinationen speichert.
+
+Da im Spectral-Clustering Verfahren die modifizierte Hausdorff-Distanz nicht direkt eingesetzt werden kann,
+muss ein zusätzliches Affinitätsmaß verwendet werden. % TODO: Why?
+Dieses definieren Atev et al. als:
+
+\begin{ceqn}
+\begin{align}
+    k(P,Q) = exp (- \frac{h_{\alpha, N, C}(P,Q) h_{\alpha, N, C}(Q,P)}{2 \sigma(P) \sigma(Q)})
+\end{align}
+\end{ceqn}
+
+$\sigma(P)$ und $\sigma(Q)$ entsprechen hier Schätzungen für die Streuung der Distanzwerte einer Trajektorie
+zu allen anderen Trajektorien. Sie ergeben sich aus der Distanz-Matrix $D$.
+
+Der in dieser Arbeit und von Atev et al. verwendete Spectral-Cluster-Algorithmus folgt grundsätzlich
+der Standard-Definition von \cite[]{Ng2002}.
+Für eine feste Clusteranzahl $k$ kann er wie folgt zusammengefasst werden:
+
+\begin{description}
+    \item[1)] Erstellen einer Affinitätsmatrix $A \in \mathbb{R}^{n \times n}$ basierend auf Affinitätsmaß, wobei $A_{ii} = 0$ 
+    \item[2)] Definieren einer Diagonalenmatrix $D$, deren Elemente an der Stelle $(i,i)$ der Summe der $i$-ten
+            Zeile von $A$ entsprechen. Basierend auf $D$ wird die Matrix $L = D^{-1/2} AD^{-1/2}$ erstellt.
+    \item[3)] Durchführen einer Eigenwert Dekomposition auf $L$, um die $k$ größten Eigenvektoren
+            $\{x_1, x_2, ..., x_k\}$ zu finden.
+    \item[4)] Erstellen einer Matrix $X = [x_1, x_2,..., x_k]$ durch spaltenweises Zusammenführen der Eigenvektoren und
+            Normalisierung der Zeilen auf die Länge 1.
+    \item[5)] Gruppierung der Zeilen von Matrix $X$ in $k$-Cluster unter Zuhilfenahme von k-Means et cetera.
+            Jede Zeile wird als Datenpunkt interpretiert.
+\end{description}
+
+Ein großer Nachteil des Spectral-Clustering-Ansatzes ist es, dass bei seiner Verwendung üblicherweise die Clusteranzahl $k$
+bereits im vorraus bekannt und angegeben sein muss. Aus diesem Grund verwenden Atev et al. ein Schätzmaß für
+$k$, welches darauf abzielt, die Verzerrung des in Schritt 5) eingesetzten k-Means Algorithmus zu minimieren.
+Hierzu wird die k-Means Clusteranalyse mit mehreren $k$'s zwischen Grenzen $kMin$ und $kMax$ durchgeführt
+und anschließend jeweils ein Verzerrungs-Maß $\rho_k$ berechnet, welches angibt, wie gut die gefundenen Centroids
+die Datenpunkte beschreiben. Für $k$ wird daher jener Wert gewählt, welcher das
+kleineste $\rho_k$ erzeugt. Diese Methode zur Schätzung der Clusteranzahl wurde auch in der vorliegenden
+Arbeit angewandt.
+
+Ergebnisse der Clusteranalyse mit dem oben beschriebenen Verfahren, sind in nachfolgender Abbildung dargestellt.
+
+%TODO: ...
+
 
 \chapter{Fahrspur-Bestimmung aus Trajektorie-Clustern}
 \label{cha:lane_definition}

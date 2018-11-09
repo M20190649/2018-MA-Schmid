@@ -76,6 +76,7 @@ extrahierten Fußgänger-Trajektorien.
 
 % Atev et al., 2010
 \subsubsection*{Clustering of Vehicle Trajectories}
+\label{sec:atev_et_al}
 In der Arbeit \cite[]{Atev2010} ist das Ziel der Autoren, ein Verfahren zu finden, mit welchem Fahrzeugtrajektorien
 bestmöglich gruppiert werden können, ohne diese im Voraus anpassen zu müssen.
 Sie vergleichen hierzu die Performance von drei unterschiedlicher Distanzmaße unter Verwendung von zwei Cluster-Algorithmen.
@@ -86,7 +87,8 @@ wie folgt definiert:
 
 \begin{ceqn}
 \begin{align}
-    h_{\alpha, N, C}(P, Q) = \overset{\alpha}{\underset{p \in P}{ord}}\ \Big\{ \underset{q \in N_Q(C_{P,Q}(P))}{min} d(p, q) \Big\}
+\label{eq_modHausdorff}
+    h_{\alpha, N, C}(P, Q) = \overset{\alpha}{\underset{p \in P}{ord}}\ \Big\{ \underset{q \in N_Q(C_{P,Q}(p))}{min} d(p, q) \Big\}
 \end{align}
 \end{ceqn}
 
@@ -115,7 +117,7 @@ mit Hilfe der modifizierten Hausdorff Distanz und des Spectral-Clustering erreic
 Unter Verwendung der LCSS und DTW Distanzmaße, könnten die Autoren nicht die selben Resultate erzielen.
 
 Dass das von Atev et al. vorgeschlagene Distanzmaß sehr gute Clusterergebnisse produziert, wurde auch von \cite{Morris2009}
-bewiesen. In ihrer Untersuchung waren alledings die Ergebnisse, welche mithilfe des LCSS Maßes erreicht wurden,
+bestätigt. In ihrer Untersuchung waren alledings die Ergebnisse, welche mithilfe des LCSS Maßes erreicht wurden,
 ebenso gut, beziehungsweise teilweise sogar besser.
 
 % Chen et al., 2011
