@@ -8,15 +8,12 @@ Arbeiten, welche sich mit der Analyse von Trajektoriedaten und insbesondere Fahr
 Zu Beginn werden diverse Arbeiten vorgestellt, welche sich mit der Clusteranalyse von Trajektorien befassen.
 Anschließend wird betrachtet, wie in der Literatur die Erkennung von Fahrspuren, vorzugsweise auf Basis
 von Trajektorien, umgesetzt wird.
-Zudem werden Arbeiten untersucht, welche sich bereits mit der Klassifizierung von Fahrspuren befassen. % TODO: Evtl. entfernen
+% Zudem werden Arbeiten untersucht, welche sich bereits mit der Klassifizierung von Fahrspuren befassen. % TODO: Evtl. entfernen
 Am Ende des Kapitels werden Defizite der existierenden Lösungen festgehalten und analysiert, welche
 spezifischen Neuerungen für die Umsetzung dieser Arbeit nötig sind.
 
 \section{Clusteranalyse von Trajektorien}
 \label{sec:rw_clustering}
-% Einleitung: Wichtigkeit und Informationsreichtum Trajektorien; Daher Analyse seit geraumer Zeit;
-% In verschiedenen Anwendungsgebieten und mit unterschiedlichsten Zielen; Hier vorstellung verfahren, anhand dessen ersichtlich
-% werden soll, wie probleme auf unterschiedliche Art gelöst werden.
 
 Aufgrund der großen Menge an Informationen, welche sich auf Basis von Trajektoriedaten ermitteln lassen, ist ihre
 Analyse schon seit geraumer Zeit Gegenstand wissenschaftlicher Untersuchungen.
@@ -31,14 +28,13 @@ ist es, auf Basis der entdeckten Spur-Cluster, anormale Verkehrsmanöver in Live
 detektieren zu können. Solche Manöver sind beispielsweise ``Fahren abseits der üblichen Bahnen'' oder
 ``zu schnelles/langsames Fahren''.
 Die Fahrzeugtrajektorien sind in dieser Arbeit als Sequenzen zwei-dimensionaler Punkte definiert.
-Um diese zu gruppieren, setzen Hu et al. auf klassische Clusterverfahren und die Verwendung eines
+Um sie zu gruppieren, setzen Hu et al. auf klassische Clusterverfahren und die Verwendung eines
 einfachen, metrischen Distanzmaßes. Dieses Maß, bekannt als HU Distanz (siehe Abschnitt \ref{sec:hu_distance}),
 vergleicht Trajektorien über den mittleren Abstand zwischen zusammengehörigen Punktpaaren.
 Da dies nur zuverlässig möglich ist, wenn die Trajektorien einige Bedingungen erfüllen, müssen die
 Autoren diese vorverarbeiten. Sie vereinheitlichen daher die Abstände der Punkte einer Trajektorie und erweitern
 sie zudem in Richtung der Szenen-Grenzen.
 
-% TODO: Figure anpassen
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\linewidth]{../resources/img/RelatedWork/Fu_HierarchicalClustering}
@@ -51,7 +47,7 @@ In den zwei Phasen werden, wie in Abbildung \ref{fig:relw_hu_two_step_cluster} d
 Fahrpfade extrahiert, welche anschließend weiter in einzelne Fahrspuren untergliedert werden.
 Als eigentliche Cluster-Algorithmen vergleichen die Autoren den \textit{Spectral-Clustering} Ansatz \cite[]{Ng2002}
 mit einem \textit{Fuzzy-k-Means} Verfahren \cite[]{xie1991validity}.
-Die Untersuchungen zeigen, dass der Spectral Clustering Ansatz nicht nur bessere Ergebnisse liefert, sonderen diese
+Die Untersuchungen zeigen, dass der Spectral Clustering Ansatz nicht nur bessere Ergebnisse liefert, sonderen dieser
 über mehrere Durchläufe hinweg auch stabil sind, wohingegen die Resultate des Fuzzy-Ansatzes variieren.
 
 
@@ -65,7 +61,7 @@ als zwei-dimensionale Punktreihen repräsentiert.
 Um die Trajektorien zu vergleichen, verwenden die Autoren die Hausdorff Distanz als Ähnlichkeitsmaß.
 Die üblicherweise negativen Eigenschaften dieses
 Vergleichkriteriums (siehe Abschnitt \ref{sec:hausdorff_distance}), konkret die Missachtung der
-Trajektorie-Orientierung, sind bei diesem Anwendungsfall kein Nachteil sondern gewünscht.
+Trajektorie-Orientierung, sind bei diesem Anwendungsfall kein Nachteil, sondern gewünscht.
 Da Fußgänger auf einem Pfad oder Weg in entgegengesetzte Richtungen gehen können, muss die Orientierung
 ihrer Trajektorien ignoriert werden.
 Auf Basis der Hausdorff Distanz erstellen Junejo et al. einen vollständigen Graphen, in welchem die Knoten Trajektorien
@@ -82,7 +78,7 @@ bestmöglich gruppiert werden können, ohne diese im Voraus anpassen zu müssen.
 Sie vergleichen hierzu die Performance von drei unterschiedlicher Distanzmaße unter Verwendung von zwei Cluster-Algorithmen.
 Primäres Augenmerk legen die Autoren auf ein von ihnen bereits in \cite[]{Atev2006} entwickeltes Distanzmaß,
 welches auf der Hausdorff Distanz basiert und sowohl die Orientierung von Trajektorien berücksichtigt
-als auch robust gegenüber Ausreißern ist. Dieses neue Ähnlichkeitsmaß ist für zwei Trajektorien $P$ und $Q$
+als auch robust gegenüber Ausreißern ist. Dieses neue Maß ist für zwei Trajektorien $P$ und $Q$
 wie folgt definiert:
 
 \begin{ceqn}
@@ -106,19 +102,19 @@ größer ist als $\alpha$-Prozent der Werte.
     \label{fig:relw_atev_modh}
 \end{figure}
 
-Dank dieser Modifizierungen eignet sich das neue Ähnlichkeitsmaß gut für den Vergleich von Trajektorien:
+Dank dieser Modifizierungen eignet sich das Distanzmaß gut für den Vergleich von Trajektorien:
 $C_{P,Q}$ sorgt für den Einbezug der Orientierungen und über die Nachbarschaft $N_Q$ und $ord_{p \in P}^{\alpha} f(p)$
-kann mit Ausreißern umgegangen werden.
+kann der Einfluss von Ausreißern minimiert werden.
 
 Dieses Distanzmaß vergleichen Atev et al. unter Verwendung eines Spectral und eines Agglomerativen
-Cluster-Algorithmus mit der \textit{Longest-Common Subsequence} (LCSS) und \textit{Dynamic Time Warping} (DTW) Distanz.
+Cluster-Algorithmus mit der \textit{Longest-Common Subsequence} (LCSS) und der \textit{Dynamic Time Warping} (DTW) Distanz.
 Die Ergebnisse der Untersuchungen für vier verschiedene Datensätze zeigen, dass die beste Cluster-Performance
 mit Hilfe der modifizierten Hausdorff Distanz und des Spectral-Clustering erreicht wird.
 Unter Verwendung der LCSS und DTW Distanzmaße, könnten die Autoren nicht die selben Resultate erzielen.
 
 Dass das von Atev et al. vorgeschlagene Distanzmaß sehr gute Clusterergebnisse produziert, wurde auch von \cite{Morris2009}
 bestätigt. In ihrer Untersuchung waren alledings die Ergebnisse, welche mithilfe des LCSS Maßes erreicht wurden,
-ebenso gut, beziehungsweise teilweise sogar besser.
+ebenso gut oder teilweise besser.
 
 % Chen et al., 2011
 \subsubsection*{Clustering of trajectories based on Hausdorff Distance}
@@ -162,7 +158,7 @@ aufeinanderfolgender Flow-Vektoren. Dies ist anschaulich in Abbildung \ref{fig:r
     \label{fig:relw_chen_flow_vector}
 \end{figure}
 
-Die auf diese Weise erhaltenen Sub-Trajektorien werden von den Autoren mittels eines DBSCAN Algorithmus gebündelt.
+Die auf diese Weise erhaltenen Sub-Trajektorien, werden von den Autoren mittels eines DBSCAN Algorithmus gebündelt.
 Sie können so die üblichen Bewegungsbahnen von Hurrikans über dem Atlantik bestimmen.
 
 
@@ -171,9 +167,9 @@ Sie können so die üblichen Bewegungsbahnen von Hurrikans über dem Atlantik be
 Die Arbeit \cite[]{Vlachos2002} thematisiert nicht direkt die Clusteranalyse von Trajektorien sondern
 beschäftigt sich mit dem Vergleich von Bewegungsbahnen im drei-dimensionalen Raum. Konkret ist ihr Ziel,
 Trajektorien vergleichen zu können, welche etwa die Handbewegungen beim Ausführen von Zeichensprache beschreiben.
-Hierzu definieren die Autoren erstmals die Grundversion des LCSS Ähnlichkeitsmaßes, welches in vielen Arbeiten zum Einsatz
-kommt \cite[]{Atev2006, Buzan2004, Chen2005}. Auf dessen Basis erstellen sie ein Distanzmaß, welche es ermöglicht
-formgleiche aber im Raum verschobene Trajektorien zu finden.
+Hierzu definieren die Autoren erstmals die Grundversion des LCSS Ähnlichkeitsmaßes, welches in vielen Arbeiten,
+unter anderem in \cite[]{Atev2006}, \cite[]{Buzan2004} und \cite[]{Chen2005}, zum Einsatz kommt.
+Auf dessen Basis erstellen sie ein Distanzmaß, welche es ermöglicht formgleiche aber im Raum verschobene Trajektorien zu finden.
 Die Grundversion des LCSS Ähnlichkeitsmaßes und ein darauf basierendes einfaches Distanzmaß ist, nach Vlachos et al.,
 bereits in Abschnitt \ref{sec:lcss_distance} definiert worden.
 Dieses Maß erweitern die Autoren zudem wie folgt:
@@ -213,9 +209,9 @@ welches auf der \textit{Rough-Set}-Theorie beruht. Sie extrahieren Fahrzeugposit
 Punkte dar. Ihr Ziel ist anschließend, anhand einer Gruppierung der gewonnenen Fahrzeugtrajektorien,
 die Spurmittelpunkte der Fahrbahnen zu bestimmen. Da ein nicht unerheblicher Anteil der Trajektorien Spurwechselvorgänge
 enthält, welche eine Extraktion der Mittellinien erschweren, verwenden Ren et al. einen iterativen \textit{Rough-k-Means}
-Algorithmus zur Clusterung der Trajektorien. Hierbei wird jedes Cluster über eine obere und untere Approximation beschrieben.
+Algorithmus zur Gruppierung der Trajektorien. Hierbei wird jedes Cluster über eine obere und untere Approximation beschrieben.
 Die untere Approximation enthält dabei die Trajektorien, welche eindeutig der Spur zugeordnet werden können.
-Die obere Näherung hingegen jene, welche Spurwechsel et cetera beschreiben. Bei der Berechnung der Spurmitten, werden
+Die obere Näherung hingegen auch jene, welche Spurwechsel et cetera beschreiben. Bei der Berechnung der Spurmitten, werden
 die Trajektorien der unteren Approximation höher gewichtet, als die der oberen. Ein sehr ähnlicher Cluster-Ansatz wurde
 bereits in \cite[]{Lingras2004} vorgestellt.
 Die initialen Mittellinien bestimmen die Autoren anhand einer \textit{Aktivitäts}- oder \textit{Heat}-Map,
@@ -241,7 +237,7 @@ Hieraus ergibt sich die nachfolgende Definition für die Zuordnung der Bewegungs
 \end{align}
 \end{ceqn}
 
-Es gilt $1 \leq \lambda \leq 1.5$. $\overline{C_m}$ und $\underline{C_m}$ entsprechen der oberen und unteren
+Für den Grenzwert $\lambda$ gilt $1 \leq \lambda \leq 1.5$. $\overline{C_m}$ und $\underline{C_m}$ entsprechen der oberen und unteren
 Näherung des $m$-ten Clusters und $\underline{C_m} \subseteq \overline{C_m}$.
 Nachdem in jeder Iteration des Cluster-Vorgangs die Näherungen auf diese Weise bestimmt wurden, werden die neue Mittellinien
 anhand Gleichung \ref{eq_ren_rough} errechnet.
