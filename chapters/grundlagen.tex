@@ -167,7 +167,7 @@ Eine sehr allgemeine Definition eines Clusters ist die der \textit{konzeptionell
 gemeint, dass die Elemente eines Clusters einige gemeinsame Eigenschaften besitzen. Dies schließt die oben genannten
 Cluster-Arten mit ein, lässt sich allerdings beliebig erweitern. So sind beispielsweise in Abbildung \ref{fig:basic_cluster_style} e)
 konzeptionelle Cluster dargestellt, die die Form zweier Kreise und eines Rechtecks haben. Um solche Muster
-erkennen zu können, würde ein Algorithmus ein spezielles Verständnis eines Clusters benötigen.
+erkennen zu können, benötigt ein Algorithmus ein spezielles Verständnis eines Clusters.
 
 \begin{figure}[H]
     \centering
@@ -206,6 +206,7 @@ oder Dichte-Modelle. Für jedes dieser Modelle existieren unterschiedliche Algor
 diese Modelle und jeweils exemplarisch ein Algorithmus, der diese vertritt, vorgestellt.
 
 \subsubsection{Vernetzungs-Modelle}
+\label{sec:grund_vernetzungs_clustering}
 
 Vernetzungs-Modelle werden auch häufig \textit{hierarchische Cluster-Modelle} genannt. Sie beruhen auf
 der Annahme, dass Elemente, welche nahe beieinander liegen, eine höhere Gemeinsamkeit besitzen als solche,
@@ -275,6 +276,7 @@ Die Zeitkomplexität des agglomerativen Clusterings beträgt bestenfalls $O(m^2l
 welche mit ihm verarbeitet werden können erheblich begrenzt ist \cite[]{tan2007introduction}.
 
 \subsubsection{Prototyp-Modelle}
+\label{sec:grund_prototype_clustering}
 
 Centroid basierte Cluster-Modelle betrachten im Gegensatz zu hierarchischen Modellen nicht die Distanz
 zwischen Clustern, sondern die Entfernung von Objekten zu Referenzpunkten, sogenannten \textit{Prototypen}.
@@ -343,6 +345,7 @@ beziehungsweise \textit{x-Means}, welche die Clusteranzahl $k$ auf Basis mehrere
 statistischer Kennzahlen bestimmen.
 
 \subsubsection{Distributions-Modelle}
+\label{sec:grund_distribution_clustering}
 
 Distributions-Cluster-Modelle basieren auf der Verwendung von statistischen Wahrscheinlichkeitsverteilungen wie
 beispielsweise der Gauß-Verteilung. Cluster werden darüber definiert, wie wahrscheinlich es ist, dass Objekte
@@ -395,6 +398,7 @@ Am Ende des Clusterings besitzt jeder Datenwert die Zugehörigkeits-Wahrscheinli
 Ein Element wird jenem Cluster zugeordnet, für welches es die höchste Wahrscheinlichkeit besitzt.
 
 \subsubsection{Dichte-Modelle}
+\label{sec:grund_density_clustering}
 
 Dichte basierte Cluster sind, wie oben beschrieben, definiert als Regionen hoher Objekt-Dichte, welche
 von Bereichen geringer Dichte umgeben sind. Dichte-Clustering-Modelle suchen nach eben solchen Regionen.
@@ -568,7 +572,7 @@ Von Nachteil ist auch, dass die Zeitkomplexität der Hausdorff-Distanz bei $O(n\
 Das \textit{Longest-Common-Subsequence} (LCSS) Distanzmaß basiert auf dem allgemeinen Problem der Findung
 einer längsten gemeinsamen Subsequenz zwischen zwei Sequenzen. Da Trajektorien, nach obiger Definition, lediglich Punktfolgen sind,
 lässt sich das Verfahren sehr gut auf diese anwenden. Aufgrund einiger kleiner Erweiterungen des Basis-Algorithmus, besitzt
-das LCSS Ähnlichkeitsmaß einige besondere Eigenschaften. Der LCSS Algorithmus für Trajektorien ist grundsätzlich
+das LCSS Distanzmaß einige besondere Eigenschaften. Der LCSS Algorithmus für Trajektorien ist grundsätzlich
 wie folgt definiert \cite[]{Vlachos2002}:
 
 \begin{ceqn}
@@ -589,11 +593,12 @@ Vergleichs-Verhalten des Algorithmus. Über $\epsilon$ wird definiert, wieweit z
 können, um immer noch als ``übereinstimmend'' zu gelten. $\delta$ bestimmt hingegen, wieweit man in der Zeit vor
 beziehungsweise zurück gehen kann, um einen
 übereinstimmenden Punkt zu finden. Abbildung XXX veranschaulicht die Bedeutung von $\epsilon$ und $\delta$.
-Da die obige LCSS Funktion nur ein diskretes Zählmaß definiert, ist das eigentliche LCSS Ähnlichkeitsmaß üblicherweise
-gegeben über \cite[]{Vlachos2002}:
+Da die obige LCSS Funktion nur ein diskretes Zählmaß definiert, ist das eigentliche LCSS-Distanz üblicherweise
+gegeben als \cite[]{Vlachos2002}:
 
 \begin{ceqn}
 \begin{align}
+\label{eq_lcss_distance}
     D_{LCSS}(\delta, \epsilon, t_1, t_2) = 1 - \frac{LCSS_{\delta, \epsilon}(t_1, t_2)}{min(len(t_1), len(t_2))}
 \end{align}
 \end{ceqn}
@@ -607,7 +612,7 @@ Zudem berücksichtigt das LCSS Maß die Orientierung der Trajektorien, solange $
 Die rekursive Definition des LCSS Algorithmus aus Gleichung \ref{eq_lcss} lässt sich mittels dynamischer Programmierung
 mit Zeitkomplexität $O(n\ m)$ berechnen.
 
-\subsubsection{Übersicht Ähnlichkeitsmaße}
+\subsubsection{Übersicht Distanzmaße}
 
 Anhand der drei ausgewählten und oben exemplarisch beschriebenen Distanzmaße, ist bereits ersichtlich,
 dass die Wahl eines passenden Maßes nicht trivial ist. Es muss die Qualität und Form der Daten berücksichtigt werden
@@ -628,7 +633,7 @@ sind nachfolgend nochmals in tabellarischer Form festgehalten.
     \centering
     \begin{tabular}{l|ccc}
         \toprule
-        \textbf{Ähnlichkeitsmaß} & \textbf{gerichtet} & \textbf{PreProc. nötig} & \textbf{Ausreißer-resistent} \\
+        \textbf{Distanzmaß} & \textbf{gerichtet} & \textbf{PreProc. nötig} & \textbf{Ausreißer-resistent} \\
         \midrule \addlinespace
         HU \cite[]{Hu2005} & \cmark & \cmark & \cmark \\
         \addlinespace

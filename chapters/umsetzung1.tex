@@ -142,8 +142,7 @@ die Clusteranalyse betroffen.
 Aus diesen Gründen werden im ersten Vorverarbeitungsschritt Trajektorien auf eine minimale Punktdistanz
 von $0.5\ m$ gebracht. Der hierzu verwendete Algorithmus ist in Listing \ref{lst:pseudo_resampling} dargestellt.
 Er verwirft alle aufeinanderfolgende Punkte, welche von einem Referenzpunkt weniger als den geforderten Abstand haben.
-
-\begin{lstlisting}[caption=Pseudocode Trajektorie Resampling, language=FSharp, label=lst:pseudo_resampling]
+\begin{lstlisting}[caption=Pseudocode Trajektorie Resampling, language=Pseudo, label=lst:pseudo_resampling]
 algorithm resampleTrajectory:
   input:  lastRefPoint
           newTrajPoints
@@ -158,6 +157,8 @@ algorithm resampleTrajectory:
       resampleTrajectory(lastRefPoint, newTrajPoints, remPoints)
     else:
       resampleTrajectory(nextPoint, newTrajPoint ++ nextPoint, remPoints)
+    end
+  end
 
   return newTrajPoints
 \end{lstlisting}
@@ -173,7 +174,7 @@ Der zweite Verarbeitungsschritt ist sehr einfach aber dennoch sehr effektiv, da 
 Trajektorien von beispielsweise stehenden Fahrzeugen oder kurz auftretende Tracking-Fehler entfernt
 werden können. Hierzu werden die Längen aller Trajektorien überprüft und jene entfernt, welche
 unter bestimmten Grenzwerten liegen. Die hierzu verwendete boolesche Überprüfung ist in Gleichung
-\ref{eq_isShortTrajectory} gegeben. Die Grenzwerte würden experimentell bestimmt und lieferten für die
+\ref{eq_isShortTrajectory} gegeben. Die Grenzwerte wurden experimentell bestimmt und lieferten für die
 Testaufnahmen gute Ergebnisse.
 
 \begin{ceqn}
@@ -254,15 +255,6 @@ diese durch das Verfahren vollständig entfernt und eine Extraktion der Spur ist
 \section{Clusteranalyse}
 \label{sec:realisation_clustering}
 
-% genaue Beschreibung des Vorgehens, bis finale Clustering Lösung erreicht wurde
-% Ansätze: Gründe, Stärken, tatsächliche Problem
-% Ansatz A:
-%   Mod. Hausdorff Distanz und Spectral Clustering (bas. auf Avet et al.) (Erklärung Grundfunktionsweise Spectral-Clustering)
-%   Weil: SC performant, deterministisch, oft verwendet
-%   Probleme: Clusteranzahl Bestimmung, Umgehen mit Ausreißern, Tatsächliche Ergebnisse nicht gut
-%   --> Performance / Qualität des Ansatzes konnte für vorhandene Daten nicht bestätigt werden
-%   --> Problematisch auch Umgang mit vielen Parametern
-
 % Probleme: Erkennung von Abbiegespuren, mit wenig Fahrzeugen und Abbiegevorgängen auf mehrere Spuren
 %   Dafür: Weitere Verarbeitung der Clustering Outlier
 %   Beschreibung Verfahren (dichte-basiert, suchen von initial Dichten Regionen, Verfolgung bis Ausdünnung)
@@ -271,6 +263,7 @@ Nachdem im vorherigen Abschnitt beschrieben wurde, wie die Roh-Trajektorien vorv
 werden, folgt nun die Erläuterung der verwendeten Ansätze zur Clusteranalyse der bereinigten Trajektorien.
 
 \subsection{Ansatz Spectral-Clustering und modifizierte Hausdorff-Distanz}
+\label{sec:real_ansatz_spec_modHD}
 
 Als erster Ansatz für die Clusteranalyse wurde das von \cite[]{Atev2010} vorgestellte Verfahren untersucht.
 Es wurde gewählt, da es sowohl in der Arbeit von Atev et al. selbst, sowie auch in\cite[]{Morris2009}, gute Ergebnisse
@@ -386,7 +379,7 @@ Zur Bestimmung von $\sigma$ kamen die Grenzwerte $stdMin = 0.5$ und $stdMax = 10
     \subfloat[mit fester Clusteranzahl]{{
         \includegraphics[align=c, width=0.42\linewidth]{../resources/img/umsetzung/U1/atev_results/entennest_k6}
     }}
-    \caption{Ergebnisse Clusteranalyse Autobahn (Ansatz Atev et al.)}
+    \caption{Ergebnisse Clusteranalyse B10-Entennest (Ansatz Atev et al.)}
     \label{fig:real_results_atev1}
 \end{figure}
 
@@ -418,10 +411,138 @@ Die schlechte Performance lässt sich primär auf das aufwendige Distanzmaß, ab
 Durchführung des k-Means Algorithmus zurückführen.
 
 Aufgrund der oben angeführten Problematiken wurde früh entschieden, dass der Ansatz von Atev et al. nicht weiter
-verfolgt werden soll. Es wurde ein Ansatz gesucht, welcher mit den nun entdeckten Herausforderungen besser
+verfolgt werden soll. Es wurde ein Ansatz gesucht, welcher mit den beschriebenen Herausforderungen besser
 umgehen kann.
 
 \subsection{Ansatz DBSCAN und LCSS}
+\label{sec:real_ansatz_dbscan_lcss}
+
+Nachdem das in Abbschnitt \ref{sec:real_ansatz_spec_modHD} beschriebene Verfahren zur Clusteranalyse in
+den Untersuchungen schlechte Ergebnisse lieferte, wurde nach neuen Ansätze gesucht.
+Kriterien für diese waren primär, dass sie mit Ausreißern sinnvoll umgehen können, weniger Parametrisierung
+benötigen beziehungsweise diese intuitiver ist, und sie eine bessere Performance besitzen.
+Aufgrund dieser Anforderungen wurde untersucht, inwiefern sich der DBSCAN-Cluster-Algorithmus
+in Kombination mit dem LCSS-Distanzmaß für die Clusteranalyse von Trajektoriendaten eignet.
+
+Vorteil des dichte-basierten DBSCAN-Algorithmus, dessen Funktionsweise bereits in Abschnitt
+\ref{sec:grund_density_clustering} erläutert wurde, ist, dass er Ausreißer erkennt und die Anzahl der
+Zielcluster selbst bestimmen kann. Das LCSS Distanzmaß, grundlegend in Abbschnitt \ref{sec:lcss_distance}
+beschrieben, ähnelt der modifizierten Hausdorff Distanz, lässt sich allerdings performanter implementieren
+und besitzt eine eingängigere Parametrisierung. Es lieferte in den Arbeiten \cite[]{Morris2011} und
+\cite[]{Chen2014} gute Clustering-Ergebnisse.
+
+\subsubsection{Das Verfahren}
+
+Die Grundgleichung des LCSS Distanzmaßes wurde, basierend auf \cite[]{Vlachos2002}, bereits in Gleichung
+\ref{eq_lcss} definiert und ist nachfolgend nochmals dargestellt.
+
+\begin{ceqn}
+\begin{align*}
+\label{eq_lcss}
+    LCSS_{\epsilon, \delta}(t_1, t_2) =
+    \begin{cases}
+        0 & \text{if } t_1 \text{ or } t_2 \in \emptyset \\
+        1 + LCSS_{\epsilon, \delta}(t_1', t_2') & \text{if } dist(t_1(n), t_2(m)) < \epsilon \\
+        & \land\ |n - m| \leq \delta \\
+        max(LCSS_{\epsilon, \delta}(t_1', t_2), LCSS_{\epsilon, \delta}(t_1, t_2')) & \text{otherwise}
+    \end{cases}
+\end{align*}
+\end{ceqn}
+
+Mit ihrer Hilfe lässt sich bestimmen, wie groß die längste, übereinstimmende Subsequenz zweier Trajektorien
+$t_1$ und $t_2$ ist. Damit Punkte zweier Trajektorien als übereinstimmend gewertet werden, dürfen sie
+höchstens die Distanz $\epsilon$ zueinander haben und ihre Position in den Bewegungsbahnen sich um $\delta$
+unterscheiden.
+Wenn das Zahlmaß, wie oben dargestellt, rekursiv implementiert wird, liegt die Zeitkomplexität des Algorithmus
+bei $O(2^n)$, was für den Vergleich einer größeren Anzahl von Trajektorien nicht geeignet ist. Die Performance
+kann auf $O(m\ n)$ verbessert werden, indem das Maß mit Hilfe von dynamischer Programmierung und \textit{Memoization}
+umgesetzt wird. Der sich so ergebende Algorithmus ist in Listing \ref{lst:pseudo_LCSS} aufgeführt.
+\begin{lstlisting}[caption=Pseudocode LCSS Bestimmung, language=Pseudo, label=lst:pseudo_LCSS]
+algorithm LCSS:
+  input:  trajectory t1, trajectory t2, epsilon, deltaFac
+  output: LCSS between t1 and t2
+
+  t1Len := point-length t1
+  t2Len := point-length t2
+  delta := deltaFac * min(t1Len, t2Len)
+  LCS := 2D Array with dims. (t1Len+1, t2Len+1)
+
+  for i <- 1 to t1Len do:
+    for j <- 1 to l2Len do:
+      if dist(t1(i-1), t2(j-1)) < epsilon && |i-j| < delta then:
+        LCS(i)(j) = LCS(i-1)(j-1) + 1
+      else
+        LCS(i)(j) = max(LCS(i-1)(j), LCS(i)(j-1))
+      end
+    end
+  end
+
+  return LCS(t1Len)(t2Len)
+\end{lstlisting}
+
+Der Parameter $\delta$ wird hier nicht, wie meist üblich, fest definiert, sondern er ergibt sich als
+ein Teil der Länge der kurzeren Trajektorie (siehe Lst. \ref{lst:pseudo_LCSS} Zeile 7).
+Als Distanzfunktion für das LCSS Zählmaß, wird in dieser Arbeit das von \cite[]{Vlachos2002} definierte
+Maß aus Gleichung \ref{eq_lcss_distance} verwendet:
+
+\begin{ceqn}
+\begin{align*}
+    D_{LCSS}(\delta, \epsilon, t_1, t_2) = 1 - \frac{LCSS_{\delta, \epsilon}(t_1, t_2)}{min(len(t_1), len(t_2))}
+\end{align*}
+\end{ceqn}
+
+Auf die in Abschnitt \ref{sec:relw_vlachos} vorgestellte Erweiterung des Distanzmaßes wird verzichtet,
+da es nicht gewünscht ist, dass formähnliche aber im Raum verschobene Trajektorien kleine Distanzen besitzen.
+
+Der DBSCAN Cluster-Algorithmus wurde in diesem Fall nicht selbst implementiert. Es wurde die Implementierung
+der \textit{Smile}\footnote{\href{https://haifengl.github.io/smile/index.html}{Smile - Statistical Machine Intelligence and Learning Engine}}
+Bibliothek verwendet. Der dort angebotene DBSCAN Algorithmus kann beliebige Datenobjekte, unter Verwendung eines
+vom Anwender gestellten Distanzmaßes, gruppieren. Zusätzlich muss lediglich die Größe der gewünschten
+$\epsilon$-Nachbarschaft und \textit{MinPts} definiert werden (siehe Abschnitt \ref{sec:grund_density_clustering}).
+
+\subsubsection{Auswertung des Verfahrens}
+
+In Abbildung \ref{fig:real_results_dbscan_lcss} sind die Cluster-Ergebnisse des beschriebenen Verfahrens
+dargestellt. Diese Resultate ergeben sich unter Verwendung der folgenden Parameter:
+$\epsilon_{LCSS} = 1.0$, $\delta = 0.1$, $\epsilon_{DBSCAN} = 0.4$ und $minPts = 5$.
+
+Die Bedeutung der Werte ist in diesem Fall leicht und intuitiv verständlich: Punkte auf einer Trajektorie
+dürfen maximal $1m$ voneinader entfernt sein und ihre Position sich um maximal $\delta * minTraLength$ unterscheiden.
+Sind diese Bedingungen erfüllt, gelten zwei Trajektorie-Punkte als übereinstimmend. Ein Cluster muss zudem aus mindestens
+5 Trajektorien bestehen und die Differenzen der Trajektorie-Distanzen untereinander dürfen nicht größer als 0.4 sein.
+
+Die Ergebnisse aus Abbildung \ref{fig:real_results_dbscan_lcss} a) und b) zeigen, dass bei Verwendung
+dieses Verfahrens zwischen allen Fahrspuren korrekt unterschieden wird und die einzelnen Trajektorien
+richtig gruppiert werden. Zudem funktioniert die Bestimmung der Clusteranzahl zuverlässig.
+Auch die Performance der Clusteranalyse konnte unter Verwendung des DBSCAN Algorithmus und der LCSS-Distanz
+verbessert werden. Die benötigte Zeit für den Autobahn-Datensatz sank auf circa 15 Sekunden und die des
+Kreuzung-Datensatz auf etwa 85 Sekunden, was in diesem Anwendungsfall akzeptabel ist.
+
+\begin{figure}[H]
+    \centering
+    \subfloat[Datensatz B10-Entennest]{{
+        \includegraphics[align=c, width=0.42\linewidth]{../resources/img/umsetzung/U1/dbscan_lcss/entennest}
+    }}
+    \qquad
+    \subfloat[Datensatz Neckartor]{{
+        \includegraphics[align=c, width=0.42\linewidth]{../resources/img/umsetzung/U1/dbscan_lcss/neckartor}
+    }}
+    \caption{Ergebnisse Clusteranalyse DBSCAN und LCSS-Distanz}
+    \label{fig:real_results_dbscan_lcss}
+\end{figure}
+
+Der DBSCAN Algorithmus markiert nun auch atypische Trajektorien als Ausreißer, was den Vorteil hat, dass
+diese nichtmehr anderen Spurclustern zugeordnet werden. Problematisch ist nun allerdings, dass Trajektorien
+welche Abbiegevorgänge beschreiben und in unterschiedliche Spuren einbiegen, teilweise auch als Ausreißer
+klassifiziert werden. In Abbildung \ref{fig:real_results_dbscan_lcss} b) fehlen so beispielsweise die Trajektorien
+der zwei Abbiegespuren in der oberen linken und unteren rechten Ecke (vergleiche Abbildung \ref{fig:real_trajs_raw_neckartor}).
+Um diese weiterhin erkennen zu können, wurde ein extra Verarbeitungsschritt eingeführt, welcher in Abschnitt
+\ref{sec:real_detect_turning_lane} beschrieben wird.
+
+Grundsätzlich überzeugten allerdings die Ergebnisse der Clusteranalyse. Die Qualität des Ansatzes könnte auch
+durch Anwendung auf weitere Datensätze verifiziert werden. Die nachfolgend beschriebenen Schritte der Spurerkennung
+basieren daher auf den Ergebnissen der hier vorgestellten Cluster-Methode.
+
 % Ansatz B:
 %   LCSS Distanz (in anderen Papern gute Ergebnisse) (impl. mittels bottom up dyna. programmierung, Verwendung Eucl. Dist.)
 %   Wieso D2 aus Vlachos et al. verwendet? (Verschiebung unerwünscht)
@@ -429,4 +550,6 @@ umgehen kann.
 %   --> DM kann besser mit Ausreißern umgehen und DBSCAN berücksichtigt diese auch
 %   bessere Ergebnisse
 
+
 \subsection{Erkennung von Abbiegespuren}
+\label{sec:real_detect_turning_lane}

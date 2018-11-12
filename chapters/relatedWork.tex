@@ -58,7 +58,7 @@ stammt von \cite[]{Junejo2004}. In diesem Fall geht es den Autoren allerdings ni
 sondern um die Extraktion von Laufpfaden von Fußgängern.
 Die Bewegungsbahnen der Passanten werden aus Aufnahmen stationärer Überwachungskameras gewonnen und
 als zwei-dimensionale Punktreihen repräsentiert.
-Um die Trajektorien zu vergleichen, verwenden die Autoren die Hausdorff Distanz als Ähnlichkeitsmaß.
+Um die Trajektorien zu vergleichen, verwenden die Autoren die Hausdorff Distanz als Distanzmaß.
 Die üblicherweise negativen Eigenschaften dieses
 Vergleichkriteriums (siehe Abschnitt \ref{sec:hausdorff_distance}), konkret die Missachtung der
 Trajektorie-Orientierung, sind bei diesem Anwendungsfall kein Nachteil, sondern gewünscht.
@@ -112,7 +112,7 @@ Die Ergebnisse der Untersuchungen für vier verschiedene Datensätze zeigen, das
 mit Hilfe der modifizierten Hausdorff Distanz und des Spectral-Clustering erreicht wird.
 Unter Verwendung der LCSS und DTW Distanzmaße, könnten die Autoren nicht die selben Resultate erzielen.
 
-Dass das von Atev et al. vorgeschlagene Distanzmaß sehr gute Clusterergebnisse produziert, wurde auch von \cite{Morris2009}
+Dass das von Atev et al. vorgeschlagene Distanzmaß sehr gute Clusterergebnisse produziert, wurde auch von \cite[]{Morris2009}
 bestätigt. In ihrer Untersuchung waren alledings die Ergebnisse, welche mithilfe des LCSS Maßes erreicht wurden,
 ebenso gut oder teilweise besser.
 
@@ -164,14 +164,15 @@ Sie können so die üblichen Bewegungsbahnen von Hurrikans über dem Atlantik be
 
 % Vlachos et al., 2002
 \subsubsection*{Discovering Similar Multidimensional Trajectories}
+\label{sec:relw_vlachos}
 Die Arbeit \cite[]{Vlachos2002} thematisiert nicht direkt die Clusteranalyse von Trajektorien sondern
 beschäftigt sich mit dem Vergleich von Bewegungsbahnen im drei-dimensionalen Raum. Konkret ist ihr Ziel,
 Trajektorien vergleichen zu können, welche etwa die Handbewegungen beim Ausführen von Zeichensprache beschreiben.
-Hierzu definieren die Autoren erstmals die Grundversion des LCSS Ähnlichkeitsmaßes, welches in vielen Arbeiten,
+Hierzu definieren die Autoren erstmals die Grundversion des LCSS Distanzmaßes, welches in vielen Arbeiten,
 unter anderem in \cite[]{Atev2006}, \cite[]{Buzan2004} und \cite[]{Chen2005}, zum Einsatz kommt.
 Auf dessen Basis erstellen sie ein Distanzmaß, welche es ermöglicht formgleiche aber im Raum verschobene Trajektorien zu finden.
-Die Grundversion des LCSS Ähnlichkeitsmaßes und ein darauf basierendes einfaches Distanzmaß ist, nach Vlachos et al.,
-bereits in Abschnitt \ref{sec:lcss_distance} definiert worden.
+Die Grundversion der LCSS-Distanz und ein darauf basierendes, einfaches Distanzmaß ist, nach Vlachos et al.,
+bereits in Abschnitt \ref{sec:lcss_distance} vorgestellt worden.
 Dieses Maß erweitern die Autoren zudem wie folgt:
 
 \begin{ceqn}
@@ -357,7 +358,7 @@ welches dem agglomerativen Cluster-Ansatz ähnelt.
 
 Als Vergleichsmaß für die Trajektorien und Routen, verwenden Makris et al. die maximale Distanz zwischen einer Trajektorie und
 einer Routen-Hülle. Diese muss sich unterhalb eines bestimmten Grenzwertes befinden.
-Ein Ergebnis des Verfahrens ist in Abbildung \ref{fig:relw_hu_example_envelope} b) dargestellt.
+Ein Ergebnis des Verfahrens ist in Abbildung \ref{fig:relw_results_makris} b) dargestellt.
 
 % TODO: Bild updaten
 \begin{figure}[H]
@@ -369,7 +370,7 @@ Ein Ergebnis des Verfahrens ist in Abbildung \ref{fig:relw_hu_example_envelope} 
         \includegraphics[align=c, width=0.49\linewidth]{../resources/img/RelatedWork/makris_result}
     }}
     \caption[Routen-Definition und Ergebnisse Routen-Erkennung (Makris et al.)]{a) Routen Definition, b) Ergebnisse Routen-Erkennung \cite[]{Makris2005}}
-    \label{fig:relw_hu_example_envelope}
+    \label{fig:relw_results_makris}
 \end{figure}
 
 
