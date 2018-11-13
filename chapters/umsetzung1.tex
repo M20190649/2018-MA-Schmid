@@ -598,11 +598,11 @@ minimalen mittleren Abstand zu allen anderen Trajektorien besitzt:
 
 \begin{ceqn}
 \begin{align}
-    refT_N = arg\ \underset{t\ \in\ N}{min}\ \Big(\frac{1}{|N|} \sum_{tt\ \in\ \{N \backslash t\}} D_{LCSS}(t, tt) \Big)
+    refT_N = N(arg\ \underset{t\ \in\ N}{min}\ \Big(\frac{1}{|N|} \sum_{tt\ \in\ \{N \backslash t\}} D_{LCSS}(t, tt) \Big))
 \end{align}
 \end{ceqn}
 
-Die Referenz-Trajektorie beschreibt die Nachbarschaft am Besten. Im Fall der Trajektorien aus Abbildung
+Die Referenz-Trajektorie beschreibt die Nachbarschaft. Im Fall der Trajektorien aus Abbildung
 \ref{fig:real_turning_lane} b) ist es beispielsweise eine Bahn, welche auf die mittlere Fahrspur abbiegt.
 Nachdem $refT$ bestimmt wurde, wird die Trajektorie Punktweise durchwandert. Es werden die Bereiche um jeden
 Punkt überprüft, um so festzustellen, wo die Trajektorien der Nachbarschaft auseinanderlaufen. Der hierzu
