@@ -234,21 +234,30 @@
 \usepackage{listings}
 % \usepackage{minted}
 
+% \lstset{
+% basicstyle =\fontsize{9}{11}\ttfamily, % Standardschrift
+% keywordstyle =, % \bfseries\color{blue}	  % Schl�sselwort-Style
+% %identifierstyle =\underbar,
+% commentstyle =\color{teal},
+% stringstyle =\itshape,
+% numbers = left,			  % Ort der Zeilennummern
+% numberstyle =\tiny\color{black},	   % Stil der Zeilennummern
+% numbers = left,			  % Ort der Zeilennummern
+% tabsize=2,			  % Groesse von Tabs
+% breaklines,			  % Zeilen werden Umgebrochen
+% breakatwhitespace,			  % An Leerzeichen umbrechen
+% %showspaces=true,			  % Leerzeichen anzeigen
+% backgroundcolor=\color[RGB]{242, 242, 242},	  % % Hintergrundfarbe der Listings
+% escapeinside={(*}{*)},
+% }
+
 \lstset{
 basicstyle =\fontsize{9}{11}\ttfamily, % Standardschrift
-keywordstyle =, % \bfseries\color{blue}	  % Schl�sselwort-Style
-%identifierstyle =\underbar,
-commentstyle =\color{teal},
-stringstyle =\itshape,
-numbers = left,			  % Ort der Zeilennummern
-numberstyle =\tiny\color{black},	   % Stil der Zeilennummern
-numbers = left,			  % Ort der Zeilennummern
-tabsize=2,			  % Groesse von Tabs
-breaklines,			  % Zeilen werden Umgebrochen
-breakatwhitespace,			  % An Leerzeichen umbrechen
-%showspaces=true,			  % Leerzeichen anzeigen
-backgroundcolor=\color[RGB]{242, 242, 242},	  % % Hintergrundfarbe der Listings
-escapeinside={(*}{*)},
+numbers=left,
+numbersep=5pt,
+xleftmargin=20pt,
+frame=tb,
+captionpos=b
 }
 
 \lstloadlanguages{
@@ -411,6 +420,9 @@ escapeinside={(*}{*)},
    position = bottom, %top
    labelformat = parens % simple, empty % Wie die Bezeichnung gesetzt wird
  }
+
+% \DeclareCaptionFormat{mylst}{#1#2#3}
+% \captionsetup[lstlisting]{format=mylst,labelfont=bf,singlelinecheck=off,labelsep=space}
 
 %% Inhaltsverzeichnis (Schrift, Aussehen) sowie weitere Verzeichnisse ====
 
