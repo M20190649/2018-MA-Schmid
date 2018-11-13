@@ -2,7 +2,6 @@
 
 \chapter{Fahrspur-Bestimmung aus Trajektorie-Clustern}
 \label{cha:lane_definition}
-
 % Cluster-Bereinigung: Entfernen von Outliern (Spurwechselvorgänge)
 %   Beschreibung Probleme: Performance, Zuverlässigkeit (initial Distanzbasiert, erweitert Dichtebasiert --> Ähnliche Ergebnisse und Performance)
 %   Verfahren mit evtl. besseren Resultaten noch aufwendiger und basierend meist auf selben Ideen (Distanzmaße, Dichten etc.)
@@ -10,3 +9,42 @@
 % Bestimmung von Spur-Envelopes
 % Partitionierung der initialen Spur-Schätzungen
 % Alignment der Spuren
+
+In diesem Kapitel wird beschrieben, wie aus den bereits identifizierten Trajektorie-Clustern
+Geometrie-Informationen der Fahrspuren abgeleitet werden. Hierzu sind primär drei Schritte notwendig:
+Bestimmung der Spur-Mittellinien, Bestimmung der Spurhüllen und anschließend die Partitionierung sich überlagernder
+Spuren. Hinzu kommen weitere kleine Schritte, welche Ebenfalls nachfolgend beschrieben werden.
+
+\section{Ausfilterung von Spurwechselvorgängen}
+\label{sec:real2_filter_lane_change}
+
+% Warum?
+% Wie?
+% Probleme, Andere Lösungen und deren Nachteile
+
+\section{Bestimmung Spurmittellinien}
+\label{sec:real2_define_lane_centerline}
+
+% Warum nicht Traj. mit min avg Distanz zu anderen?
+% Vorgehen
+% Ergebnisse
+
+\section{Bestimmung Spurhüllen}
+\label{sec:real2_define_lane_envelope}
+
+% Erklärung SpurDefinition (LaneEstimate) Über Nodes? Siehe Rel. Work.
+% Bestimmung benachbarter Spuren
+% Bestimmung paralleler Spuren
+% Bestimmung des mittleren Abstands zwischen zwei parallelen Spurpaaren
+% Bestimmung Envelope-Punkte
+
+\section{Partitionierung von Fahrspuren}
+\label{sec:real2_lane_partitioning}
+
+% Arbeiten nur noch mit LaneEstimates
+% Grundidee: Sich überschneidende Spuren an Schnittpunkte partitionieren
+% Problem: welche Spur ganz lassen und welche partitionieren
+% Aufteilung in drei Spur-Typen (isolated, primary, secundary)
+% Finden von sich überlappenden Spurpaaren
+% Entscheidung für zu partitionierende Spuren (nach Kriterien)
+% Partitionierung
