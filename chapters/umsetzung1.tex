@@ -195,11 +195,11 @@ kleiner Tracking-Fehler wurden entfernt.
 \begin{figure}[H]
     \centering
     \subfloat[]{{
-        \includegraphics[align=c, width=0.41\linewidth]{../resources/img/umsetzung/U1/trajectories_resampledFiltered}
+        \includegraphics[align=c, width=0.4\linewidth]{../resources/img/umsetzung/U1/trajectories_resampledFiltered}
     }}
-    \qquad
+    \qquad \qquad
     \subfloat[]{{
-        \includegraphics[align=c, width=0.34\linewidth]{../resources/img/umsetzung/U1/trajectories_resampled_cleared}
+        \includegraphics[align=c, width=0.33\linewidth]{../resources/img/umsetzung/U1/trajectories_resampled_cleared}
     }}
     \caption{Ergebnisse der zwei ersten Vorverarbeitungsschritte}
     \label{fig:real_result_2nd_Prepro}
@@ -373,11 +373,11 @@ Zur Bestimmung von $\sigma$ kamen die Grenzwerte $stdMin = 0.5$ und $stdMax = 10
 \begin{figure}
     \centering
     \subfloat[mit Schätzung Clusteranzahl]{{
-        \includegraphics[align=c, width=0.42\linewidth]{../resources/img/umsetzung/U1/atev_results/entennest_k_est}
+        \includegraphics[align=c, width=0.4\linewidth]{../resources/img/umsetzung/U1/atev_results/entennest_k_est}
     }}
-    \qquad
+    \qquad \qquad
     \subfloat[mit fester Clusteranzahl]{{
-        \includegraphics[align=c, width=0.42\linewidth]{../resources/img/umsetzung/U1/atev_results/entennest_k6}
+        \includegraphics[align=c, width=0.4\linewidth]{../resources/img/umsetzung/U1/atev_results/entennest_k6}
     }}
     \caption{Ergebnisse Clusteranalyse B10-Entennest (Ansatz Atev et al.)}
     \label{fig:real_results_atev1}
@@ -495,12 +495,13 @@ Auf die in Abschnitt \ref{sec:relw_vlachos} vorgestellte Erweiterung des Distanz
 da es nicht gewünscht ist, dass formähnliche aber im Raum verschobene Trajektorien kleine Distanzen besitzen.
 
 Der DBSCAN Cluster-Algorithmus wurde in diesem Fall nicht selbst implementiert. Es wurde die Implementierung
-der \textit{Smile}\footnote{\href{https://haifengl.github.io/smile/index.html}{Smile - Statistical Machine Intelligence and Learning Engine}}
-Bibliothek verwendet. Der dort angebotene DBSCAN Algorithmus kann beliebige Datenobjekte, unter Verwendung eines
+der \textit{Statistical Machine Intelligence and Learning Engine}\footnote{Smile Bibliothek: \url{https://haifengl.github.io/smile/index.html}}
+(\textit{Smile}) Bibliothek verwendet. Der dort angebotene DBSCAN Algorithmus kann beliebige Datenobjekte, unter Verwendung eines
 vom Anwender gestellten Distanzmaßes, gruppieren. Zusätzlich muss lediglich die Größe der gewünschten
 $\epsilon$-Nachbarschaft und \textit{MinPts} definiert werden (siehe Abschnitt \ref{sec:grund_density_clustering}).
 
 \subsubsection{Auswertung des Verfahrens}
+\label{sec:results_clustering_dbscan_lcss}
 
 In Abbildung \ref{fig:real_results_dbscan_lcss} sind die Cluster-Ergebnisse des beschriebenen Verfahrens
 dargestellt. Diese Resultate ergeben sich unter Verwendung der folgenden Parameter:
@@ -521,11 +522,11 @@ Kreuzung-Datensatz auf etwa 85 Sekunden, was in diesem Anwendungsfall akzeptabel
 \begin{figure}[H]
     \centering
     \subfloat[Datensatz B10-Entennest]{{
-        \includegraphics[align=c, width=0.42\linewidth]{../resources/img/umsetzung/U1/dbscan_lcss/entennest}
+        \includegraphics[align=c, width=0.4\linewidth]{../resources/img/umsetzung/U1/dbscan_lcss/entennest}
     }}
-    \qquad
+    \qquad \qquad
     \subfloat[Datensatz Neckartor]{{
-        \includegraphics[align=c, width=0.42\linewidth]{../resources/img/umsetzung/U1/dbscan_lcss/neckartor}
+        \includegraphics[align=c, width=0.4\linewidth]{../resources/img/umsetzung/U1/dbscan_lcss/neckartor}
     }}
     \caption{Ergebnisse Clusteranalyse DBSCAN und LCSS-Distanz}
     \label{fig:real_results_dbscan_lcss}
@@ -543,13 +544,98 @@ Grundsätzlich überzeugten allerdings die Ergebnisse der Clusteranalyse. Die Qu
 durch Anwendung auf weitere Datensätze verifiziert werden. Die nachfolgend beschriebenen Schritte der Spurerkennung
 basieren daher auf den Ergebnissen der hier vorgestellten Cluster-Methode.
 
-% Ansatz B:
-%   LCSS Distanz (in anderen Papern gute Ergebnisse) (impl. mittels bottom up dyna. programmierung, Verwendung Eucl. Dist.)
-%   Wieso D2 aus Vlachos et al. verwendet? (Verschiebung unerwünscht)
-%   DBSCAN Clustering
-%   --> DM kann besser mit Ausreißern umgehen und DBSCAN berücksichtigt diese auch
-%   bessere Ergebnisse
-
-
 \subsection{Erkennung von Abbiegespuren}
 \label{sec:real_detect_turning_lane}
+
+In Abschnitt \ref{sec:results_clustering_dbscan_lcss} wurde bereits erwähnt, dass, unter Verwendung der
+gewählten Cluster-Methodik, einige Bewegungsbahnen als Ausreißer klassifiziert werden, dies eigentlich jedoch
+nicht sind. Diese fälschlicherweise aussortierten Trajektorien beschreiben für gewöhnlich Abbiegevorgänge.
+Problematisch an diesen Trajektorien, aus Sicht der Clusteranalyse, ist, dass sie üblicherweise auf einer
+gemeinsamen Spur -- der Abbiegespur -- beginnen, sich dann jedoch aufteilen und auf mehrere Fahrspuren verteilen.
+Die Trajektorien haben aus diesem Grund, trotz anfänglich identischem Verlauf, zu hohe Distanzen zueinander, um
+als ein Cluster identifiziert zu werden. Hinzu kommt, dass die Anzahl der Fahrzeuge, welche eine Abbiegespur
+benutzen, häufig nicht hoch genug ist, damit eine der Abbiege-Varianten ein Cluster formt. 
+In Abbildung \ref{fig:real_turning_lane} ist beispielhaft eine Abbiegespur der Neckartor-Kreuzung und
+die dazugehörigen Trajektorien abgebildet. Anhand der Straßentopologie und der Trajektorien wird deutlich,
+dass sich die Fahrzeuge nach dem abbiegen auf drei Fahrstreifen verteilen.
+
+\begin{figure}[H]
+    \centering
+    \subfloat[]{{
+        \includegraphics[align=c, width=0.16\linewidth]{../resources/img/umsetzung/U1/turning_lane}
+    }}
+    \qquad
+    \subfloat[]{{
+        \includegraphics[align=c, width=0.3\linewidth]{../resources/img/umsetzung/U1/turning_lane_trajs}
+    }}
+    \qquad
+    \subfloat[]{{
+        \includegraphics[align=c, width=0.3\linewidth]{../resources/img/umsetzung/U1/clusters_with_turning_lanes}
+    }}
+    \caption{a) Abbiegespur, b) zugehörige Trajektorien, c) Spurcluster mit Abbiegespuren}
+    \label{fig:real_turning_lane}
+\end{figure}
+
+Ziel des nachfolgend beschriebenen Verarbeitungsschrittes ist es, Trajektorien, welche Abbiegevorgänge
+beschreiben, zu entsprechenden Clustern zusammenzufassen. Anhand dieser kann anschließend die Geometrie
+der Spuren, wie für alle anderen Fahrspuren auch, bestimmt werden.
+Die Cluster sollen hierbei allerdings nicht aus den vollständigen Trajektorien gebildet werden, sondern
+lediglich aus den Teilen, welche anfänglich identisch verlaufen. Dies ist konzeptionell in Abbildung
+\ref{fig:real_turning_lane} b) dargestellt. Notwendig ist dies, da die Trajektorien nach dem Auseinanderlaufen
+sehr unterschiedliche Bahnen beschreiben können und dies die Spur-Geometrie-Bestimmung negativ beeinflusst.
+
+Um die oben beschriebenen Spurcluster zu finden, werden ausschließlich die Trajektorien untersucht,
+welche während der Clusteranalyse als Ausreißer markiert wurden.
+In einem ersten Schritt wird nach möglichen Trajektorie-Nachbarschaften gesucht. Hierzu wird für
+jede Trajektorie $t$ der Abstand zwischen deren Start und allen anderen Trajektorie-Starts bestimmt.
+Liegen mehr als fünf Trajektorie-Anfänge in einem Radius $laneEps = 1.5m$ um den Start von $t$, so bilden
+die Trajektorien eine mögliche Nachbarschaft.
+Dass die so gefunden Trajektorien auch tatsächlich den Verlauf einer Abbiegespur beschreiben und nicht
+direkt auseinader laufen, wird anschließend geprüft.
+
+Für eine Trajektorie-Nachbarschaft $N$ wird zunächst eine Referenz Bewegungsbahn $refT$ bestimmt, welche den
+minimalen mittleren Abstand zu allen anderen Trajektorien besitzt:
+
+\begin{ceqn}
+\begin{align}
+    refT_N = arg\ \underset{t\ \in\ N}{min}\ \Big(\frac{1}{|N|} \sum_{tt\ \in\ \{N \backslash t\}} D_{LCSS}(t, tt) \Big)
+\end{align}
+\end{ceqn}
+
+Die Referenz-Trajektorie beschreibt die Nachbarschaft am Besten. Im Fall der Trajektorien aus Abbildung
+\ref{fig:real_turning_lane} b) ist es beispielsweise eine Bahn, welche auf die mittlere Fahrspur abbiegt.
+Nachdem $refT$ bestimmt wurde, wird die Trajektorie Punktweise durchwandert. Es werden die Bereiche um jeden
+Punkt überprüft, um so festzustellen, wo die Trajektorien der Nachbarschaft auseinanderlaufen. Der hierzu
+eingesetzte Algorithmus ist in Listing \ref{lst:pseudo_split_point} beschrieben.
+\begin{lstlisting}[caption=Pseudocode Split-Punkt Bestimmung, language=Pseudo, label=lst:pseudo_split_point]
+algorithm findSplitPoint:
+  input:  neighborhood N, reference-trajectory refT
+  output: point where trajectories of neighborhood split up
+
+  for each point in refT do
+    regionAroundP := create circle around point with r = laneEps
+    neighborsInReg := count intersections of trajectories with regionAroundP
+
+    if neighborsInReg <= 0.75 * |N| && idx(point) > 0.33 * refT.pointLength do
+      return point
+    end
+  end
+
+  return None
+\end{lstlisting}
+
+Zur Bestimmung der Regionen um einen Punkt und der Schnittpunkte der Trajektorien mit diesem Bereich,
+wird die JTS Topology Suite\footnote{JTS Topology Suite: \url{https://locationtech.github.io/jts/}}
+(JTS) eingesetzt. Der Split-Punkt einer Nachbarschaft ist jener Punkt, in dessen Umfeld die Anzahl der
+Trajektorien erstmals unter 75\% fällt. Er ist zudem nur gültig, wenn er nicht im ersten Drittel der
+Referenz-Trajektorien liegt.
+
+Nachdem der Split-Punkt einer Nachbarschaft gefunden wurde, werden alle in ihr beinhalteten Bewegungsbahnen
+an jenem Trajektorie-Punkt geteilt, der dem Split-Punkt am nächsten ist. 
+Die so neu erstellten Trajektorien bilden ein neues Cluster. In Abbildung \ref{fig:real_turning_lane} c)
+sind nun alle Spurcluster dargestellt, welche nach diesem Schritt existieren. Die zwei Cluster der Abbiegespuren,
+welche noch in Abbildung \ref{fig:real_results_dbscan_lcss} b) fehlten, sind nun auch vorhanden.
+
+Mithilfe der in diesem Kapitel vorgestellten Verfahren können Trajektorie-Cluster entdeckt werden, welche
+die einzelnen Fahrspuren in einer Aufnahme beschreiben. Im nächsten Kapitel wird darauf eingegangen, wie
+aus diesen Clustern Spur-Geometrien abgeleitet werden.
