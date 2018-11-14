@@ -144,9 +144,7 @@ von $0.5\ m$ gebracht. Der hierzu verwendete Algorithmus ist in Listing \ref{lst
 Er verwirft alle aufeinanderfolgende Punkte, welche von einem Referenzpunkt weniger als den geforderten Abstand haben.
 \begin{lstlisting}[caption=Pseudocode Trajektorie Resampling, language=Pseudo, label=lst:pseudo_resampling]
 algorithm resampleTrajectory:
-  input:  lastRefPoint
-          newTrajPoints
-          oldTrajPoints
+  input:  lastRefPoint, newTrajPoints, oldTrajPoints
   output: resampled trajectory points
 
   while oldTrajPoints is not empty do:
@@ -459,13 +457,13 @@ kann auf $O(m\ n)$ verbessert werden, indem das Maß mit Hilfe von dynamischer P
 umgesetzt wird. Der sich so ergebende Algorithmus ist in Listing \ref{lst:pseudo_LCSS} aufgeführt.
 \begin{lstlisting}[caption=Pseudocode LCSS Bestimmung, language=Pseudo, label=lst:pseudo_LCSS]
 algorithm LCSS:
-  input:  trajectory t1, trajectory t2, epsilon, deltaFac
-  output: LCSS between t1 and t2
+  input:  trajectory: t1, trajectory: t2, epsilon, deltaFac
+  output: LCSS distance between t1 and t2
 
   t1Len := point-length t1
   t2Len := point-length t2
   delta := deltaFac * min(t1Len, t2Len)
-  LCS := 2D Array with dims. (t1Len+1, t2Len+1)
+  LCS := 2D array with dims. (t1Len+1, t2Len+1)
 
   for i <- 1 to t1Len do:
     for j <- 1 to l2Len do:
@@ -609,14 +607,14 @@ Punkt überprüft, um so festzustellen, wo die Trajektorien der Nachbarschaft au
 eingesetzte Algorithmus ist in Listing \ref{lst:pseudo_split_point} beschrieben.
 \begin{lstlisting}[caption=Pseudocode Split-Punkt Bestimmung, language=Pseudo, label=lst:pseudo_split_point]
 algorithm findSplitPoint:
-  input:  neighborhood N, reference-trajectory refT
+  input:  neighborhood: N, reference-trajectory: refT
   output: point where trajectories of neighborhood split up
 
   for each point in refT do
     regionAroundP := create circle around point with r = laneEps
     neighborsInReg := count intersections of trajectories with regionAroundP
 
-    if neighborsInReg <= 0.75 * |N| && idx(point) > 0.33 * refT.pointLength do
+    if neighborsInReg <= 0.75 * |N| && idx(point) > 0.33 * refT.pointLength then
       return point
     end
   end
