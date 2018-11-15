@@ -80,7 +80,7 @@ die verfolgten Ziele über die hier geforderten hinausgehen, wurde entschieden d
 beizubehalten. Durch die Parallelisierung der Berechnung der mittleren Abstände konnte die Performance
 des Ansatzes außerdem nochmals deutlich gesteigert werden.
 
-\section{Bestimmung Spurmittellinien}
+\section{Bestimmung der Spurmittellinien}
 \label{sec:real2_define_lane_centerline}
 
 Nachdem die Trajektorie-Cluster nun weitestgehend von Fahrspurwechseln und anderen Abweichungen bereinigt
@@ -137,19 +137,129 @@ welche auf die oben beschriebene Weise bestimmt wurden, abgebildet.
     \subfloat[]{{
         \includegraphics[align=c, width=0.4\linewidth]{../resources/img/umsetzung/U2/laneCenters}
     }}
-    \caption{Spurmittellinie in einem Trajektoriecluster a), Spurmittellinien Neckartor-Kreuzung b)}
+    \caption{Spurmittellinie in einem Trajektorie-Cluster a), Spurmittellinien Neckartor-Kreuzung b)}
     \label{fig:real2_results_centerline_detection}
 \end{figure}
 
-\section{Bestimmung Spurhüllen}
+Die Mittellinien werden, da es sich bei ihnen ebenfalls nur um Sequenzen von 2D-Koordinaten handelt,
+als Trajektorie-Objekte repräsentiert (siehe Abbildung \ref{fig:real_trajectory_classDia}).
+
+\section{Bestimmung der Spurhüllen}
 \label{sec:real2_define_lane_envelope}
 
-% Erklärung SpurDefinition (LaneEstimate) Über Nodes? Siehe Rel. Work.
-% Bestimmung benachbarter Spuren
-% Bestimmung paralleler Spuren
-% Bestimmung des mittleren Abstands zwischen zwei parallelen Spurpaaren
-% Bestimmung Envelope-Punkte
+Nachdem im vorherigen Schritt die Mittellinien der Fahrspuren bestimmt wurden, wird nun für jede Spurlinie
+eine Hülle definiert. Im diesem Abschnitt wird beschrieben, wie die Hüllen erstellt werden.
 
+Die Spurhülle bestimmt die Dimension einer Fahrbahn. In dieser Arbeit verlaufen sie idealerweise entlang
+realer Begrenzungslinien welche zwei Spuren voneinander oder eine Fahrbahn von einem Seitenstreifen et cetera trennen.
+Eine Mittellinie und eine Hülle beschreiben zusammen die Geometrie einer Fahrspur. Diese Geometrie
+soll die realen Dimensionen einer Spur möglichst genau abbilden. Aus diesem Grund ist es nicht möglich,
+die Hüllen lediglich auf Basis von statistischen Informationen der Trajektorie-Cluster zu bestimmen,
+wie das beispielsweise in \cite[]{WeimingHu2006} oder \cite[]{Morris2011} gemacht wird.
+Der in dieser Arbeit verwendete Ansatz zur Bestimmung der Spurhüllen basiert daher lediglich auf den
+Spurmittellinien und nutzt ihre relative Lage zueinander. Ansätze hierzu stammen aus den Arbeiten von
+\cite{Hsieh2006} und \cite{Makris2005}, welche in Abschnitt \ref{sec:rw_lane_detection} vorgestellt wurden.
+
+Die grundlegende Idee, auf welcher die Bestimmung der Spurhüllen basiert, ist konzeptionell in Abbildung
+\ref{fig:real2_envelope_definition_concept} dargestellt.
+Für zwei parallel zueinander verlaufende Spuren $l_1$ und $l_2$ werden die Hüllen, über den Abstand zwischen
+ihren Mittellinien bestimmt. 
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\linewidth]{../resources/img/umsetzung/U2/concept_lane_envelope}
+    \caption{Bestimmung Spürhüllen}
+    \label{fig:real2_envelope_definition_concept}
+\end{figure}
+
+Diesen Ansatz verwenden auch Hsieh et al. in ihrer Arbeit. Sie gehen jedoch, da die von ihnen verwendeten
+Aufnahmen von einer statischen Kamera über einer Autobahn stammen, davon aus, dass alle Fahrspuren parallel
+zueinander verlaufen. Da das in dieser Arbeit entwickelte Spurerkennungsmodul mit unterschiedlichen
+Aufnahmen und Straßentopologien umgehen können muss, kann diese Annahme nicht getroffen werden.
+Nachfolgend werden die Schritte vorgestellt, welche angewandt werden, um in einer Menge von Spuren
+jene zu finden, welche parallel zueinander verlaufen und auf Basis dieser die Spurhüllen zu definieren.
+
+\subsection*{Identifikation paralleler Fahrspuren}
+% beschreibung finden benachbarter Fahrspuren (Vorauswahl)
+% Beschreibung bestimmung Paralleler Fahrspuren
+%   mit PseudoCode?!
+
+Um in einer Menge von Fahrspuren, welche über Mittellinien repräsentiert werden, jene zu finden, die
+parallel zueinander verlaufen, werden in einem ersten Schritt benachbarte Spur-Paare gesucht.
+Zwei Fahrspuren $l1$ und $l2$ gelten als benachbart, wenn sich der Start oder das Ende
+von Spur $l2$ in einem Bereich mit Radius $\sigma$ um den Start von $l1$ befindet.
+%TODO: Quelle RAA, RAL
+Der Wert für $\sigma$ wurde auf Basis der in Deutschand geltenden \textit{``Richtlinien für die Anlage von Autobahnen''} (RAA)
+und der \textit{``Richtlinien für die Anlage von Landstraßen''} (RAL) bestimmt. Diese Regelwerke spezifizieren
+die in der Bundesrepublik derzeit zulässigen Straßenquerschnitte. Die in ihnen festgelegten
+Spurbreiten bewegen sich zwischen 3.25 und 3.75 Metern.
+Um auch besonders breite benachbarte Spur-Paare identifizieren zu können, wurde für $\sigma$ der Wert 4m gewählt.
+
+Die auf diese Weise gefundenen Trajektorie-Paare sind potenzielle parallele Spuren.
+Der Algorithmus welcher prüft, ob zwei Spuren tatsächlich parallel sind, ist in Listing \ref{lst:pseudo_checkParallel} beschrieben. 
+Die zu vergleichenden Mittellinien werden jeweils in eine Reihe von Richtungsvektoren
+umgewandelt. Anschließend werden die paarweisen Differenzen zwischen den Vektoren berechnet und gemittelt.
+Liegt die sich so ergebende Abweichung unter einem Grenzwert $\delta$, so handelt es sich um parallele Spuren.
+\begin{lstlisting}[caption=Pseudocode Überprüfung der Parallelität zweier Mittellinien, language=Pseudo, label=lst:pseudo_checkParallel]
+algorithm lanesAreParallel:
+  input:  lane-centerline: l1, lane-centerline: l2, delta
+  output: True or False
+
+  inOppositeDirections := check if l1 and l2 run in opposite directions
+  if inOppositeDirections then
+    reverse points of centerline l2
+  end
+
+  l1DirectionVec := calculate direction vectors for l1
+  l2DirectionVec := calculate direction vectors for l2
+  dirDifferences := calculate pairwise difference between direction vectors
+
+  meanDiff := calculate mean divergence for X- and Y-axis components
+  lengthDiff := calculate difference between length of l1 and l2
+
+  return meanDiff < delta && lengthDiff < 10.0
+\end{lstlisting}
+
+Als Wert für $\delta$ wurde experimentell 0.1 bestimmt. In den verschiedenen Test-Datensätzen konnten
+auf die oben beschrieben Weise zuverlässig parallele Spur-Paare identifiziert werden. Anhand dieser
+werden im nächsten Schritt die Spurhüllen bestimmt.
+
+\subsection*{Berechnung der Hüllen}
+
+% Bestimmung der mittleren Distanzen zwischen Spuren, Berechnung der Spurvarianz
+% Spuren ohne Nachbar erhalten standard-Varianz
+% Berechnung der Hüllen, Formeln, Referenz auf Abb. oben
+
+Bevor für eine Mittellinie die sie umgebende Spurhülle bestimmt werden kann, muss die Breite der Spur
+ermittelt werden. Diese ergibt sich für die im vorherigen Schritt bestimmten parallelen Spurpaare aus
+deren mittleren Abstand zueinander. Verlaufen zu einer Spurlinie zwei Linien parallel, werden
+die Abstände zu beiden berechnet und der kleinere als Spurbreite gewählt.
+Aus allen auf diese Weise bestimmten Spurbreiten, wird die kleinste ausgewählt und jenen Spuren zugewiesen,
+welche noch keine Breite besitzen.
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.65\linewidth]{../resources/img/umsetzung/U2/calc_env_point}
+    \caption{Bestimmung Spürhüllen}
+    \label{fig:real2_envelope_definition_concept}
+\end{figure}
+
+\begin{ceqn}
+\begin{align}
+    g: \vec{x} = \overrightarrow{OA} + t \cdot \overrightarrow{AC}
+\end{align}
+\end{ceqn}
+
+$$\overrightarrow{AC} \cdot \overrightarrow{X} = 0$$
+
+\begin{ceqn}
+\begin{align}
+    h: \vec{x} = \overrightarrow{OB} + t \cdot \overrightarrow{X}
+\end{align}
+\end{ceqn}
+
+% Evtl. am ende schonmal beispiel screenshot spuren in Trackerapplication ohne partitionierung
 
 \section{Partitionierung von Fahrspuren}
 \label{sec:real2_lane_partitioning}
