@@ -356,7 +356,7 @@ Ist diese These jedoch berechtigt, haben die Modelle den Vorteil, dass sie neben
 auch Korrelationen zwischen einzelnen Attributen aufzeigen können. \cite[]{AndersDrachen2014}
 
 Nachfolgend wird der bekannteste Vertreter der Distributions-Cluster-Algorithmen vorgestellt:
-das \textit{Expectation–maximization} (EM) Verfahren unter Verwendung sogenannter \textit{Gaussian-Mixture-Models} (GMM).
+das \textit{Expectation–maximization} (\acrshort*{em}) Verfahren unter Verwendung sogenannter \textit{Gaussian-Mixture-Models} (\acrshort*{gmm}).
 Die Funktionsweise des EM-Algorithmus hat grundsätzlich viel gemein mit der des k-Mean Ansatzes.
 Es wird ebenfalls mit einer festen Anzahl zufällig initialisierter Modelle gestartet, welche anschließend über mehrere Iterationen
 an die Daten angepasst werden. Im Gegensatz zu k-Means, sind die gewählten Modelle hingegen Gauß-Verteilungen,
@@ -405,7 +405,7 @@ von Bereichen geringer Dichte umgeben sind. Dichte-Clustering-Modelle suchen nac
 Großer Vorteil der Algorithmen dieser Klasse ist, dass sie Cluster beliebiger Formen finden können,
 nicht auf die Vorgabe einer Clusteranzahl angewiesen sind und mit Ausreißern umgehen können.
 
-Als Vertreter der Dichte-basierten Ansätze wird nachfolgend der \textit{DBSCAN} Algorithmus
+Als Vertreter der Dichte-basierten Ansätze wird nachfolgend der \textit{\acrshort*{dbscan}} Algorithmus
 (\textit{Density-Based Spatial Clustering of Applications with Noise}), wie in \cite[]{Gao2012} beschrieben, vorgestellt.
 Er verwendet als Maß für die Dichte einer Region die sogenannte \textit{$\epsilon$ -Nachbarschaft} (\textit{Eps}).
 Diese selektiert für ein Objekt $p$ alle Objekte, welche innerhalb des Radius $\epsilon$ um dieses liegen:
@@ -569,7 +569,7 @@ Von Nachteil ist auch, dass die Zeitkomplexität der Hausdorff-Distanz bei $O(n\
 \subsection{Longest-Common-Subsequence}
 \label{sec:lcss_distance}
 
-Das \textit{Longest-Common-Subsequence} (LCSS) Distanzmaß basiert auf dem allgemeinen Problem der Findung
+Das \textit{Longest-Common-Subsequence} (\acrshort*{lcss}) Distanzmaß basiert auf dem allgemeinen Problem der Findung
 einer längsten gemeinsamen Subsequenz zwischen zwei Sequenzen. Da Trajektorien, nach obiger Definition, lediglich Punktfolgen sind,
 lässt sich das Verfahren sehr gut auf diese anwenden. Aufgrund einiger kleiner Erweiterungen des Basis-Algorithmus, besitzt
 das LCSS Distanzmaß einige besondere Eigenschaften. Der LCSS Algorithmus für Trajektorien ist grundsätzlich
@@ -637,11 +637,11 @@ sind nachfolgend nochmals in tabellarischer Form festgehalten.
         \midrule \addlinespace
         HU \cite[]{Hu2005} & \cmark & \cmark & \cmark \\
         \addlinespace
-        PCA \cite[]{Bashir2003} & \cmark & \cmark & \cmark \\
+        \acrshort{pca} \cite[]{Bashir2003} & \cmark & \cmark & \cmark \\
         \addlinespace
-        DTW \cite[]{Keogh2000} & \cmark & \xmark & \xmark \\
+        \acrshort*{dtw} \cite[]{Keogh2000} & \cmark & \xmark & \xmark \\
         \addlinespace
-        HD \cite[]{Chen2011} & \xmark & \xmark & \xmark \\
+        \acrshort*{hd} \cite[]{Chen2011} & \xmark & \xmark & \xmark \\
         \addlinespace
         mod. HD \cite[]{Atev2006} & \cmark & \xmark & \cmark \\
         \addlinespace

@@ -1,77 +1,23 @@
 
-\newacronym{ide}{IDE}{Integrierte Entwicklungsumgebung}
-\newacronym[longplural={Java Virtuellen Maschine}]{jvm}{JVM}{Java Virtuelle Maschine}
-\newacronym{rop}{ROP}{Railway oriented programming}
-\newacronym{uri}{URI}{Uniform Resource Identifier}
-\newacronym{http}{HTTP}{Hypertext Transfer Protocol}
-\newacronym{https}{HTTPS}{Hypertext Transfer Protocol Secure}
-\newacronym{tls}{TLS}{Transport Layer Security}
-\newacronym{clr}{CLR}{Common Language Runtime}
-\newacronym{dom}{DOM}{Document Object Model}
-\newacronym{rdbms}{RDBMS}{Relationales Datenbank Managementsystem}
-\newacronym{ui}{UI}{User Interface}
-\newacronym{html}{HTML}{Hypertext Markup Language}
-\newacronym{json}{JSON}{JavaScript Object Notation}
-\newacronym{rest}{REST}{Representational State Transfer}
-\newacronym{api}{API}{Application programming interface}
-\newacronym{mvu}{MVU}{Model-View-Update Architekturmuster}
-\newacronym{io}{I/O}{Input und Output}
+% \newacronym{ide}{IDE}{Integrierte Entwicklungsumgebung}
+% \newacronym[longplural={Java Virtuellen Maschine}]{jvm}{JVM}{Java Virtuelle Maschine}
+% \newacronym{}{}{}
 
-\newglossaryentry{record}
-  {
-    name=Record,
-    description={F\# Records sind unveränderliche, zusammengesetzte, klassenähnliche Datenstrukturen. Sie kombinieren verschiedene primitive Datentypen und ordnen jedem einzelnen Feld einen Namen zu. }
-  }
 
-\newglossaryentry{union}
-  {
-    name={Union Typ},
-    description={Union Typen bieten eine Möglichkeit Typen zu modellieren, welche eine von mehreren benannten Ausprägungen annehmen können. Jede Ausprägung bzw. jeder Fall kann einen eigenen Wert und Typ besitzen. Eingesetzt werden Union Typen immer dann, wenn Daten verschiedene Formen annehmen können.}
-  }
+\newacronym{mec}{MEC}{Mobile Edge Computing}
+\newacronym{lcss}{LCSS}{Longest Common Subsequence}
+\newacronym{dtw}{DTW}{Dynamic Time Warping}
+\newacronym{raa}{RAA}{Richtlinien für die Anlage von Autobahnen}
+\newacronym{ral}{RAL}{Richtlinien für die Anlage von Landstraßen}
+\newacronym{em}{EM}{Expectation-Maximization}
+\newacronym{gmm}{GMM}{Gaussian-Mixture-Models}
+\newacronym{pca}{PCA}{Principal Component Analysis}
+\newacronym{hd}{HD}{Hausdorff Distanz}
+\newacronym{dbscan}{DBSCAN}{Density-based spatial clustering of applications with noise}
 
-\newglossaryentry{enterprise}
-{
-  name={Enterprise Anwendung},
-  description={Bei Enterprise Anwendungen, zu deutsch ``Unternehmens-Anwendungen'', handelt es sich um Softwareprodukte, welche für gewöhnlich das Ziel haben, einem Unternehmen einen gewissen Mehrwert oder unternehmerischen Vorteil zu liefern. Für sie sind zumeist die Punkte Skalierbarkeit, Wartbarkeit, Trennung der Verantwortungen, Dokumentation und Sicherheit von besonderer Wichtigkeit.},
-  plural={Enterprise Anwendungen}
-}
-
-\newglossaryentry{soc}
-{
-  name={Separation of Concerns},
-  description={Separation of Concerns (SOC) ist ein Konzept der Softwareentwicklung, welches auf eigentlich allen Ebenen angewendet werden kann. Grundsätzlich ist das Ziel von SOC, Verantwortlichkeiten so gut wie möglich voneinander zu trennen. So steigt die Modularität einer Anwendung und auch deren Wartbarkeit.}
-}
-
-\newglossaryentry{spa}
-{
-name={Single-Page Application},
-description={Single-Page Applications (kurz SPAs) sind Webanwendungen, welche aus nur einem einzigen HTML Dokument bestehen. Im Gegensatz zu klassischen Webanwendungen, in welchen Inhalte durch die Verlinkung mehrerer Seiten geladen werden, werden bei SPA's alle Inhalte dynamisch nachgeladen und in den DOM eingefügt. Einer der Hauptvorteile von SPA's ist, dass durch diesen Ansatz die Client-Server Kommunikation teils stark reduziert werden kann.},
-}
-
-\newglossaryentry{websocket}
-{
-name={WebSocket},
-description={Das WebSocket-Protokoll basiert auf TCP und ermöglicht bidirektionale Datenverbindungen zwischen Webanwendungen und Webservern. Nachdem der Client eine WebSocket Verbindung zu einem Server aufgebaut hat, kann dieser Server auch ohne Anfrage des Clients (vgl. HTTP) Daten versenden. WebSockets sind somit ideal für die Implementierung von Push-Nachrichten.},
-plural={WebSockets}
-}
-
-\newglossaryentry{monad}
-{
-name={Monade},
-plural={Monaden},
-description={Monaden entstammen einem Feld der Mathematik namens Kategorientheorie. In rein funktionalen Sprachen wie Haskell werden Monaden verwendet um In- und Output zu realisieren, Zustände zu verwalten oder Fehler zu behandeln. Monaden können stark vereinfacht als Container für Werte auffassen werden, welche zwei Funktionen anbieten: \texttt{return} und \texttt{bind}. Die \texttt{return} Funktion erzeugt eine Monade indem sie einen Wert in einen Container hüllt und über die \texttt{bind} Funktion lassen sich Monaden mit Funktionen oder anderen Monaden kombinieren.}
-}
-
-\newglossaryentry{functor}
-{
-name={Funktor},
-plural={Funktoren},
-description={Funktoren sind ein Grundkonzept der Kategientheorie. Ein Funktor ermöglicht eine strukturerhaltende Abbildung zwischen zwei Kategorien. In funktionalen Sprachen wird diese Abbildung über die Funktion \texttt{map} beziehungsweise \texttt{fmap} realisiert.}
-}
-
-\newglossaryentry{monoid}
-{
-name={Monoid},
-plural={Monoiden},
-description={Monoiden sind algebraische Strukturen mit bestimmten Eigenschaften: Ein Monoid besteht aus einer Menge von Objekten, einer binären, assoziativen Operation und einem neutralen Element. Zum Beispiel bilden die natürlichen Zahlen unter der Addition und dem neutralen Element 0 einen Monoiden.}
-}
+% \newglossaryentry{enterprise}
+% {
+%   name={Enterprise Anwendung},
+%   description={Bei Enterprise Anwendungen, zu deutsch ``Unternehmens-Anwendungen'', handelt es sich um Softwareprodukte, welche für gewöhnlich das Ziel haben, einem Unternehmen einen gewissen Mehrwert oder unternehmerischen Vorteil zu liefern. Für sie sind zumeist die Punkte Skalierbarkeit, Wartbarkeit, Trennung der Verantwortungen, Dokumentation und Sicherheit von besonderer Wichtigkeit.},
+%   plural={Enterprise Anwendungen}
+% }
