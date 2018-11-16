@@ -319,3 +319,19 @@ Regionen. Diese werden im nächsten Schritt entfernt.
 % Finden von sich überlappenden Spurpaaren
 % Entscheidung für zu partitionierende Spuren (nach Kriterien)
 % Partitionierung
+
+Fahrspuren, welche mithilfe dieser Arbeit erkannt werden, kommen bei der Verkehrsanalyse zum Einsatz.
+Unter anderem können mit ihrer Hilfe Spurwechselvorgänge von Fahrzeugen untersucht werden. Damit eine
+solche Analyse sinnvoll ist, dürfen sich Fahrspuren nicht über einen größeren Bereich hinweg überlagern.
+Aus diesem Grund werden Spuren, welche in Teilen identisch mit anderen verlaufen, partitioniert. Die
+identischen Teile werden verworfen und nur jene beibehalten, welche separat verlaufen.
+Unproblematisch ist es hingegen, wenn sich Spuren lediglich kreuzen, ihre Überlagerung also nur gering ist.
+In diesem Fall dürfen die Spuren nicht partitioniert werden. Nachfolgend wird das Verfahren
+zur Identifikation von sich überlagernden Fahrspuren und der Partitionierungsvorgang beschrieben.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.35\linewidth]{../resources/img/umsetzung/U2/prims_and_secs}
+    \caption{Primäre (blau) und sekundäre (grün) Spuren}
+    \label{fig:real2_prim_and_sec_lanes}
+\end{figure}
