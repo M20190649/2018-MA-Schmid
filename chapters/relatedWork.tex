@@ -357,17 +357,18 @@ welches dem agglomerativen Cluster-Ansatz ähnelt.
 \end{enumerate}
 
 Als Vergleichsmaß für die Trajektorien und Routen, verwenden Makris et al. die maximale Distanz zwischen einer Trajektorie und
-einer Routen-Hülle. Diese muss sich unterhalb eines bestimmten Grenzwertes befinden.
+einer Routen-Hülle. Diese Distanz muss sich unterhalb eines bestimmten Grenzwertes befinden, damit eine Trajektorie
+einer Route zugeordnet wird. Geschieht dies, dann werden alle Hüll- und Mittelpunkte neue berechnet.
 Ein Ergebnis des Verfahrens ist in Abbildung \ref{fig:relw_results_makris} b) dargestellt.
 
-% TODO: Bild updaten
 \begin{figure}[H]
     \centering
     \subfloat[]{{
-        \includegraphics[align=c, width=0.49\linewidth]{../resources/img/RelatedWork/makris_route}
+        \includegraphics[align=c, width=0.4\linewidth]{../resources/img/RelatedWork/makris_route}
     }}
+    \qquad
     \subfloat[]{{
-        \includegraphics[align=c, width=0.49\linewidth]{../resources/img/RelatedWork/makris_result}
+        \includegraphics[align=c, width=0.4\linewidth]{../resources/img/RelatedWork/makris_result}
     }}
     \caption[Routen-Definition und Ergebnisse Routen-Erkennung (Makris et al.)]{a) Routen Definition, b) Ergebnisse Routen-Erkennung \cite[]{Makris2005}}
     \label{fig:relw_results_makris}
@@ -378,7 +379,46 @@ Ein Ergebnis des Verfahrens ist in Abbildung \ref{fig:relw_results_makris} b) da
 \subsubsection*{Trajectory Learning for Activity Understanding: Unsupervised, Multilevel, and Long-Term Adaptive Approach}
 % HMM
 
+In \cite[]{Morris2011} stellen die Autoren ein dreistufiges Framework zur Auswertung von Fahrzeugtrajektorien vor.
+Ziel des Frameworks ist es, die Bewegungsmuster von Objekten mittels eines erlernten Vokabulars beschreiben zu können
+sowie Aktivitäten vorhersagen und Anomalien erkennen zu können.
+In einem ersten Schritt werden daher sogenannte \textit{Points of Interests} (POI) identifiziert. Die von Morris
+et al. untersuchten POI's sind die Eintritts-, Austritts- und Stop-Zonen innerhalb einer Scene.
+Nach der deren Bestimmung identifiziert das vorgestellte Framework übliche Bewegungsmuster in den Trajektorien
+und definiert auf deren Basis anschließend Pfade.
 
+Sich häufig wiederholende Bewegungsmuster werden von den Autoren über eine Clusteranalyse ermittelt.
+Zum Vergleich der Trajektorien kommt das in \cite[]{Vlachos2002} vorgestellte LCSS Distanzmaß zum Einsatz
+und als Clusteralgorithmus das Spectral-Clustering. Morris et al. verwenden statt des im Spectral-Clustering
+üblicherweise eingesetzten k-Mean-Algorithmus, einen Fuzzy-C-Mean Ansatz, welcher für jede Trajektorie
+einen Zugehörigkeitswert $u_{ik} \in [0, 1]$ zum Cluster $k$ bestimmt.
+Anhand der Zugehörigkeiten der Bewegungsbahnen zu den Clustern werden Referenz-Trajektorien bestimmt.
+Diese ergeben sich für jedes Cluster als gewichteter Durchschnitt aller Trajektorien. Als Gewichte
+werden die Werte $u_{ik}$ verwendet. Die so erstellten Referenz-Linien sind in Abbildung
+\ref{fig:relw_morris_results} a) zu sehen.
+
+\begin{figure}[H]
+    \centering
+    \subfloat[]{{
+        \includegraphics[align=c, width=0.35\linewidth]{../resources/img/RelatedWork/morris_routes_paths_1}
+    }}
+    \qquad
+    \subfloat[]{{
+        \includegraphics[align=c, width=0.35\linewidth]{../resources/img/RelatedWork/morris_routes_paths_2}
+    }}
+    \caption[Referenz-Trajektorien und Pfade (Morris et al.)]{a) Refernz-Trajektorien, b) Pfade basierend auf HMM's \cite[]{Morris2011}}
+    \label{fig:relw_morris_results}
+\end{figure}
+
+Basierend auf den Clustern definieren Morris et al. außerdem Pfade, welche die räumliche und zeitliche Dynamik
+der Fahrzeuge an einer bestimmten Stelle abbilden. Sie verwenden hierzu Hidden-Markov-Modelle (\acrshort*{hmm}),
+welche sie mittels der Baum-Welch Methode trainieren.
+Die Ergebnisse dieses Ansatzes sind in Abbildung \ref{fig:relw_morris_results} b) dargestellt. Die
+Ellipsen repräsentieren die HMM's, welche angeben, wie die erwartete Bewegung eines Fahrzeugs in einem
+bestimmten Bereich aussieht.
+Die in \cite[]{Morris2011} bestimmten Pfade ermöglichen es diverse Aussagen über das Verhalten der Fahrzeuge
+zu treffen. Sie repräsentieren allerdings nicht die realen Spur-Geometrien eines Straßenabschnittes.    
+ 
 % Hsieh et al., 2006
 \subsubsection*{Automatic Traffic Surveillance System for Vehicle Tracking and Classification}
 % Heat Map --> Spurmittellinien --> Begrenzer aus Mittellinien bestimmen
@@ -443,8 +483,10 @@ Das Verfahren funktioniert grundlegend gut, wenn Fahrspuren nebeneinader und par
 \section{Defizite vorhandener Lösungen und benötigte Neuerungen}
 \label{sec:rw_deficites}
 
+% Spurerkennung (realistische Geometrien) meist nur auf Basis statistischer Modelle
+% "reale" Spurerkennung (wie in Hsieh et al. nur für gerade Spuren)
 % Eigentlich nichts zur Spurerkennung auf bspw. Kreuzungen etc.
-%   Wenn Spur dann immer nur Spur für gesamtes Cluster (kein Partitioning)
+% Wenn Spur dann immer nur Spur für gesamtes Cluster (kein Partitioning)
 % Erkennung von Fahrspuren unterschiedlicher Spurdichten ????
 
 % Meiste Aufnahmen sind Frontal-Aufnahmen auf Straße --> keine Verzerrungen
