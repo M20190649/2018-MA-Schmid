@@ -324,14 +324,126 @@ Fahrspuren, welche mithilfe dieser Arbeit erkannt werden, kommen bei der Verkehr
 Unter anderem können mit ihrer Hilfe Spurwechselvorgänge von Fahrzeugen untersucht werden. Damit eine
 solche Analyse sinnvoll ist, dürfen sich Fahrspuren nicht über einen größeren Bereich hinweg überlagern.
 Aus diesem Grund werden Spuren, welche in Teilen identisch mit anderen verlaufen, partitioniert. Die
-identischen Teile werden verworfen und nur jene beibehalten, welche separat verlaufen.
-Unproblematisch ist es hingegen, wenn sich Spuren lediglich kreuzen, ihre Überlagerung also nur gering ist.
-In diesem Fall dürfen die Spuren nicht partitioniert werden. Nachfolgend wird das Verfahren
-zur Identifikation von sich überlagernden Fahrspuren und der Partitionierungsvorgang beschrieben.
+identischen Teile werden verworfen und nur die separaten beibehalten.
+Unproblematisch ist es, wenn sich Spuren lediglich kreuzen, ihre Überlagerung also geringfügig ist.
+In diesem Fall werden die Spuren nicht partitioniert. Es wird daher zwischen sich überlagernden und sich
+kreuzenden Spuren unterschieden. Nachfolgend wird das Verfahren
+zur Identifikation von sich überlagernden Fahrspuren und der Partitionierungs-Vorgang beschrieben.
+
+Um Fahrspuren zuverlässig und sinnvoll partitionieren zu können, müssen grundlegend zwei Probleme bewältigt
+werden. Es müssen zuerst die sich überlagernden Spur-Paare und deren Schnittpunkte gefunden werden und
+anschließend muss für jedes Paar entschieden werden, welche Spur partitioniert wird und welche erhalten bleibt.
+Hierzu wird zuerst die Menge der Spur-Geometrien in drei Kategorien unterteilt:
+
+\begin{itemize}
+    \item isolierte Fahrspuren
+    \item primäre Fahrspuren
+    \item sekundäre Fahrspuren
+\end{itemize}
+
+Isolierte Fahrspuren sind hierbei jene, welche keine Überschneidung mit anderen Spuren besitzen. Primäre
+Fahrspuren besitzen keine Überschneidungen untereinander, können sich aber mit anderen Spuren kreuzen oder
+von ihnen überlagert werden. In einer Menge von Spur-Geometrien bildet das größte Subset von parallel
+zueinander verlaufenden Spuren die primären Spuren. Sekundäre Fahrspuren sind all jene, welche
+weder isoliert noch primär sind. In Abbildung \ref{fig:real2_prim_and_sec_lanes} a) sind die primären und
+sekundären Spur-Geometrien der Neckartor-Kreuzung dargestellt.
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.35\linewidth]{../resources/img/umsetzung/U2/prims_and_secs}
-    \caption{Primäre (blau) und sekundäre (grün) Spuren}
+    \subfloat[]{{
+        \includegraphics[align=c, width=0.35\linewidth]{../resources/img/umsetzung/U2/prims_and_secs}
+    }}
+    \qquad
+    \subfloat[]{{
+        \includegraphics[align=c, width=0.35\linewidth]{../resources/img/umsetzung/U2/overlapping_lanes}
+    }}
+    \caption{a) Primäre (blau) und sekundäre (grün) Spuren, b) sich überlagernde und kreuzende Spur-Paare}
     \label{fig:real2_prim_and_sec_lanes}
+\end{figure}
+
+Nachdem die Spuren, anhand der oberen Definition, in die drei Kategorien unterteilt wurden, werden
+anschließend die primären und sekundären Spuren nach sich überlagernden Paar durchsucht.
+Zwei Spuren überschneiden sich, wenn, wie in
+Abbildung \ref{fig:real2_lane_crossing} zu sehen, die Mittellinie einer Spur innerhalb der Hülle einer
+anderen Spur liegt. Die Punkte $b_1$ und $b_2$ entsprechen hierbei den äußeren und inneren Grenzpunkten
+der Überschneidung der Mittellinie von $l_2$ mit der Hülle von $l_1$. Zur Bestimmung der Schnittmenge
+wird wieder die JTS Topology Suite eingesetzt.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{../resources/img/umsetzung/U2/lane_crossing}
+    \caption{Überlagerung zweier Spur-Abschnitte}
+    \label{fig:real2_lane_crossing}
+\end{figure}
+
+Zwei Spuren $l_1$ und $l_2$ kreuzen sich nicht nur, sondern überlagern sich, wenn der Abschnitt zwischen
+den Grenzpunkten $b_1$ und $b_2$ mindestens 10\% der Spurlänge ausmacht. Auf diese Weise werden die
+sich überlagernden Spur-Paare und die zugehörigen Schnittpunkte bestimmt.
+Aus jeder Überschneidung ergeben sich zwei Spur-Paare.
+Im Fall von Abbildung \ref{fig:real2_lane_crossing} wird einerseits $l_1$ von $l_2$ überlagert und andererseits
+$l_2$ von $l_1$.  
+Daher enthält Abbildung \ref{fig:real2_prim_and_sec_lanes} b) beispielsweise vier sich überlagernde Spur-Paare
+(blau-grau) und zwei sich kreuzende Paare (grau-grau).
+
+Nachdem auf die oben beschriebene Weise die sich überlagernden Spur-Paare bestimmt wurden, wird anschließend
+entschieden, welche Spur der Paare partitioniert wird und welche erhalten bleibt. Zuerst wird hierzu
+überprüft, ob es sich bei einer der Geometrien um eine primäre Fahrspur handelt. Ist dies der Fall, so
+bleibt diese vollständig. Existiert in einem Paar keine primäre Spur, so wird das Krümmungsverhalten der Spuren
+um ihren Schnittpunkt herum untersucht. Das Ziel ist es, jene Spur, welche eine stärker Krümmung besitzt,
+zu partitionieren. Es handelt sich bei ihr mit höherer Wahrscheinlichkeit um eine Abbiegespur et cetera,
+welche aus einer geraden Spur hervorgeht oder in eine solche übergeht. Der Algorithmus zur Auswahl
+der gekrümmteren Spur ist in Listing \ref{lst:pseudo_selectMoreCurvy} beschrieben.
+\begin{lstlisting}[caption=Pseudocode Auswahl gekrümmtr Fahrspur, language=Pseudo, label=lst:pseudo_selectMoreCurvy]
+algorithm selectMoreCurvyLane:
+  input:  lane-geo: l1, lane-geo: l2, boundPoints: bounds
+  output: l1 or l2 based on curviness around bounds
+
+  innerBoundPoint := select inner bound point based on distance
+                     from b1 and b2 to the edges of l1
+
+  l1Subset := get subset of l1 around innerBoundPoint (length 30 points)
+  l2Subset := get subset of l2 around innerBoundPoint (length 30 points)
+
+  l1SubCurvMea := estimate curvature of l1Subset 
+  l2SubCurvMea := estimate curvature of l2Subset 
+
+  if l1SubCurvMea >= l2SubCurvMea then
+    return l1
+  else
+    return l2
+  end
+\end{lstlisting}
+
+Im Fall der sich überlagernden Spurpaare in Abbildung \ref{fig:real2_lane_crossing} ist $b_2$ der \textit{innerBoundPoint}.
+Zur Bestimmung der Krümmung einer Fahrspur in einem Bereich, siehe Listing \ref{lst:pseudo_selectMoreCurvy}
+Zeile 8 + 9, wird der Winkel $\varphi$ zwischen den Richtungsvektoren des Anfang und Endes der Teilspur berechnet.
+Er ergibt sich anhand Gleichung \ref{eq_angle_skalar}. Auf Basis dieses einfachen Krümmungsmaßes wird entschieden,
+welche der zwei sekundär-Spuren partitioniert wird.
+
+\begin{ceqn}
+\begin{align}
+\label{eq_angle_skalar}
+    \varphi=\arccos \frac{\vec a \cdot \vec b}{|\vec a| |\vec b|}
+\end{align}
+\end{ceqn}
+
+Nachdem, auf die oben beschriebene Weise, alle zu teilenden Spuren und die zugehörigen Grenzpunkte
+bestimmt wurden, folgt die eigentliche Partitionierung. Aus den Spur-Geometrien werden alle Bereiche
+entfernt, welche zwischen den zwei Grenzpunkten einer Überlagerung liegen. In Abbildung \ref{fig:real2_lane_crossing}
+wird so beispielsweise der rot gekennzeichnete Bereich der Spur $l_2$ zwischen $b_1$ und $b_2$ entfernt.
+
+Abbildung \ref{fig:real2_results_partitioning} zeigt das Ergebnis der Spur-Partitionierung im Fall des
+Neckartor Datensatzes. Es wurden alle Spur-Überlagerungen entfernt.
+
+\begin{figure}[H]
+    \centering
+    \subfloat[]{{
+        \includegraphics[align=c, width=0.4\linewidth]{../resources/img/umsetzung/U2/partitionedLanes}
+    }}
+    \qquad
+    \subfloat[]{{
+        \includegraphics[align=c, width=0.45\linewidth]{../resources/img/umsetzung/U2/result_lanePartitioned_Screenshot}
+    }}
+    \caption{Plot partitionierte Spur-Geometrien a), Ergebnis in der TrackerApplication b)}
+    \label{fig:real2_results_partitioning}
 \end{figure}

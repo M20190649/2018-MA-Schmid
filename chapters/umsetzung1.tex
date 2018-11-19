@@ -456,7 +456,7 @@ Wenn das Zahlmaß, wie oben dargestellt, rekursiv implementiert wird, liegt die 
 bei $O(2^n)$, was für den Vergleich einer größeren Anzahl von Trajektorien nicht geeignet ist. Die Performance
 kann auf $O(m\ n)$ verbessert werden, indem das Maß mit Hilfe von dynamischer Programmierung und \textit{Memoization}
 umgesetzt wird. Der sich so ergebende Algorithmus ist in Listing \ref{lst:pseudo_LCSS} aufgeführt.
-\begin{lstlisting}[caption=Pseudocode LCSS Bestimmung, language=Pseudo, label=lst:pseudo_LCSS]
+\begin{lstlisting}[caption=Pseudocode LCSS Bestimmung, language=Pseudo, label=lst:pseudo_LCSS] %TODO: evtl entfernen
 algorithm LCSS:
   input:  trajectory: t1, trajectory: t2, epsilon, deltaFac
   output: LCSS distance between t1 and t2
