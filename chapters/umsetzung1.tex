@@ -9,9 +9,6 @@ werden die verschiedenen Schritte zur Bereinigung und Vorverarbeitung der Daten 
 in dieser Arbeit zum Einsatz kommen. Schlussendlich folgt die Erläuterung der eigentlichen Clusteranalyse.
 Hier werden die verschiedenen untersuchten Ansätze vorgestellt und ihre Ergebnisse diskutiert.
 
-Die \textit{TrackerApplication} ist in Java und Scala implementiert. Ihre Benutzeroberfläche basiert
-auf JavaFX. Das in dieser Arbeit erstellte Modul \textit{Spurerkennung} wird komplett mit Scala umgesetzt.
-
 \section{Trajektorie-Definition}
 
 Die Ergebnisse der Fahrzeugverfolgung (siehe Abschnitt \ref{sec:position_extraction}) werden
@@ -28,7 +25,7 @@ und Dimensions-Informationen abgerufen werden. Diese werden für jedes Frame, we
 und End-Frame des Objektes liegt, bestimmt.
 
 Da für die Ableitung von Fahrspuren aus Trajektorien lediglich die positionsbezogenen Eigenschaften
-der Fahrzeuge relevant sind, werden Bewegungbahnen in dieser Arbeit über jene definiert.
+der Fahrzeuge relevant sind, werden Bewegungbahnen in dieser Arbeit nur über jene definiert.
 Geschwindigkeit, Beschleunigung und Dimension der Fahrzeuge wird in der Clusteranalyse nicht berücksichtigt.
 Abbildung \ref{fig:real_trajectory_classDia} zeigt den Aufbau einer Trajektorie im Modul \textit{Spurerkennung}.
 
@@ -43,7 +40,7 @@ Die Felder \textit{id} und \textit{objectClass} werden aus dem der Trajektorie z
 übernommen.
 Die Positionen eines Fahrzeugs werden in Form von 2D-Welt-Koordinaten (siehe Abschnitt \ref{sec:position_extraction})
 in \textit{positions} gespeichert und die Anzahl der Koordinaten zusätzlich in \textit{pointLength}.
-Die Sequenz \textit{distToStart} enthält für jeden Punkt der Bewegungsbahn die Distanz zum Start der Trajektorie in Metern.
+Die Sequenz \textit{distToStart} enthält für jeden Punkt der Bewegungsbahn dessen Distanz zum Start der Trajektorie in Metern.
 Die Werte ergeben sich aus Formel \ref{eq_real_distToStart}, wobei $p_n$ dem $n$-ten Punkt in der Trajektorie entspricht
 und $dist$ der euklidschen Distanz zwischen zwei Punkten.
 
@@ -65,7 +62,7 @@ Zuvor enthält es keinen Wert.
 % TODO: Evtl Bilder und Beschreibung austauschen
 Zur Untersuchung der Fahrzeugtrajektorien ist es hilfreich diese zu visualisieren. Abbildung \ref{fig:real_trajs_raw_neckartor}
 zeigt so beispielsweise 1240 Trajektorien, welche aus einer Aufnahme des Stuttgarter Neckartors extrahiert wurden.
-In Abbildung \ref{fig:real_neckartor} ist ein Ausschnitt der entsprechenden Aufnahme zu sehen.
+In Abbildung \ref{fig:real_neckartor} ist ein Bild der entsprechenden Aufnahme zu sehen.
 
 \begin{figure}[H]
 \centering
@@ -88,8 +85,9 @@ bewegenden Autos im oberen Bereich der Aufnahme ins Auge. Diese dürfen nicht in
 Bei genauerer Untersuchung der Trajektorien zeigen sich weitere Probleme, welche das Clustering negativ
 beeinflussen würden. Zwei sind in nachfolgender Abbildung dargestellt.
 \ref{fig:real_defects_trajectories} a) zeigt, wie Fahrzeuge Punktwolken beim Stilstand vor Lichtsignalanlagen bilden.
-In \ref{fig:real_defects_trajectories} b) wird deutlich, dass in manchen Bereichen sehr viele Trajektorie-Unterbrechungen
-auftreten. Hier wird die Straße üblicherweise von Bäumen, Brücken et cetera überlagert.
+Abbildung \ref{fig:real_defects_trajectories} b) veranschaulicht, dass in manchen Bereichen sehr viele Trajektorie-Unterbrechungen
+auftreten. In diesen Bereichen werden die Fahrbahnen üblicherweise von Bäumen, Brücken et cetera überlagert, wodurch
+die Fahrzeugverfolgung unterbrochen wird.
 
 \begin{figure}[H]
     \centering
@@ -111,10 +109,10 @@ Um von diesen und weiteren Effekten bei der Clusteranalyse nicht beeinflusst zu 
 \label{sec:realisation_preprocessing}
 
 Die verschiedenen Schritte, welche zur Vorverarbeitung und Bereinigung der Roh-Trajektorien angewandt werden,
-sind in diesem Abschnitt geschildert.
+sind in diesem Abschnitt erläutert.
 
 Das primäre Ziel der Vorverarbeitung ist es, Ausreißer aus der
-Trajektorie-Menge zu entfernen, welche das Ergebnis der Clusteranalyse negativ beeinflussen könnten.
+Trajektorie-Menge zu entfernen, welche das Ergebnis der Clusteranalyse negativ beeinflussen würden.
 Idealerweise sollen nur jene Trajektorien beibehalten werden, welche eine komplette Bewegung eines
 Fahrzeugs auf einem bestimmten Straßenabschnitt repräsentieren. Anhand dieser Trajektorien kann
 anschließend die Geometrie der realen Fahrspuren ermittelt werden. Ausreißer wie stehende oder unterbrochene Trajektorien
@@ -131,16 +129,16 @@ aufgeführt. Die einzelnen Schritte und ihr Hintergrund werden anschließend noc
 \end{enumerate}
 
 \subsection{Resampling von Trajektorien auf minimale Punktdistanz}
-Der erste Vorverarbeitungsschritt reduziert die Anzahl der Koordinaten, welche eine Bewegungsbahn beschreiben, erheblich
+Der erste Vorverarbeitungsschritt reduziert die Anzahl der Koordinaten, welche eine Bewegungsbahn beschreiben, erheblich,
 ohne dabei jedoch wichtige Informationen zu verlieren. Insbesondere dann, wenn sich Fahrzeuge mit niedrigen
-Geschwindigkeiten bewegen oder teilweise von Ampeln et cetera. stehen, bestehen die Roh-Trajektorien aus sehr vielen
-Punkten, welche oft beinahe identische Positionsinformationen darstellen, das heist nur sehr geringe
+Geschwindigkeiten bewegen oder teilweise vor Ampeln et cetera stehen, bestehen die Roh-Trajektorien aus sehr vielen
+Punkten, welche beinahe identische Positionsinformationen darstellen, das heist nur sehr geringe
 Abstände voneinander haben. Für die Beschreibung einer Bewegungsbahn ist diese Punktdichte nicht notwendig
 und sogar kontraproduktiv, da sie die Performance der nachfolgenden Schritte stark erhöht. Hiervon ist insbesonders
 die Clusteranalyse betroffen.
 
 Aus diesen Gründen werden im ersten Vorverarbeitungsschritt Trajektorien auf eine minimale Punktdistanz
-von $0.5\ m$ gebracht. Der hierzu verwendete Algorithmus ist in Listing \ref{lst:pseudo_resampling} dargestellt.
+von $1.5\ m$ gebracht. Der hierzu verwendete Algorithmus ist in Listing \ref{lst:pseudo_resampling} dargestellt.
 Er verwirft alle aufeinanderfolgende Punkte, welche von einem Referenzpunkt weniger als den geforderten Abstand haben.
 \begin{lstlisting}[caption=Pseudocode Trajektorie Resampling, language=Pseudo, label=lst:pseudo_resampling]
 algorithm resampleTrajectory:
@@ -151,7 +149,7 @@ algorithm resampleTrajectory:
     nextPoint := Head(oldTrajPoints)
     remPoints := Tail(oldTrajPoints)
 
-    if dist(lastRefPoint, nextPoint) < 0.5:
+    if dist(lastRefPoint, nextPoint) < 1.5:
       resampleTrajectory(lastRefPoint, newTrajPoints, remPoints)
     else:
       resampleTrajectory(nextPoint, newTrajPoint ++ nextPoint, remPoints)
@@ -162,25 +160,26 @@ algorithm resampleTrajectory:
 \end{lstlisting}
 
 Nach Anwendung des Algorithmus ist im Fall der Neckartor Aufnahme die durchschnittliche Punktlänge
-der Trajektorien von 1094 Koordinaten auf 160 gesunken. Die realen Längen der Bewegungsbahnen bleiben
-hingegen nahezu gleich. Die Punktwolken, welche stehende Fahrzeuge erzeugen, werden mittels dieses
+der Trajektorien von 1094 Koordinaten auf 65 gesunken. Die realen Längen der Bewegungsbahnen bleiben
+hingegen nahezu identisch. Die Punktwolken, welche stehende Fahrzeuge erzeugen, werden mittels dieses
 Schritts ebenfalls entfernt (siehe Abb. \ref{fig:real_result_2nd_Prepro} b)).
 
-
 \subsection{Entfernung zu kurzer Trajektorien}
-Der zweite Verarbeitungsschritt ist sehr einfach aber dennoch sehr effektiv, da mit seiner Hilfe viele
+Der zweite Verarbeitungsschritt ist einfach aber sehr effektiv, da mit seiner Hilfe viele
 Trajektorien von beispielsweise stehenden Fahrzeugen oder kurz auftretende Tracking-Fehler entfernt
-werden können. Hierzu werden die Längen aller Trajektorien überprüft und jene entfernt, welche
-unter bestimmten Grenzwerten liegen. Die hierzu verwendete boolesche Überprüfung ist in Gleichung
-\ref{eq_isShortTrajectory} gegeben. Die Grenzwerte wurden experimentell bestimmt und lieferten für die
-Testaufnahmen gute Ergebnisse.
+werden können. Hierzu wird die Länge aller Trajektorien überprüft und jene entfernt, welche
+unter einem bestimmten Grenzwert liegen. Die hierzu verwendete boolesche Überprüfung ist in Gleichung
+\ref{eq_isShortTrajectory} gegeben.
+Als Standardeinstellung für $minPntLength$ wurde experimentell der Wert $20$ bestimmt, da er für alle
+Testaufnahmen gute Ergebnisse liefert. Bei Bedarf kann der Anwender den Parameter beim Start des Spurerkennungs-Job
+in der Oberfläche anpassen.
 
 \begin{ceqn}
 \begin{align}
 \label{eq_isShortTrajectory}
     isShortTrajectory(t) =
     \begin{cases}
-        1 & \text{if } t.pointLength < 50 \lor t.realLength < 10.0 \\
+        1 & \text{if } t.pointLength < minPntLength \\
         0 & \text{otherwise}
     \end{cases}
 \end{align}
@@ -203,7 +202,9 @@ kleiner Tracking-Fehler wurden entfernt.
     \label{fig:real_result_2nd_Prepro}
 \end{figure}
 
+
 \subsection{Entfernung unterbrochener Trajektorien}
+% TODO: Anpassen Abschnitt wenn Algo. weiter verwendet wird
 
 Nachdem die ersten beiden Verarbeitungsschritte bereits stehende Trajektorien entfernt haben,
 müssen nun noch unterbrochene Verfolgungen ausgefiltert werden. Hierzu wird angenommen, dass komplette
@@ -221,15 +222,15 @@ veranschaulicht das Prinzip der Szenen Rand- und Innenbereiche.
 
 Die Werte $\Delta X$ und $\Delta Y$ entsprechen 10\% der Video-Breite beziehungsweise Höhe.
 Ob sich eine Punkt $p$ innerhalb des Szenenrandes befindet, wird mit Hilfe von Formel \ref{eq_inSceneFringe} überprüft.
-Hierbei entsprechen $p.sX$ und $p.sY$ den Bildkoordinaten des Punktes $p$.
+Hierbei entsprechen $p.iX$ und $p.iY$ den Bildkoordinaten des Punktes $p$.
 
 \begin{ceqn}
 \begin{align}
 \label{eq_inSceneFringe}
     inSceneFringe(p) =
     \begin{cases}
-        1 & \text{if } (p.sX < \Delta X \lor (p.sX > (vWidth - \Delta X))) \\
-          &            \lor\ ((p.sY < \Delta Y) \lor (p.sY > (vHeight - \Delta Y))) \\
+        1 & \text{if } (p.iX < \Delta X \lor (p.iX > (vWidth - \Delta X))) \\
+          &            \lor\ ((p.iY < \Delta Y) \lor (p.iY > (vHeight - \Delta Y))) \\
         0 & \text{otherwise}
     \end{cases}
 \end{align}
@@ -238,13 +239,12 @@ Hierbei entsprechen $p.sX$ und $p.sY$ den Bildkoordinaten des Punktes $p$.
 Nach Ausführung dieses Filter-Schrittes, besteht die Menge der übrigen Trajektorien grundsätzlich nurnoch
 aus kompletten Bewegungsbahnen.
 
-Dieser Vorverarbeitungsschritt beruht auf der Annahme, dass für eine Fahrspur neben unterbrochenen auch
+Dieser Schritt beruht auf der Annahme, dass für eine Fahrspur neben unterbrochenen auch
 ununterbrochene Trajektorien vorliegen, welche eine vollständige Bewegung auf der Spur beschreiben.
 Sind alle Trajektorien einer Fahrspur aufgrund einer Verdeckung in der Aufnahme unterbrochen, werden
 diese durch das Verfahren vollständig entfernt und eine Extraktion der Spur ist nicht möglich.
 
 \subsection{Anpassung der Trajektorien bei niedrigen Aufnahmewinkeln}
-
 
 % Endnotes:
 %   Problematisch auch Spurwechsel. Hier schwer auszufiltern, da sie Ausreißer in Bezug auf eine Spur darstellen
@@ -265,11 +265,11 @@ werden, folgt nun die Erläuterung der verwendeten Ansätze zur Clusteranalyse d
 
 Als erster Ansatz für die Clusteranalyse wurde das von \cite[]{Atev2010} vorgestellte Verfahren untersucht.
 Es wurde gewählt, da es sowohl in der Arbeit von Atev et al. selbst, sowie auch in\cite[]{Morris2009}, gute Ergebnisse
-bei der Clusteranalyse brachte.
+bei der Clusteranalyse lieferte.
 Das Verfahren beruht auf der in \cite[]{Atev2006} vorgestellten modifizierten Hausdorff Distanz und dem
 Spectral-Clustering-Algorithmus. Die Grundlagen des Distanzmaßes wurden bereits in Abschnitt
 \ref{sec:atev_et_al} beschrieben. Nachfolgend wird zuerst genauer beschrieben, wie die
-modifizierte Hausdorff Distanz berechnet wird und in dieser Arbeit implementiert wurde. Anschließend
+modifizierte Hausdorff Distanz berechnet wird. Anschließend
 wird auf den eingesetzten Spectral-Cluster-Algorithmus und die erzielten Ergebnisse eingegangen.
 
 \subsubsection{Das Verfahren}
@@ -306,7 +306,7 @@ Diese Längeninformationen sind beide in der verwendeten Trajektorie-Definition 
 \end{ceqn}
 
 Die Nachbarschaften werden um den Referenzpunkt $q \in Q$ gebildet, welcher die selbe relative Position
-in $Q$ besitzt wie $p \in P$. Der Index dieses Punktes ergibt sich aus dem Mapping $C_{P,Q}$ wie folgt:
+in $Q$ besitzt wie $p$ in $P$. Der Index dieses Punktes ergibt sich aus dem Mapping $C_{P,Q}$ wie folgt:
 
 \begin{ceqn}
 \begin{align}
@@ -354,7 +354,7 @@ Für eine feste Clusteranzahl $k$ kann er wie folgt zusammengefasst werden:
 Ein großer Nachteil des Spectral-Clustering-Ansatzes ist es, dass bei seiner Verwendung üblicherweise die Clusteranzahl $k$
 bereits im vorraus bekannt und angegeben sein muss. Aus diesem Grund verwenden Atev et al. ein Schätzmaß für
 $k$, welches darauf abzielt, die Verzerrung des in Schritt 5) eingesetzten k-Means Algorithmus zu minimieren.
-Hierzu wird die k-Means Clusteranalyse mit mehreren $k$'s zwischen Grenzen $kMin$ und $kMax$ durchgeführt
+Hierzu wird die k-Means Clusteranalyse mit mehreren $k$'s zwischen den Grenzen $kMin$ und $kMax$ durchgeführt
 und anschließend jeweils ein Verzerrungs-Maß $\rho_k$ berechnet, welches angibt, wie gut die gefundenen Centroids
 die Datenpunkte beschreiben. Für $k$ wird daher jener Wert gewählt, welcher das
 kleineste $\rho_k$ erzeugt. Diese Methode zur Schätzung der Clusteranzahl wurde auch in der vorliegenden
@@ -382,18 +382,19 @@ Zur Bestimmung von $\sigma$ kamen die Grenzwerte $stdMin = 0.5$ und $stdMax = 10
     \label{fig:real_results_atev1}
 \end{figure}
 
-Die ersten Untersuchungen und Tests des Ansatzes zeigten sehr schnell Schwächen und Grenzen des Vorgehens auf.
-Eine Problem sind zum einen die vielen Parameter und Grenzwerte des Verfahrens, welche nicht alle intuitiv
-verständlich sind und vom Anwender bestimmt werden müssen. Neben den oben aufgeführten Parametern, gibt es
+% Die ersten Untersuchungen und Tests des Ansatzes zeigten sehr schnell Schwächen und Grenzen des Vorgehens auf.
+Ein erstes Problem des Verfahrens sind die vielen Parameter und Grenzwerte, welche vom Anwender bestimmt werden müssen und
+nicht alle intuitiv verständlich sind.
+Neben den oben aufgeführten Parametern, gibt es
 noch weitere, welche bei der Bestimmung der Clusteranzahl zum Einsatz kommen. Die Parameter wurden
-zuerst mit geschätzten, sinnvollen Werten initialisiert und anschließend über verschiedene Tests hinweg optimiert.
+zuerst mit geschätzten, sinnvollen Werten initialisiert und anschließend über verschiedene Iterationen hinweg verbessert.
 Eine weitere Optimierung der Parameter und somit der erzielten Ergebnisse wäre sicherlich möglich gewesen,
-hierauf wurde aber aufgrund der weiteren Probleme verzichtet.
+hierauf wurde aber aufgrund anderer existierender Schwierigkeiten verzichtet.
 
 Problematisch ist das Vorgehen auch, da der Spectral-Cluster-Algorithmus nicht mit Ausreißern umgehen kann,
-welche trotz der Vorverarbeitung der Trajekorien immer noch in den Datensätzen vorhanden seien können.
+welche trotz der Vorverarbeitung der Trajektorien immer noch in den Datensätzen vorhanden seien können.
 In Abbildung \ref{fig:real_results_atev1} a) und b) ist beispielsweise die einzelne Fahrspur im oberen, rechten Bereich
-einem anderen Spur-Cluster zugeordnet, was nicht korrekt ist.
+einem Spur-Cluster zugeordnet, was nicht korrekt ist.
 Diese falsche Zuordnung der Ausreißer, würde die Bestimmung der Spur-Geometrien im nächsten Schritt des
 Algorithmus aus \ref{fig:concept_laneDetection_activity} erheblich erschweren.
 
@@ -402,10 +403,11 @@ der Clusteranzahl $k$. Im Fall des Datensatzes aus Abbildung \ref{fig:real_resul
 statt korrekterweise $k = 6$ geschätzt. Hieraus ergibt sich, dass in a) zwischen zwei Fahrspuren nicht richtig unterschieden wird.
 In b) wurde die Clusteranzahl händisch spezifiziert, was in einer korrekten Gruppierung der Fahrspuren resultierte.
 
+% TODO: Evtl. Zeiten anpassen (neu durchführen mit neuer Resampling-Distanz)
 Ausschlaggenend dafür, dass der Ansatz von Atev et al. nicht weiter verfolgt und optimiert wurde, war schlussendlich
 jedoch die Performance der Clusteranalyse. Für den Trajektorie-Datensatz aus Abbildung \ref{fig:real_results_atev1},
 welcher nach der Vorverarbeitung nur 132 Bewegungsbahnen beinhaltet, benötigt die Clusteranalyse bereits über
-90 Sekunden. Für einen Datensatz mit über 400 Trajektorien, betrug die Verarbeitungsdauer über 8 Minuten.
+90 Sekunden. Für einen Datensatz mit über 400 Trajektorien, beträgt die Verarbeitungsdauer über 8 Minuten.
 Die schlechte Performance lässt sich primär auf das aufwendige Distanzmaß, aber auch auf die mehrfache
 Durchführung des k-Means Algorithmus zurückführen.
 
@@ -421,7 +423,7 @@ den Untersuchungen schlechte Ergebnisse lieferte, wurde nach neuen Ansätze gesu
 Kriterien für diese waren primär, dass sie mit Ausreißern sinnvoll umgehen können, weniger Parametrisierung
 benötigen beziehungsweise diese intuitiver ist, und sie eine bessere Performance besitzen.
 Aufgrund dieser Anforderungen wurde untersucht, inwiefern sich der DBSCAN-Cluster-Algorithmus
-in Kombination mit dem LCSS-Distanzmaß für die Clusteranalyse von Trajektoriendaten eignet.
+in Kombination mit dem LCSS-Distanzmaß für die Clusteranalyse von Trajektorie-Daten eignet.
 
 Vorteil des dichte-basierten DBSCAN-Algorithmus, dessen Funktionsweise bereits in Abschnitt
 \ref{sec:grund_density_clustering} erläutert wurde, ist, dass er Ausreißer erkennt und die Anzahl der
@@ -437,7 +439,6 @@ Die Grundgleichung des LCSS Distanzmaßes wurde, basierend auf \cite[]{Vlachos20
 
 \begin{ceqn}
 \begin{align*}
-\label{eq_lcss}
     LCSS_{\epsilon, \delta}(t_1, t_2) =
     \begin{cases}
         0 & \text{if } t_1 \text{ or } t_2 \in \emptyset \\
@@ -479,7 +480,7 @@ algorithm LCSS:
   return LCS(t1Len)(t2Len)
 \end{lstlisting}
 
-Der Parameter $\delta$ wird hier nicht, wie meist üblich, fest definiert, sondern er ergibt sich als
+Der Parameter $\delta$ wird in dieser Implementierung nicht, wie meist üblich, fest definiert, sondern er ergibt sich als
 ein Teil der Länge der kurzeren Trajektorie (siehe Lst. \ref{lst:pseudo_LCSS} Zeile 7).
 Als Distanzfunktion für das LCSS Zählmaß, wird in dieser Arbeit das von \cite[]{Vlachos2002} definierte
 Maß aus Gleichung \ref{eq_lcss_distance} verwendet:
@@ -491,12 +492,12 @@ Maß aus Gleichung \ref{eq_lcss_distance} verwendet:
 \end{ceqn}
 
 Auf die in Abschnitt \ref{sec:relw_vlachos} vorgestellte Erweiterung des Distanzmaßes wird verzichtet,
-da es nicht gewünscht ist, dass formähnliche aber im Raum verschobene Trajektorien kleine Distanzen besitzen.
+da es nicht gewünscht ist, formähnliche aber im Raum verschobene Trajektorien einem Cluster zuzuordnen.
 
 Der DBSCAN Cluster-Algorithmus wurde in diesem Fall nicht selbst implementiert. Es wurde die Implementierung
-der \textit{Statistical Machine Intelligence and Learning Engine}\footnote{Smile Bibliothek: \url{https://haifengl.github.io/smile/index.html}}
-(\textit{Smile}) Bibliothek verwendet. Der dort angebotene DBSCAN Algorithmus kann beliebige Datenobjekte, unter Verwendung eines
-vom Anwender gestellten Distanzmaßes, gruppieren. Zusätzlich muss lediglich die Größe der gewünschten
+der \textit{Statistical Machine Intelligence and Learning Engine-}\footnote{Smile Bibliothek: \url{https://haifengl.github.io/smile/index.html}}
+(\textit{Smile-}) Bibliothek verwendet. Der dort angebotene DBSCAN Algorithmus kann beliebige Datenobjekte, unter Verwendung eines
+vom Anwender definierten Distanzmaßes, gruppieren. Zusätzlich muss lediglich die Größe der gewünschten
 $\epsilon$-Nachbarschaft und \textit{MinPts} definiert werden (siehe Abschnitt \ref{sec:grund_density_clustering}).
 
 \subsubsection{Auswertung des Verfahrens}
@@ -504,19 +505,22 @@ $\epsilon$-Nachbarschaft und \textit{MinPts} definiert werden (siehe Abschnitt \
 
 In Abbildung \ref{fig:real_results_dbscan_lcss} sind die Cluster-Ergebnisse des beschriebenen Verfahrens
 dargestellt. Diese Resultate ergeben sich unter Verwendung der folgenden Parameter:
-$\epsilon_{LCSS} = 1.0$, $\delta = 0.1$, $\epsilon_{DBSCAN} = 0.4$ und $minPts = 5$.
+$\epsilon_{LCSS} = 1.5$, $\delta = 0.1$, $\epsilon_{DBSCAN} = 0.3$ und $minPts = 5$.
 
-Die Bedeutung der Werte ist in diesem Fall leicht und intuitiv verständlich: Punkte auf einer Trajektorie
-dürfen maximal $1m$ voneinader entfernt sein und ihre Position sich um maximal $\delta * minTraLength$ unterscheiden.
+Die Bedeutung der Werte ist in diesem Fall leicht und intuitiv verständlich: Punkte zweier Trajektorien
+dürfen maximal $1.5m$ voneinader entfernt sein und ihre Position sich um maximal $\delta * minTraLength$ unterscheiden.
 Sind diese Bedingungen erfüllt, gelten zwei Trajektorie-Punkte als übereinstimmend. Ein Cluster muss zudem aus mindestens
-5 Trajektorien bestehen und die Differenzen der Trajektorie-Distanzen untereinander dürfen nicht größer als 0.4 sein.
+5 Trajektorien bestehen und die Differenzen der Trajektorie-Distanzen im Cluster untereinander dürfen nicht größer als 0.3 sein.
+Für $minPts$ gilt grundsätzlich: Je stärker sich Fahrspuren überlagern, umso kleiner muss der gewählte Wert sein, da
+ein kleiner Wert für eine striktere Gruppierung der Fahrspuren sorgt.  
 
 Die Ergebnisse aus Abbildung \ref{fig:real_results_dbscan_lcss} a) und b) zeigen, dass bei Verwendung
 dieses Verfahrens zwischen allen Fahrspuren korrekt unterschieden wird und die einzelnen Trajektorien
 richtig gruppiert werden. Zudem funktioniert die Bestimmung der Clusteranzahl zuverlässig.
 Auch die Performance der Clusteranalyse konnte unter Verwendung des DBSCAN Algorithmus und der LCSS-Distanz
-verbessert werden. Die benötigte Zeit für den Autobahn-Datensatz sank auf circa 15 Sekunden und die des
-Kreuzung-Datensatz auf etwa 85 Sekunden, was in diesem Anwendungsfall akzeptabel ist.
+verbessert werden. Die benötigte Zeit für den Autobahn-Datensatz sank auf circa 6 Sekunden und die des
+Kreuzung-Datensatz auf etwa 30 Sekunden. Für den vorliegenden Anwendungsfall eignet sich der Ansatz daher
+grundlegend gut.
 
 \begin{figure}[H]
     \centering
@@ -539,6 +543,7 @@ der zwei Abbiegespuren in der oberen linken und unteren rechten Ecke (vergleiche
 Um diese weiterhin erkennen zu können, wurde ein extra Verarbeitungsschritt eingeführt, welcher in Abschnitt
 \ref{sec:real_detect_turning_lane} beschrieben wird.
 
+% TODO: Andere Cluster-Plots in Anhang
 Grundsätzlich überzeugten allerdings die Ergebnisse der Clusteranalyse. Die Qualität des Ansatzes könnte auch
 durch Anwendung auf weitere Datensätze verifiziert werden. Die nachfolgend beschriebenen Schritte der Spurerkennung
 basieren daher auf den Ergebnissen der hier vorgestellten Cluster-Methode.
@@ -554,7 +559,7 @@ gemeinsamen Spur -- der Abbiegespur -- beginnen, sich dann jedoch aufteilen und 
 Die Trajektorien haben aus diesem Grund, trotz anfänglich identischem Verlauf, zu hohe Distanzen zueinander, um
 als ein Cluster identifiziert zu werden. Hinzu kommt, dass die Anzahl der Fahrzeuge, welche eine Abbiegespur
 benutzen, häufig nicht hoch genug ist, damit eine der Abbiege-Varianten ein Cluster formt. 
-In Abbildung \ref{fig:real_turning_lane} ist beispielhaft eine Abbiegespur der Neckartor-Kreuzung und
+In Abbildung \ref{fig:real_turning_lane} a) und b) sind beispielhaft eine Abbiegespur der Neckartor-Kreuzung und
 die dazugehörigen Trajektorien abgebildet. Anhand der Straßentopologie und der Trajektorien wird deutlich,
 dass sich die Fahrzeuge nach dem abbiegen auf drei Fahrstreifen verteilen.
 

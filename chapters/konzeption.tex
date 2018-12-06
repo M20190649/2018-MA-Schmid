@@ -83,6 +83,7 @@ Das Modul definiert prim채r einen Algorithmus, welcher aus Fahrzeuginformationen
 oder Geschwindigkeit von Fahrzeugen, Fahrspuren ableitet. Die Grundfunktionsweise dieses Algorithmus
 ist in Abbildung \ref{fig:concept_laneDetection_activity} in Form eines Aktivit채tsdiagrams dargestellt.
 
+% TODO: Add LaneOptimization Step
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\linewidth]{../resources/img/konzeption/activity_laneDetection}
@@ -90,9 +91,11 @@ ist in Abbildung \ref{fig:concept_laneDetection_activity} in Form eines Aktivit�
     \label{fig:concept_laneDetection_activity}
 \end{figure}
 
-Die einzelnen Schritte des Algorithmus werden im \textit{Spurerkennungs}-Modul der \textit{TrackerApplication}
-als einzelne Komponenten implementiert.
+Die einzelnen Schritte des Algorithmus werden im \textit{Spurerkennungs}-Modul als einzelne Komponenten
+implementiert.
+Die \textit{TrackerApplication} ist in Java und Scala implementiert. Ihre Benutzeroberfl채che basiert
+auf JavaFX. Das in dieser Arbeit erstellte Modul wird komplett mit Scala umgesetzt.
 
-Die nachfolgenden Umsetzungskapitel beschreiben, wie die einzelnen Schritte des Algorithmus aus
-Abbildung \ref{fig:concept_laneDetection_activity} konkret realisiert wurden und welche Probleme es hierbei
-zu 체berwinden galt.
+Die nachfolgenden Kapitel beschreiben, wie die einzelnen Schritte des Algorithmus aus
+Abbildung \ref{fig:concept_laneDetection_activity} realisiert werden und welche Probleme hierbei
+체berwunden werden m체ssen.
