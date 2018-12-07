@@ -61,8 +61,8 @@ Aus den in Abbildung \ref{fig:real2_clusters_pre_postpro} enthaltenen Clustern w
 mit Spurwechselvorgängen oder Abweichungen entfernt. Die Effektivität konnte auch durch die Anwendung
 auf andere Datensätze bestätigt werden.
 Wenn in einem Cluster viele Trajektorien Abweichungen von einer Spur besitzen, ist es möglich, dass der Algorithmus
-diese nicht vollständig entfernt. Eine geringe Anzahl von Abweichungen beziehungsweise kleine Ausreißer
-sind allerdings unproblematisch. 
+diese nicht vollständig entfernt. Bei einer geringen Anzahl von Abweichungen oder Ausreißer arbeitet
+er allerdings sehr zuverlässig. 
 
 \begin{figure}[H]
     \centering
@@ -71,10 +71,11 @@ sind allerdings unproblematisch.
     \label{fig:real2_clusters_post_postpro}
 \end{figure}
 
-Zu beachten ist auch, dass die Zeitkomplexität des Verfahrens bei großen Trajektorie-Clustern
+Zu beachten ist allerdings auch, dass die Zeitkomplexität des Verfahrens bei großen Trajektorie-Clustern
 nicht unerheblich ist. Dies ist auf die Komplexität des LCSS Distanzmaßes zurückzuführen.
 Bei der Untersuchung alternativer Vorgehensweise wurde allerdings klar, dass es grundlegend schwer ist,
-dieses Problem performant zu lösen. In \cite[]{Meng2018} werden hierzu diverse Distanz- und Dichte-basierte
+das Problem der Ausreißer-Erkennung performant zu lösen.
+In \cite[]{Meng2018} werden hierzu diverse Distanz- und Dichte-basierte
 Arbeiten vorgestellt und verglichen. Da diese alle allerdings nicht weniger komplex sind und häufig
 die verfolgten Ziele über die hier geforderten hinausgehen, wurde entschieden den oben beschriebenen Ansatz
 beizubehalten. Durch die Parallelisierung der Berechnung der mittleren Abstände konnte die Performance
@@ -84,7 +85,7 @@ des Ansatzes außerdem nochmals deutlich gesteigert werden.
 \label{sec:real2_define_lane_centerline}
 
 Nachdem die Trajektorie-Cluster nun weitestgehend von Fahrspurwechseln und anderen Abweichungen bereinigt
-wurden, beschreiben die verbleibenden Bewegungsbahnen eines Clusters idealerweise eine Fahrspur.
+wurden, beschreiben die verbleibenden Bewegungsbahnen eines Clusters eine Fahrspur.
 Anhand dieser Trajektorien können daher nun die Mittellinie der Spuren bestimmt werden.
 
 Die zu bestimmende Mittellinie verläuft durch die Mitte des entsprechenden
@@ -95,7 +96,7 @@ kleinste Summe der Distanzen zu allen anderen Trajektorien eines Clusters besitz
 da die so gefunden Trajektorie nicht über ihre komplette Länge in der Mitte des Clusters verlaufen muss.
 Auf eine Bestimmung der Mittellinie mittels linearer oder polynomialer Regression, wie beispielsweise in
 \cite[]{Chen2014} oder \cite[]{Melo2006},
-wurde ebenfalls verzichtet. Der Grund hierfür ist, dass einerseits die Komplexität der Fahrbahnverläufe
+wurde ebenfalls verzichtet. Der Grund hierfür ist, dass einerseits die Komplexität und Form der Fahrbahnverläufe
 nicht bekannt ist und andererseits das Erlernen der Spurrepräsentation zu aufwendig ist.
 
 Der in dieser Arbeit gewählte Ansatz zur Bestimmung der Spurmittellinien macht sich die von Atev et al.
@@ -120,6 +121,7 @@ algorithm calculateCenterline:
 
   return centerline
 \end{lstlisting}
+% TODO: keywords escapen
 
 Da die Form und der Verlauf von Trajektorien eines Clusters sich nur wenig unterscheiden, liefert dieses
 Vorgehen gute Ergebnisse. In Abbildung \ref{fig:real2_results_centerline_detection} a) ist beispielhaft
@@ -141,13 +143,82 @@ welche auf die oben beschriebene Weise bestimmt wurden, abgebildet.
     \label{fig:real2_results_centerline_detection}
 \end{figure}
 
-Die Mittellinien werden, da es sich bei ihnen ebenfalls nur um Sequenzen von 2D-Koordinaten handelt,
-als Trajektorie-Objekte repräsentiert (siehe Abbildung \ref{fig:real_trajectory_classDia}).
+Die Mittellinien werden, da es sich bei ihnen ebenfalls um Sequenzen von 2D-Koordinaten handelt,
+über Trajektorie-Objekte repräsentiert (siehe Abbildung \ref{fig:real_trajectory_classDia}).
+
+\section{Angleichung benachbarter Spur-Enden}
+% Grund hierfür (Besser für Analyse)
+% Bild vor und nach der Angleichung
+% Beschreibung Vorgehen
+    % Suche benachbarter Spurenden
+    % Bestimmung der am weitesten ausstehenden Spur
+    % orthogonal-projektion der anderen benachbarten Spuren auf Höhe der äußersten
+
+Bevor für jede Spurmittellinie eine Hülle definiert wird, welche die Geometrie der Fahrspur definiert,
+werden benachbarte Spur-Enden aneinander angeglichen. Diese sollen immer auf der selben Höhe beginnen
+beziehungsweise enden, um sie beispielsweise bei der Spurwechsel-Analyse besser vergleichen zu können.
+
+Benachbarte Fahrspuren können einen deutlich sichtbaren Versatz an ihren Anfängen
+und Enden besitzen, was beispielsweise in Abbildung \ref{fig:real2_lane_alignment} a) dargestellt ist. Diese Unterschiede entstehen
+primär, da Fahrzeuge am Rand der Aufnahme verschieden schnell erkannt werden und so deren Trajektorien
+unterschiedlich früh beginnen. Für das Angleichen der Spur-Enden sind grundlegend drei Schritte notwendig:
+Finden von benachbarten Enden, Bestimmung der längsten Spur im Bereich der Enden und schließlich das
+Angleichen aller Spuren auf die Höhe der vorher bestimmten ``äußersten'' Mittellinie.
+
+Gruppen benachbarter Spur-Enden werden auf rekursive Weise gefunden. Es wird eine Spur gewählt und im
+Bereich ihres Starts beziehungsweise Endes nach unmittelbaren Nachbarn gesucht. Das hierzu verwendete
+Verfahren ist in Abschnitt \ref{sec:real2_identify_parallel_lanes} beschrieben. Für jede der so gefundenen
+Nachbarspuren wird wiederum nach deren Nachbarn gesucht. Auf diese Weise ergibt sich eine Spur-Gruppe.
+
+Da das Weltkoordinaten-System in den verwendeten Aufnahmen keine feste Orientierung und keinen fixen Ursprung besitzt,
+kann die in einer Spur-Gruppe am weitesten außen liegende Spur nicht identifiziert werden, indem die
+Koordinaten der Start- oder Endpunkte der Spuren verglichen werden.
+Bestimmt wird die ``äußerste'' Mittellinie daher, indem durch jeden Endpunkt der Spuren einer Gruppe
+eine orthogonale Gerade gelegt wird. Die Spur deren zugehörige orthogonale Gerade die wenigsten Schnittpunkte
+mit anderen Spur-Mittellinien besitzt, liegt am weitesten außen. Abbildung \ref{fig:real2_lane_alignment_concept}
+veranschaulicht das Vorgehen.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{../resources/img/umsetzung/U2/LaneAlignment_concept}
+    \caption{Konzept der Spur-Enden-Angleichung}
+    \label{fig:real2_lane_alignment_concept}
+\end{figure}
+
+Die so bestimmte Gerade $g$ ist zudem gleichzeitig, die Linie, auf welche die anderen Spur-Endpunkte
+projiziert werden. Hierzu wird eine Orthogonalprojektion der Endpunkte auf die Gerade $g$ durchgeführt, welche
+in Gleichung \ref{eq_orthPro} definiert ist. $\vec r_0$ entspricht hierbei einem Stützvektor auf der Geraden $g$ und
+$\vec u$ dem Richtungsvektor.
+
+\begin{ceqn}
+\begin{align}
+\label{eq_orthPro}
+    P_g(\vec x) =  \vec r_0 + \frac{( \vec x - \vec r_0 ) \cdot \vec u}{\vec u \cdot \vec u} \, \vec u
+\end{align}
+\end{ceqn}
+
+Das Ergebnis der Spur-Angleichung ist in Abbildung \ref{fig:real2_lane_alignment} b) dargestellt.
+
+\begin{figure}[H]
+    \centering
+    \subfloat[]{{
+        \includegraphics[align=c, width=0.25\linewidth]{../resources/img/umsetzung/U2/normalCenterLines}
+    }}
+    \qquad \qquad
+    \subfloat[]{{
+        \includegraphics[align=c, width=0.25\linewidth]{../resources/img/umsetzung/U2/alignedCenterLines}
+    }}
+    \caption{Mittellinien ohne Angleichung a) und mit Angleichung b)}
+    \label{fig:real2_lane_alignment}
+\end{figure}
+
+Nachdem die Spurmittellinien auf die oben beschriebene Weise angeglichen wurden, werden anschließend
+Spurhüllen definiert.
 
 \section{Bestimmung der Spurhüllen}
 \label{sec:real2_define_lane_envelope}
 
-Nachdem im vorherigen Schritt die Mittellinien der Fahrspuren bestimmt wurden, wird nun für jede Spurlinie
+Nachdem die Mittellinien der Fahrspuren bestimmt und ihre Enden aneinander angeglichen wurden, wird nun für jede Spurlinie
 eine Hülle definiert. In folgendem Abschnitt wird beschrieben, wie diese erstellt werden.
 
 Die Spurhülle bestimmt die Dimension einer Fahrbahn. In dieser Arbeit verlaufen sie idealerweise entlang
@@ -162,8 +233,8 @@ Spurmittellinien und nutzt ihre relative Lage zueinander. Ansätze hierzu stamme
 
 Die grundlegende Idee, auf welcher die Bestimmung der Spurhüllen basiert, ist konzeptionell in Abbildung
 \ref{fig:real2_envelope_definition_concept} dargestellt.
-Für zwei parallel zueinander verlaufende Spuren $l_1$ und $l_2$ werden die Hüllen, über den Abstand zwischen
-ihren Mittellinien, bestimmt. Besitzen die Linien den Abstand $d$ zueinander, so beträgt die Breite
+Für zwei parallel zueinander verlaufende Spuren $l_1$ und $l_2$ werden die Hüllen über den Abstand zwischen
+ihren Mittellinien bestimmt. Besitzen die Linien den Abstand $d$ zueinander, so beträgt die Breite
 der Spuren ebenfalls $d$. Der Abstand $e_d$ zwischen einer Mittellinie und einer Hüll-Linie beträgt folglich
 $1/2\ d$.
 
@@ -191,13 +262,11 @@ Aufnahmen von einer statischen Kamera über einer Autobahn stammen, davon aus, d
 zueinander verlaufen. Da das in dieser Arbeit entwickelte Spurerkennungs-Modul mit unterschiedlichen
 Aufnahmen und Straßentopologien umgehen können muss, kann diese Annahme nicht getroffen werden.
 Nachfolgend werden die Schritte vorgestellt, welche angewandt werden, um in einer Menge von Spuren
-jene zu finden, welche parallel zueinander verlaufen, auf Basis dieser die Spurbreiten zu bestimmen und
-anschließend die Hüll-Linien zu definieren.
+jene zu finden, welche parallel zueinander verlaufen. Auf deren Basis werden anschließend die Spurbreiten bestimmt und
+die Hüll-Linien definiert.
 
 \subsection*{Identifikation paralleler Fahrspuren}
-% beschreibung finden benachbarter Fahrspuren (Vorauswahl)
-% Beschreibung bestimmung Paralleler Fahrspuren
-%   mit PseudoCode?!
+\label{sec:real2_identify_parallel_lanes}
 
 Um in einer Menge von Fahrspuren, welche über Mittellinien repräsentiert werden, jene zu finden, die
 parallel zueinander verlaufen, werden in einem ersten Schritt benachbarte Spur-Paare gesucht.
@@ -213,9 +282,10 @@ Um auch besonders breite benachbarte Spur-Paare identifizieren zu können, wurde
 Die auf diese Weise gefundenen Trajektorie-Paare starten oder enden als benachbarte Spuren.
 Der Algorithmus welcher prüft, ob zwei Spuren tatsächlich parallel zueinander verlaufen, ist in Listing
 \ref{lst:pseudo_checkParallel} beschrieben. Die zu vergleichenden Mittellinien werden jeweils in eine
-Reihe von Richtungsvektoren umgewandelt. Anschließend werden die paarweisen Differenzen zwischen den Vektoren
+Reihe von Richtungsvektoren umgewandelt. Anschließend werden paarweise die Winkel zwischen zwei Vektoren
 berechnet und gemittelt.
 Liegt die sich so ergebende Abweichung unter einem Grenzwert $\delta$, so handelt es sich um parallele Spuren.
+Zusätzlich wird geprüft, ob die Spuren eine ähnliche Länge besitzen.
 \begin{lstlisting}[caption=Pseudocode Überprüfung der Parallelität zweier Mittellinien, language=Pseudo, label=lst:pseudo_checkParallel]
 algorithm lanesAreParallel:
   input:  lane-centerline: l1, lane-centerline: l2, delta
@@ -228,12 +298,12 @@ algorithm lanesAreParallel:
 
   l1DirectionVec := calculate direction vectors for l1
   l2DirectionVec := calculate direction vectors for l2
-  dirDifferences := calculate pairwise difference between direction vectors
+  dirDifferences := calculate pairwise the angle between two direction vectors
 
-  meanDiff := calculate mean divergence for X- and Y-axis components
+  meanDiff := calculate mean angle of deviation between l1 and l2
   lengthDiff := calculate difference between length of l1 and l2
 
-  return meanDiff < delta && lengthDiff < 10.0
+  return meanDiff < delta && lengthDiff >= 0.8
 \end{lstlisting}
 
 Für $\delta$ wurde experimentell der Wert 0.1 bestimmt. In den verschiedenen Test-Datensätzen konnten
@@ -250,8 +320,8 @@ Bevor für eine Mittellinie die sie umgebende Spurhülle bestimmt werden kann, m
 ermittelt werden. Diese ergibt sich, für die im vorherigen Schritt bestimmten parallelen Spurpaare, aus
 deren mittleren Abstand zueinander. Verlaufen zu einer Spurlinie zwei Bahnen parallel, werden
 die Abstände zu beiden berechnet und der kleinere wird als Spurbreite gewählt.
-Allen Bahnen, welche keine parallele Nachbarspur besitzen, wird die minimale Spurbreite zugeordnet,
-welche im vorherigen Schritt bestimmt wurde.
+Allen Bahnen, welche keine parallele Nachbarspur besitzen, wird das Minimum der im vorherigen Schritt bestimmten
+Spurbreiten zugeordnet.
 Falls sich in einer Aufnahme keine parallelen Spuren befinden, wird für die Spurbreite ein Standartwert
 von 3.5 Metern verwendet, welcher sich ebenfalls aus den RAA und RAL Richtlinien ableitet.
 
@@ -311,14 +381,6 @@ Regionen. Diese werden im nächsten Schritt entfernt.
 
 \section{Partitionierung von Fahrspuren}
 \label{sec:real2_lane_partitioning}
-
-% Arbeiten nur noch mit LaneEstimates
-% Grundidee: Sich überschneidende Spuren an Schnittpunkte partitionieren
-% Problem: welche Spur ganz lassen und welche partitionieren
-% Aufteilung in drei Spur-Typen (isolated, primary, secundary)
-% Finden von sich überlappenden Spurpaaren
-% Entscheidung für zu partitionierende Spuren (nach Kriterien)
-% Partitionierung
 
 Fahrspuren, welche mithilfe dieser Arbeit erkannt werden, kommen bei der Verkehrsanalyse zum Einsatz.
 Unter anderem können mit ihrer Hilfe Spurwechselvorgänge von Fahrzeugen untersucht werden. Damit eine
@@ -401,8 +463,8 @@ algorithm selectMoreCurvyLane:
   innerBoundPoint := select inner bound point based on distance
                      from b1 and b2 to the edges of l1
 
-  l1Subset := get subset of l1 around innerBoundPoint (length 30 points)
-  l2Subset := get subset of l2 around innerBoundPoint (length 30 points)
+  l1Subset := get subset of l1 around innerBoundPoint (length 15 points)
+  l2Subset := get subset of l2 around innerBoundPoint (length 15 points)
 
   l1SubCurvMea := estimate curvature of l1Subset 
   l2SubCurvMea := estimate curvature of l2Subset 
@@ -417,8 +479,9 @@ algorithm selectMoreCurvyLane:
 Im Fall der sich überlagernden Spurpaare in Abbildung \ref{fig:real2_lane_crossing} ist $b_2$ der \textit{innerBoundPoint}.
 Zur Bestimmung der Krümmung einer Fahrspur in einem Bereich, siehe Listing \ref{lst:pseudo_selectMoreCurvy}
 Zeile 8 + 9, wird der Winkel $\varphi$ zwischen den Richtungsvektoren des Anfang und Endes der Teilspur berechnet.
-Er ergibt sich anhand Gleichung \ref{eq_angle_skalar}. Auf Basis dieses einfachen Krümmungsmaßes wird entschieden,
-welche der zwei sekundär-Spuren partitioniert wird.
+Er ergibt sich anhand Gleichung \ref{eq_angle_skalar}.
+Unterscheidet sich die Krümmung der zwei Spuren im Bereich ihrer Überschneidung nur geringfügig, so wird
+die kürzere Spur partitioniert. 
 
 \begin{ceqn}
 \begin{align}
@@ -427,7 +490,7 @@ welche der zwei sekundär-Spuren partitioniert wird.
 \end{align}
 \end{ceqn}
 
-Nachdem, auf die oben beschriebene Weise, alle zu teilenden Spuren und die zugehörigen Grenzpunkte
+Nachdem alle zu teilenden Spuren und die zugehörigen Grenzpunkte
 bestimmt wurden, folgt die eigentliche Partitionierung. Aus den Spur-Geometrien werden alle Bereiche
 entfernt, welche zwischen den zwei Grenzpunkten einer Überlagerung liegen. In Abbildung \ref{fig:real2_lane_crossing}
 wird so beispielsweise der rot gekennzeichnete Bereich der Spur $l_2$ zwischen $b_1$ und $b_2$ entfernt.
@@ -447,3 +510,4 @@ Neckartor Datensatzes. Es wurden alle Spur-Überlagerungen entfernt.
     \caption{Plot partitionierte Spur-Geometrien a), Ergebnis in der TrackerApplication b)}
     \label{fig:real2_results_partitioning}
 \end{figure}
+
