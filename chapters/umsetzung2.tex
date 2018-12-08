@@ -62,7 +62,7 @@ mit Spurwechselvorgängen oder Abweichungen entfernt. Die Effektivität konnte a
 auf andere Datensätze bestätigt werden.
 Wenn in einem Cluster viele Trajektorien Abweichungen von einer Spur besitzen, ist es möglich, dass der Algorithmus
 diese nicht vollständig entfernt. Bei einer geringen Anzahl von Abweichungen oder Ausreißer arbeitet
-er allerdings sehr zuverlässig. 
+er allerdings sehr zuverlässig.
 
 \begin{figure}[H]
     \centering
@@ -311,6 +311,7 @@ so zuverlässig parallele Spur-Paare identifiziert werden. Anhand dieser werden 
 die Spurhüllen bestimmt.
 
 \subsection*{Berechnung der Hüllen}
+\label{sec:real2_create_envelopes}
 
 % Bestimmung der mittleren Distanzen zwischen Spuren, Berechnung der Spurvarianz
 % Spuren ohne Nachbar erhalten standard-Varianz
@@ -360,7 +361,7 @@ bestimmt werden, indem $e_d$ beziehungsweise $-e_d$ für $t$ in die Geradengleic
 
 Auf diese Weise werden die Hüll-Linien für alle Fahrspuren bestimmt. In Abbildung \ref{fig:real2_results_geometry_definition} sind die
 Ergebnisse der Spur-Geometrie-Bestimmung dargestellt. Teil a) zeigt die Spurmittellinien mit ihren
-sie umgebenden Hüllen. Teil b) zeigt die in die TrackerApplication eingefügten Spuren. 
+sie umgebenden Hüllen. Teil b) zeigt die in die TrackerApplication eingefügten Spuren.
 
 \begin{figure}[H]
     \centering
@@ -443,7 +444,7 @@ den Grenzpunkten $b_1$ und $b_2$ mindestens 10\% der Spurlänge ausmacht. Auf di
 sich überlagernden Spur-Paare und die zugehörigen Schnittpunkte bestimmt.
 Aus jeder Überschneidung ergeben sich zwei Spur-Paare.
 Im Fall von Abbildung \ref{fig:real2_lane_crossing} wird einerseits $l_1$ von $l_2$ überlagert und andererseits
-$l_2$ von $l_1$.  
+$l_2$ von $l_1$.
 Daher enthält Abbildung \ref{fig:real2_prim_and_sec_lanes} b) beispielsweise vier sich überlagernde Spur-Paare
 (blau-grau) und zwei sich kreuzende Paare (grau-grau).
 
@@ -466,8 +467,8 @@ algorithm selectMoreCurvyLane:
   l1Subset := get subset of l1 around innerBoundPoint (length 15 points)
   l2Subset := get subset of l2 around innerBoundPoint (length 15 points)
 
-  l1SubCurvMea := estimate curvature of l1Subset 
-  l2SubCurvMea := estimate curvature of l2Subset 
+  l1SubCurvMea := estimate curvature of l1Subset
+  l2SubCurvMea := estimate curvature of l2Subset
 
   if l1SubCurvMea >= l2SubCurvMea then
     return l1
@@ -481,7 +482,7 @@ Zur Bestimmung der Krümmung einer Fahrspur in einem Bereich, siehe Listing \ref
 Zeile 8 + 9, wird der Winkel $\varphi$ zwischen den Richtungsvektoren des Anfang und Endes der Teilspur berechnet.
 Er ergibt sich anhand Gleichung \ref{eq_angle_skalar}.
 Unterscheidet sich die Krümmung der zwei Spuren im Bereich ihrer Überschneidung nur geringfügig, so wird
-die kürzere Spur partitioniert. 
+die kürzere Spur partitioniert.
 
 \begin{ceqn}
 \begin{align}
@@ -511,3 +512,63 @@ Neckartor Datensatzes. Es wurden alle Spur-Überlagerungen entfernt.
     \label{fig:real2_results_partitioning}
 \end{figure}
 
+Die so ermittelten Spur-Geometrien entsprechen in den meisten Fällen bereits dem gewünschten Ergebnis,
+da sie die realen Fahrspur-Verläufe gut wiederspiegeln und keine Überlagerungen mehr existieren.
+In einigen Szenarien kann es jedoch vorkommen, dass nach der Geometrie-Ermittlung und der Partitionierung
+die Fahrspur-Geometrien die reale Straßen-Topologie noch nicht korrekt abbilden. Aus diesem Grund werden die
+Spur-Geometrien in einem finalen Schritt nochmals optimiert.
+
+\section{Optimierung der Spur-Geometrien}
+
+Die nach dem Partitionierungs-Schritt vorliegenden Spur-Geometrien besitzen in einigen Fällen noch Defekte.
+Das am häufigsten auftretende Problem ist, dass die Spur-Geometrien nicht breit genug sind.
+Abbildung \ref{fig:real2_pre_opt} zeigt beispielsweise die Spur-Geometrien eines Straßen-Abschnitts,
+in welchem sich zu Beginn zwei parallele Fahrspuren befinden, welche sich am Ende in vier Spuren aufteilen.
+Es ist erkennbar, dass die zwei Fahrspuren zu Beginn nicht direkt aneinander angrenzen
+und daher in diesem Abschnitt nicht breit genug sind. In diesem Fall resultiert die zu niedrige Fahrbahnbreite
+aus der starken Überlagerung der vier Spur-Geometrien zu Beginn, was eine falsche Schätzung der Spur-Breite verursacht
+(siehe Abschnitt \ref{sec:real2_define_lane_envelope}).
+
+\begin{figure}[H]
+    \centering
+    \fbox{\includegraphics[align=c, width=0.7\linewidth]{../resources/img/umsetzung/U2/laneOpt_partitioned_pre}}
+    \caption{Beispiel zu schmale Spur-Geometrien}
+    \label{fig:real2_pre_opt}
+\end{figure}
+
+Um Effekte wie diesen zu korrigieren, werden nach der Partitionierung nun nochmals die Breiten aller Spur-Geometrien
+neu bestimmt. Im Gegensatz zu dem verwendeten Vorgehen aus Abschnitt \ref{sec:real2_define_lane_envelope},
+bei welchem für jede Spur eine feste Breite berechnet wurde, wird diese nun für jeden Punkt der Spur einzelt
+berechnet. Hierdurch wird es möglich, dass beispielsweise die schwarze und grüne Spur aus Abbildung \ref{fig:real2_pre_opt}
+zu Beginn breiter sind, als an ihrem Ende.
+
+Der zur Bestimmung der neuen Spur-Breiten eingesetzte Algorithmus hat vereinfacht gesehen den nachfolgenden Ablauf:
+
+\begin{itemize}
+    \item Wähle eine Spur-Geometrie $l$
+    \item Für jeden Punkt $p$ der Mittellinie von $l$ mit Position $i$:
+    \begin{itemize}
+        \item Suche korrespondierende Punkte $P_k = \{pk_0\ ...\ pk_n\}$ auf benachbarten Spuren
+        \item Wähle einen benachbarten Punkt $pk_j \in P_k$
+        \item Verwende die Distanz zwischen $p$ und $pk_j$ als Spurbreite von $l$ an Position $i$
+    \end{itemize}
+\end{itemize}
+
+Entscheidend bei diesem Verfahren ist es, den richtigen Punkt $pk_j$ auszuwählen. Dieser muss grundsätzlich
+auf jener Spur liegen, welche im Bereich des Punktes $p$ parallel zu $l$ verläuft und ihr am nächsten liegt.
+
+Nachdem auf diese Weise für eine Spur punktweise die neuen Breiten bestimmt wurden, werden diese noch mithilfe
+eines gleitenden Mittelwert Verfahrens geglättet. Anschließend werden neue Spurhüllen, mittels dem in
+Abschnitt \ref{sec:real2_create_envelopes} vorgestellten Vorgehen, erzeugt.
+Das Ergebnis der Geometrie-Optimierung für den Fall der in Abbildung \ref{fig:real2_pre_opt} enthaltenen Spuren,
+ist nachfolgend dargestellt.
+
+% TODO: Use correct image
+\begin{figure}[H]
+    \centering
+    \fbox{\includegraphics[align=c, width=0.7\linewidth]{../resources/img/umsetzung/U2/laneOpt_partitioned_pre}}
+    \caption{Beispiel zu schmale Spur-Geometrien}
+    \label{fig:real2_pre_opt}
+\end{figure}
+
+% TODO: ENDE
