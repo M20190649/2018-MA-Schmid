@@ -27,6 +27,30 @@ und End-Frame des Objektes liegt, bestimmt.
 Da für die Ableitung von Fahrspuren aus Trajektorien lediglich die positionsbezogenen Eigenschaften
 der Fahrzeuge relevant sind, werden Bewegungbahnen in dieser Arbeit nur über jene definiert.
 Geschwindigkeit, Beschleunigung und Dimension der Fahrzeuge wird in der Clusteranalyse nicht berücksichtigt.
+
+Zur Erzeugung der Trajektorien werden die ``Front-Positionen'' der verfolgten Objekte verwendet. Diese markieren den
+vordersten Punkt eines Fahrzeugs in einem bestimmten Frame und befinden sich immer auf dessen Bounding-Box.
+Idealerweise liegt die Front-Position auf der Stoßstange eines Fahrzeugs. In Abbildung \ref{fig:real1_tracked_object_front_position}
+sind beispielhaft zwei verfolgte Objekte dargestellt. Die Front-Positionen entsprechen den runden, ROTEN Markern.
+
+% TODO: Add correct images
+\begin{figure}[H]
+    \centering
+    \subfloat[]{{
+        \includegraphics[align=c, width=0.25\linewidth]{resources/img/umsetzung/U2/normalCenterLines}
+    }}
+    \qquad \qquad
+    \subfloat[]{{
+        \includegraphics[align=c, width=0.25\linewidth]{resources/img/umsetzung/U2/alignedCenterLines}
+    }}
+    \caption{Verfolgte Fahrzeuge und deren Front-Position}
+    \label{fig:real1_tracked_object_front_position}
+\end{figure}
+
+Der Vorteil, welcher sich bei der Verwendung der Front-Positionen ergibt, ist, dass diese auch bei niedrigen
+Aufnahmewinkeln sich nicht zu weit vom Mittelpunkt der Fahrspur, auf welchem sich das Fahrzeug befindet, entfernen.
+Dies ermöglicht eine bessere Bestimmung der Fahrspuren auch bei niedrigen Aufnahemwinkeln.
+
 Abbildung \ref{fig:real_trajectory_classDia} zeigt den Aufbau einer Trajektorie im Modul \textit{Spurerkennung}.
 
 \begin{figure}[H]
@@ -512,7 +536,7 @@ dürfen maximal $1.5m$ voneinader entfernt sein und ihre Position sich um maxima
 Sind diese Bedingungen erfüllt, gelten zwei Trajektorie-Punkte als übereinstimmend. Ein Cluster muss zudem aus mindestens
 5 Trajektorien bestehen und die Differenzen der Trajektorie-Distanzen im Cluster untereinander dürfen nicht größer als 0.3 sein.
 Für $minPts$ gilt grundsätzlich: Je stärker sich Fahrspuren überlagern, umso kleiner muss der gewählte Wert sein, da
-ein kleiner Wert für eine striktere Gruppierung der Fahrspuren sorgt.  
+ein kleiner Wert für eine striktere Gruppierung der Fahrspuren sorgt.
 
 Die Ergebnisse aus Abbildung \ref{fig:real_results_dbscan_lcss} a) und b) zeigen, dass bei Verwendung
 dieses Verfahrens zwischen allen Fahrspuren korrekt unterschieden wird und die einzelnen Trajektorien
@@ -558,7 +582,7 @@ Problematisch an diesen Trajektorien, aus Sicht der Clusteranalyse, ist, dass si
 gemeinsamen Spur -- der Abbiegespur -- beginnen, sich dann jedoch aufteilen und auf mehrere Fahrspuren verteilen.
 Die Trajektorien haben aus diesem Grund, trotz anfänglich identischem Verlauf, zu hohe Distanzen zueinander, um
 als ein Cluster identifiziert zu werden. Hinzu kommt, dass die Anzahl der Fahrzeuge, welche eine Abbiegespur
-benutzen, häufig nicht hoch genug ist, damit eine der Abbiege-Varianten ein Cluster formt. 
+benutzen, häufig nicht hoch genug ist, damit eine der Abbiege-Varianten ein Cluster formt.
 In Abbildung \ref{fig:real_turning_lane} a) und b) sind beispielhaft eine Abbiegespur der Neckartor-Kreuzung und
 die dazugehörigen Trajektorien abgebildet. Anhand der Straßentopologie und der Trajektorien wird deutlich,
 dass sich die Fahrzeuge nach dem abbiegen auf drei Fahrstreifen verteilen.
@@ -635,7 +659,7 @@ Trajektorien erstmals unter 75\% fällt. Er ist zudem nur gültig, wenn er nicht
 Referenz-Trajektorien liegt.
 
 Nachdem der Split-Punkt einer Nachbarschaft gefunden wurde, werden alle in ihr beinhalteten Bewegungsbahnen
-an jenem Trajektorie-Punkt geteilt, der dem Split-Punkt am nächsten ist. 
+an jenem Trajektorie-Punkt geteilt, der dem Split-Punkt am nächsten ist.
 Die so neu erstellten Trajektorien bilden ein neues Cluster. In Abbildung \ref{fig:real_turning_lane} c)
 sind nun alle Spurcluster dargestellt, welche nach diesem Schritt existieren. Die zwei Cluster der Abbiegespuren,
 welche in Abbildung \ref{fig:real_results_dbscan_lcss} b) noch fehlten, sind nun auch vorhanden.
