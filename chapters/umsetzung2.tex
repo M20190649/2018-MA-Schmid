@@ -216,7 +216,7 @@ Nachdem die Mittellinien der Fahrspuren bestimmt und ihre Enden aneinander angeg
 eine Hülle definiert. In folgendem Abschnitt wird beschrieben, wie diese erstellt werden.
 
 Die Spurhülle bestimmt die Dimension einer Fahrbahn. In dieser Arbeit verlaufen sie idealerweise entlang
-realer Begrenzungslinien welche zwei Spuren voneinander oder eine Fahrbahn von einem Seitenstreifen et cetera trennen.
+realer Begrenzungslinien, welche zwei Spuren voneinander oder eine Fahrbahn von einem Seitenstreifen et cetera trennen.
 Eine Mittellinie und eine Hülle beschreiben zusammen die Geometrie einer Fahrspur. Diese Geometrie
 soll die realen Dimensionen einer Spur möglichst genau abbilden. Aus diesem Grund ist es nicht möglich,
 die Hüllen lediglich auf Basis von statistischen Informationen der Trajektorie-Cluster zu bestimmen,
@@ -442,41 +442,55 @@ $l_2$ von $l_1$.
 Daher enthält Abbildung \ref{fig:real2_prim_and_sec_lanes} b) beispielsweise vier sich überlagernde Spur-Paare
 (blau-grau) und zwei sich kreuzende Paare (grau-grau).
 
+Es kann vorkommen, dass in einem Bereich, in welchem sich zwei Spuren schneiden,
+die Mittellinie der einen Spur sich kurzzeitig außerhalb der Hülle der anderen befindet. Bei der Bestimmung
+der überlagerten Bereiche, wie oben beschrieben, würde dies dazu führen, dass statt einer zwei Überlagerungen
+erkannt werden. Um mit einer solchen Situation korrekt umzugehen, werden die identifizierten Schnittmengen
+zwischen zwei Spuren fusioniert, falls die Distanz zwischen zwei Abschnitten sehr gering ist.
+Hierrüber wird sichergestellt, dass eine Spur anschließend nicht fälschlicherweise zweimal
+oder zu früh beziehungsweise zu spät partitioniert wird.
+
 Nachdem auf die oben beschriebene Weise die sich überlagernden Spur-Paare bestimmt wurden, wird anschließend
 entschieden, welche Spur der Paare partitioniert wird und welche erhalten bleibt. Zuerst wird hierzu
 überprüft, ob es sich bei einer der Geometrien um eine primäre Fahrspur handelt. Ist dies der Fall, so
-bleibt diese vollständig. Existiert in einem Paar keine primäre Spur, so wird das Krümmungsverhalten der Spuren
-um ihren Schnittpunkt herum untersucht. Das Ziel ist es, jene Spur, welche eine stärker Krümmung besitzt,
-zu partitionieren. Es handelt sich bei ihr mit höherer Wahrscheinlichkeit um eine Abbiegespur et cetera,
-welche aus einer geraden Spur hervorgeht oder in eine solche übergeht. Der Algorithmus zur Auswahl
-der gekrümmteren Spur ist in Listing \ref{lst:pseudo_selectMoreCurvy} beschrieben.
+bleibt diese vollständig. Existiert in einem Paar keine primäre Spur, so werden verschieden Eigenschaften
+der Fahrspuren untersucht, um eine Entscheidung zu treffen, welche Geometrie zu partitionieren ist.
+Der hierzu verwendete Algorithmus ist vereinfacht in Listing \ref{lst:pseudo_selectMoreCurvy} dargestellt.
+
+Grundlegen wird zuerst das Krümmungsverhalten der zwei Fahrspuren im Bereich ihres Schnittpunktes untersucht.
+Liegt die Differenz der Krümmungen der beiden Spuren oberhalb eines Grenzwertes $\delta$, so wird
+jene Spur partitioniert, welche die höhere Krümmung besitzt. Die Annahme ist, dass es sich bei dieser
+Spur mit hoher Wahrscheinlichkeit um eine Abbiegespur et cetera handelt, welche in eine gerade Spur übergeht.
+Ist die Differenz der Krümmungen kleiner als $\delta$, so verlaufen die zwei Spuren im Bereich des Schnittpunktes
+annähernd parallel. In diesem Fall wird entweder anhand der Länge oder der Anzahl der Fahrzeuge entschieden,
+welche Spur geteilt wird. Der Anwender der Tracking-Application kann das Verhalten des Algorithmus an dieser Stelle
+über einen Parameter steuern. Standardmäßig wird die Anzahl der Fahrzeuge als Kriterium verwendet.
 \begin{lstlisting}[caption=Pseudocode Auswahl gekrümmtr Fahrspur, language=Pseudo, label=lst:pseudo_selectMoreCurvy]
-algorithm selectMoreCurvyLane:
+algorithm selectLaneGeometryForPartitioning:
   input:  lane-geo: l1, lane-geo: l2, boundPoints: bounds
   output: l1 or l2 based on curviness around bounds
 
   innerBoundPoint := select inner bound point based on distance
                      from b1 and b2 to the edges of l1
 
-  l1Subset := get subset of l1 around innerBoundPoint (length 15 points)
-  l2Subset := get subset of l2 around innerBoundPoint (length 15 points)
+  l1Subset := get subset of l1 around innerBoundPoint
+  l2Subset := get subset of l2 around innerBoundPoint
 
-  l1SubCurvMea := estimate curvature of l1Subset
-  l2SubCurvMea := estimate curvature of l2Subset
+  l1CurvMea := estimate curvature of l1Subset
+  l2CurvMea := estimate curvature of l2Subset
 
-  if l1SubCurvMea >= l2SubCurvMea then
-    return l1
+  if | l1CurvMea - l2CurvMea | > delta then
+    partition lane with bigger curvMea
   else
-    return l2
+    if check length? then partition shorter lane
+    if check vehicle-count? then partition lane with less vehicles 
   end
 \end{lstlisting}
 
 Im Fall der sich überlagernden Spurpaare in Abbildung \ref{fig:real2_lane_crossing} ist $b_2$ der \textit{innerBoundPoint}.
 Zur Bestimmung der Krümmung einer Fahrspur in einem Bereich, siehe Listing \ref{lst:pseudo_selectMoreCurvy}
-Zeile 8 + 9, wird der Winkel $\varphi$ zwischen den Richtungsvektoren des Anfang und Endes der Teilspur berechnet.
+Zeile 11 + 12, wird der Winkel $\varphi$ zwischen den Richtungsvektoren des Anfang und Endes der Teilspur berechnet.
 Er ergibt sich anhand Gleichung \ref{eq_angle_skalar}.
-Unterscheidet sich die Krümmung der zwei Spuren im Bereich ihrer Überschneidung nur geringfügig, so wird
-die kürzere Spur partitioniert.
 
 \begin{ceqn}
 \begin{align}
@@ -564,8 +578,11 @@ ist nachfolgend dargestellt.
     \label{fig:real2_pre_opt}
 \end{figure}
 
-Die Fahrspur-Erkennung ist nach dem Optimierungs-Schritt abgeschlossen. Die aus den Trajektorie-Daten
-extrahierten Spur-Geometrien stimmen in den meisten Fällen mit den realen Fahrbahnverläufen überein.
+Die Fahrspur-Erkennung ist nach dem Optimierungs-Schritt abgeschlossen. Auf Basis der vorliegenden
+Spur-Geometrien können anschließend die Fahrspuren in die TrackerApplication eingefügt werden.
+
+% Die aus den Trajektorie-Daten
+% extrahierten Spur-Geometrien stimmen in den meisten Fällen mit den realen Fahrbahnverläufen überein.
 
 \section{Anlegen der Fahrspuren in der TrackerApplication}
 

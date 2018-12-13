@@ -31,25 +31,25 @@ Geschwindigkeit, Beschleunigung und Dimension der Fahrzeuge wird in der Clustera
 Zur Erzeugung der Trajektorien werden die ``Front-Positionen'' der verfolgten Objekte verwendet. Diese markieren den
 vordersten Punkt eines Fahrzeugs in einem bestimmten Frame und befinden sich immer auf dessen Bounding-Box.
 Idealerweise liegt die Front-Position auf der Stoßstange eines Fahrzeugs. In Abbildung \ref{fig:real1_tracked_object_front_position}
-sind beispielhaft zwei verfolgte Objekte dargestellt. Die Front-Positionen entsprechen den runden, ROTEN Markern.
+sind beispielhaft zwei verfolgte Objekte dargestellt. Die Front-Positionen entsprechen den runden Markern.
 
 % TODO: Add correct images
 \begin{figure}[H]
     \centering
     \subfloat[]{{
-        \includegraphics[align=c, width=0.25\linewidth]{resources/img/umsetzung/U2/normalCenterLines}
+        \includegraphics[align=c, width=0.23\linewidth]{resources/img/umsetzung/U1/CarInBB2}
     }}
-    \qquad \qquad
+    \qquad \qquad \qquad
     \subfloat[]{{
-        \includegraphics[align=c, width=0.25\linewidth]{resources/img/umsetzung/U2/alignedCenterLines}
+        \includegraphics[align=c, width=0.23\linewidth]{resources/img/umsetzung/U1/CarInBB1}
     }}
-    \caption{Verfolgte Fahrzeuge und deren Front-Position}
+    \caption{Erkannte Fahrzeuge und deren Front-Position}
     \label{fig:real1_tracked_object_front_position}
 \end{figure}
 
 Der Vorteil, welcher sich bei der Verwendung der Front-Positionen ergibt, ist, dass diese auch bei niedrigen
 Aufnahmewinkeln sich nicht zu weit vom Mittelpunkt der Fahrspur, auf welchem sich das Fahrzeug befindet, entfernen.
-Dies ermöglicht eine bessere Bestimmung der Fahrspuren auch bei niedrigen Aufnahemwinkeln.
+Dies ermöglicht eine bessere Bestimmung der Fahrspuren bei niedrigen Aufnahemwinkeln.
 
 Abbildung \ref{fig:real_trajectory_classDia} zeigt den Aufbau einer Trajektorie im Modul \textit{Spurerkennung}.
 
@@ -84,25 +84,23 @@ Das Feld \textit{clusterLabel} ordnet jede Trajektorie nach der Clusteranalyse e
 Zuvor enthält es keinen Wert.
 
 % TODO: Evtl Bilder und Beschreibung austauschen
-Zur Untersuchung der Fahrzeugtrajektorien ist es hilfreich diese zu visualisieren. Abbildung \ref{fig:real_trajs_raw_neckartor}
+Zur Untersuchung der Fahrzeugtrajektorien ist es hilfreich diese zu visualisieren. Abbildung \ref{fig:real_neckartor} b)
 zeigt so beispielsweise 1240 Trajektorien, welche aus einer Aufnahme des Stuttgarter Neckartors extrahiert wurden.
-In Abbildung \ref{fig:real_neckartor} ist ein Bild der entsprechenden Aufnahme zu sehen.
+In Abbildung \ref{fig:real_neckartor} a) ist ein Ausschnitt der entsprechenden Aufnahme zu sehen.
 
 \begin{figure}[H]
-\centering
-    \includegraphics[width=0.5\linewidth]{resources/img/umsetzung/U1/Plot_RawTrajectories_Neckartor}
-\caption{Unverarbeitete Trajektorien vom Stuttgarter Neckartor}
-\label{fig:real_trajs_raw_neckartor}
+    \centering
+    \subfloat[]{{
+        \includegraphics[align=c, width=0.5\linewidth]{resources/img/umsetzung/U1/Neckartor_Aufnahme}
+    }}
+    \subfloat[]{{
+        \includegraphics[align=c, width=0.42\linewidth]{resources/img/umsetzung/U1/Plot_RawTrajectories_Neckartor}
+    }}
+    \caption{Stuttgarter Neckartor a) und Trajektorien b)}
+    \label{fig:real_neckartor}
 \end{figure}
 
-\begin{figure}[H]
-\centering
-    \includegraphics[width=0.7\linewidth]{resources/img/umsetzung/U1/Neckartor_Aufnahme}
-\caption{Das Stuttgarter Neckartor}
-\label{fig:real_neckartor}
-\end{figure}
-
-In Abbildung \ref{fig:real_trajs_raw_neckartor} sind die verschiedenen Bewegungsbahnen der Fahrzeuge für
+In Abbildung \ref{fig:real_neckartor} b) sind die verschiedenen Bewegungsbahnen der Fahrzeuge für
 den menschlichen Betrachter bereits klar erkennbar.
 Direkt fallen aber auch die Trajektorien der stehenden oder sich auf Parkplätzen
 bewegenden Autos im oberen Bereich der Aufnahme ins Auge. Diese dürfen nicht in die Clusteranalyse mit einbezogen werden.
@@ -116,11 +114,11 @@ die Fahrzeugverfolgung unterbrochen wird.
 \begin{figure}[H]
     \centering
     \subfloat[]{{
-        \includegraphics[align=c, width=0.35\linewidth]{resources/img/umsetzung/U1/trajectories_defect1}
+        \includegraphics[align=c, width=0.28\linewidth]{resources/img/umsetzung/U1/trajectories_defect1}
     }}
     \qquad
     \subfloat[]{{
-        \includegraphics[align=c, width=0.45\linewidth]{resources/img/umsetzung/U1/trajectories_defect2}
+        \includegraphics[align=c, width=0.37\linewidth]{resources/img/umsetzung/U1/trajectories_defect2}
     }}
     \caption{a) Punktwolken vor Lichtsignalanlagen, b) Unterbrechungen aufgrund von Überdeckung}
     \label{fig:real_defects_trajectories}
