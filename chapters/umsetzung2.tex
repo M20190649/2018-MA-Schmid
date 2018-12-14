@@ -93,17 +93,21 @@ Trajektorie-Clusters. Die einzelnen Bewegungsbahnen besitzen jeweils leichte Abw
 \textit{``Ideallinie''}.
 Als Spurmittellinie -- wie von \cite{Hu2005} vorgeschlagen -- jene Trajektorie zu wählen, welche die
 kleinste Summe der Distanzen zu allen anderen Trajektorien eines Clusters besitzt, ist nicht praktikabel,
-da die so gefunden Trajektorie nicht über ihre komplette Länge in der Mitte des Clusters verlaufen muss.
+da die so gefunden Trajektorie nicht über ihre komplette Länge in der Mitte des Clusters verlaufen muss
+und auch nicht zwangsläufig so lang ist, wie die anderen Trajektorien des Clusters. 
 Auf eine Bestimmung der Mittellinie mittels linearer oder polynomialer Regression, wie beispielsweise in
 \cite[]{Chen2014} oder \cite[]{Melo2006},
 wurde ebenfalls verzichtet. Der Grund hierfür ist, dass einerseits die Komplexität und Form der Fahrbahnverläufe
-nicht bekannt ist und andererseits das Erlernen der Spurrepräsentation zu aufwendig ist.
+nicht bekannt ist und andererseits das Erlernen der Spurrepräsentationen auf diese Weise sehr aufwendig ist.
 
-Der in dieser Arbeit gewählte Ansatz zur Bestimmung der Spurmittellinien macht sich die von Atev et al.
+Der in dieser Arbeit gewählte Ansatz zur Bestimmung der Mittellinien macht sich die von Atev et al.
 vorgestellte Notation einer relativen Position innerhalb einer Trajektorie zu nutze, welche in
 Gleichung \ref{eq_atev_relPos} und \ref{eq_atev_findPointAtRelPow} gegeben ist.
 Die Koordinaten der Spurlinien ergeben sich aus den Mittelwerten von Trajektorie-Punkten, welche sich
-alle an der selben relativen Position befinden. Der verwendete Algorithmus ist nachfolgend beschrieben.
+alle an der selben relativen Position befinden. Vorteil der Verwendung der relativen Positionen ist,
+dass Punkte auf Trajektorien mit einer Position $p_r$ auch dann auf der selben Höhe liegen,
+wenn die Bahnen aufgrund von Oszillationen um die Spurmitte unterschiedliche Längen haben.
+Der verwendete Algorithmus ist nachfolgend beschrieben.
 \begin{lstlisting}[caption=Pseudocode Cluster Post-Processing, language=Pseudo, label=lst:pseudo_post_processing]
 algorithm calculateCenterline:
   input:  trajectories of cluster: trajsIn
@@ -206,8 +210,8 @@ Das Ergebnis der Spur-Angleichung ist in Abbildung \ref{fig:real2_lane_alignment
     \label{fig:real2_lane_alignment}
 \end{figure}
 
-Nachdem die Spurmittellinien auf die oben beschriebene Weise angeglichen wurden, werden anschließend
-Spurhüllen definiert.
+% Nachdem die Spurmittellinien auf die oben beschriebene Weise angeglichen wurden, werden anschließend
+% Spurhüllen definiert.
 
 \section{Bestimmung der Spurhüllen}
 \label{sec:real2_define_lane_envelope}
@@ -277,7 +281,7 @@ Die auf diese Weise gefundenen Trajektorie-Paare starten oder enden als benachba
 Der Algorithmus welcher prüft, ob zwei Spuren tatsächlich parallel zueinander verlaufen, ist in Listing
 \ref{lst:pseudo_checkParallel} beschrieben. Die zu vergleichenden Mittellinien werden jeweils in eine
 Reihe von Richtungsvektoren umgewandelt. Anschließend werden paarweise die Winkel zwischen zwei Vektoren
-berechnet und gemittelt.
+berechnet und die Ergebnisse gemittelt.
 Liegt die sich so ergebende Abweichung unter einem Grenzwert $\delta$, so handelt es sich um parallele Spuren.
 Zusätzlich wird geprüft, ob die Spuren eine ähnliche Länge besitzen.
 \begin{lstlisting}[caption=Pseudocode Überprüfung der Parallelität zweier Mittellinien, language=Pseudo, label=lst:pseudo_checkParallel]
@@ -299,6 +303,7 @@ algorithm lanesAreParallel:
 
   return meanDiff < delta && lengthDiff >= 0.8
 \end{lstlisting}
+% TODO: Keywords escapen
 
 Für $\delta$ wurde experimentell der Wert 0.1 bestimmt. In den verschiedenen Test-Datensätzen konnten
 so zuverlässig parallele Spur-Paare identifiziert werden. Anhand dieser werden im nächsten Schritt
@@ -306,10 +311,6 @@ die Spurhüllen bestimmt.
 
 \subsection*{Berechnung der Hüllen}
 \label{sec:real2_create_envelopes}
-
-% Bestimmung der mittleren Distanzen zwischen Spuren, Berechnung der Spurvarianz
-% Spuren ohne Nachbar erhalten standard-Varianz
-% Berechnung der Hüllen, Formeln, Referenz auf Abb. oben
 
 Bevor für eine Mittellinie die sie umgebende Spurhülle bestimmt werden kann, muss die Breite der Spur
 ermittelt werden. Diese ergibt sich, für die im vorherigen Schritt bestimmten parallelen Spurpaare, aus
@@ -360,19 +361,73 @@ sie umgebenden Hüllen. Teil b) zeigt die in die TrackerApplication eingefügten
 \begin{figure}[H]
     \centering
     \subfloat[]{{
-        \includegraphics[align=c, width=0.4\linewidth]{resources/img/umsetzung/U2/laneEstimates}
+        \includegraphics[align=c, width=0.45\linewidth]{resources/img/umsetzung/U2/laneEstimates}
     }}
-    \qquad
     \subfloat[]{{
-        \includegraphics[align=c, width=0.45\linewidth]{resources/img/umsetzung/U2/result_laneEst_Screenshot}
+        \includegraphics[align=c, width=0.5\linewidth]{resources/img/umsetzung/U2/result_laneEst_Screenshot}
     }}
     \caption{Plot Spurmittellinien und Hüllen a), Ergebnis Spur-Geometrien in TrackerApplication b)}
     \label{fig:real2_results_geometry_definition}
 \end{figure}
 
-Die obige Abbildung zeigt, dass die berechneten Spur-Geometrien in den meisten Fällen gut mit den realen
-Spur-Dimensionen übereinstimmen. Problematisch sind allerding die Überlagerungen der Spuren in manchen
-Regionen. Diese werden im nächsten Schritt entfernt.
+Die obige Abbildung zeigt, dass die berechneten Spur-Geometrien in den meisten Fällen bereits gut
+mit den realen Spur-Dimensionen übereinstimmen. Bevor die Spuren partitioniert werden, um Überlagerungen
+von Fahrspuren zu entfernen, werden in einem weiteren Schritt ``unechte'' Spur-Geometrien entfernt.
+
+\subsection*{Entfernung unechter Spur-Geometrien}
+
+Spur-Geometrien sind grundsätzlich dann ``unecht'', wenn sie keine real existierende Fahrspur beschreiben.
+Am häufigsten treten unechte Fahrspuren in Form von zu kurzen Geometrien auf, oder in Form von Geometrien,
+welche einen Spurwechsel beschreiben. Diese zwei Arten von Spurgeometrien werden daher identifiziert
+und entfernt.
+
+\begin{figure}[H]
+    \centering
+    \subfloat[zu kurze Geometrie (blau)]{{
+        \includegraphics[align=c, width=0.37\linewidth]{resources/img/umsetzung/U2/TooShortLanes}
+    }}
+    \qquad \qquad
+    \subfloat[Spurwechsel Geometrie (rot)]{{
+        \includegraphics[align=c, width=0.37\linewidth]{resources/img/umsetzung/U2/LaneChangeLanes}
+    }}
+    \caption{Beispiele ``unechter'' Spur-Geometrien}
+    \label{fig:real2_results_geometry_definition}
+\end{figure}
+
+Zu kurz ist eine Spur-Geometrie dann, wenn sie einen Streckenabschnitt beschreibt, welcher
+gleichzeitig noch von einer anderen, längeren Spur beschrieben wird. Sie wird daher
+gänzlich oder fast gänzlich überlagert. Diese Art von unechten Spuren ist leicht zu identifizieren.
+Es wird für jede Spur geprüft, ob eine andere Spur existiert, welche sie zu 95\% oder mehr überlagert.
+Wie die Überlagerung von zwei Spuren identifiziert wird, ist in Abschnitt \ref{sec:real2_lane_partitioning}
+beschrieben.
+
+Geometrien, welche nicht eine Spur sondern den Wechsel zwischen zwei Spuren darstellen, können
+existieren, wenn die Trajektorie-Daten viele Spurwechselvorgänge enthalten und in der Cluster-Analyse für
+diese ein extra Cluster erstellt wird. Um diese Spuren zu identifizieren, müssen Kriterien eines
+Spurwechsel- Vorgangs definiert werden. Diese zeichnen sich primär dadurch aus, dass sie auf einer Spur
+$A$ beginnen und auf einer Spur $B$ enden, wobei die Spuren $A$ und $B$ parallel zueinander verlaufen.
+Es kann zudem davon ausgegangen werden, dass sich weniger Fahrzeuge auf einer Spurwechsel-Spur bewegen,
+als auf den zwei eigentlichen Fahrspuren.
+Auf Basis dieser Eigenschaften, ergibt sich der nachfolgende Algorithmus.
+\begin{lstlisting}[caption=Pseudocode Auswahl gekrümmtr Fahrspur, language=Pseudo, label=lst:pseudo_selectMoreCurvy]
+algorithm isLaneChangeLane:
+  input:  lane-geo: l1, sequence of other lane-geos: otherGeos
+  output: True or False
+
+  overlaysAtStart := find lanes in otherGeos that are overlayed by l1 at its start
+  overlaysAtEnd := find lanes in otherGeos that are overlayed by l1 at its end
+
+  if overlaysAtStart.nonEmpty && overlaysAtEnd.nonEmpty then:
+    a := identify more traveled parallel lanes in overlaysAtStart
+    b := identify more traveled parallel lanes in overlaysAtEnd
+    return a.nonEmpty && b.nonEmpty
+  else return false
+  end
+\end{lstlisting}
+
+Eine Spurwechsel-Spur muss also im Bereich ihres Starts und ihres Endes jeweils mindestens eine andere
+mehr befahrene, parallele Fahrspur überlagern.
+Nachdem auf diese Weise die ``unechten'' Spur-Geometrien entfernt wurden, werden die übrigen partitioniert.
 
 \section{Partitionierung von Fahrspuren}
 \label{sec:real2_lane_partitioning}
