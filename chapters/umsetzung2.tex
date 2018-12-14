@@ -524,7 +524,7 @@ Die so ermittelten Spur-Geometrien entsprechen in den meisten Fällen bereits de
 da sie die realen Fahrspur-Verläufe gut wiederspiegeln und keine Überlagerungen mehr existieren.
 In einigen Szenarien kann es jedoch vorkommen, dass nach der Geometrie-Ermittlung und der Partitionierung
 die Fahrspur-Geometrien die reale Straßen-Topologie noch nicht korrekt abbilden. Aus diesem Grund werden die
-Spur-Geometrien in einem finalen Schritt nochmals optimiert.
+Spur-Geometrien in einem weiteren Schritt nochmals optimiert.
 
 \section{Optimierung der Spur-Geometrien}
 
@@ -578,7 +578,7 @@ ist nachfolgend dargestellt.
     \label{fig:real2_pre_opt}
 \end{figure}
 
-Die Fahrspur-Erkennung ist nach dem Optimierungs-Schritt abgeschlossen. Auf Basis der vorliegenden
+Die Fahrspurerkennung ist nach dem Optimierungsschritt abgeschlossen. Auf Basis der vorliegenden
 Spur-Geometrien können anschließend die Fahrspuren in die TrackerApplication eingefügt werden.
 
 % Die aus den Trajektorie-Daten
@@ -586,5 +586,51 @@ Spur-Geometrien können anschließend die Fahrspuren in die TrackerApplication e
 
 \section{Anlegen der Fahrspuren in der TrackerApplication}
 
-Die Stärken und Schwächen des entwickelten Algorithmus werden im nachfolgenden Auswertungskapitel nochmals
-zusammengefasst und ausgewertet.
+Nachdem die Spur-Geometrien auf Basis der Fahrzeugtrajektorien bestimmt wurden, müssen diese in einem
+finalen Schritt noch in das von der TrackerApplication verwendete Datenmodell zur Repräsentation von
+Fahrspuren überführt werden. Dieses Vorgehen ist nachfolgend beschrieben.
+
+Wie bereits zu Beginn der Arbeit erwähnt, wurden Fahrspuren in der TrackerApplication bislang manuell
+über die Benutzeroberfläche angelegt. Das hierzu verwendete Datenmodell, welches auch weiterhin für die
+automatisch erkannten Spuren verwendet wird, ist in Abbildung \ref{fig:real2_lane_datamodell} dargestellt.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[align=c, width=0.85\linewidth]{resources/img/umsetzung/U2/Fahrspurmodell}
+    \caption{Datenmodell der Spurdefinition}
+    \label{fig:real2_lane_datamodell}
+\end{figure}
+
+Eine Fahrspur in einem Streckenabschnitt besteht aus mindestens zwei \textit{Querstrecken}. Jede Querstrecke
+legt über zwei Punkte die Breite der Fahrspur auf einer bestimmten Höhe der Spur fest. Eine Fahrspur
+kann aus beliebig vielen Querstrecken bestehen, wodurch es möglich ist, die Fahrspuren beliebig detailliert
+zu definieren.
+
+Die Fahrspuren und Querstrecken werden im Fall der automatisch erkannten Fahrbahnen anhand der Spur-Hüllen
+definiert. Über Punkt-Paaren der beiden Hülllinien (siehe Abbildung \ref{fig:real2_laneGeometry_ClassDia}),
+werden Querstrecken erstellt. 
+Da eine Fahrspur möglichst über die kleinste Menge an Querstrecken beschrieben werden soll, welche die
+Geometrie der Bahn zuverlässig abbildet, wird nicht für jedes Hüll-Punkt-Paar eine Querstrecke definiert.
+Die Anzahl und Distanz zwischen den Querstrecken richtet sich nach der Krümmung der Spuren. Zur Beschreibung
+einer geraden Fahrspur werden weniger Querlinien benötigt, als zur Beschreibung einer Kurve.
+Zur Bestimmung der Querstrecken werden daher die Hülllinien abschnittsweise untersucht und jeweils
+die Richtungsänderungen zwischen aufeinanderfolgenden Abschnitten betrachtet. Hierzu wird erneut
+die Gleichung \ref{eq_angle_skalar} eingesetzt.
+Überschreitet die Richtungsänderung einer Hülle einen Grenzwert von $\phi = 0.02$, so wird eine neue
+Querstrecke erstellt. Anderenfalls verläuft die Spur im untersuchten Bereich annähernd gerade.
+In Abbildung \ref{fig:real2_lanes_trackerApplication} ist das Ergebnis der Spurerstellung dargestellt.
+Es ist gut zu erkennen, dass im Fall der geraden Fahrspuren der Autobahn nur wenige Querstrecken zur
+Definition der Spur verwendet werden, und für die gekrümmten Spuren deutlich mehr.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[align=c, width=0.6\linewidth]{resources/img/umsetzung/U2/LaneCreator_Example}
+    \caption{Angelegte Fahrspuren in der TrackerApplication}
+    \label{fig:real2_lanes_trackerApplication}
+\end{figure}
+
+Ein Vorteil, welcher sich durch die Weiterverwendung des in Abbildung \ref{fig:real2_lane_datamodell}
+dargestellten Datenmodells ergibt, ist, dass Benutzer weiterhin Spuren manuell anlegen können und automatisch
+detektierte Fahrbahnen sich nachträglich noch leicht modifizieren lassen. Falls eine vom Algorithmus erkannte
+Spur also beispielsweise in einem Abschnitt zu schmal oder zu breit ist, kann dies leicht vom Nutzer korrigiert
+werden. 

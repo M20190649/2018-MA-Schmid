@@ -192,7 +192,7 @@ Trajektorien von beispielsweise stehenden Fahrzeugen oder kurz auftretende Track
 werden können. Hierzu wird die Länge aller Trajektorien überprüft und jene entfernt, welche
 unter einem bestimmten Grenzwert liegen. Die hierzu verwendete boolesche Überprüfung ist in Gleichung
 \ref{eq_isShortTrajectory} gegeben.
-Als Standardeinstellung für $minPntLength$ wurde experimentell der Wert $20$ bestimmt, da er für alle
+Als Standardeinstellung für $minLength$ wurde experimentell der Wert $20m$ bestimmt, da er für alle
 Testaufnahmen gute Ergebnisse liefert. Bei Bedarf kann der Anwender den Parameter beim Start des Spurerkennungs-Job
 in der Oberfläche anpassen.
 
@@ -201,7 +201,7 @@ in der Oberfläche anpassen.
 \label{eq_isShortTrajectory}
     isShortTrajectory(t) =
     \begin{cases}
-        1 & \text{if } t.pointLength < minPntLength \\
+        1 & \text{if } t.length < minLength \\
         0 & \text{otherwise}
     \end{cases}
 \end{align}
