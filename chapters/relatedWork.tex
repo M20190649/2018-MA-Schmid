@@ -489,4 +489,25 @@ Das Verfahren funktioniert grundlegend gut, wenn Fahrspuren nebeneinader und par
 % Wenn Spur dann immer nur Spur für gesamtes Cluster (kein Partitioning)
 % Erkennung von Fahrspuren unterschiedlicher Spurdichten ????
 
-% Meiste Aufnahmen sind Frontal-Aufnahmen auf Straße --> keine Verzerrungen
+Es existiert eine große Anzahl von Arbeiten, welche sich mit der Clusteranalyse von Trajektoriedaten
+befasst. Die in Abschnitt \ref{sec:rw_clustering} vorgestellten Veröffentlichungen stellen nur eine
+kleine Auswahl dar. Da die in den Arbeiten publizierten Verfahren teils sehr unterschiedlich sind und
+zur Erreichung verschiedenster Ziele eingesetzt werden, muss in dieser Arbeit ein Verfahren identifiziert
+werden, welches sich möglichst gut für die Analyse von Fahrzeugtrajektorien eignet.
+Ein Defizit vieler vorhandener Arbeiten ist, dass diese meist mit wenigen unterschiedlichen
+Trajektorie-Datensätzen arbeiten und die verwendeten Daten selten Defekte wie Unterbrechungen, Ausreißer
+et cetera aufweisen. In einigen Arbeit wird teilweise sogar lediglich mit generierten Trajektoriedaten
+gearbeitet. In der vorliegenden Thesis muss daher zudem ein zuverlässiges Verfahren zur Bereinigung
+von Trajektoriedaten entwickelt werden.
+
+Deutlich weniger Veröffentlichungen gibt es zum Thema der Identifikation von Fahrspuren. Zwar existieren
+einige Arbeiten, welche Fahrspuren auf Basis von Trajektorien ermitteln, diese entsprechen aber
+in den allermeisten Fällen nicht den realen Verläufen der Fahrbahnen. Üblicherweise werden Fahrspuren
+anhand statistischer Verfahren, wie in \cite{WeimingHu2006} oder in \cite{Teng2015} beschrieben, ermittelt.
+\cite{Hsieh2006} ermitteln in ihrer Arbeit reale Spur-Begrenzungslinien, allerdings nur für kurze, parallele
+Fahrspuren eines Autobahnabschnittes. In dieser Arbeit sollen hingegen reale Spurgeometrien für
+unterschiedliche Straßenabschnitte bestimmt werden, weshalb das hierzu eingesetzte Verfahren selbst entwickelt
+werden muss.
+
+Zudem muss ein Ansatz zur Partitionierung von Fahrspuren entwickelt werden, da sich erkannte Fahrspuren
+in dieser Arbeit nicht über längere Bereiche hinweg überlagern dürfen.
