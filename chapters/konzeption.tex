@@ -3,9 +3,9 @@
 \chapter{Konzeption des Spurerkennung-Moduls}
 \label{cha:konzeption}
 
-In diesem Kapitel der Arbeit wird das zu entwickelnde Teilmodul \textit{``Spurerkennung''}
+In diesem Kapitel wird das zu entwickelnde Teilmodul \textit{``Spurerkennung''}
 der \acrshort*{mec}-View \textit{TrackerApplication} konzipiert. Hierzu wird zuerst dessen Rolle und Position im Gesamtkontext
-der Anwendung betrachtet. Anschließend werden Anforderungen und ein Entwurf des Moduls aufgestellt.
+der Anwendung betrachtet. Anschließend werden die Anforderungen und der Entwurf des Moduls vorgestellt.
 
 \section{Überblick über das Gesamtsystem}
 
@@ -19,15 +19,14 @@ Zusammenhang stehen.
 \begin{figure}[H]
     \centering
     \includegraphics[width=\linewidth]{resources/img/konzeption/Context_LaneDetection}
-    \caption{Kontext des Spurerkennung Moduls}
+    \caption{Kontext des Moduls Spurerkennung}
     \label{fig:concept_laneDetection_context}
 \end{figure}
 
 Die mithilfe von Drohnen erstellten Videoaufnahmen können in der MEC-View \textit{TrackerApplication}
-verarbeitet und analysiert werden. In einem ersten Schritt \textit{``MapMatching''}, wird hierzu üblicherweise
-ein Welt-Koordinatensystem in Metern definiert. Anschließend können die Positionen und Typen
-der Fahrzeuge bestimmt werden. Diese ersten zwei Schritte, welche der Extraktion von Fahrzeuginformationen
-dienen, sind in Abschnitt \ref{sec:position_extraction} genauer beschrieben.
+verarbeitet und analysiert werden. In einem ersten Schritt \textit{``MapMatching''}, wird hierzu
+ein Welt-Koordinatensystem in Metern definiert. Anschließend können die Positionen
+der Fahrzeuge bestimmt werden. Diese ersten zwei Schritte sind in Abschnitt \ref{sec:position_extraction} genauer beschrieben.
 Die Fahrzeuginformationen, insbesondere die Positionsinformationen, dienen anschließend dem \textit{Spurerkennung}-Modul
 als Eingabe. Aus ihnen extrahierte Spurdaten können anschließend in der Anwendung visualisiert werden oder in Kombination
 mit den Fahrzeuginformationen zur Analyse des Verkehrsflusses eingesetzt werden.
@@ -37,7 +36,7 @@ mit den Fahrzeuginformationen zur Analyse des Verkehrsflusses eingesetzt werden.
 \label{sec:requirements}
 
 In diesem Abschnitt werden die wichtigsten funktionalen und nicht funktionalen Anforderungen
-des Moduls festgehalten.
+an das Modul Spurerkennung festgehalten.
 
 \subsection{Funktionale Anforderungen}
 
@@ -56,11 +55,13 @@ Das Modul soll unabhängig vom Aufnahmewinkel der Kamera Fahrspuren zuverlässig
 Das Modul soll Fahrspuren bei Überlagerungen sinnvoll partitionieren können.
 
 \paragraph{Anforderung 2300}
-Das Modul soll die Enden benachbarter und paralleler Fahrspuren angleichen. Dies dient ihrer Verwendung in der
-Verkehrsfluss-Analyse.
+Das Modul soll die Plausibilität von Fahrspuren bewerten können und nicht plausible Spuren entfernen.
 
 \paragraph{Anforderung 2400}
-Das Modul soll es ermöglichen, die aus den Trajektorien abgeleiteten Fahrspuren in der \textit{TrackingApplication}
+Das Modul soll die Enden benachbarter und paralleler Fahrspuren aneinander angleichen. 
+
+\paragraph{Anforderung 2500}
+Das Modul soll es ermöglichen, die aus den Trajektorien abgeleiteten Fahrspuren in der \textit{TrackerApplication}
 zu visualisieren.
 
 \subsection{Nicht funktionale Anforderungen}

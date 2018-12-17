@@ -3,7 +3,7 @@
 \chapter{Verwandte Arbeiten}
 \label{cha:related_work}
 
-Das folgende Kapitel gibt eine Überblick über einige wichtige und interessante wissenschaftliche
+Das folgende Kapitel gibt eine Überblick über wichtige und interessante wissenschaftliche
 Arbeiten, welche sich mit der Analyse von Trajektoriedaten und insbesondere Fahrzeugtrajektorien beschäftigen.
 Zu Beginn werden diverse Arbeiten vorgestellt, welche sich mit der Clusteranalyse von Trajektorien befassen.
 Anschließend wird betrachtet, wie in der Literatur die Erkennung von Fahrspuren, vorzugsweise auf Basis
@@ -29,7 +29,7 @@ detektieren zu können. Solche Manöver sind beispielsweise ``Fahren abseits der
 ``zu schnelles/langsames Fahren''.
 Die Fahrzeugtrajektorien sind in dieser Arbeit als Sequenzen zwei-dimensionaler Punkte definiert.
 Um sie zu gruppieren, setzen Hu et al. auf klassische Clusterverfahren und die Verwendung eines
-einfachen, metrischen Distanzmaßes. Dieses Maß, bekannt als HU Distanz (siehe Abschnitt \ref{sec:hu_distance}),
+einfachen, metrischen Distanzmaßes. Dieses Maß, bekannt als HU-Distanz (siehe Abschnitt \ref{sec:hu_distance}),
 vergleicht Trajektorien über den mittleren Abstand zwischen zusammengehörigen Punktpaaren.
 Da dies nur zuverlässig möglich ist, wenn die Trajektorien einige Bedingungen erfüllen, müssen die
 Autoren diese vorverarbeiten. Sie vereinheitlichen daher die Abstände der Punkte einer Trajektorie und erweitern
@@ -38,7 +38,7 @@ sie zudem in Richtung der Szenen-Grenzen.
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\linewidth]{resources/img/RelatedWork/Fu_HierarchicalClustering}
-    \caption[Zweistufiger Clustering-Vorgang von Hu et al.]{Zweistufiger Clustering-Vorgang von Hu et al. \cite[]{Hu2005}}
+    \caption[Zweistufiger Clustering-Vorgang von Hu et al.]{Zweistufiger Clustering-Vorgang von \cite[]{Hu2005}}
     \label{fig:relw_hu_two_step_cluster}
 \end{figure}
 
@@ -58,13 +58,13 @@ stammt von \cite[]{Junejo2004}. In diesem Fall geht es den Autoren allerdings ni
 sondern um die Extraktion von Laufpfaden von Fußgängern.
 Die Bewegungsbahnen der Passanten werden aus Aufnahmen stationärer Überwachungskameras gewonnen und
 als zwei-dimensionale Punktreihen repräsentiert.
-Um die Trajektorien zu vergleichen, verwenden die Autoren die Hausdorff Distanz als Distanzmaß.
+Zum Vergleich der Trajektorien, verwenden die Autoren die Hausdorff-Distanz als Distanzmaß.
 Die üblicherweise negativen Eigenschaften dieses
 Vergleichkriteriums (siehe Abschnitt \ref{sec:hausdorff_distance}), konkret die Missachtung der
 Trajektorie-Orientierung, sind bei diesem Anwendungsfall kein Nachteil, sondern gewünscht.
 Da Fußgänger auf einem Pfad oder Weg in entgegengesetzte Richtungen gehen können, muss die Orientierung
 ihrer Trajektorien ignoriert werden.
-Auf Basis der Hausdorff Distanz erstellen Junejo et al. einen vollständigen Graphen, in welchem die Knoten Trajektorien
+Auf Basis der Hausdorff-Distanz erstellen Junejo et al. einen vollständigen Graphen, in welchem die Knoten Trajektorien
 und die gewichteten Kanten den Distanzen zwischen Trajektorien entsprechen.
 Sie zerlegen diesen Graphen mit Hilfe eines rekursiven \textit{min-cut}-Graphen-Algorithmus, welcher sich
 an der Arbeit von \cite[]{boykov2004experimental} orientiert, und erhalten so die Cluster für die
@@ -73,11 +73,11 @@ extrahierten Fußgänger-Trajektorien.
 % Atev et al., 2010
 \subsubsection*{Clustering of Vehicle Trajectories}
 \label{sec:atev_et_al}
-In der Arbeit \cite[]{Atev2010} ist das Ziel der Autoren, ein Verfahren zu finden, mit welchem Fahrzeugtrajektorien
+In \cite[]{Atev2010} ist das Ziel der Autoren, ein Verfahren zu finden, mit welchem Fahrzeugtrajektorien
 bestmöglich gruppiert werden können, ohne diese im Voraus anpassen zu müssen.
 Sie vergleichen hierzu die Performance von drei unterschiedlicher Distanzmaße unter Verwendung von zwei Cluster-Algorithmen.
 Primäres Augenmerk legen die Autoren auf ein von ihnen bereits in \cite[]{Atev2006} entwickeltes Distanzmaß,
-welches auf der Hausdorff Distanz basiert und sowohl die Orientierung von Trajektorien berücksichtigt
+welches auf der Hausdorff-Distanz basiert und sowohl die Orientierung von Trajektorien berücksichtigt
 als auch robust gegenüber Ausreißern ist. Dieses neue Maß ist für zwei Trajektorien $P$ und $Q$
 wie folgt definiert:
 
@@ -91,14 +91,14 @@ wie folgt definiert:
 Hierbei entspricht $C_{P,Q}$ einem Mapping $P \rightarrow Q$, welches einem Punkt $p \in P$ einen entsprechenden
 Punkt $q \in Q$ zuweist, welcher die selbe relative Position in $Q$ besitzt wie $p$ in $P$.
 $N_Q$ definiert ein Subset von $Q$ als Nachbarschaft des Punktes $q$. Zusammen definieren $N_Q$ und $C_{P,Q}$ eine
-Struktur, in welcher der Abgleich der Trajektorien stattfindet. Dies ist visuell auch nochmals in Abbildung
-\ref{fig:relw_atev_modh} dargestellt. Der Operator $ord_{p \in P}^{\alpha} f(p)$ selektiert jenen Wert aus $f(p)$, welcher
+Struktur, in welcher der Abgleich der Trajektorien stattfindet. Dieses Vorgehen wird in Abbildung 
+\ref{fig:relw_atev_modh} visualisiert. Der Operator $ord_{p \in P}^{\alpha} f(p)$ selektiert jenen Wert aus $f(p)$, welcher
 größer ist als $\alpha$-Prozent der Werte.
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.6\linewidth]{resources/img/RelatedWork/Atev_modHausdorff}
-    \caption[Funktionsweise der modifizierten Hausdorff Distanz]{Funktionsweise der modifizierten Hausdorff Distanz \cite[]{Atev2010}}
+    \caption[Funktionsweise der modifizierten Hausdorff-Distanz]{Funktionsweise der modifizierten Hausdorff-Distanz \cite[]{Atev2010}}
     \label{fig:relw_atev_modh}
 \end{figure}
 
@@ -107,9 +107,9 @@ $C_{P,Q}$ sorgt für den Einbezug der Orientierungen und über die Nachbarschaft
 kann der Einfluss von Ausreißern minimiert werden.
 
 Dieses Distanzmaß vergleichen Atev et al. unter Verwendung eines Spectral und eines Agglomerativen
-Cluster-Algorithmus mit der \textit{Longest-Common Subsequence} (LCSS) und der \textit{Dynamic Time Warping} (DTW) Distanz.
+Cluster-Algorithmus mit der \textit{Longest-Common-Subsequence} (LCSS) und der \textit{Dynamic-Time-Warping}-Distanz (DTW).
 Die Ergebnisse der Untersuchungen für vier verschiedene Datensätze zeigen, dass die beste Cluster-Performance
-mit Hilfe der modifizierten Hausdorff Distanz und des Spectral-Clustering erreicht wird.
+mit Hilfe der modifizierten Hausdorff-Distanz und des Spectral-Clustering erreicht wird.
 Unter Verwendung der LCSS und DTW Distanzmaße, könnten die Autoren nicht die selben Resultate erzielen.
 
 Dass das von Atev et al. vorgeschlagene Distanzmaß sehr gute Clusterergebnisse produziert, wurde auch von \cite[]{Morris2009}
@@ -121,7 +121,7 @@ ebenso gut oder teilweise besser.
 Eine weitere interessante Arbeit zur Clusteranalyse von Trajektorien stammt von \cite[]{Chen2011}.
 Die Autoren haben das Ziel, Muster in den Bewegungsbahnen von Hurrikans, welche im Zeitraum von 1850 bis 2010
 über den Atlantik zogen, zu erkennen.
-Sie verwenden hierzu einen angepassten DBSCAN Cluster-Algorithmus und das Hausdorff Distanzmaß.
+Sie verwenden hierzu einen angepassten DBSCAN Cluster-Algorithmus und das Hausdorff-Distanzmaß.
 Um die Missachtung der Orientierung kompensieren zu können, und zudem auch Ähnlichkeiten
 in Sub-Trajektorien zu erkennen, wählen die Autoren eine etwas andere Darstellung der Trajektorien.
 Sie definieren eine Bewegungsbahn als eine Folge sogenannter \textit{``Flow-Vektoren''}, welche neben
@@ -143,14 +143,13 @@ wobei gilt:
 \end{ceqn}
 
 Die Distanz zwischen zwei \textit{Flow-Vektoren} ist ihr euklidscher Abstand. Auf diese Weise wird bei
-der Berechnung der Hausdorff Distanz (siehe Abschnitt \ref{sec:hausdorff_distance}) auch die Richtung
+der Berechnung der Hausdorff-Distanz (siehe Abschnitt \ref{sec:hausdorff_distance}) auch die Richtung
 der Trajektorien berücksichtigt.
 Um ähnliche Sub-Trajektorien entdecken zu können, teilen Chen et al. die Trajektorien an den Positionen
 ``charakteristischer'' Vektoren. Diese beschreiben Richtungsänderungen in einer
 Bewegungsbahn und werden identifiziert über die Abweichungen in den Richtungskomponenten zweier
 aufeinanderfolgender Flow-Vektoren. Dies ist anschaulich in Abbildung \ref{fig:relw_chen_flow_vector} dargestellt.
 
-% TODO: Figure anpassen
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.45\linewidth]{resources/img/RelatedWork/Chen_trajectory_splitting}
@@ -169,7 +168,7 @@ Die Arbeit \cite[]{Vlachos2002} thematisiert nicht direkt die Clusteranalyse von
 beschäftigt sich mit dem Vergleich von Bewegungsbahnen im drei-dimensionalen Raum. Konkret ist ihr Ziel,
 Trajektorien vergleichen zu können, welche etwa die Handbewegungen beim Ausführen von Zeichensprache beschreiben.
 Hierzu definieren die Autoren erstmals die Grundversion des LCSS Distanzmaßes, welches in vielen Arbeiten,
-unter anderem in \cite[]{Atev2006}, \cite[]{Buzan2004} und \cite[]{Chen2005}, zum Einsatz kommt.
+unter anderem in \cite[]{Atev2006}, \cite[]{Buzan2004} und \cite[]{Chen2005} zum Einsatz kommt.
 Auf dessen Basis erstellen sie ein Distanzmaß, welche es ermöglicht formgleiche aber im Raum verschobene Trajektorien zu finden.
 Die Grundversion der LCSS-Distanz und ein darauf basierendes, einfaches Distanzmaß ist, nach Vlachos et al.,
 bereits in Abschnitt \ref{sec:lcss_distance} vorgestellt worden.
@@ -204,7 +203,7 @@ Diese kann über die Größe von $F$ gesteuert werden.
 % Ren et al., 2014
 \subsubsection*{Lane Detection in Video-Based Intelligent Transportation Monitoring via Fast Extracting and Clustering of Vehicle Motion Trajectories}
 
-\cite[]{Ren2014} stellen in ihrer Arbeit ein interessantes Vorgehen zur Clusteranalyse von Trajektorien vor,
+\cite[]{Ren2014} stellen in ihrer Arbeit ein Vorgehen zur Clusteranalyse von Trajektorien vor,
 welches auf der \textit{Rough-Set}-Theorie beruht. Sie extrahieren Fahrzeugpositionen aus Aufnahmen stationärer
 Überwachungskameras und stellen diese, wie die meisten Autoren, als Sequenzen zwei-dimensionaler
 Punkte dar. Ihr Ziel ist anschließend, anhand einer Gruppierung der gewonnenen Fahrzeugtrajektorien,
@@ -219,7 +218,7 @@ Die initialen Mittellinien bestimmen die Autoren anhand einer \textit{Aktivität
 welche sie während der Extraktion der Fahrzeugpositionen erstellen. Die Clusteranzahl $k$ muss händisch definiert werden.
 
 Als Maß für die Distanz zwischen einer Trajektorie $A_x$ und einer Spurmitte $c_i$ verwenden Ren et al. die
-Hausdorff Distanz $h(A_x, c_i)$. Für eine Trajektorie wird somit die nächste Mittellinie wie folgt gefunden:
+Hausdorff-Distanz $h(A_x, c_i)$. Für eine Trajektorie wird somit die nächste Mittellinie wie folgt gefunden:
 
 \begin{ceqn}
 \begin{align}
@@ -274,12 +273,12 @@ Ausreißern und Spurwechselvorgängen, stabile Spurmittellinien zu bestimmen. Er
 % zu erkennen
 % Auch übliche Ansätze vorstellen, welche nicht mit Traj. arbeiten (erwähnen häufig optisch / aus Fahrzeugen)
 
-Primäres Ziel dieser Arbeit ist es, Fahrspuren zuverlässig in Videoaufnahmen erkennen zu können. Dieser Abschnitt
-geht daher auf einige Arbeiten ein, welche ähnliches ebenfalls versuchen.
+Primäres Ziel dieser Arbeit ist es, Fahrspuren zuverlässig in Videoaufnahmen zu erkennen zu. Dieser Abschnitt
+geht daher auf Arbeiten mit ähnlichen Ziel ein.
 
-Die Mehrzahl der Veröffentlichungen in diesem Bereich, löst das Problem, indem sie nach visuellen Merkmalen,
+Die meisten Veröffentlichungen in diesem Bereich, löst das Problem, indem sie nach visuellen Merkmalen,
 primär Spurtrennlinien, in Videoaufnahmen suchen. Die Aufnahmen werden dabei entweder von stationären Kameras,
-von bemannten oder unbemannten Luftfahrzeugen oder einem Fahrzeug selbst gemacht. Zur Extraktion der Merkmale werden
+von bemannten oder unbemannten Luftfahrzeugen oder einem Fahrzeug selbst erstellt. Zur Extraktion der Merkmale werden
 üblicherweise Methoden aus den Gebieten des maschinellen Sehen (CV) oder maschinellen Lernens (ML) verwendet. % TODO: Abkzg.
 Arbeiten, welche CV-basierte Ansätze verfolgen, stammen beispielsweise von \cite[]{Lai2000}, \cite[]{McCall2006} oder \cite[]{Aly2008}.
 ML-gestützte Arbeiten wurden dahingegend unter anderem von \cite[]{Kim2008} und \cite[]{Gopalan2012} veröffentlicht.
@@ -304,7 +303,7 @@ Die Autoren berechnen anschließend für jede Trajektorie-Gruppe eine Kette Gaus
 $\{ \varphi_1, \varphi_2, ..., \varphi_l \}$, wobei $l$ die Anzahl der Punkte der Referenz-Trajektorie ist.
 Für jedes $\varphi_i$ wird der Mittelwert und die Kovarianz, basierend auf den Trajektorie-Punkten, welche dem
 $i$-ten Punkt von $T_r$ am nächsten liegen, berechnet.
-Anhand der Kovarianz Werte erstellen die Autoren Hüllen für die Fahrbahnen. Ergebnisse dieses Vorgehens sind in
+Anhand der Kovarianz-Werte erstellen die Autoren Hüllen für die Fahrbahnen. Ergebnisse dieses Vorgehens sind in
 Abbildung \ref{fig:relw_hu_example_envelope} dargestellt.
 
 \begin{figure}[H]
@@ -343,16 +342,16 @@ Um aus einfachen Bewegungsbahnen Routen zu erstellen, verwenden die Autoren das 
 welches dem agglomerativen Cluster-Ansatz ähnelt.
 
 \begin{enumerate}
-    \item Erste Trajektorie initialisiert erste Route
-    \item Neue Trajektorien werden mit bestehenden Bahnen abgeglichen
+    \item Die erste Trajektorie initialisiert die erste Route.
+    \item Neue Trajektorien werden mit bestehenden Bahnen abgeglichen und
     \begin{enumerate}
-        \item Bei Übereinstimmung wird Route aktualisiert
-        \item Bei keiner Übereinstimmung wird neue Route erzeugt
+        \item bei Übereinstimmung wird Route aktualisiert, oder
+        \item bei keiner Übereinstimmung wird neue Route erzeugt.
     \end{enumerate}
-    \item Aktualisierte Routen werden auf definierten Knotenabstand $r$ gebracht
-    \item Alle Routen werden miteinander verglichen
+    \item Aktualisierte Routen werden auf definierten Knotenabstand $r$ resampled.
+    \item Alle Routen werden miteinander verglichen und
     \begin{enumerate}
-        \item Bei Überlagerung der Routen werden diese fusioniert
+        \item bei einer Überlagerung der Routen werden diese fusioniert.
     \end{enumerate}
 \end{enumerate}
 
@@ -377,18 +376,17 @@ Ein Ergebnis des Verfahrens ist in Abbildung \ref{fig:relw_results_makris} b) da
 
 % Morris et al., 2011
 \subsubsection*{Trajectory Learning for Activity Understanding: Unsupervised, Multilevel, and Long-Term Adaptive Approach}
-% HMM
 
 In \cite[]{Morris2011} stellen die Autoren ein dreistufiges Framework zur Auswertung von Fahrzeugtrajektorien vor.
 Ziel des Frameworks ist es, die Bewegungsmuster von Objekten mittels eines erlernten Vokabulars beschreiben zu können
 sowie Aktivitäten vorhersagen und Anomalien erkennen zu können.
 In einem ersten Schritt werden daher sogenannte \textit{Points of Interests} (POI) identifiziert. Die von Morris
-et al. untersuchten POI's sind die Eintritts-, Austritts- und Stop-Zonen innerhalb einer Scene.
+et al. untersuchten POI's sind die Eintritts-, Austritts- und Stop-Zonen innerhalb einer Szene.
 Nach der deren Bestimmung identifiziert das vorgestellte Framework übliche Bewegungsmuster in den Trajektorien
 und definiert auf deren Basis anschließend Pfade.
 
 Sich häufig wiederholende Bewegungsmuster werden von den Autoren über eine Clusteranalyse ermittelt.
-Zum Vergleich der Trajektorien kommt das in \cite[]{Vlachos2002} vorgestellte LCSS Distanzmaß zum Einsatz
+Zum Vergleich der Trajektorien kommt das in Abschnitt \ref{sec:lcss_distance} vorgestellte LCSS Distanzmaß zum Einsatz
 und als Clusteralgorithmus das Spectral-Clustering. Morris et al. verwenden statt des im Spectral-Clustering
 üblicherweise eingesetzten k-Mean-Algorithmus, einen Fuzzy-C-Mean Ansatz, welcher für jede Trajektorie
 einen Zugehörigkeitswert $u_{ik} \in [0, 1]$ zum Cluster $k$ bestimmt.
@@ -412,7 +410,7 @@ werden die Werte $u_{ik}$ verwendet. Die so erstellten Referenz-Linien sind in A
 
 Basierend auf den Clustern definieren Morris et al. außerdem Pfade, welche die räumliche und zeitliche Dynamik
 der Fahrzeuge an einer bestimmten Stelle abbilden. Sie verwenden hierzu Hidden-Markov-Modelle (\acrshort*{hmm}),
-welche sie mittels der Baum-Welch Methode trainieren.
+welche sie mittels der Baum-Welch-Methode trainieren.
 Die Ergebnisse dieses Ansatzes sind in Abbildung \ref{fig:relw_morris_results} b) dargestellt. Die
 Ellipsen repräsentieren die HMM's, welche angeben, wie die erwartete Bewegung eines Fahrzeugs in einem
 bestimmten Bereich aussieht.
@@ -465,7 +463,8 @@ aus den Gleichungen \ref{eq_hsieh3} und \ref{eq_hsieh4}.
 \end{ceqn}
 
 Ein Beispiel für die Ergebnisse der Spurerkennung von Hsieh et al. ist in Abbildung \ref{fig:relw_hsieh_results} b) dargestellt.
-Das Verfahren funktioniert grundlegend gut, wenn Fahrspuren nebeneinader und parallel zueinander liegen.
+Das Verfahren funktioniert gut, wenn Fahrspuren nebeneinader und parallel zueinander liegen. Die Dimensionen
+sich kreuzender Fahrspuren können mit dem Verfahren beispielsweise allerdings nicht bestimmt werden.
 
 \begin{figure}[H]
     \centering
@@ -483,31 +482,34 @@ Das Verfahren funktioniert grundlegend gut, wenn Fahrspuren nebeneinader und par
 \section{Defizite vorhandener Lösungen und benötigte Neuerungen}
 \label{sec:rw_deficites}
 
-% Spurerkennung (realistische Geometrien) meist nur auf Basis statistischer Modelle
-% "reale" Spurerkennung (wie in Hsieh et al. nur für gerade Spuren)
-% Eigentlich nichts zur Spurerkennung auf bspw. Kreuzungen etc.
-% Wenn Spur dann immer nur Spur für gesamtes Cluster (kein Partitioning)
-% Erkennung von Fahrspuren unterschiedlicher Spurdichten ????
-
 Es existiert eine große Anzahl von Arbeiten, welche sich mit der Clusteranalyse von Trajektoriedaten
 befasst. Die in Abschnitt \ref{sec:rw_clustering} vorgestellten Veröffentlichungen stellen nur eine
-kleine Auswahl dar. Da die in den Arbeiten publizierten Verfahren teils sehr unterschiedlich sind und
-zur Erreichung verschiedenster Ziele eingesetzt werden, muss in dieser Arbeit ein Verfahren identifiziert
-werden, welches sich möglichst gut für die Analyse von Fahrzeugtrajektorien eignet.
+kleine Auswahl dar.
+Die Arbeiten entwickeln Lösungen in verschiedensten Anwendungsgebieten wie der Verkehrs-, Wetter und Verhaltensanalyse
+und suchen daher in den Trajektoriedaten nach unterschiedlichsten Mustern. Die geforderte Genauigkeit der
+Clustering-Ergebnisse unterscheidet sich je nach Anwendungsfall ebenfalls stark.   
+Im Rahmen dieser Masterarbeit muss ein Verfahren identifiziert und entwickelt werden, welches Fahrspur-Cluster
+in Trajektoriedaten zuverlässig identifizieren kann. Die Fahrspuren können hierbei unterschiedlichste
+Geometrien aufweisen.
+
 Ein Defizit vieler vorhandener Arbeiten ist, dass diese meist mit wenigen unterschiedlichen
-Trajektorie-Datensätzen arbeiten und die verwendeten Daten selten Defekte wie Unterbrechungen, Ausreißer
-et cetera aufweisen. In einigen Arbeit wird teilweise sogar lediglich mit generierten Trajektoriedaten
-gearbeitet. In der vorliegenden Thesis muss daher zudem ein zuverlässiges Verfahren zur Bereinigung
-von Trajektoriedaten entwickelt werden.
+Trajektorie-Datensätzen arbeiten und die verwendeten Daten selten Defekte wie Unterbrechungen,
+Ausreißer oder inkorrekte Positionsinformationen aufweisen, welche durch Fehler in der Fahrzeugverfolgung entstehen.
+In einigen Arbeit wird teilweise nur mit generierten Trajektoriedaten
+gearbeitet. Da in der vorliegenden Thesis davon ausgegangen werden muss, dass all diese Probleme auftreten können, 
+muss ein zuverlässiges Verfahren zur Bereinigung von Trajektoriedaten entwickelt werden. Ohne einen solchen Vorverarbeitungschritt,
+wäre ein akkurates Clustering nicht möglich.
 
 Deutlich weniger Veröffentlichungen gibt es zum Thema der Identifikation von Fahrspuren. Zwar existieren
 einige Arbeiten, welche Fahrspuren auf Basis von Trajektorien ermitteln, diese entsprechen aber
 in den allermeisten Fällen nicht den realen Verläufen der Fahrbahnen. Üblicherweise werden Fahrspuren
-anhand statistischer Verfahren, wie in \cite{WeimingHu2006} oder in \cite{Teng2015} beschrieben, ermittelt.
-\cite{Hsieh2006} ermitteln in ihrer Arbeit reale Spur-Begrenzungslinien, allerdings nur für kurze, parallele
-Fahrspuren eines Autobahnabschnittes. In dieser Arbeit sollen hingegen reale Spurgeometrien für
-unterschiedliche Straßenabschnitte bestimmt werden, weshalb das hierzu eingesetzte Verfahren selbst entwickelt
-werden muss.
+anhand statistischer Verfahren, wie in \cite[]{WeimingHu2006} oder in \cite[]{Teng2015} beschrieben, ermittelt.
+\cite[]{Hsieh2006} ermitteln in ihrer Arbeit Spur-Begrenzungslinien, allerdings nur für kurze, parallele
+Fahrspuren eines Autobahnabschnittes. In dieser Arbeit sollen reale Spurgeometrien für
+unterschiedlichste Straßenabschnitte bestimmt werden, weshalb das hierzu eingesetzte Verfahren selbst entwickelt
+werden muss. 
 
-Zudem muss ein Ansatz zur Partitionierung von Fahrspuren entwickelt werden, da sich erkannte Fahrspuren
-in dieser Arbeit nicht über längere Bereiche hinweg überlagern dürfen.
+Es muss zudem eine Lösung zur Partitionierung von Fahrspuren entwickelt werden, da sich erkannte Spuren
+in dieser Arbeit nicht über einen längeren Bereiche hinweg überlagern dürfen. Es muss zudem für jede
+automatisch erkannte Spur überprüft werden, ob es sich bei ihr tatsächlich um eine real Fahrspur handeln kann,
+oder ob ihr Verlauf im Verhältnis zu dem der anderen Bahnen nicht plausibel ist. 

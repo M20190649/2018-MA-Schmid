@@ -11,7 +11,7 @@ Anschließend werden verschiedene Konzepte und Algorithmen aus dem Bereich der C
 welche dabei helfen können, Gemeinsamkeiten und Beziehungen in Daten zu entdecken.
 Am Ende des Kapitels werden Distanzmaße, insbesondere jene, welche sich zum Vergleich von Fahrzeugtrajektorien eignen,
 betrachtet. Es wird aufgezeigt, welchen Einfluss diese auf die Ergebnisse einer Clusteranalyse haben, und welche
-Abwägungen bei der Wahl eines Maßes angestellt werden müssen.
+Abwägungen bei der Wahl eines Distanzmaßes angestellt werden müssen.
 
 \section{Rekonstruktion von Fahrzeugtrajektorien aus Luftaufnahmen}
 \label{sec:position_extraction}
@@ -64,8 +64,8 @@ Aus diesem Grund wird die Clusteranalyse auch häufig als \textit{unüberwachte 
 
 Das Konzept eines \textit{Clusters} ist nicht genau definiert. Es existieren daher viele unterschiedliche Konzepte
 und Algorithmen, welche sich jeweils für andere Anwendungsfälle eignen und verschiedene Eigenschaften
-besitzen. Hieraus ergibt sich auch die Tatsache, dass das Clustering kein selbsttätiger Prozess ist, welcher sich auf
-einheitliche Weise auf unterschiedliche Probleme anwenden lässt. Jedes Problem erfordert die individuelle und sorgfältige
+besitzen. Somit ist das Clustering kein selbsttätiger Prozess, welcher sich in
+einheitlicher Weise auf unterschiedliche Probleme anwenden lässt. Jedes Problem erfordert die individuelle und sorgfältige
 Auswahl eines passenden Algorithmus, eines Distanzmaßes und der richtigen Parameter. Die Bestimmung dieser geschieht
 iterativ und nicht selten nach dem Prinzip des \textit{Trial and Error}. In Abbildung \ref{fig:grund_clustering_example}
 ist beispielhaft ein Datensatz (links) mit -- für den Menschen intuitiv ersichtlich -- 7 unterschiedlichen Clustern (rechts)
@@ -79,13 +79,13 @@ dargestellt. Nach \cite[]{Jain2010} kann allerdings kein existierender Clusterin
     \label{fig:grund_clustering_example}
 \end{figure}
 
-Aufgrund der Limitationen, welche alle Cluster-Algorithmen besitzen, muss der Analyst sich vor deren Anwendung intensiv
+Aufgrund der Einschränkungen, welche alle Cluster-Algorithmen besitzen, muss der Analyst sich vor deren Anwendung intensiv
 mit den zu verarbeitenden Daten beschäftigen. Er muss ein Verständnis dafür besitzen, welche Struktur die Daten
 haben, beziehungsweise annehmen können, und nach welchen Mustern zu suchen ist.
-Besonders wichtiger ist zudem auch die Auswahl der richtigen, das heißt relevanten, Datenmerkmale (\textit{``Feature Selektion''})
+Besonders wichtiger ist zudem auch die Auswahl der richtigen, also relevanten, Datenmerkmale (\textit{``Feature Selection''})
 und die Wahl deren Repräsentation (\textit{``Feature Transformation''}).
 Die Selektion und gegebenenfalls Transformation der Daten muss in einem
-Vorverarbeitungsschritt geschehen, dessen Qualität einen maßgeblichen Einfluss auf das finale Clustering Ergebnis hat.
+Vorverarbeitungsschritt geschehen, dessen Qualität einen maßgeblichen Einfluss auf das finale Clustering-Ergebnis hat.
 Basierend auf vorangegangener Beschreibung und \cite[]{Jain1999}, lässt sich der grundlegende Ablauf einer Clusteranalyse wie folgt darstellen: \\
 
 \begin{figure}[H]
@@ -167,7 +167,7 @@ Eine sehr allgemeine Definition eines Clusters ist die der \textit{konzeptionell
 gemeint, dass die Elemente eines Clusters einige gemeinsame Eigenschaften besitzen. Dies schließt die oben genannten
 Cluster-Arten mit ein, lässt sich allerdings beliebig erweitern. So sind beispielsweise in Abbildung \ref{fig:basic_cluster_style} e)
 konzeptionelle Cluster dargestellt, die die Form zweier Kreise und eines Rechtecks haben. Um solche Muster
-erkennen zu können, benötigt ein Algorithmus ein spezielles Verständnis eines Clusters.
+erkennen zu können, benötigt ein Algorithmus ein spezielles ``Verständnis'' eines Clusters.
 
 \begin{figure}[H]
     \centering
@@ -256,7 +256,7 @@ Wird als Link-Kriterium beispielsweise \textit{Minimum-Linkage} gewählt, ist di
 \begin{ceqn}
 \begin{align}
 \label{eq_linkage}
-    link(P, Q) = min\{ dist(p,q) | p \in P, q \in Q\}
+    link(P, Q) = min\{ dist(p,q)\ |\ p \in P, q \in Q\}
 \end{align}
 \end{ceqn}
 
@@ -272,7 +272,7 @@ vorraus festlegen, was problematisch ist, da diese meist nicht bekannt ist. Umga
 indem ein Link-Kriterium gewählt wird, das ab einer bestimmten Distanz zwischen den Clustern diese nichtmehr
 fusioniert \cite[]{GeorgeSeif2018}.
 
-Die Zeitkomplexität des agglomerativen Clusterings beträgt bestenfalls $O(m^2log\ m)$, weshalb die Menge der Daten,
+Die Zeitkomplexität des agglomerativen Clusterings beträgt bestenfalls $O(n^2log\ n)$, weshalb die Menge der Daten,
 welche mit ihm verarbeitet werden können erheblich begrenzt ist \cite[]{tan2007introduction}.
 
 \subsubsection{Prototyp-Modelle}
@@ -400,9 +400,9 @@ Ein Element wird jenem Cluster zugeordnet, für welches es die höchste Wahrsche
 \subsubsection{Dichte-Modelle}
 \label{sec:grund_density_clustering}
 
-Dichte basierte Cluster sind, wie oben beschrieben, definiert als Regionen hoher Objekt-Dichte, welche
+Dichte basierte Cluster sind, wie oben beschrieben, definiert als Regionen hoher Objektdichte, welche
 von Bereichen geringer Dichte umgeben sind. Dichte-Clustering-Modelle suchen nach eben solchen Regionen.
-Großer Vorteil der Algorithmen dieser Klasse ist, dass sie Cluster beliebiger Formen finden können,
+Ein großer Vorteil der Algorithmen dieser Klasse ist, dass sie Cluster beliebiger Formen finden können,
 nicht auf die Vorgabe einer Clusteranzahl angewiesen sind und mit Ausreißern umgehen können.
 
 Als Vertreter der Dichte-basierten Ansätze wird nachfolgend der \textit{\acrshort*{dbscan}} Algorithmus
@@ -459,17 +459,13 @@ Der DBSCAN Algorithmus lässt sich, basierend auf den obigen Definitionen, infor
     \item[1)] Unterteilung der Objekte in die drei Objektklassen. (Abb. \ref{fig:grund_dbscan_clustering} b))
     \item[2)] Aussortierung der Ausreißer-Objekte.
     \item[3)] Wahl eines nicht zugewiesenen Kernobjektes.
-    \item[4)] Erstellung eines neuen Clusters für das Kernobjekt und alle von ihm ausgehend direkt oder indirekt erreichbaren Objekte
+    \item[4)] Erstellung eines neuen Clusters für das Kernobjekt und alle von ihm ausgehend direkt oder indirekt erreichbaren Objekte.
     \item[5)] Wiederholdung der Schritte 3) und 4), bis alle Kern- und Randobjekte einem Cluster zugewiesen sind. (Abb. \ref{fig:grund_dbscan_clustering} c))
 \end{description}
 
 DBSCAN besitzt die oben beschriebenen Vorteile Dichte-basierter Cluster-Algorithmen. Dank einer Zeitkomplexität
 von $O(n\ log\ n)$ kann er außerdem auch auf große Datensätze angewendet werden.
 Nachteil des Ansatzes ist hingegen, dass er schlecht mit Clustern umgehen kann, welche unterschiedliche Dichten besitzen.
-
-
-
-
 
 \section{Distanzmaße zum Vergleich von Fahrzeugtrajektorien}
 \label{sec:distance_measures}
@@ -501,12 +497,12 @@ Abbildung \ref{fig:grund_trajectories} zeigt eine Auswahl möglicher Trajektorie
 \label{fig:grund_trajectories}
 \end{figure}
 
-\subsection{HU Distanz}
+\subsection{HU-Distanz}
 \label{sec:hu_distance}
 
-Die HU Distanz wurde erstmals in der Arbeit \textit{``Similarity based vehicle trajectory clustering and anomaly detection''}
+Die HU-Distanz wurde erstmals in der Arbeit \textit{``Similarity based vehicle trajectory clustering and anomaly detection''}
 von \cite[]{Hu2005} verwendet. Es ist ein sehr einfaches Distanzmaß, welches auf der mittleren euklidschen Distanz
-zwischen zwei Trajektorien basiert. Berechnet wird die HU Distanz für zwei Trajektorien $t_1$ und $t_2$ wie folgt:
+zwischen zwei Trajektorien basiert. Berechnet wird die HU-Distanz für zwei Trajektorien $t_1$ und $t_2$ wie folgt:
 
 \begin{ceqn}
 \begin{align}
@@ -517,26 +513,26 @@ zwischen zwei Trajektorien basiert. Berechnet wird die HU Distanz für zwei Traj
 \end{align}
 \end{ceqn}
 
-Aus dieser Formel lassen sich sowohl die Vor- als auch Nachteile der HU Distanz ableiten. Der klare Vorteile der
-HU Distanz ist deren Einfachheit und die Effizienz von $O(n)$.
+Aus dieser Formel lassen sich sowohl die Vor- als auch Nachteile der HU-Distanz ableiten. Der klare Vorteile der
+HU-Distanz ist deren Einfachheit und die Effizienz von $O(n)$.
 Nachteil ist hingegen, dass das Distanzmaß nur gut funktioniert, wenn die Trajektorien bestimmte
 Kriterien erfüllen. So sollten Trajektorien, welche einem Cluster angehören, auch immer möglichst auf selber Höhe beginnen,
 damit deren mittlerer Abstand nicht, aufgrund einer Verschiebung, erhöht wird.
 Außerdem ist es notwendig, die Abstände zwischen den Punkten der Trajektorien auf die selbe Länge zu bringen,
 damit beim paarweisen Vergleich immer Elemente verglichen werden, welche gleichweit vom Start der Spuren entfernt sind.
 Diese Eigenschaften der Trajektorien müssen über einen Vorverarbeitungsschritt geschaffen werden.
-Problematisch bei der Verwendung der HU Distanz ist außerdem, dass beim Vergleich zweier Trajektorien immer nur
+Problematisch bei der Verwendung der HU-Distanz ist außerdem, dass beim Vergleich zweier Trajektorien immer nur
 die ersten $N$ Punkte (s. Gleichung \ref{eq_hu_distance2}) betrachtet werden. Die kann dazu führen, dass zwei
 Trajektorien, welche zu Beginn fast identisch sind und später auseinanderlaufen, trotzdem einen hohen Ähnlichkeitswert besitzen
 (siehe $t_5$ und $t_6$ in Abbildung \ref{fig:grund_trajectories}).
 
-Die HU Distanz kann aufgrund der genannten Einschränken nur in speziellen Fällen oder unter Verwendung eines
+Die HU-Distanz kann aufgrund der genannten Einschränken nur in speziellen Fällen oder unter Verwendung eines
 Vorverarbeitungsschrittes angewandt werden. Sie liefert ansonsten schlechte Clustering Ergebnisse.
 
-\subsection{Hausdorff Distanz}
+\subsection{Hausdorff-Distanz}
 \label{sec:hausdorff_distance}
 
-Die Hausdorff Distanz ist ein komplexeres Maß zur Bestimmung der Ähnlichkeit zwischen zwei Trajektorien.
+Die Hausdorff-Distanz ist ein komplexeres Maß zur Bestimmung der Ähnlichkeit zwischen zwei Trajektorien.
 Sie misst grundsätzlich den Abstand zwischen zwei nicht-leeren, ungeordneten Teilmengen $A$ und $B$ und ist für
 Trajektorien definiert über die Gleichungen \cite[]{Atev2010}:
 
@@ -549,15 +545,15 @@ Trajektorien definiert über die Gleichungen \cite[]{Atev2010}:
 \end{align}
 \end{ceqn}
 
-$h(t_1, t_2)$ wird als gerichtete Hausdorff Distanz \textit{von} $t_1$ \textit{nach} $t_2$ bezeichnet.
+$h(t_1, t_2)$ wird als gerichtete Hausdorff-Distanz \textit{von} $t_1$ \textit{nach} $t_2$ bezeichnet.
 Sie findet die maximale Distanz einer Trajektorie zum nächsten Punkt der anderen Trajektorie \cite[]{Huttenlocher}.
-Da $h$ gerichtet ist, gilt $h(t_1, t_2) \neq h(t_2, t_1)$. Aus diesem Grund wird die Hausdorff Distanz
+Da $h$ gerichtet ist, gilt $h(t_1, t_2) \neq h(t_2, t_1)$. Aus diesem Grund wird die Hausdorff-Distanz
 \textit{zwischen} zwei Trajektorien mittels $D_{HD}$ bestimmt. $dist$ kann ein beliebiges Maß für die Distanz zweier
 Punkte sein, wie beispielsweise die euklidsche Distanz.
-Grundsätzlich lässt sich über die Hausdorff Distanz die Form zweier Trajektorien vergleichen. Diese sind ähnlich,
+Grundsätzlich lässt sich über die Hausdorff-Distanz die Form zweier Trajektorien vergleichen. Diese sind ähnlich,
 wenn jeder Punkt einer Trajektorie einen nahegelegenen Punkt in der Vergleichsbahn besitzt.
 
-Vorteil der Hausdorff Distanz im Vergleich zur HU Distanz ist, dass diese immer vollständige Trajektorien vergleicht
+Vorteil der Hausdorff-Distanz im Vergleich zur HU-Distanz ist, dass diese immer vollständige Trajektorien vergleicht
 und nicht nur Teile. Außerdem ist bei ihrer Verwendung keine Vorverarbeitung in Form von Resampling et cetera notwendig.
 Problematisch ist das Distanzmaß hingegen, da es mit ungeordneten Sets arbeitet und somit im Fall von Trajektorien, deren
 Orientierung nicht beachtet. Zwei parallel aber in entgegengesetzte Richtungen laufende Trajektorien, wie beispielsweise
@@ -590,9 +586,9 @@ wie folgt definiert \cite[]{Vlachos2002}:
 
 Hierbei gilt $t_1' = \{ t_1(0),\ ...,\ t_1(n-1)\}$. Die Parameter $\epsilon$ und $\delta$ bestimmen das
 Vergleichs-Verhalten des Algorithmus. Über $\epsilon$ wird definiert, wieweit zwei Punkte maximal voneinander entfernt liegen
-können, um immer noch als ``übereinstimmend'' zu gelten. $\delta$ bestimmt hingegen, wieweit man in der Zeit vor
-beziehungsweise zurück gehen kann, um einen
-übereinstimmenden Punkt zu finden. Abbildung XXX veranschaulicht die Bedeutung von $\epsilon$ und $\delta$.
+können, um immer noch als ``übereinstimmend'' zu gelten. $\delta$ bestimmt hingegen, wieweit man in beide zeitliche Richtungen
+sucht, um einen übereinstimmenden Punkt zu finden.
+% Abbildung XXX veranschaulicht die Bedeutung von $\epsilon$ und $\delta$. TODO: Evtl. Bild noch einfügen
 Da die obige LCSS Funktion nur ein diskretes Zählmaß definiert, ist das eigentliche LCSS-Distanz üblicherweise
 gegeben als \cite[]{Vlachos2002}:
 
@@ -627,6 +623,7 @@ für den Erfolg der Gruppierung von Trajektorien.
 Wichtige Eigenschaften einiger in der Literatur häufig verwendeten Vergleichsmaße, inklusive der drei oben beschriebenen,
 sind nachfolgend nochmals in tabellarischer Form festgehalten.
 
+% TODO: Tablle überarbeiten
 \begin{table}[H]
     \caption{Eigenschaften verschiedener Distanzmaße}
     \label{tab:parallelen}
