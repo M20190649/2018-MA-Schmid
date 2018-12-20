@@ -1,14 +1,14 @@
 %!TEX root = ../Thesis.tex
 
-\chapter{Fahrspur-Bestimmung aus Trajektorie-Clustern}
+\section{Spur-Geometrie Bestimmung}
 \label{cha:lane_definition}
 
-In diesem Kapitel wird beschrieben, wie aus den bereits identifizierten Trajektorie-Clustern
+Nachfolgend wird beschrieben, wie aus den bereits identifizierten Trajektorie-Clustern
 Geometrie-Informationen der Fahrspuren abgeleitet werden. Hierzu sind primär drei Schritte notwendig:
 Bestimmung der Spur-Mittellinien, Bestimmung der Spurhüllen und anschließend die Partitionierung sich überlagernder
 Spuren. Hinzu kommen weitere kleine Schritte, welche ebenfalls nachfolgend beschrieben werden.
 
-\section{Ausfilterung von Spurwechselvorgängen}
+\subsection{Ausfilterung von Spurwechselvorgängen}
 \label{sec:real2_filter_lane_change}
 
 Bevor mithilfe der im vorherigen Schritt gewonnenen Trajektorie-Cluster Mittellinien von Fahrspuren bestimmt
@@ -55,14 +55,14 @@ algorithm filterCluster:
   return resultTrajs
 \end{lstlisting}
 
-Das gewählte Verfahren ist einfach, eignet sich aber dennoch gut, um das gewünschte Ziel zu erreichen.
+Das gewählte Verfahren ist einfach, eignet sich aber gut, um das gewünschte Ziel zu erreichen.
 Die in Abbildung \ref{fig:real2_clusters_post_postpro} dargestellten Ergebnisse zeigen dies.
 Aus den in Abbildung \ref{fig:real2_clusters_pre_postpro} enthaltenen Clustern wurden alle Trajektorien
 mit Spurwechselvorgängen oder Abweichungen entfernt. Die Effektivität konnte auch durch die Anwendung
 auf andere Datensätze bestätigt werden.
 Wenn in einem Cluster viele Trajektorien Abweichungen von einer Spur besitzen, ist es möglich, dass der Algorithmus
 diese nicht vollständig entfernt. Bei einer geringen Anzahl von Abweichungen oder Ausreißer arbeitet
-er allerdings sehr zuverlässig.
+er allerdings zuverlässig.
 
 \begin{figure}[H]
     \centering
@@ -71,7 +71,7 @@ er allerdings sehr zuverlässig.
     \label{fig:real2_clusters_post_postpro}
 \end{figure}
 
-Zu beachten ist allerdings auch, dass die Zeitkomplexität des Verfahrens bei großen Trajektorie-Clustern
+Zu beachten ist, dass die Zeitkomplexität des Verfahrens bei großen Trajektorie-Clustern
 nicht unerheblich ist. Dies ist auf die Komplexität des LCSS Distanzmaßes zurückzuführen.
 Bei der Untersuchung alternativer Vorgehensweise wurde allerdings klar, dass es grundlegend schwer ist,
 das Problem der Ausreißer-Erkennung performant zu lösen.
@@ -81,14 +81,14 @@ die verfolgten Ziele über die hier geforderten hinausgehen, wurde entschieden d
 beizubehalten. Durch die Parallelisierung der Berechnung der mittleren Abstände konnte die Performance
 des Ansatzes außerdem nochmals deutlich gesteigert werden.
 
-\section{Bestimmung der Spurmittellinien}
+\subsection{Bestimmung der Spurmittellinien}
 \label{sec:real2_define_lane_centerline}
 
 Nachdem die Trajektorie-Cluster nun weitestgehend von Fahrspurwechseln und anderen Abweichungen bereinigt
 wurden, beschreiben die verbleibenden Bewegungsbahnen eines Clusters eine Fahrspur.
 Anhand dieser Trajektorien können daher nun die Mittellinie der Spuren bestimmt werden.
 
-Die zu bestimmende Mittellinie verläuft durch die Mitte des entsprechenden
+Die gesuchte Mittellinie verläuft durch die Mitte des entsprechenden
 Trajektorie-Clusters. Die einzelnen Bewegungsbahnen besitzen jeweils leichte Abweichungen von dieser
 \textit{``Ideallinie''}.
 Als Spurmittellinie -- wie von \cite{Hu2005} vorgeschlagen -- jene Trajektorie zu wählen, welche die
@@ -150,11 +150,12 @@ welche auf die oben beschriebene Weise bestimmt wurden, abgebildet.
 Die Mittellinien werden, da es sich bei ihnen ebenfalls um Sequenzen von 2D-Koordinaten handelt,
 über Trajektorie-Objekte repräsentiert (siehe Abbildung \ref{fig:real_trajectory_classDia}).
 
-\section{Angleichung benachbarter Spur-Enden}
+\subsection{Angleichung benachbarter Spur-Enden}
 
 Bevor für jede Spurmittellinie eine Hülle definiert wird, welche die Geometrie der Fahrspur definiert,
 werden benachbarte Spur-Enden aneinander angeglichen. Diese sollen immer auf der selben Höhe beginnen
-beziehungsweise enden, um sie beispielsweise bei der Spurwechsel-Analyse besser vergleichen zu können.
+beziehungsweise enden, um beispielsweise die Positionen von Fahrzeugen auf benachbarten Spuren bei der
+Spurwechsel-Analyse besser vergleichen zu können.
 
 Benachbarte Fahrspuren können einen deutlich sichtbaren Versatz an ihren Anfängen
 und Enden besitzen, was beispielsweise in Abbildung \ref{fig:real2_lane_alignment} a) dargestellt ist. Diese Unterschiede entstehen
@@ -213,7 +214,7 @@ Das Ergebnis der Spur-Angleichung ist in Abbildung \ref{fig:real2_lane_alignment
 % Nachdem die Spurmittellinien auf die oben beschriebene Weise angeglichen wurden, werden anschließend
 % Spurhüllen definiert.
 
-\section{Bestimmung der Spurhüllen}
+\subsection{Bestimmung der Spurhüllen}
 \label{sec:real2_define_lane_envelope}
 
 Nachdem die Mittellinien der Fahrspuren bestimmt und ihre Enden aneinander angeglichen wurden, wird nun für jede Spurlinie
@@ -263,7 +264,7 @@ Nachfolgend werden die Schritte vorgestellt, welche angewandt werden, um in eine
 jene zu finden, welche parallel zueinander verlaufen. Auf deren Basis werden anschließend die Spurbreiten bestimmt und
 die Hüll-Linien definiert.
 
-\subsection*{Identifikation paralleler Fahrspuren}
+\subsubsection{Identifikation paralleler Fahrspuren}
 \label{sec:real2_identify_parallel_lanes}
 
 Um in einer Menge von Fahrspuren, welche über Mittellinien repräsentiert werden, jene zu finden, die
@@ -309,7 +310,7 @@ Für $\delta$ wurde experimentell der Wert 0.1 bestimmt. In den verschiedenen Te
 so zuverlässig parallele Spur-Paare identifiziert werden. Anhand dieser werden im nächsten Schritt
 die Spurhüllen bestimmt.
 
-\subsection*{Berechnung der Hüllen}
+\subsubsection{Berechnung der Hüllen}
 \label{sec:real2_create_envelopes}
 
 Bevor für eine Mittellinie die sie umgebende Spurhülle bestimmt werden kann, muss die Breite der Spur
@@ -374,7 +375,7 @@ Die obige Abbildung zeigt, dass die berechneten Spur-Geometrien in den meisten F
 mit den realen Spur-Dimensionen übereinstimmen. Bevor die Spuren partitioniert werden, um Überlagerungen
 von Fahrspuren zu entfernen, werden in einem weiteren Schritt ``unechte'' Spur-Geometrien entfernt.
 
-\subsection*{Entfernung unechter Spur-Geometrien}
+\subsubsection{Entfernung unechter Spur-Geometrien}
 
 Spur-Geometrien sind grundsätzlich dann ``unecht'', wenn sie keine real existierende Fahrspur beschreiben.
 Am häufigsten treten unechte Fahrspuren in Form von zu kurzen Geometrien auf, oder in Form von Geometrien,
@@ -429,7 +430,7 @@ Eine Spurwechsel-Spur muss also im Bereich ihres Starts und ihres Endes jeweils 
 mehr befahrene, parallele Fahrspur überlagern.
 Nachdem auf diese Weise die ``unechten'' Spur-Geometrien entfernt wurden, werden die übrigen partitioniert.
 
-\section{Partitionierung von Fahrspuren}
+\subsection{Partitionierung von Fahrspuren}
 \label{sec:real2_lane_partitioning}
 
 Fahrspuren, welche mithilfe dieser Arbeit erkannt werden, kommen bei der Verkehrsanalyse zum Einsatz.
@@ -469,7 +470,7 @@ sekundären Spur-Geometrien der Neckartor-Kreuzung dargestellt.
     \subfloat[]{{
         \includegraphics[align=c, width=0.35\linewidth]{resources/img/umsetzung/U2/overlapping_lanes}
     }}
-    \caption{a) Primäre (blau) und sekundäre (grün) Spuren, b) sich überlagernde und kreuzende Spur-Paare}
+    \caption{Primäre (blau) und sekundäre (grün) Spuren a), sich überlagernde und kreuzende Spur-Paare b)}
     \label{fig:real2_prim_and_sec_lanes}
 \end{figure}
 
@@ -581,7 +582,7 @@ In einigen Szenarien kann es jedoch vorkommen, dass nach der Geometrie-Ermittlun
 die Fahrspur-Geometrien die reale Straßen-Topologie noch nicht korrekt abbilden. Aus diesem Grund werden die
 Spur-Geometrien in einem weiteren Schritt nochmals optimiert.
 
-\section{Optimierung der Spur-Geometrien}
+\subsection{Optimierung der Spur-Geometrien}
 
 Die nach dem Partitionierungs-Schritt vorliegenden Spur-Geometrien besitzen in einigen Fällen noch Defekte.
 Das am häufigsten auftretende Problem ist, dass die Spur-Geometrien nicht breit genug sind.
@@ -639,7 +640,7 @@ Spur-Geometrien können anschließend die Fahrspuren in die TrackerApplication e
 % Die aus den Trajektorie-Daten
 % extrahierten Spur-Geometrien stimmen in den meisten Fällen mit den realen Fahrbahnverläufen überein.
 
-\section{Anlegen der Fahrspuren in der TrackerApplication}
+\subsection{Anlegen der Fahrspuren in der TrackerApplication}
 
 Nachdem die Spur-Geometrien auf Basis der Fahrzeugtrajektorien bestimmt wurden, müssen diese in einem
 finalen Schritt noch in das von der TrackerApplication verwendete Datenmodell zur Repräsentation von

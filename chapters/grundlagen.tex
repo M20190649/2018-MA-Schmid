@@ -1,19 +1,21 @@
 %!TEX root = ../Thesis.tex
 
-\chapter{Grundlagen}
-\label{cha:grundlagen}
+% \chapter{Grundlagen}
+% \label{cha:grundlagen}
 
-% TODO: Anpassung wenn Grundlagen fertig
-In diesem Kapitel werden die für das Verständnis und die Durchführung der Arbeit benötigten
-Grundlagenthemen vorgestellt. Als erstes wird erläutert, auf welche Weise Fahrzeugtrajektorien
-aus Videoaufnahmen rekonstruiert werden können.
-Anschließend werden verschiedene Konzepte und Algorithmen aus dem Bereich der Clusteranalyse vorgestellt,
-welche dabei helfen können, Gemeinsamkeiten und Beziehungen in Daten zu entdecken.
-Am Ende des Kapitels werden Distanzmaße, insbesondere jene, welche sich zum Vergleich von Fahrzeugtrajektorien eignen,
-betrachtet. Es wird aufgezeigt, welchen Einfluss diese auf die Ergebnisse einer Clusteranalyse haben, und welche
-Abwägungen bei der Wahl eines Distanzmaßes angestellt werden müssen.
+% % TODO: Anpassung wenn Grundlagen fertig
+% TODO: Übernahme des Überblicks in "Aufbau Arbeit"
 
-\section{Rekonstruktion von Fahrzeugtrajektorien aus Luftaufnahmen}
+% In diesem Kapitel werden die für das Verständnis und die Durchführung der Arbeit benötigten
+% Grundlagenthemen vorgestellt. Als erstes wird erläutert, auf welche Weise Fahrzeugtrajektorien
+% aus Videoaufnahmen rekonstruiert werden können.
+% Anschließend werden verschiedene Konzepte und Algorithmen aus dem Bereich der Clusteranalyse vorgestellt,
+% welche dabei helfen können, Gemeinsamkeiten und Beziehungen in Daten zu entdecken.
+% Am Ende des Kapitels werden Distanzmaße, insbesondere jene, welche sich zum Vergleich von Fahrzeugtrajektorien eignen,
+% betrachtet. Es wird aufgezeigt, welchen Einfluss diese auf die Ergebnisse einer Clusteranalyse haben, und welche
+% Abwägungen bei der Wahl eines Distanzmaßes angestellt werden müssen.
+
+\chapter{Rekonstruktion von Fahrzeugtrajektorien aus Luftaufnahmen}
 \label{sec:position_extraction}
 
 % Beschreibung des kompletten Vorgangs bis Bewegungsbahnen der Autos vorliegen
@@ -36,10 +38,10 @@ Abwägungen bei der Wahl eines Distanzmaßes angestellt werden müssen.
 % Umwandlung in Weltkoordinaten (Weltkoordinaten System, Kameramodell etc.. siehe Arbeit Stefan)
 % Endergebnis: Fahrzeugpositionen in Weltkoordinatensystem mit Einheit Meter
 
-\subsection{Erkennung und Verfolgung von Fahrzeugen in Videoaufnahmen}
-\subsection{Positionsbestimmung in Videoaufnahmen}
+\section{Erkennung und Verfolgung von Fahrzeugen in Videoaufnahmen}
+\section{Positionsbestimmung in Videoaufnahmen}
 
-\section{Clusteranalyse}
+\chapter{Clusteranalyse}
 \label{sec:tra_clustering}
 
 
@@ -110,13 +112,13 @@ Basierend auf vorangegangener Beschreibung und \cite[]{Jain1999}, lässt sich de
     \item Wie können gefundenen Cluster validiert werden?
 \end{enumerate}
 
-\subsection{Eigenschaften von Cluster-Sets und Clustern}
+\section{Cluster-Sets und Cluster}
 
 Cluster-Sets, das heißt die Gesamtheit aller durch eine Analyse gefundenen Cluster, und einzelnen Cluster selbst,
 können in verschiedene Kategorien unterteilt werden, beziehungsweise unterschiedliche Eigenschaften besitzen.
 Nachfolgend sind die wichtigsten basierend auf \cite[]{tan2007introduction} und \cite[]{Jain1999,Jain2010} aufgeführt.
 
-\subsubsection{Eigenschaften von Cluster-Sets}
+\subsection{Eigenschaften von Cluster-Sets}
 
 Bei Cluster-Sets kann grundsätzlich zwischen nachfolgenden Eigenschaften unterschieden werden.
 
@@ -139,7 +141,7 @@ werden, welche keine Gruppe besitzen.
 
 % TODO: evtl. Bild einfügen
 
-\subsubsection{Eigenschaften von Clustern}
+\subsection{Eigenschaften von Clustern}
 
 Da, wie oben erwähnt, nicht klar definiert ist, was ein Cluster ausmacht, können auch diese unterschiedliche Eigenschaften
 besitzen. Die wichtigsten Cluster-Arten sind nachfolgend erläutert.
@@ -203,7 +205,7 @@ erkennen zu können, benötigt ein Algorithmus ein spezielles ``Verständnis'' e
     \label{fig:basic_cluster_style}
 \end{figure}
 
-\subsection{Cluster-Algorithmen}
+\section{Cluster-Algorithmen}
 \label{sec:cluster_algos}
 
 Um mit den oben beschriebenen unterschiedlichen Cluster-Sets und Cluster Definitionen umgehen zu können,
@@ -212,7 +214,7 @@ Einige wichtige Clustering-Ansätze sind die Vernetzungs-Modelle, Centroid-basie
 oder Dichte-Modelle. Für jedes dieser Modelle existieren unterschiedliche Algorithmen. Im Folgenden werden
 diese Modelle und jeweils exemplarisch ein Algorithmus, der diese vertritt, vorgestellt.
 
-\subsubsection{Vernetzungs-Modelle}
+\subsection{Vernetzungs-Modelle}
 \label{sec:grund_vernetzungs_clustering}
 
 Vernetzungs-Modelle werden auch häufig \textit{hierarchische Cluster-Modelle} genannt. Sie beruhen auf
@@ -282,7 +284,7 @@ fusioniert \cite[]{GeorgeSeif2018}.
 Die Zeitkomplexität des agglomerativen Clusterings beträgt bestenfalls $O(n^2log\ n)$, weshalb die Menge der Daten,
 welche mit ihm verarbeitet werden können erheblich begrenzt ist \cite[]{tan2007introduction}.
 
-\subsubsection{Prototyp-Modelle}
+\subsection{Prototyp-Modelle}
 \label{sec:grund_prototype_clustering}
 
 Centroid basierte Cluster-Modelle betrachten im Gegensatz zu hierarchischen Modellen nicht die Distanz
@@ -351,7 +353,7 @@ Algorithmus. So stammen beispielsweise von \cite[]{Hamerly} und \cite[]{Pelleg} 
 beziehungsweise \textit{x-Means}, welche die Clusteranzahl $k$ auf Basis mehrerer k-Means Durchläufe und
 statistischer Kennzahlen bestimmen.
 
-\subsubsection{Distributions-Modelle}
+\subsection{Distributions-Modelle}
 \label{sec:grund_distribution_clustering}
 
 Distributions-Cluster-Modelle basieren auf der Verwendung von statistischen Wahrscheinlichkeitsverteilungen wie
@@ -404,7 +406,7 @@ Ziel des EM-Algorithmus ist es, die Parameter der Gauß-Modelle so zu optimieren
 Am Ende des Clusterings besitzt jeder Datenwert die Zugehörigkeits-Wahrscheinlichkeiten für die einzelnen Cluster.
 Ein Element wird jenem Cluster zugeordnet, für welches es die höchste Wahrscheinlichkeit besitzt.
 
-\subsubsection{Dichte-Modelle}
+\subsection{Dichte-Modelle}
 \label{sec:grund_density_clustering}
 
 Dichte basierte Cluster sind, wie oben beschrieben, definiert als Regionen hoher Objektdichte, welche

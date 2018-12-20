@@ -1,15 +1,20 @@
 %!TEX root = ../Thesis.tex
 
-\chapter{Clusteranalyse von Fahrzeugtrajektorien}
+\chapter{Realisierung der Fahrspurerkennung}
+
+In diesem Kapitel wird die Realisierung der Spurerkennung thematisiert.
+Es wird zuerst darauf eingegangen, wie die Trajektoriedaten im Algorithmus repräsentiert
+und, vor der Clusteranalyse, vorverarbeitet werden. Anschließend werden zwei
+untersuchte und getestete Ansätze zur Clusteranalyse von Trajektorien vorgestellt.
+Den Schluss des Kapitels bildet die Erläuterung des Vorgehens zur Bestimmung der Spur-Geometrien.
+
+\section{Repräsentation und Vorverarbeitung der Trajektoriedaten}
 \label{cha:realisation_clustering}
 
-In diesem Kapitel wird die Umsetzung der Clusteranalyse der Trajektorien vorgestellt.
-Es wird zuerst darauf eingegangen, welche Trajektorie-Repräsentation gewählt wurde. Anschließend
-werden die verschiedenen Schritte zur Bereinigung und Vorverarbeitung der in dieser Arbeit zum Einsatz kommenden Daten beschrieben.
-Dannach folgt die Erläuterung der eigentlichen Clusteranalyse.
-Hier werden die verschiedenen untersuchten Ansätze vorgestellt und ihre Ergebnisse diskutiert.
+Nachfolgend wird beschrieben, welche Repräsentation für die Trajektoriendaten in dieser Arbeit gewählt
+wurde und welche verschiedenen Schritte die Trajektorien vor der Clusteranalyse durchlaufen.
 
-\section{Trajektorie-Definition}
+\subsection{Trajektorie-Repräsentation}
 
 Die Resultate der Fahrzeugverfolgung (siehe Abschnitt \ref{sec:position_extraction}) werden
 in der \textit{TrackerApplication} in Form sogenannter \textit{TrackedObject}s gespeichert.
@@ -120,14 +125,14 @@ die Fahrzeugverfolgung unterbrochen wird.
     \subfloat[]{{
         \includegraphics[align=c, width=0.37\linewidth]{resources/img/umsetzung/U1/trajectories_defect2}
     }}
-    \caption{a) Punktwolken vor Lichtsignalanlagen, b) Unterbrechungen aufgrund von Überdeckung}
+    \caption{Punktwolken vor Lichtsignalanlagen a), Unterbrechungen aufgrund von Überdeckung b)}
     \label{fig:real_defects_trajectories}
 \end{figure}
 
 Um von diesen und weiteren Effekten bei der Clusteranalyse nicht beeinflusst zu werden, durchlaufen die
 ``Roh-Trajektorien'' einen Vorverarbeitungsschritt. Dieser wird im nächsten Abschnitt vorgestellt.
 
-\section{Vorverarbeitung der Trajektorien}
+\subsection{Vorverarbeitung der Trajektorien}
 \label{sec:realisation_preprocessing}
 
 Die verschiedenen Schritte, welche zur Vorverarbeitung und Bereinigung der Roh-Trajektorien angewandt werden,
@@ -152,7 +157,7 @@ aufgeführt:
 
 Die einzelnen Schritte und ihr Hintergrund werden anschließend noch genauer erläutert.
 
-\subsection{Resampling von Trajektorien auf minimale Punktdistanz}
+\subsubsection{Resampling von Trajektorien auf minimale Punktdistanz}
 Der erste Vorverarbeitungsschritt reduziert die Anzahl der Koordinaten, welche eine Bewegungsbahn beschreiben, erheblich,
 ohne dabei jedoch wichtige Informationen zu verlieren. Insbesondere dann, wenn sich Fahrzeuge mit niedrigen
 Geschwindigkeiten bewegen oder teilweise vor Ampeln et cetera stehen, bestehen die Roh-Trajektorien aus sehr vielen
@@ -189,7 +194,7 @@ der Trajektorien von 1094 Koordinaten auf 65 gesunken. Die realen Längen der Be
 hingegen nahezu identisch. Die Punktwolken, welche stehende Fahrzeuge erzeugen, werden mittels dieses
 Schritts ebenfalls entfernt (siehe Abb. \ref{fig:real_result_2nd_Prepro} b)).
 
-\subsection{Entfernung von zu kurzen Trajektorien}
+\subsubsection{Entfernung von zu kurzen Trajektorien}
 Der zweite Verarbeitungsschritt kann viele
 Trajektorien von beispielsweise stehenden Fahrzeugen oder kurz auftretende Tracking-Fehler entfernen.
 Hierzu wird die Länge aller Trajektorien überprüft und jene entfernt, welche
@@ -228,7 +233,7 @@ kleiner Tracking-Fehler wurden entfernt.
 \end{figure}
 
 
-\subsection{Entfernung unterbrochener Trajektorien}
+\subsubsection{Entfernung unterbrochener Trajektorien}
 % TODO: Anpassen Abschnitt wenn Algo. weiter verwendet wird
 
 Nachdem die ersten beiden Verarbeitungsschritte bereits stehende Trajektorien entfernt haben,
@@ -275,7 +280,7 @@ diese durch das Verfahren vollständig entfernt und eine Extraktion der Spur ist
 %   Problematisch auch Spurwechsel. Hier schwer auszufiltern, da sie Ausreißer in Bezug auf eine Spur darstellen
 %   und nicht generelle Ausreißer
 
-\section{Lösungsansätze der Clusteranalyse}
+\section{Clusteranalyse der Trajektorien}
 \label{sec:realisation_clustering}
 
 % Probleme: Erkennung von Abbiegespuren, mit wenig Fahrzeugen und Abbiegevorgängen auf mehrere Spuren
@@ -535,8 +540,8 @@ Die Bedeutung der Werte ist in diesem Fall leicht und intuitiv verständlich: Pu
 dürfen maximal $1.5m$ voneinader entfernt sein und ihre Position sich um maximal $\delta * minTraLength$ unterscheiden.
 Sind diese Bedingungen erfüllt, gelten zwei Trajektorie-Punkte als übereinstimmend. Ein Cluster muss zudem aus mindestens
 5 Trajektorien bestehen und die Differenzen der Trajektorie-Distanzen im Cluster untereinander dürfen nicht größer als 0.3 sein.
-Für $minPts$ gilt grundsätzlich: Je stärker sich Fahrspuren überlagern, umso kleiner muss der gewählte Wert sein, da
-ein kleiner Wert für eine striktere Gruppierung der Fahrspuren sorgt.
+Für $\epsilon_{DBSCAN}$ gilt grundsätzlich: Je stärker sich Fahrspuren überlagern, umso kleiner muss der gewählte Wert sein, da
+ein kleiner Wert für eine striktere Gruppierung der Trajektorien sorgt.
 
 Die Ergebnisse aus Abbildung \ref{fig:real_results_dbscan_lcss} a) und b) zeigen, dass bei Verwendung
 dieses Verfahrens zwischen allen Fahrspuren korrekt unterschieden wird und die einzelnen Trajektorien
@@ -600,7 +605,7 @@ dass sich die Fahrzeuge nach dem abbiegen auf drei Fahrstreifen verteilen.
     \subfloat[]{{
         \includegraphics[align=c, width=0.3\linewidth]{resources/img/umsetzung/U1/clusters_with_turning_lanes}
     }}
-    \caption{a) Abbiegespur, b) zugehörige Trajektorien, c) Spurcluster mit Abbiegespuren}
+    \caption{Abbiegespur a), zugehörige Trajektorien b), Spurcluster mit Abbiegespuren c)}
     \label{fig:real_turning_lane}
 \end{figure}
 
@@ -641,7 +646,7 @@ algorithm findSplitPoint:
   output: point where trajectories of neighborhood split up
 
   for each point in refT do
-    regionAroundP := create circle around point with r = laneEps
+    regionAroundP := create circular region around point with r = laneEps
     neighborsInReg := count intersections of trajectories with regionAroundP
 
     if neighborsInReg <= 0.75 * |N| && idx(point) > 0.33 * refT.pointLength then
@@ -664,6 +669,6 @@ Die so neu erstellten Trajektorien bilden ein neues Cluster. In Abbildung \ref{f
 sind nun alle Spurcluster dargestellt, welche nach diesem Schritt existieren. Die zwei Cluster der Abbiegespuren,
 welche in Abbildung \ref{fig:real_results_dbscan_lcss} b) noch fehlten, sind nun auch vorhanden.
 
-Mithilfe der in diesem Kapitel vorgestellten Verfahren können Trajektorie-Cluster entdeckt werden, welche
-die einzelnen Fahrspuren in einer Aufnahme beschreiben. Im nächsten Kapitel wird darauf eingegangen, wie
-aus diesen Clustern Spur-Geometrien abgeleitet werden.
+Mithilfe der oben vorgestellten Verfahren können Trajektorie-Cluster entdeckt werden, welche
+die einzelnen Fahrspuren in einer Aufnahme beschreiben. Im nächsten Abschnitt wird darauf eingegangen,
+wie aus diesen Clustern Spur-Geometrien abgeleitet werden.
