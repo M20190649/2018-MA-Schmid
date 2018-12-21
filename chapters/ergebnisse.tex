@@ -175,4 +175,82 @@ zur Beschreibung einer Spur vorliegen. Ihr Verhalten kann bei Bedarf zudem angep
 
 \section{Evaluierung der Spur-Geometrie Bestimmung}
 
+Nach der Clusteranalyse werden anhand der identifizierten Trajektoriecluster die Geometrien der Fahrspuren
+bestimmt. Ziel dieses Schrittes ist es, Spur-Geometrien zu definieren, welche den realen Spur-Abmaßen möglichst
+genau entsprechen. Hierzu werden in mehreren aufeinanderfolgenden Schritten die Spurmittellinien und
+Spurbreiten bestimmt. Die angewandten Verfahren sind in Abschnitt \ref{cha:lane_definition} beschrieben.
+
+Wurden im vorherigen Schritt Trajektorie-Cluster für die in einer Aufnahme enthaltenen Spuren identifiziert,
+so können auf Basis dieser meistens sehr zuverlässige Spur-Geometrien abgeleitet werden.
+In Abbildung \ref{fig:results_laneGeometries} sind beispielhaft Spurgeometrien aus drei unterschiedlichen Datensätzen dargestellt.
+
+\begin{figure}[H]
+    \centering
+    \subfloat[Heilbronner-Straße]{{
+        \includegraphics[align=c, width=0.29\linewidth]{resources/img/results/Heilbronner/improvedLanes_Heilbronner}
+    }}
+    \subfloat[Düsseldorf]{{
+        \includegraphics[align=c, width=0.29\linewidth]{resources/img/results/Duesseldorf/improvedLanes_Duesseldorf}
+    }}
+    \subfloat[Steinheim]{{
+        \includegraphics[align=c, width=0.29\linewidth]{resources/img/results/Steinheim/improvedLanes_Steinheim}
+    }}
+    \caption{Ergebnisse Spur-Geometrie-Bestimmung}
+    \label{fig:results_laneGeometries}
+\end{figure}
+
+Anhand der abgebildeten Spurgeometrien ist ersichtlich, dass das in Abschnitt \ref{cha:lane_definition}
+beschriebene Verfahren gute Ergebnisse in unterschiedlichen Situationen liefert.
+Plot a) zeigt die Spur-Geometrien, welche im Fall des Datensatzes der Heilbronner-Straße bestimmt werden.
+Für jedes Spurcluster, welches in Abbildung \ref{fig:results_clusters} a) zu sehen ist, wurde eine Geometrie erstellt,
+deren Mittellinie und Breite den realen Spurverlauf gut abbildet. Es ist zudem zu sehen, dass die Fahrspuren
+partitioniert wurden, um die Überlagerung von Spuren zu vermeiden.
+Plot b) veranschaulicht, dass Spurgeometrien auch korrekt bestimmt werden können, wenn in einer Aufnahme
+Fahrbahnerweiterung existieren.
+Anhand von Plot c), welcher die für den Datensatz Steinheim berechneten Spur-Geometrien zeigt, wird
+außerdem deutlich, dass auch die Geometrien kreisförmiger Fahrspuren und Kreisverkehre bestimmt werden können.
+
+Zwei Probleme, welche bei der Bestimmung der Spur-Geometrien auftreten können, sind in Abbildung
+\ref{fig:results_defekts_laneGeos} dargestellt. In diesem Fall stammen die Beispiele aus den Geometrien
+des Datensatzes Heilbronner-Straße.
+
+\begin{figure}[H]
+    \centering
+    \subfloat[Problem Partitionierung]{{
+        \includegraphics[align=c, width=0.4\linewidth]{resources/img/results/Defekte/Defekt_Part_2}
+    }}
+    \qquad \qquad
+    \subfloat[Problem Spurbreite]{{
+        \includegraphics[align=c, width=0.3\linewidth]{resources/img/results/Defekte/Defekt_Width}
+    }}
+    \caption{Auftretende Probleme in den Spur-Geometrien}
+    \label{fig:results_defekts_laneGeos}
+\end{figure}
+
+Teil a) der Abbildung zeigt drei Fahrspuren, welche parallel zueinander verlaufen.
+Auf dem entsprechenden Staßenabschnitt der Heilbronner-Straße, auf welchem sich die drei Spuren befinden,
+verschmälert sich am linken Rand die Fahrbahn und die unterste Spur (rot) geht in die mittlere Spur (blau) über.
+Bei der Partitionierung der Spuren sollte daher eigentlich die mittlere Spur vollständig erhalten bleiben
+und das Ende der unteren entfernt werden. Wie oben zu sehen ist, wird allerdings die mittlere Spur partitioniert
+und die untere bleibt erhalten. Hier trifft der in Abschnitt \ref{sec:real2_lane_partitioning} beschrieben
+Algorithmus die ``falsche'' Entscheidung.
+In Abbildung \ref{fig:results_defekts_laneGeos} b) ist zu sehen, dass die blau markierte Spur
+in in ihrem Verlauf nach unten hin schmäler wird. Dies entspricht nicht ihrem realen Verlauf auf der Straße.
+Diese Schmälerung tritt auf, da der Algorithmus zur Optimierung der Spurbreiten (siehe Abschnitt \ref{sec:real2_lane_geo_opt})
+an einem bestimmten Punkt den Abstand zur falschen Spur zur Neu-Berechnung der Breite verwendet.
+Die fehlerhafte Breite wird anschließend für den Rest der Spur weiterverwendet.
+
+Die beiden oben abgebildeten und beschrieben Fehler treten in ähnlicher Art immer wieder auf. Der Grund hierfür
+ist, dass es sowohl im Fall der Spur-Partitionierung als im Fall der Bestimmung der Spur-Breite sehr schwierig ist,
+ein Verfahren zu definieren, welches in allen Fällen die ``richtige'' Entscheidung trifft.
+Ein menschlicher Betrachter kann bei der Überlagerung zweier Spuren zwar meist intuitiv feststellen, welche
+partitioniert werden muss, einem Algorithmus dies beizubringen ist allerdings schwierig.
+
+Die verwendeten Ansätze liefern in der Mehrzahl der Fälle die ``richtige'' Lösung, was in diesem Anwendungsszenario
+absolut ausreichend ist. Gerade auch bei der Partitionierung der Spuren gibt es an sich oft kein richtig und falsch.
+Welche Spur erhalten bleiben soll ist häufig Interpretationssache. Daher, und da die oben beschriebenen ``Fehler''
+leicht über die Oberfläche der TrackerApplication korrigiert werden können, wurden die verwendeten
+Algorithmen hier nicht weiter angepasst.
+
+
 \section{Ergebnisse der Spurerkennung}

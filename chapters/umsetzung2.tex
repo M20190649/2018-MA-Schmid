@@ -94,7 +94,7 @@ Trajektorie-Clusters. Die einzelnen Bewegungsbahnen besitzen jeweils leichte Abw
 Als Spurmittellinie -- wie von \cite{Hu2005} vorgeschlagen -- jene Trajektorie zu wählen, welche die
 kleinste Summe der Distanzen zu allen anderen Trajektorien eines Clusters besitzt, ist nicht praktikabel,
 da die so gefunden Trajektorie nicht über ihre komplette Länge in der Mitte des Clusters verlaufen muss
-und auch nicht zwangsläufig so lang ist, wie die anderen Trajektorien des Clusters. 
+und auch nicht zwangsläufig so lang ist, wie die anderen Trajektorien des Clusters.
 Auf eine Bestimmung der Mittellinie mittels linearer oder polynomialer Regression, wie beispielsweise in
 \cite[]{Chen2014} oder \cite[]{Melo2006},
 wurde ebenfalls verzichtet. Der Grund hierfür ist, dass einerseits die Komplexität und Form der Fahrbahnverläufe
@@ -539,7 +539,7 @@ algorithm selectLaneGeometryForPartitioning:
     partition lane with bigger curvMea
   else
     if check length? then partition shorter lane
-    if check vehicle-count? then partition lane with less vehicles 
+    if check vehicle-count? then partition lane with less vehicles
   end
 \end{lstlisting}
 
@@ -583,6 +583,7 @@ die Fahrspur-Geometrien die reale Straßen-Topologie noch nicht korrekt abbilden
 Spur-Geometrien in einem weiteren Schritt nochmals optimiert.
 
 \subsection{Optimierung der Spur-Geometrien}
+\label{sec:real2_lane_geo_opt}
 
 Die nach dem Partitionierungs-Schritt vorliegenden Spur-Geometrien besitzen in einigen Fällen noch Defekte.
 Das am häufigsten auftretende Problem ist, dass die Spur-Geometrien nicht breit genug sind.
@@ -624,14 +625,14 @@ auf jener Spur liegen, welche im Bereich des Punktes $p$ parallel zu $l$ verläu
 Nachdem auf diese Weise für eine Spur punktweise die neuen Breiten bestimmt wurden, werden diese noch mithilfe
 eines gleitenden Mittelwert Verfahrens geglättet. Anschließend werden neue Spurhüllen, mittels dem in
 Abschnitt \ref{sec:real2_create_envelopes} vorgestellten Vorgehen, erzeugt.
-Das Ergebnis der Geometrie-Optimierung für den Fall der in Abbildung \ref{fig:real2_pre_opt} enthaltenen Spuren,
+Das Ergebnis der Geometrie-Optimierung für den Fall der in Abbildung \ref{fig:real2_post_opt} enthaltenen Spuren,
 ist nachfolgend dargestellt.
 
 \begin{figure}[H]
     \centering
     \fbox{\includegraphics[align=c, width=0.7\linewidth]{resources/img/umsetzung/U2/laneOpt_optimized}}
     \caption{Beispiel zu schmale Spur-Geometrien}
-    \label{fig:real2_pre_opt}
+    \label{fig:real2_post_opt}
 \end{figure}
 
 Die Fahrspurerkennung ist nach dem Optimierungsschritt abgeschlossen. Auf Basis der vorliegenden
@@ -664,7 +665,7 @@ zu definieren.
 
 Die Fahrspuren und Querstrecken werden im Fall der automatisch erkannten Fahrbahnen anhand der Spur-Hüllen
 definiert. Über Punkt-Paaren der beiden Hülllinien (siehe Abbildung \ref{fig:real2_laneGeometry_ClassDia}),
-werden Querstrecken erstellt. 
+werden Querstrecken erstellt.
 Da eine Fahrspur möglichst über die kleinste Menge an Querstrecken beschrieben werden soll, welche die
 Geometrie der Bahn zuverlässig abbildet, wird nicht für jedes Hüll-Punkt-Paar eine Querstrecke definiert.
 Die Anzahl und Distanz zwischen den Querstrecken richtet sich nach der Krümmung der Spuren. Zur Beschreibung
@@ -689,4 +690,4 @@ Ein Vorteil, welcher sich durch die Weiterverwendung des in Abbildung \ref{fig:r
 dargestellten Datenmodells ergibt, ist, dass Benutzer weiterhin Spuren manuell anlegen können und automatisch
 detektierte Fahrbahnen sich nachträglich noch leicht modifizieren lassen. Falls eine vom Algorithmus erkannte
 Spur also beispielsweise in einem Abschnitt zu schmal oder zu breit ist, kann dies leicht vom Nutzer korrigiert
-werden. 
+werden.
