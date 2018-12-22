@@ -173,7 +173,7 @@ gegeben $\epsilon_{DBSCAN}$ beim starten des Spurerkennungs-Jobs anzupassen.
 Für die Clusteranalyse kann zusammenfassen festgehalten werden, dass sie gut funktioniert wenn ausreichen Trajektorien
 zur Beschreibung einer Spur vorliegen. Ihr Verhalten kann bei Bedarf zudem angepasst werden.
 
-\section{Evaluierung der Spur-Geometrie Bestimmung}
+\section{Evaluierung der Spur-Geometrie-Bestimmung}
 
 Nach der Clusteranalyse werden anhand der identifizierten Trajektoriecluster die Geometrien der Fahrspuren
 bestimmt. Ziel dieses Schrittes ist es, Spur-Geometrien zu definieren, welche den realen Spur-Abmaßen möglichst
@@ -217,7 +217,7 @@ des Datensatzes Heilbronner-Straße.
 \begin{figure}[H]
     \centering
     \subfloat[Problem Partitionierung]{{
-        \includegraphics[align=c, width=0.4\linewidth]{resources/img/results/Defekte/Defekt_Part_2}
+        \includegraphics[align=c, width=0.4\linewidth]{resources/img/results/Defekte/Defekt_Part}
     }}
     \qquad \qquad
     \subfloat[Problem Spurbreite]{{
@@ -248,9 +248,68 @@ partitioniert werden muss, einem Algorithmus dies beizubringen ist allerdings sc
 
 Die verwendeten Ansätze liefern in der Mehrzahl der Fälle die ``richtige'' Lösung, was in diesem Anwendungsszenario
 absolut ausreichend ist. Gerade auch bei der Partitionierung der Spuren gibt es an sich oft kein richtig und falsch.
-Welche Spur erhalten bleiben soll ist häufig Interpretationssache. Daher, und da die oben beschriebenen ``Fehler''
+Welche Spur erhalten bleiben soll, ist häufig Interpretationssache. Daher, und da die oben beschriebenen ``Fehler''
 leicht über die Oberfläche der TrackerApplication korrigiert werden können, wurden die verwendeten
 Algorithmen hier nicht weiter angepasst.
 
-
 \section{Ergebnisse der Spurerkennung}
+
+Nachdem in den Abschnitten oben auf die Fähigkeiten und Probleme der drei Hauptschritte des
+Spurerkennungs-Algorithmus eingegangen wurde, werden nun Ergebnisse in Form von Screenshots vorgestellt.
+In ihnen sind die automatisch erkannten und erstellten Spuren in der TrackerApplication zu sehen.
+
+Die zwei ersten Screenshots, welche in Abbildung \ref{fig:results_lanes1} dargestellt sind, zeigen die erkannten
+Spuren im Fall der Datensätze \textit{Entennest} und \textit{Düsseldorf}.
+Anhand der Aufnahmen ist ersichtlich, dass die erstellten Fahrspuren gut mit den realen Verläufen der
+Spuren auf der Fahrbahn übereinstimmen.
+Dies gilt auch im Fall des Datensatzes \textit{Düsseldorf}, obwohl die hier detektierten Fahrzeugpositionen
+aufgrund des niedrigen Aufnahmewinkels nicht immer nahe der Fahrspurmitte liegen. Foobar
+% TODO: Evtl. Grund fehlende Spur Düsseldorf
+
+\begin{figure}[H]
+    \centering
+    \subfloat[Fahrspuren Entennest]{{
+        \includegraphics[align=c, width=0.5\linewidth]{resources/img/results/Lanes/Entennest_Lanes}
+    }}
+    \subfloat[Fahrspuren Düsseldorf]{{
+        \includegraphics[align=c, width=0.5\linewidth]{resources/img/results/Lanes/Duesseldorf_Lanes}
+    }}
+    \caption{Erkannte Fahrspuren auf geraden Straßenabschnitten}
+    \label{fig:results_lanes1}
+\end{figure}
+
+In Abbildung \ref{fig:results_lanes2} sind die erkannten Spuren der Datensätze \textit{Neckartor} und \textit{Heilbronner-Straße}
+dargestellt. Auch hier stimmen die Spur-Geometrien gut mit den realen Spur-Ausmaßen überein. Zudem wird deutlich,
+dass sowohl die Partitionierung der Spuren als auch das angleichen benachbarter Spurenden die gewünschten Resultate liefern.
+Im Fall der Heilbronner-Straße ist nun auch zu sehen, dass im unteren rechten Bereich keine Spur erkannt wird.
+Der Grund hierfür wurde in Abschnitt \ref{sec:results_eval_clustering} beschrieben.
+
+\begin{figure}[H]
+    \centering
+    \subfloat[Fahrspuren Neckartor]{{
+        \includegraphics[align=c, width=0.5\linewidth]{resources/img/results/Lanes/Neckartor_Lanes}
+    }}
+    \subfloat[Fahrspuren Heilbronner-Straße]{{
+        \includegraphics[align=c, width=0.5\linewidth]{resources/img/results/Lanes/Heilbronner_Lanes}
+    }}
+    \caption{Erkannte Fahrspuren auf Kreuzungen}
+    \label{fig:results_lanes2}
+\end{figure}
+
+Der Screenshot in Abbildung \ref{fig:results_lanes3} zeigt die erkannten Fahrspuren im Datensatz \textit{Steinheim}.
+Dieses Beispiel zeigt, dass Fahrspuren auch in Straßenabschnitten mit Kreisverkehren oder kreisförmigen Spuren
+erkannt werden.
+
+% TODO: wenn finale Aufnahe vorliegt, weiter ausführen
+
+\begin{figure}[H]
+    \centering
+    \subfloat[Fahrspuren Steinheim]{{
+        \includegraphics[align=c, width=0.5\linewidth]{resources/img/results/Lanes/Steinheim_Lanes}
+    }}
+    \caption{Erkannte Fahrspuren Kreisverkehr}
+    \label{fig:results_lanes3}
+\end{figure}
+
+% TODO: evlt mehr bilder
+% TODO: Schluss
