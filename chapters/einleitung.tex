@@ -13,7 +13,7 @@ Aufgrund längerer Fahrzeiten und der häufigen Be- und Entschleunigung, steigt 
 Fahrzeuge und dadurch auch die Schadstoffbelastung in der Luft \cite[]{Hemmerle2016}.
 
 Die wichtigste Voraussetzung um Staus präventiv entgegenwirken zu können, ist, den Verkehr so gut wie
-möglich zu verstehen.  Nötig ist ein Verständnis des Straßenverkehrs als Ganzes, sowie der Auswirkungen,
+möglich zu verstehen. Nötig ist ein Verständnis des Straßenverkehrs als Ganzes, sowie der Auswirkungen,
 welche einzelne Verkehrsteilnehmer und deren Verhalten, auf diesen haben. Hierzu ist das Erstellen von
 Simulationen sowie die Auswertung realer Verkehrsaufkommen unerlässlich.
 Die auf diese Weise gesammelten Erkenntnisse bilden die Grundlage, um Straßenabschnitte, insbesondere
@@ -38,18 +38,103 @@ auf einer Spur untereinander untersucht werden können.
 \section{Rahmen der Arbeit}
 \label{sec:rahmen_arbeit}
 
+In den nachfolgenden Abschnitten wird das Forschungsprojekt MEC-View und dessen Teilprojekt Luftbeobachtung
+vorgestellt.
+
 \subsection{Das Projekt MEC-View}
 \label{sec:mec_view}
 
-\subsection{Das Teilprojekt MEC-View Luftbeobachtung}
+Das Forschungsprojekt MEC-View, welches vom Bundesministerium für Wirtschaft und Energie (BMWi) gefordert wird,
+hat das Ziel, autonomes Fahren im urbanen Raum zu ermöglichen und für alle Verkehrsteilnehmer sicher zu gestalten.
+Gerade in Innenstädten sind die Möglichkeiten des autonomen Fahrens aufgrund von unübersichtlichen Kreuzungen,
+Fußgängern und Fahrradfahren, verdeckten Sichten und anderen Faktoren begrenzt.
+Abbildung \ref{fig:intro_mec_view_arch} gibt einen Überblick über das Forschungsprojekt und veranschaulicht dessen Ziel.
+
+\begin{figure}[H]
+\centering
+    \includegraphics[width=0.6\linewidth]{resources/img/mec_view_arch}
+\caption[Grundkonzept des MEC-View Projektes]{Grundkonzept des MEC-View Projektes \cite[]{mecViewWeb}}
+\label{fig:intro_mec_view_arch}
+\end{figure}
+
+In urbanen Umgebungen
+sollen neben Daten von fahrzeuginternen Sensoren auch Informationen externer Infrastruktur-Sensoren verwendet werden,
+damit ein Fahrzeug eine fundierte Verhaltensentscheidung auf Basis eines detaillierten Umfeldmodells treffen kann.
+Im Rahmen des Projektes MEC-View wird eine Pilot-Anlage zur Umfelderfassung an einer vorfahrtsberechtigten Straßenkreuzung
+in Ulm aufgebaut und getestet. In dieser Anlage werden die Verkehrsteilnehmer über Kameras und LIDAR-Sensoren erfasst
+und die ermittelten Daten über ein schnelles LTE/5G-Mobilfunknetz an einen \textit{Mobile Edge Computing} (MEC) Server übertragen.
+Hier werden die Daten in Echtzeit zu einem Umfeldmodell fusioniert, welches anschließend den autonomen Fahrzeugen
+zur besseren Navigation zur Verfügung gestellt wird. Beteiligt an diesem Forschungsprojekt sind neben
+der IT-Designers GmbH unter anderem auch die Daimler AG, die Robert Bosch GmbH, Osram, Nokia und die Universität Ulm.
+Jeder Projektpartner ist verantwortlich für unterschiedliche Teilaspekte des Projektes. Die IT-Designers GmbH,
+bei welcher diese Arbeit angefertigt wird, entwickelt den MEC-Server und ist verantwortlich für das
+Teilprojekt Luftbeobachtung. \cite[]{mecViewWeb}
+
+\subsection{Das MEC-View Teilprojekt Luftbeobachtung}
 \label{sec:mecview_sim}
+
+Im MEC-View Teilprojekt Luftbeobachtung werden Verkehrssimulationen erstellt, welche dabei helfen
+das Verhalten des Verkehrs besser zu verstehen und es somit ermöglichen, diesen zu optimieren.
+Mithilfe der Simulationen kann beispielsweise untersucht werden, wie durch die Anpassung von Verkehrssteuerungsanlagen
+oder die Änderung des Fahrverhaltens einzelner Fahrzeuge eine Verbesserung der Verkehrssituation erreicht werden kann.
+Die Erkenntnisse können insbesondere auch in die Verhaltenssteuerung von autonomen Fahrzeugen mit einfließen.
+
+Die Simulationen werden im MEC-View Projekt anhand von Luftbeobachtungen erstellt, welche von Drohnen getätigt werden.
+In den Videoaufnahmen werden mithilfe von neuronalen Netzen die Positionen der Fahrzeuge ermittelt. Mittels dieser
+kann anschließend beispielsweise die Geschwindigkeit und Beschleunigung der einzelnen Verkehrsteilnehmer bestimmt werden.
+Zur Erstellung der Simulationen ist es zudem wichtig, eine Kenntnis der Topologie der untersuchten Straßen, das heißt des
+Verlaufs der Fahrbahnen und Spuren, zu besitzen. In Kombination mit den Fahrzeugpositionen können so interessante
+Kenngrößen wie der Verkehrsfluss oder die Verkehrsdichte bestimmt werden.
 
 \section{Motivation und Ziele}
 \label{sec:motivation_goals}
 
-% u.a.:
-% Beschreibung der aus den Luftaufnahmen ermittelten (ermittelbaren) Werte
-% Vorteile der Verwendung von Luftaufnahmen zur Erstellung von Verkehrssimulationen
+Im Rahmen dieser Arbeit wird ein Verfahren zur automatischen Erkennung von Fahrspuren in Luftaufnahmen
+auf Basis von Trajektoriedaten entwickelt. Die Spurerkennung wird in die Anwendung \textit{Vehicle-Tracker}
+integriert, welche im Rahmen des MEC-View Luftbeobachtungs Projekt erstellt wird. Sie dient der Analyse
+von Luftbeobachtungen des Straßenverkehrs. Um eine solche Auswertung durchführen zu können, ist es wichtig
+den Verlauf und die Positionen der Fahrspuren, welche sich auf einem bestimmten Straßenabschnitt befinden,
+zu kennen. In der Applikation \textit{Vehicle-Tracker} mussten bislang die Fahrspurverläufe in einer Aufnahme
+händisch definiert werden. Dieser Prozess ist insbesondere dann aufwendig, wenn die zu untersuchenden
+Straßenabschnitte beispielsweise mehrspurige Kreuzungen oder Kreisverkehre beinhalten. Das in dieser Arbeit
+entwickelte Spurerkennungs-Modul soll die manuelle Spur-Definition ersetzen und es so ermöglichen
+in Zukunft mehr Luftaufnahmen mit weniger Aufwand auszuwerten.
+
+Der Verlauf und die Geometrie der Fahrspuren wird in dieser Thesis anhand der Bewegungsbahnen von Fahrzeugen, den sogenannten Trajektorien,
+ermittelt. Im Gegensatz zu einer visuellen Detektierung hat das Verfahren den Vorteil, dass Fahrspuren auch in Aufnahmen
+mit schlechten Lichtverhältnissen oder Verdeckungen der Fahrbahnen erkannt werden können.
+
+Zum Thema Spurerkennung existieren zwar bereits einige Veröffentlichungen, allerdings können die hierin
+vorgestellten Methoden meist nur in sehr speziellen Szenarien eingesetzt werden oder die erkannten Spuren
+entsprechen den realen Fahrspurverläufen nur schlecht. Ziel dieser Arbeit ist es, ein Verfahren zu entwickeln,
+welches Fahrspuren in möglichst vielen unterschiedlichen Straßentopologien erkennen kann. Die aus den
+Luftaufnahmen abgeleiteten Spuren sollen außerdem den realen Fahrbahnverläufen so gut wie möglich entsprechen.
 
 \section{Aufbau dieser Arbeit}
 \label{sec:aufbau}
+
+Die vorliegende Arbeit ist wie folgt strukturiert:
+
+\begin{itemize}
+    \item Die zur Verständnis der Arbeit und des entwickelten Spurerkennungs-Algorithmus benötigten
+            Grundlagen sind in \textbf{Kapitel \ref{sec:position_extraction} und \ref{sec:tra_clustering}} beschrieben.
+            Kapitel \ref{sec:position_extraction} erläutert, wie aus Luftaufnahmen die Positionen von Fahrzeugen
+            rekonstruiert und diese anschließend in ein Weltkoodinatensystem überführt werden können.
+            Kapitel \ref{sec:tra_clustering} stellt die grundlegenden Konzepte der Clusteranalyse vor, welche
+            bei der Umsetzung der Spurerkennung zum Einsatz kommt.
+    \item In \textbf{Kapitel \ref{cha:related_work}} werden verwandte Arbeiten, welche sich bereits mit
+            der Thematik der Spurerkennung und der Clusteranalyse von Trajektorien befassen, vorgestellt und untersucht.
+            Zudem werden defizite der vorhandenen Lösungen und benötigte Neuerungen aufgezeigt.
+    \item In \textbf{Kapitel \ref{cha:konzeption}} wird das Konzept für die Umsetzung der Spurerkennung vorgestellt.
+            In diesem Abschnitt werden zudem Anforderungen festgehalten und das Spurerkennungs-Modul wird in den Gesamtkontext
+            der Applikation \textit{Vehicle-Tracker} eingeordnet.
+    \item Nach der Konzeption wird in \textbf{Kapitel \ref{cha:realisation}} vorgestellt, wie die Spurerkennung konkret
+            umgesetzt wurde. Es werden die verschiedenen Schritte des entwickelten Algorithmus erläutert.
+    \item In \textbf{Kapitel \ref{cha:results}} wird die entwickelte Methode zur Spurerkennung in Luftaufnahmen evaluiert.
+            Es wird auf die Qualität und Probleme der wichtigsten Verarbeitungsschritte des Algorithmus eingegangen.
+            Außerdem werden die konkreten Ergebnisse in Form von Screenshots vorgestellt.
+    \item \textbf{Kapitel \ref{cha:end}} bildet den Schluss dieser Masterarbeit. Hier wird in aller Kürze
+            ein Fazit gezogen und ein Ausblick gegeben, welche Verbesserungen in Zukunft an dem entwickelten
+            Algorithmus noch vorgenommen werden können.
+\end{itemize}
+
