@@ -1,19 +1,7 @@
 %!TEX root = ../Thesis.tex
 
-% \chapter{Grundlagen}
-% \label{cha:grundlagen}
 
 % % TODO: Anpassung wenn Grundlagen fertig
-% TODO: Übernahme des Überblicks in "Aufbau Arbeit"
-
-% In diesem Kapitel werden die für das Verständnis und die Durchführung der Arbeit benötigten
-% Grundlagenthemen vorgestellt. Als erstes wird erläutert, auf welche Weise Fahrzeugtrajektorien
-% aus Videoaufnahmen rekonstruiert werden können.
-% Anschließend werden verschiedene Konzepte und Algorithmen aus dem Bereich der Clusteranalyse vorgestellt,
-% welche dabei helfen können, Gemeinsamkeiten und Beziehungen in Daten zu entdecken.
-% Am Ende des Kapitels werden Distanzmaße, insbesondere jene, welche sich zum Vergleich von Fahrzeugtrajektorien eignen,
-% betrachtet. Es wird aufgezeigt, welchen Einfluss diese auf die Ergebnisse einer Clusteranalyse haben, und welche
-% Abwägungen bei der Wahl eines Distanzmaßes angestellt werden müssen.
 
 \chapter{Rekonstruktion von Fahrzeugtrajektorien aus Luftaufnahmen}
 \label{sec:position_extraction}
@@ -38,8 +26,98 @@
 % Umwandlung in Weltkoordinaten (Weltkoordinaten System, Kameramodell etc.. siehe Arbeit Stefan)
 % Endergebnis: Fahrzeugpositionen in Weltkoordinatensystem mit Einheit Meter
 
-\section{Erkennung und Verfolgung von Fahrzeugen in Videoaufnahmen}
+In diesem Kapitel wird erläutert, wie auf Luftaufnahmen Trajektorien von Fahrzeugen rekonstruiert werden können.
+Eine solche Rekonstruktion wird zwar im Rahmen dieser Arbeit nicht entwickelt, allerdings ist es wichtig ein Grundverständnis
+der benötigten Methoden und Schritte zu besitzen, um die Trajektoriedaten und die darin enthaltenen Defekte
+interpretieren zu können.
+Es wird nachfolgend beschrieben, wie bewegte Objekte in Videoaufnahmen erkannt und verfolgt
+werden können um anschließend deren Positionen in einem Weltkoordinatensystem zu bestimmen. Am Ende des Kapitels
+werden einige Schwierigkeiten, welche bei der Rekonstruktion der Trajektorien auftreten können aufgezeigt.
+
+\section{Erkennung und Verfolgung von Objekten in Videoaufnahmen}
+
+Es existieren diverse Ansätze, welche zur Erkennung und Verfolgung von Objekten in Videoaufnahmen eingesetzt werden können.
+Nachfolgend werden zwei unterschiedliche Vorgehen vorgestellt.
+
+\subsection{Supervised-Tracking}
+
+Bei dem Verfahren \textit{Supervised-Tracking} wird ein initial manuell ausgewählter Bildbereich
+automatisch mit Hilfe eines erlernten Klassifikators verfolgt. Der Klassifikator muss hierbei zwischen
+Fahrzeugen und der Umgebung unterscheiden können.
+Der hier vorgestellte Supervised-Tracking Ansatz beruht auf der Arbeit von \cite{Grabner}.
+Sein grundlegendes Vorgehen ist in Abbildung \ref{fig:grund_tracking} dargestellt und kann wie folgt
+beschrieben werden:
+
+\begin{itemize}
+    \item[a)] Verfolgtes Objekt befindet sich zum Zeitpunkt $t$ an bekannter Position $p_1$
+    \item[b)] Zum Zeitpunkt $t+1$: Anwendung des Klassifikators auf Positionen um $p_1$
+    \item[c)] Erstellen einer \textit{Confidence Map}, welche die Wahrscheinlichkeit darstellt,
+                das verfolgte Objekt gefunden zu haben
+    \item[d)] Updaten des Trackers auf Position des Maxima der \textit{Confidence Map}
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\linewidth]{resources/img/grundlagen/TrajectoryReconstruction/tracking}
+    \caption[Übersicht Tracking mit Klassifikator]{Übersicht Tracking mit Klassifikator \cite[]{Grabner}}
+    \label{fig:grund_tracking}
+\end{figure}
+
+Zum Erlernen eines stabilen Klassifikators, wird in \cite[]{Grabner} ein On-line AdaBoost Algorithmus eingesetzt,
+welcher mehrere \textit{schwache} Klassifikatoren zu einem \textit{starken} Klassifikator kombiniert.
+Schwache Klassifikatoren müssen nur eine Erkennungsrate von mehr als 50\% besitzen und somit
+wenig besser als zufallsbedingtes Auswählen sein.
+Starke Klassifikatoren entstehen durch die Kombination von mehreren schwachen Klassifikatoren.
+Die Auswahl von schwachen Klassifikatoren erfolgt über sogenante Selektoren, welche aus einer Menge
+immer jenen wählen, welcher die geringste Fehlerrate bei der Erkennung
+der Trainings-Objekte besitzen. Der Klassifikator mit der schlechtesten Erkennungsrate wird in jeder
+Trainingsiteration ersetzt, um das Training zu verbessern.
+Großer Vorteil der On-line AdaBoost Methode ist, dass sie es ermöglicht, starke Klassifikatoren während des
+eigentlichen Trackingvorganges zu erlernen. Nach jedem Trackingschritt wird das erfolgreich erkannte
+Objekt in Trainingssätze zerlegt, auf welche die Klassifikatoren angewandt werden um ihre Performance zu evaluieren.
+So wird in jedem Schritt die Menge der schwachen Klassifikatoren und der Selektoren aktualisiert. Die Wahl
+von effizient berechenbaren schwachen Klassifikatoren macht dies möglich.
+
+Die in \cite[]{Grabner} verwendeten Klassifikatoren sind binär, das heißt,
+sie teilen Objekte in die zwei Klassen \textit{erkannt} und \textit{nicht erkannt} auf.
+Konkret werden Haar-ähnliche Bildmerkmale nach \cite[]{Viola} als schwache Klassifikatoren verwendet.
+Diese sind ein Mittel zur Identifikation von Kontrastunterschieden in Bildern, welche sich sehr gut
+zur Erkennung von Kanten und Linien eigenen. Ein Beispiel der Haar-ähnlichen Merkmale und ihres Einsatzes
+bei der Gesichtserkennung ist in Abbildung \ref{fig:grund_hair_like} dargestellt.
+
+Diese Merkmale werden als schwache Klassifikatoren mit zufälliger Skalierung, Größe und Position
+auf dem Bild platziert. Sie suchen in dieser Region anschließend nach den von dem Muster definierten
+Konturunterschieden. Eine Bereich gilt als erkannt, wenn der Betrag der Differenz der Pixelsumme des weißen und
+schwarzen Bereiches des Musters unter einem festgelegten Grenzwert liegt.
+
+\begin{figure}[H]
+    \centering
+    \subfloat[]{{
+        \includegraphics[width=0.4\linewidth]{resources/img/grundlagen/TrajectoryReconstruction/hair_like_features}
+    }}
+    \qquad
+    \subfloat[]{{
+        \includegraphics[width=0.35\linewidth]{resources/img/grundlagen/TrajectoryReconstruction/hair_like_features_2}
+    }}
+    \caption[Haar-ähnliche Merkmale a), Beispiele für erkannte Regionen in einem Gesicht b)]{Haar-ähnliche Merkmale a), Beispiele für erkannte Regionen in einem Gesicht b) \cite[]{DivyanshDwivedi2018}}
+    \label{fig:grund_hair_like}
+\end{figure}
+
+Haar-ähnliche Bildmerkmale eignen sich auch gut zur Erkennung von Fahrzeugen in Bildern, da auch diese anhand klarer
+Kanten identifiziert werden können.
+Gelingt die Verfolgung eines Objektes in einer Videoaufnahme, so existiert nach dem Tracking idealerweise
+für jedes Video-Frame, in welchem das Objekt zu sehen ist, eine Position in Pixel-Koordinaten.
+Nachteil des Supervised-Tracking Ansatzes ist, das die Positionen verfolgten Objekte initial
+manuell definiert werden müssen. Wenn in einer Aufnahme viele Objekte verfolgt werden sollen, dann ist
+diese Positionsbestimmung sehr aufwendig.
+
+In nachfolgendem Abschnitt wird ein Verfahren beschrieben, welches die Positionen von Objekten voll-automatisch
+in Aufnahmen ermitteln kann.
+
+\subsection{Unsupervised Tracking}
+
 \section{Positionsbestimmung in Videoaufnahmen}
+\section{Herausforderungen bei der Rekonstruktion von Fahrzeugtrajektorien}
 
 \chapter{Clusteranalyse}
 \label{sec:tra_clustering}
