@@ -37,19 +37,19 @@ werden einige Schwierigkeiten, welche bei der Rekonstruktion der Trajektorien au
 \section{Erkennung und Verfolgung von Objekten in Videoaufnahmen}
 
 Es existieren diverse Ansätze, welche zur Erkennung und Verfolgung von Objekten in Videoaufnahmen eingesetzt werden können.
-Nachfolgend werden zwei unterschiedliche Vorgehen vorgestellt.
+Nachfolgend werden zwei unterschiedliche Vorgehens-Arten vorgestellt.
 
 \subsection{Supervised-Tracking}
 
-Bei dem Verfahren \textit{Supervised-Tracking} wird ein initial manuell ausgewählter Bildbereich
+Bei einem Verfahren aus der Kategorie \textit{Supervised-Tracking} wird ein initial manuell ausgewählter Bildbereich
 automatisch mit Hilfe eines erlernten Klassifikators verfolgt. Der Klassifikator muss hierbei zwischen
 Fahrzeugen und der Umgebung unterscheiden können.
-Der hier vorgestellte Supervised-Tracking Ansatz beruht auf der Arbeit von \cite{Grabner}.
+Der hier beispielhaft vorgestellte Supervised-Tracking Ansatz beruht auf der Arbeit von \cite[]{Grabner}.
 Sein grundlegendes Vorgehen ist in Abbildung \ref{fig:grund_tracking} dargestellt und kann wie folgt
 beschrieben werden:
 
 \begin{itemize}
-    \item[a)] Verfolgtes Objekt befindet sich zum Zeitpunkt $t$ an bekannter Position $p_1$
+    \item[a)] Ein zu verfolgendes Objekt befindet sich zum Zeitpunkt $t$ an bekannter Position $p_1$
     \item[b)] Zum Zeitpunkt $t+1$: Anwendung des Klassifikators auf Positionen um $p_1$
     \item[c)] Erstellen einer \textit{Confidence Map}, welche die Wahrscheinlichkeit darstellt,
                 das verfolgte Objekt gefunden zu haben
@@ -107,14 +107,60 @@ Haar-ähnliche Bildmerkmale eignen sich auch gut zur Erkennung von Fahrzeugen in
 Kanten identifiziert werden können.
 Gelingt die Verfolgung eines Objektes in einer Videoaufnahme, so existiert nach dem Tracking idealerweise
 für jedes Video-Frame, in welchem das Objekt zu sehen ist, eine Position in Pixel-Koordinaten.
-Nachteil des Supervised-Tracking Ansatzes ist, das die Positionen verfolgten Objekte initial
+Der große Nachteil des Supervised-Trackings ist, das die Positionen verfolgter Objekte initial
 manuell definiert werden müssen. Wenn in einer Aufnahme viele Objekte verfolgt werden sollen, dann ist
-diese Positionsbestimmung sehr aufwendig.
+diese initiale Positionsbestimmung sehr aufwendig.
 
-In nachfolgendem Abschnitt wird ein Verfahren beschrieben, welches die Positionen von Objekten voll-automatisch
-in Aufnahmen ermitteln kann.
+In nachfolgendem Abschnitt wird daher eine weitere Klasse von Tracking-Verfahren beschrieben,
+welche die Positionen von Objekten voll-automatisch in Aufnahmen ermitteln können.
 
-\subsection{Unsupervised Tracking}
+\subsection{Unsupervised-Tracking}
+
+Von \textit{Unsupervised-Tracking} wird gesprochen, wenn zur Identifikation und Verfolgung eines Objektes
+in einem Video keine initiale \textit{Region of Interest} (\acrshort*{roi}) definiert werden muss,
+welche die Startposition des Objektes festlegt. Die Erkennung und Verfolgung funktioniert daher komplett automatisch.
+Es existieren verschieden Verfahren, welche in die Kategorie des Unsupervised-Tracking fallen. Auch in
+der \textit{Vehicle-Tracker} Anwendung, auf welcher diese Arbeit aufbaut, wird Unsupervised-Tracking eingesetzt,
+um die Positionen der Fahrzeuge in den Videoaufnahmen zu bestimmen. Das hier eingesetzte Verfahren wird nachfolgend
+beispielhaft in groben Zügen erläutert.
+
+Während im Fall des oben beschriebenen Supervised-Tracking-Ansatzes
+Objekte grundsätzlich einmal händisch detektiert und anschließend verfolgt werden, werden im Fall des
+Ansatzes, welcher in der \textit{Vehicle-Tracker} Applikation zur Anwendung kommt, die Positionen der Fahrzeuge
+in jedem Video-Frame neu bestimmt. Die Positionsinformationen eines Fahrzeugs werden anschließend zu
+zusammenhängenden Trajektorien zusammengefasst. Erkannt werden
+die Fahrzeuge mithilfe der \textit{Object-Detection-API} von Tensorflow\footnote{Tensorflow - \url{https://www.tensorflow.org/}}.
+
+Das quelloffene Machine-Learning Framework Tensorflow bietet in seiner \textit{Object-Detection-API}
+verschiedene Netzwerk-Architekturen und vortrainierte Modelle an, welche zur Erkennung und Klassifizierung
+von Objekten eingesetzt werden können \cite[]{Huang2018}. Die hierzu angebotenen neuronale Netze sind Weiterentwicklungen
+von \textit{Convolutional Neural Networks} (\acrshort*{cnn}), welche sich gut zur maschinellen Verarbeitung
+von Bilddaten eignen.
+
+In Abbildung \ref{fig:grund_structure_cnn} ist der Aufbau eines CNNs inklusive eines \textit{Fully-Connected Layers} dargestellt.
+Ein genaues Verständnis der Funktionsweise eines solchen Netzwerks ist im Fall dieser Arbeit nicht notwendig.
+Grundlegend besteht es allerdings aus zwei Komponenten: Der erste Teil des Netzwerkes ist für
+das \textit{Feature Learning} verantwortlich, während der zweite Teil der Klassifizierung dient.
+In der Phase des \textit{Feature Learnings} extrahiert das Netzwerk aus einem Bild Merkmale, mittels
+welcher die zu erkennenden Objekte beschrieben werden können. Anhand der extrahierten Merkmale können
+ROIs bestimmt werden. Um welches Objekt es sich in einer speziellen ROI handelt, wird anschließend anhand
+des \textit{Fully-Connected-Layers} bestimmt.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.95\linewidth]{resources/img/grundlagen/TrajectoryReconstruction/cnn_structure}
+    \caption[Aufbau eines CNNs]{Aufbau eines CNNs \cite[]{PatelShyamal2017}}
+    \label{fig:grund_structure_cnn}
+\end{figure}
+
+Im Fall der Tensorflow Object Detection API werden die Positionen der erkannten Objekte über sogenannte
+\textit{Bounding-Boxes} beschrieben. Diese leiten sich aus den ROIs ab, welche vom CNN ermittelt werden.
+
+Um aus den Positionsinformationen, welche aus den einzelnen Video-Frames extrahiert wurden, zusammenhängende
+Fahrzeugtrajektorien erstellen zu können, müssen diese eindeutig einzelnen Fahrzeugen zugeordnet werden.
+
+% TODO: Finish after talk with Stefan
+
 
 \section{Positionsbestimmung in Videoaufnahmen}
 \section{Herausforderungen bei der Rekonstruktion von Fahrzeugtrajektorien}

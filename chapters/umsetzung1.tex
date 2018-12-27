@@ -1,6 +1,7 @@
 %!TEX root = ../Thesis.tex
 
 \chapter{Realisierung der Fahrspurerkennung}
+\label{cha:realisation}
 
 In diesem Kapitel wird die Realisierung der Spurerkennung thematisiert.
 Es wird zuerst darauf eingegangen, wie die Trajektoriedaten im Algorithmus repräsentiert
@@ -146,7 +147,7 @@ anschließend die Geometrie der realen Fahrspuren ermittelt werden. Ausreißer w
 liefern hingegen keine verwendbaren Informationen für die Spurerkennung.
 
 In nachfolgender Auflistung sind die drei wichtigsten Vorverarbeitungsschritte und ihre Anwendungsreihenfolge
-aufgeführt: 
+aufgeführt:
 
 \begin{enumerate}
     \item Resampling von Trajektorien auf minimale Punktdistanz,
@@ -265,7 +266,7 @@ Abbildung \ref{fig:real_completeTrajectory} veranschaulicht diese Definition.
 Der Algorithmus zur Entfernung unterbrochener Trajektorien nutzt die oben gegebene Definition.
 Er untersucht von allen Trajektorien die Nachbarschaften der Start- und Endpunkte. Befinden sich in
 den Nachbarschaften mindestens 25\% der Punkte nicht am Rand der entsprechenden Trajektorien, so wird
-die untersuchte Bewegungsbahn als unterbrochen gewertet und entfernt. 
+die untersuchte Bewegungsbahn als unterbrochen gewertet und entfernt.
 Dieses Vorgehen beruht auf der Annahme, dass für eine Fahrspur neben unterbrochenen auch
 ununterbrochene Trajektorien vorliegen, welche eine vollständige Bewegung auf der Spur beschreiben.
 
