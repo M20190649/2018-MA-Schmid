@@ -31,7 +31,7 @@ Fahrzeuge und fehlerhafte oder unterbrochene Fahrzeugverfolgungen verursacht. Di
 Entfernung der Anomalien sind in Abschnitt \ref{sec:realisation_preprocessing} beschrieben.
 
 Dass die Entfernung von Ausreißern funktioniert, wurde bereits zum Teil in Abbildung
-\ref{fig:real_result_2nd_Prepro} anhand des Neckartor-Trajaktoriedatensatzes gezeigt.
+\ref{fig:real_result_2nd_Prepro} anhand des \textit{Neckartor}-Datensatzes gezeigt.
 In Abbildung \ref{fig:results_prePro_heilbronner} sind nun die Trajektorien eines weiteren Datensatzes dargestellt,
 welcher von der Heilbronner-Straße in Stuttgart stammt.
 
@@ -137,7 +137,7 @@ weshalb hier kein Cluster identifiziert wird.
 \end{figure}
 
 Die Plots in Abbildung \ref{fig:results_clusters} b) und c) zeigen das Ergebnis der Clusteranalyse für
-den Neckartor-Datensatz, aus welchem vor Anwendung des Algorithmus zufällig 50\% der Trajektorien entfernt wurden.
+den \textit{Neckartor}-Datensatz, aus welchem vor Anwendung des Algorithmus zufällig 50\% der Trajektorien entfernt wurden.
 Auch hier wird deutlich, dass das Ergebnis maßgeblich von der Anzahl der Trajektorien pro Spur abhängt.
 In Plot b) wurden viele vertikal verlaufende Trajektorien entfernt, weshalb hier nur wenige Spurcluster identifiziert werden.
 In Plot c) wurden hingegen trotz des Fehlens von 50\% der Trajektorien fast alle Spurcluster erkannt.
@@ -148,7 +148,7 @@ Standardparameter liefern in der Mehrzahl der Fälle gute Ergebnisse. Alle oben 
 wurden mit diesen Parametern erstellt.
 Anderer Parameter müssen lediglich dann gewählt werden, wenn sich die Trajektorien unterschiedlicher
 Fahrspuren in einer Aufnahme stark überlagern.
-Dies ist beispielsweise im Datensatz Düsseldorf der Fall. Dessen Trajektorien sind in Abbildung \ref{fig:results_clusters_duesseldorf} a) dargestellt.
+Dies ist beispielsweise im Datensatz \textit{Düsseldorf} der Fall. Dessen Trajektorien sind in Abbildung \ref{fig:results_clusters_duesseldorf} a) dargestellt.
 Um die Trajektorien in diesem Datensatz klar in Spurcluster unterteilen zu können, muss statt dem Standardwert
 $\epsilon_{DBSCAN} = 0.3$ der Wert $\epsilon_{DBSCAN} = 0.1$ verwendet werden. Die Ergebnisse der Clusteranalyse
 unter Einsatz dieses Parameters sind in Abbildung \ref{fig:results_clusters_duesseldorf} b) dargestellt.
@@ -207,12 +207,12 @@ deren Mittellinie und Breite den realen Spurverlauf gut abbildet. Es ist zudem z
 partitioniert wurden, um die Überlagerung von Spuren zu vermeiden.
 Plot b) veranschaulicht, dass Spurgeometrien auch korrekt bestimmt werden können, wenn in einer Aufnahme
 Fahrbahnerweiterung existieren.
-Anhand von Plot c), welcher die für den Datensatz Steinheim berechneten Spur-Geometrien zeigt, wird
+Anhand von Plot c), welcher die für den Datensatz \textit{Steinheim} berechneten Spur-Geometrien zeigt, wird
 außerdem deutlich, dass auch die Geometrien kreisförmiger Fahrspuren und Kreisverkehre bestimmt werden können.
 
 Zwei Probleme, welche bei der Bestimmung der Spur-Geometrien auftreten können, sind in Abbildung
 \ref{fig:results_defekts_laneGeos} dargestellt. In diesem Fall stammen die Beispiele aus den Geometrien
-des Datensatzes Heilbronner-Straße.
+des Datensatzes \textit{Heilbronner-Straße}.
 
 \begin{figure}[H]
     \centering
@@ -249,14 +249,14 @@ partitioniert werden muss, einem Algorithmus dies beizubringen ist allerdings sc
 Die verwendeten Ansätze liefern in der Mehrzahl der Fälle die ``richtige'' Lösung, was in diesem Anwendungsszenario
 absolut ausreichend ist. Gerade auch bei der Partitionierung der Spuren gibt es an sich oft kein richtig und falsch.
 Welche Spur erhalten bleiben soll, ist häufig Interpretationssache. Daher, und da die oben beschriebenen ``Fehler''
-leicht über die Oberfläche der TrackerApplication korrigiert werden können, wurden die verwendeten
+leicht über die Oberfläche der \textit{Vehicle-Tracker} Anwendung korrigiert werden können, wurden die verwendeten
 Algorithmen hier nicht weiter angepasst.
 
 \section{Ergebnisse der Spurerkennung}
 
 Nachdem in den Abschnitten oben auf die Fähigkeiten und Probleme der drei Hauptschritte des
 Spurerkennungs-Algorithmus eingegangen wurde, werden nun Ergebnisse in Form von Screenshots vorgestellt.
-In ihnen sind die automatisch erkannten und erstellten Spuren in der TrackerApplication zu sehen.
+In ihnen sind die automatisch erkannten und erstellten Spuren in der Anwendung \textit{Vehicle-Tracker} zu sehen.
 
 Die zwei ersten Screenshots, welche in Abbildung \ref{fig:results_lanes1} dargestellt sind, zeigen die erkannten
 Spuren im Fall der Datensätze \textit{Entennest} und \textit{Düsseldorf}.

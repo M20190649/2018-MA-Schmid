@@ -4,14 +4,14 @@
 \label{cha:konzeption}
 
 In diesem Kapitel wird das zu entwickelnde Teilmodul \textit{``Spurerkennung''}
-der \acrshort*{mec}-View \textit{TrackerApplication} konzipiert. Hierzu wird zuerst dessen Rolle und Position im Gesamtkontext
+der Anwendung \textit{Vehicle-Tracker} konzipiert. Hierzu wird zuerst dessen Rolle und Position im Gesamtkontext
 der Anwendung betrachtet. Anschließend werden die Anforderungen und der Entwurf des Moduls vorgestellt.
 
 \section{Überblick über das Gesamtsystem}
 
 Das Modul \textit{Spurerkennung} dient der Erreichung der in Abschnitt
 \ref{sec:motivation_goals} definierten Ziele. Erstellt wird es im Rahmen des MEC-View Teilprojektes
-\textit{Luftbeobachtung} als Teilmodul der Anwendung \textit{TrackerApplication}.
+\textit{Luftbeobachtung} als Teilmodul der Anwendung \textit{Vehicle-Tracker}.
 Abbildung \ref{fig:concept_laneDetection_context} gibt einen Überblick über das System.
 Es werden hierbei jene Module beziehungsweise Schritte vorgestellt, welche mit der Spurerkennung in
 Zusammenhang stehen.
@@ -23,7 +23,7 @@ Zusammenhang stehen.
     \label{fig:concept_laneDetection_context}
 \end{figure}
 
-Die mithilfe von Drohnen erstellten Videoaufnahmen können in der MEC-View \textit{TrackerApplication}
+Die mithilfe von Drohnen erstellten Videoaufnahmen können in der MEC-View \textit{Vehicle-Tracker} Applikation
 verarbeitet und analysiert werden. In einem ersten Schritt \textit{``MapMatching''}, wird hierzu
 ein Welt-Koordinatensystem in Metern definiert. Anschließend können die Positionen
 der Fahrzeuge bestimmt werden. Diese ersten zwei Schritte sind in Abschnitt \ref{sec:position_extraction} genauer beschrieben.
@@ -41,7 +41,7 @@ an das Modul Spurerkennung festgehalten.
 \subsection{Funktionale Anforderungen}
 
 \paragraph{Anforderung 1000 (Top-Level)}
-Das \textit{Spurerkennungs}-Modul soll es ermöglichen, mithilfe der \textit{TrackerApplication}
+Das \textit{Spurerkennungs}-Modul soll es ermöglichen, mithilfe der Anwendung \textit{Vehicle-Tracker}
 automatisch Fahrspuren aus den Positionsinformationen von Fahrzeugen in Luftaufnahmen abzuleiten.
 
 % TODO: Add Reference
@@ -50,7 +50,7 @@ Das Modul soll die Erkennung von Fahrspuren in den in XXX vorgestellten
 Straßentopologien unterstützen.
 
 \paragraph{Anforderung 2100}
-Das Modul soll unabhängig vom Aufnahmewinkel der Kamera Fahrspuren zuverlässig aus Videoaufnahmen ableiten können. 
+Das Modul soll unabhängig vom Aufnahmewinkel der Kamera Fahrspuren zuverlässig aus Videoaufnahmen ableiten können.
 
 \paragraph{Anforderung 2200}
 Das Modul soll Fahrspuren bei Überlagerungen sinnvoll partitionieren können.
@@ -59,10 +59,10 @@ Das Modul soll Fahrspuren bei Überlagerungen sinnvoll partitionieren können.
 Das Modul soll die Plausibilität von Fahrspuren bewerten können und nicht plausible Spuren entfernen.
 
 \paragraph{Anforderung 2400}
-Das Modul soll die Enden benachbarter und paralleler Fahrspuren aneinander angleichen. 
+Das Modul soll die Enden benachbarter und paralleler Fahrspuren aneinander angleichen.
 
 \paragraph{Anforderung 2500}
-Das Modul soll es ermöglichen, die aus den Trajektorien abgeleiteten Fahrspuren in der \textit{TrackerApplication}
+Das Modul soll es ermöglichen, die aus den Trajektorien abgeleiteten Fahrspuren in der Anwendung \textit{Vehicle-Tracker}
 zu visualisieren.
 
 \subsection{Nicht funktionale Anforderungen}
@@ -95,7 +95,7 @@ ist in Abbildung \ref{fig:concept_laneDetection_activity} in Form eines Aktivit�
 
 Die einzelnen Schritte des Algorithmus werden im \textit{Spurerkennungs}-Modul als einzelne Komponenten
 implementiert.
-Die \textit{TrackerApplication} ist in Java und Scala implementiert. Ihre Benutzeroberfläche basiert
+Die \textit{Vehicle-Tracker} Applikation ist in Java und Scala implementiert. Ihre Benutzeroberfläche basiert
 auf JavaFX. Das in dieser Arbeit erstellte Modul wird komplett mit Scala umgesetzt.
 
 Die nachfolgenden Kapitel beschreiben, wie die einzelnen Schritte des Algorithmus aus

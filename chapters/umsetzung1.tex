@@ -18,7 +18,7 @@ wurde und welche verschiedenen Schritte die Trajektorien vor der Clusteranalyse 
 \subsection{Trajektorie-Repräsentation}
 
 Die Resultate der Fahrzeugverfolgung (siehe Abschnitt \ref{sec:position_extraction}) werden
-in der \textit{TrackerApplication} in Form sogenannter \textit{TrackedObject}s gespeichert.
+in der Anwendung \textit{Vehicle-Tracker} in Form sogenannter \textit{TrackedObject}s gespeichert.
 Ein solches Objekt repräsentiert eine zusammenhängende, nicht unterbrochene Verfolgung eines Fahrzeugs.
 Wird eine Verfolgung, beispielsweise aufgrund einer Überdeckungen, unterbrochen, so existieren für ein
 Kraftfahrzeug mehrere Objekte, welche sich nicht einander zuordnen lassen.
@@ -398,7 +398,7 @@ Diese haben sich in unterschiedlichen Versuchen als am besten geeignet erwiesen.
     \subfloat[mit fester Clusteranzahl]{{
         \includegraphics[align=c, width=0.4\linewidth]{resources/img/umsetzung/U1/atev_results/entennest_k6}
     }}
-    \caption{Ergebnisse Clusteranalyse B10-Entennest (Ansatz Atev et al.)}
+    \caption{Ergebnisse Clusteranalyse Datensatz Entennest (Ansatz Atev et al.)}
     \label{fig:real_results_atev1}
 \end{figure}
 
@@ -542,7 +542,7 @@ grundlegend gut.
 
 \begin{figure}[H]
     \centering
-    \subfloat[Datensatz B10-Entennest]{{
+    \subfloat[Datensatz Entennest]{{
         \includegraphics[align=c, width=0.4\linewidth]{resources/img/umsetzung/U1/dbscan_lcss/entennest}
     }}
     \qquad \qquad

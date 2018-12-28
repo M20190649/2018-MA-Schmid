@@ -357,7 +357,7 @@ bestimmt werden, indem $e_d$ beziehungsweise $-e_d$ für $t$ in die Geradengleic
 
 Auf diese Weise werden die Hüll-Linien für alle Fahrspuren bestimmt. In Abbildung \ref{fig:real2_results_geometry_definition} sind die
 Ergebnisse der Spur-Geometrie-Bestimmung dargestellt. Teil a) zeigt die Spurmittellinien mit ihren
-sie umgebenden Hüllen. Teil b) zeigt die in die TrackerApplication eingefügten Spuren.
+sie umgebenden Hüllen. Teil b) zeigt die in die Anwendung \textit{Vehicle-Tracker} eingefügten Spuren.
 
 \begin{figure}[H]
     \centering
@@ -367,7 +367,7 @@ sie umgebenden Hüllen. Teil b) zeigt die in die TrackerApplication eingefügten
     \subfloat[]{{
         \includegraphics[align=c, width=0.5\linewidth]{resources/img/umsetzung/U2/result_laneEst_Screenshot}
     }}
-    \caption{Plot Spurmittellinien und Hüllen a), Ergebnis Spur-Geometrien in TrackerApplication b)}
+    \caption{Plot Spurmittellinien und Hüllen a), Ergebnis Spur-Geometrien in Vehicle-Tracker Applikation b)}
     \label{fig:real2_results_geometry_definition}
 \end{figure}
 
@@ -561,7 +561,7 @@ entfernt, welche zwischen den zwei Grenzpunkten einer Überlagerung liegen. In A
 wird so beispielsweise der rot gekennzeichnete Bereich der Spur $l_2$ zwischen $b_1$ und $b_2$ entfernt.
 
 Abbildung \ref{fig:real2_results_partitioning} zeigt das Ergebnis der Spur-Partitionierung im Fall des
-Neckartor Datensatzes. Es wurden alle Spur-Überlagerungen entfernt.
+\textit{Neckartor} Datensatzes. Es wurden alle Spur-Überlagerungen entfernt.
 
 \begin{figure}[H]
     \centering
@@ -572,7 +572,7 @@ Neckartor Datensatzes. Es wurden alle Spur-Überlagerungen entfernt.
     \subfloat[]{{
         \includegraphics[align=c, width=0.45\linewidth]{resources/img/umsetzung/U2/result_lanePartitioned_Screenshot}
     }}
-    \caption{Plot partitionierte Spur-Geometrien a), Ergebnis in der TrackerApplication b)}
+    \caption{Plot partitionierte Spur-Geometrien a), Ergebnis in der Anwendung Vehicle-Tracker b)}
     \label{fig:real2_results_partitioning}
 \end{figure}
 
@@ -636,18 +636,18 @@ ist nachfolgend dargestellt.
 \end{figure}
 
 Die Fahrspurerkennung ist nach dem Optimierungsschritt abgeschlossen. Auf Basis der vorliegenden
-Spur-Geometrien können anschließend die Fahrspuren in die TrackerApplication eingefügt werden.
+Spur-Geometrien können anschließend die Fahrspuren in die Anwendung \textit{Vehicle-Tracker} eingefügt werden.
 
 % Die aus den Trajektorie-Daten
 % extrahierten Spur-Geometrien stimmen in den meisten Fällen mit den realen Fahrbahnverläufen überein.
 
-\subsection{Anlegen der Fahrspuren in der TrackerApplication}
+\subsection{Anlegen der Fahrspuren in der Anwendung Vehicle-Tracker}
 
 Nachdem die Spur-Geometrien auf Basis der Fahrzeugtrajektorien bestimmt wurden, müssen diese in einem
-finalen Schritt noch in das von der TrackerApplication verwendete Datenmodell zur Repräsentation von
+finalen Schritt noch in das von der \textit{Vehicle-Tracker} Applikation verwendete Datenmodell zur Repräsentation von
 Fahrspuren überführt werden. Dieses Vorgehen ist nachfolgend beschrieben.
 
-Wie bereits zu Beginn der Arbeit erwähnt, wurden Fahrspuren in der TrackerApplication bislang manuell
+Wie bereits zu Beginn der Arbeit erwähnt, wurden Fahrspuren in der  bislang manuell
 über die Benutzeroberfläche angelegt. Das hierzu verwendete Datenmodell, welches auch weiterhin für die
 automatisch erkannten Spuren verwendet wird, ist in Abbildung \ref{fig:real2_lane_datamodell} dargestellt.
 
@@ -682,7 +682,7 @@ Definition der Spur verwendet werden, und für die gekrümmten Spuren deutlich m
 \begin{figure}[H]
     \centering
     \includegraphics[align=c, width=0.6\linewidth]{resources/img/umsetzung/U2/LaneCreator_Example}
-    \caption{Angelegte Fahrspuren in der TrackerApplication}
+    \caption{Angelegte Fahrspuren in der Anwendung Vehicle-Tracker}
     \label{fig:real2_lanes_trackerApplication}
 \end{figure}
 
