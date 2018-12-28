@@ -161,8 +161,119 @@ Fahrzeugtrajektorien erstellen zu können, müssen diese eindeutig einzelnen Fah
 
 % TODO: Finish after talk with Stefan
 
-
 \section{Positionsbestimmung in Videoaufnahmen}
+
+Nachdem die Positionen der Fahrzeugen in 2D-Bildkoordinaten bestimmt wurden, müssen diese in 3D-Weltkoordinaten
+umgewandelt werden, um die genauen Fahrzeugpositionen auf der Straße zu erhalten. Dank der Verwendung eines
+statitionären Weltkoordinatensystems mit Einheit Meter, lassen sich zudem reale Entfernungen
+in der Aufnahme ermitteln, was beispielsweise für die Bestimmung der Fahrzeuggeschwindigkeiten sehr wichtig ist.
+
+Um eine Bildkoordinate in eine Weltkoordinate überführen zu können, müssen vorher verschiedene Kameraeigenschaften
+ermittelt werden. Hierzu ist es wichtig ein grundlegendes Verständnis von der Funktionsweise einer Kamera zu besitzen.
+Anhand eines Lochkameramodells lässt sich die Funtkionsweise der Bildprojektion einer Kamera herleiten.
+Ein solches Modell ist in Abbildung \ref{fig:grund_pinhole_model} dargestellt.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.55\linewidth]{resources/img/grundlagen/TrajectoryReconstruction/pinhole_camera_model}
+    \caption[Lochkameramodell]{Lochkameramodell \cite[]{DevTeamOpenCV2018}}
+    \label{fig:grund_pinhole_model}
+\end{figure}
+
+In einer Lochkamera fällt Licht durch eine kleine Öffnung auf eine Projektionsfläche. Es werden keine Linsen
+zur Bündelung des Lichtes eingestzt. Für die Projektion eines Punktes $P$ auf diese Fläche müssen vier
+Bezugsysteme berücksichtigt werden:
+
+\begin{enumerate}
+    \item Das \textbf{Weltkoordinatensystem} ist ein statitionäres Bezugsystem, dessen Ursprung sich an einem beliebigen Punkt
+            im aufgenommenen Raum befindet. Über dieses System werden Punkte $P = (X, Y, Z)$ definiert.
+    \item Das \textbf{Kamerakoordinatensystem} hat seinen Ursprung im Punkt $F_c$, der Öffnung des Kamerasystems.
+            Es definiert Punkte $P = (x_c,\ y_c,\ z_c)$ relativ zur Kamera.
+    \item Das \textbf{Projektionskoordinatensystem} hat seinen Ursprung im Punkt $C = (c_x,\ c_y)$ der Projektionsfläche.
+            Über es werden zweidimensione Punkte $P' = (x_p, y_p)$ definiert.
+    \item Der Ursprung des \textbf{Bildschirmkoordinatensystem} ist die linke obere Ecke der Projektionsfläche.
+            Über es werden Punkte $P' = (u,\ v)$ in der Einheit Pixel definiert.
+\end{enumerate}
+
+Unter Berücksichtigung dieser Bezugssysteme können die sogenannten ``intrisischen'' und ``extrinsischen Kameraparameter''
+bestimmt werden.
+
+\subsubsection{Intrinsische Kamera- und Verzeichnungsparameter}
+
+Die intrinsischen Kamera- und Verzeichnungsparameter sind abhängig von der Bauart der Kamera und gelten
+daher für alle Aufnahmen, welche mit der selben Hardware-Konfiguration getätigt werden.
+Die Parameter $c_x$ und $c_y$, welche die Bildmitte festlegen und die
+horizontale und vertikale Brennweite $f_x$ und $f_y$ definieren die intrinsischen Kameraparameter.
+Mit ihrer Hilfe lässt sich eine Kameramatrix der Form
+
+\begin{ceqn}
+\begin{align}
+A =
+ \begin{bmatrix}
+  f_x & 0 & c_x \\
+  0 & f_y & c_y \\
+  0 & 0 & 1
+ \end{bmatrix}
+\end{align}
+\end{ceqn}
+
+bilden.
+Die Verzeichungsparameter sind abhängig von den Linsen, welche in einer Kamera verwendet werden. Diese sorgen
+für radiale und tangentiale Verzerrungen des Bildes. Die Parameter $k_1$, $k_2$ und $k_3$ definieren die
+radiale Verzeichnung und $p_1$ und $p_2$ die tangentiale Verzeichnung. \cite[]{Meissner2007}
+
+Die intrinsischen Kamera- und Verzeichungsparameter können durch ein Kalibrierungsverfahren bestimmt werden.
+Computervision-Bibliotheken wie OpenCV bieten hierfür Hilfsfunktionen an \cite[]{DevTeamOpenCV2018}.
+
+\subsubsection{Extrinsische Kameraparameter}
+
+Die extrinsischen Kameraparameter definieren, wie ein Punkt des 3D-Weltkoordinatensystems in einen 3D-Punkt
+des Kamerakoordinatensystems überführt wird.
+Die Transformation ist in Gleichung \ref{eq_point_transformation} beschrieben:
+
+\begin{ceqn}
+\begin{align}
+\label{eq_point_transformation}
+    P_c = R P_w + t
+\end{align}
+\end{ceqn}
+
+$R$ und $t$ sind die extrinsischen Kameraparameter. $R$ ist die sogenannte Rotationsmatrix, welche
+die Drehung der Kamera um die X, Y und Z-Achse enthält. $t$ ist der Translationsvektor, welcher angibt
+wieweit der Ursprung des Weltkoordinatensystems von der Kamera entfernt ist.
+
+Die extrinsischen Parameter einer Aufnahme lassen sich mithilfe der intrinsischen Kamera- und Verzeichnungsparameter
+und mindestens sechs Weltkoordinaten, welche Bildschirmkoordinaten zugeordnet werden können, bestimmen. Bibliotheken
+wie OpenCV bieten auch hierfür Funktionen an.
+
+\subsubsection{Transformation von Bildschirmpositionen in Weltkoordinaten}
+
+Die Trasformation einer Weltkoordinate in eine Bildschirmposition ist, ohne Berücksichtigung der Verzeichnung,
+gegeben durch die Formel \ref{eq_point_transformation2}. $s$ ist hier ein konstanter Skalierungsfaktor.
+
+\begin{ceqn}
+\begin{align}
+\label{eq_point_transformation2}
+    s\ \big[u\ v\ 1\big]^T = A \big[R\ t\big]\ P_w
+\end{align}
+\end{ceqn}
+
+Da bei der Projektion vom Weltkoordinatensystem ins Bildschirmkoordinatensystem eine Dimensionsinformation
+verloren geht, muss bei der Rücktrasformation diese extra bestimmt oder geschätzt werden. Liegt ein Punkt
+auf der Ebene, welche von der X- und Y-Achse des Weltkoordinatensystems beschrieben wird, kann für dessen
+Höhe $z = 0$ verwendet werden.
+Die Position eines Punktes $P_w$ kann so mithilfe des folgenden Gleichungssystems bestimmt werden:
+
+\begin{ceqn}
+\begin{align}
+\label{eq_point_transformation3}
+    \big[x_w\ y_w\ 0\big]^T = R^{-1}\Big(sA^{-1} \big[u\ v\ 1\big]^T - t\Big)
+\end{align}
+\end{ceqn}
+
+In der Anwendung \textit{Vehicle-Tracker} werden auf diese Weise alle Bildschirmkoordinaten der Trajektorien
+in Weltkoordinaten umgewandet.
+
 \section{Herausforderungen bei der Rekonstruktion von Fahrzeugtrajektorien}
 
 \chapter{Clusteranalyse}
