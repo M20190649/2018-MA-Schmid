@@ -269,19 +269,19 @@ Ausreißern und Spurwechselvorgängen, stabile Spurmittellinien zu bestimmen. Er
 
 \section{Erkennung und Definition von Fahrspuren}
 \label{sec:rw_lane_detection}
-% Hier Arbeiten vorstellen, welche (prim. auf Basis von Traj.Clustern) versuchen Fahrspuren / Fahrbahnen
-% zu erkennen
-% Auch übliche Ansätze vorstellen, welche nicht mit Traj. arbeiten (erwähnen häufig optisch / aus Fahrzeugen)
 
-Primäres Ziel dieser Arbeit ist es, Fahrspuren zuverlässig in Videoaufnahmen zu erkennen zu. Dieser Abschnitt
-geht daher auf Arbeiten mit ähnlichen Ziel ein.
+Ziel dieser Arbeit ist es, Fahrspuren zuverlässig in Videoaufnahmen erkennen zu können. Dieser Abschnitt
+geht daher auf Veröffentlichungen mit ähnlichen Zielen ein.
 
-Die meisten Veröffentlichungen in diesem Bereich, löst das Problem, indem sie nach visuellen Merkmalen,
+Die meisten Veröffentlichungen in diesem Bereich, lösen das Problem, indem sie nach visuellen Merkmalen,
 primär Spurtrennlinien, in Videoaufnahmen suchen. Die Aufnahmen werden dabei entweder von stationären Kameras,
 von bemannten oder unbemannten Luftfahrzeugen oder einem Fahrzeug selbst erstellt. Zur Extraktion der Merkmale werden
 üblicherweise Methoden aus den Gebieten des maschinellen Sehen (\acrshort*{cv}) oder maschinellen Lernens (\acrshort*{ml}) verwendet.
 Arbeiten, welche CV-basierte Ansätze verfolgen, stammen beispielsweise von \cite[]{Lai2000}, \cite[]{McCall2006} oder \cite[]{Aly2008}.
-ML-gestützte Arbeiten wurden dahingegend unter anderem von \cite[]{Kim2008} und \cite[]{Gopalan2012} veröffentlicht.
+ML-gestützte Arbeiten wurden dahingegend unter anderem von \cite[]{Kim2008}, \cite[]{Gopalan2012} oder
+\cite[]{Neven2018} veröffentlicht.
+Ein häufiges Einsatzgebiet für die visuelle Spurerkennung über eine im Fahrzeug verbaute Kamera, sind Spurhalte- oder
+Spurwechsel-Assistenten. 
 % Ein mögliches Anwendungsgebiet für solche Ansätze ist Beispiel die Entwicklung eines Spurhalte-Assistenten.
 
 Da oben genannte Ansätze, wie bereits zu Beginn der Arbeit erläutert, aufgrund von Verdeckungen oder Änderungen
@@ -501,14 +501,22 @@ wäre ein akkurates Clustering nicht möglich.
 
 Deutlich weniger Veröffentlichungen gibt es zum Thema der Identifikation von Fahrspuren. Zwar existieren
 einige Arbeiten, welche Fahrspuren auf Basis von Trajektorien ermitteln, diese entsprechen aber
-in den allermeisten Fällen nicht den realen Verläufen der Fahrbahnen. Üblicherweise werden Fahrspuren
+in den allermeisten Fällen nicht den realen Verläufen der Fahrbahnen. Häufig werden Fahrspuren
 anhand statistischer Verfahren, wie in \cite[]{WeimingHu2006} oder in \cite[]{Teng2015} beschrieben, ermittelt.
 \cite[]{Hsieh2006} ermitteln in ihrer Arbeit Spur-Begrenzungslinien, allerdings nur für kurze, parallele
-Fahrspuren eines Autobahnabschnittes. In dieser Arbeit sollen reale Spurgeometrien für
-unterschiedlichste Straßenabschnitte bestimmt werden, weshalb das hierzu eingesetzte Verfahren selbst entwickelt
-werden muss. 
+Fahrspuren eines Autobahnabschnittes. Auch die von \cite[]{Liu2010}, \cite[]{Sochor2014} und \cite[]{Chen2013}
+veröffentlichten Verfahren eignen sich nur zur Identifikation von parallelen Fahrspuren,
+welche von statischen Kameras aufgenommen werden. 
 
-Es muss zudem eine Lösung zur Partitionierung von Fahrspuren entwickelt werden, da sich erkannte Spuren
-in dieser Arbeit nicht über einen längeren Bereiche hinweg überlagern dürfen. Es muss zudem für jede
-automatisch erkannte Spur überprüft werden, ob es sich bei ihr tatsächlich um eine real Fahrspur handeln kann,
-oder ob ihr Verlauf im Verhältnis zu dem der anderen Bahnen nicht plausibel ist. 
+Ziel dieser Arbeit ist es, Fahrspuren in unterschiedlichen Straßentopologien identifizieren zu können.
+Die erkannten Spuren sollen außerdem den realen Abmaßen der Spuren auf der Straße bestmöglich entsprechen.
+Da dies von keiner existierenden Arbeit geboten wird, muss das Verfahren hierzu selbst entwickelt werden. 
+Es muss zudem eine Lösung zur Partitionierung von Fahrspuren entwickelt werden, da sich Spuren
+in dieser Arbeit nicht über einen längeren Bereiche hinweg überlagern dürfen.
+
+% Es muss zudem für jede
+% automatisch erkannte Spur überprüft werden, ob es sich bei ihr tatsächlich um eine real Fahrspur handeln kann,
+% oder ob ihr Verlauf im Verhältnis zu dem der anderen Bahnen nicht plausibel ist. 
+
+% In dieser Arbeit sollen reale Spurgeometrien für unterschiedlichste Straßenabschnitte bestimmt werden,
+% weshalb das hierzu eingesetzte Verfahren selbst entwickelt werden muss. 
