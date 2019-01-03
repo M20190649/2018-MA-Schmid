@@ -39,7 +39,13 @@
 	\listoffigures
 	% \listoftables
 	\lstlistoflistings
-	% \listoftheorems[ignoreall,show={mydef}]
+
+	\begingroup
+	\let\clearpage\relax
+	\listoftheorems[ignoreall,show={theorem}]
+	\endgroup
+
+	% \listoftheorems[ignoreall,show={theorem}]
 	\printglossary[type=\acronymtype, title=Abkürzungsverzeichnis]
 \end{spacing}
 

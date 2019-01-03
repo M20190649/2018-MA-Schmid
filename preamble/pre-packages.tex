@@ -129,9 +129,32 @@
 \usepackage[square]{natbib}
 \bibliographystyle{abbrvnat}
 
-% \usepackage{amsthm}
+\usepackage{amsthm}
 \usepackage{thmtools}
-\newtheorem{mydef}{Definition}
+\renewcommand{\listtheoremname}{Definitionen}
+
+\declaretheoremstyle[
+   spaceabove=6pt,
+   spacebelow=6pt,
+   notefont=\bfseries,
+   notebraces={(}{)},
+   bodyfont=\itshape,
+   postheadspace=0.5 em,
+   qed={},
+]{theorem}
+
+\declaretheorem[name={Definition}, style=theorem]{theorem}
+
+\makeatletter
+\def\ll@theorem{%
+  \protect\numberline{\csname the\thmt@envname\endcsname}%
+  \ifx\@empty\thmt@shortoptarg
+    \thmt@thmname
+  \else
+    \thmt@shortoptarg
+  \fi}
+\def\l@thmt@theorem{} 
+\makeatother
     
 % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 % 7. PDF related packages
