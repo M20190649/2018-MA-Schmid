@@ -4,8 +4,14 @@
 \label{sec:position_extraction}
 
 In diesem Kapitel wird erläutert, wie auf Luftaufnahmen Trajektorien von Fahrzeugen rekonstruiert werden können.
+
+\begin{theorem}[Trajektorie]
+    Eine Trajektorie beschreibt die Bewegungsbahn eines Objektes durch den Raum. Definiert ist sie
+    als Sequenz von Positionsinformationen.
+\end{theorem}
+
 Eine solche Rekonstruktion wird zwar im Rahmen dieser Arbeit nicht entwickelt, allerdings ist es wichtig ein Grundverständnis
-der benötigten Methoden und Schritte zu besitzen, um die Trajektoriedaten und die darin enthaltenen Defekte
+der benötigten Methoden und Schritte zu besitzen, um die verwendeten Daten und die darin enthaltenen Defekte
 interpretieren zu können.
 Es wird nachfolgend beschrieben, wie bewegte Objekte in Videoaufnahmen erkannt und verfolgt
 werden können, um anschließend deren Positionen in einem Weltkoordinatensystem zu bestimmen. Am Ende des Kapitels
@@ -19,7 +25,8 @@ Nachfolgend werden zwei unterschiedliche Vorgehens-Arten vorgestellt.
 \subsection{Supervised-Tracking}
 
 \begin{theorem}[Supervised-Tracking]
-    Bei Verfahren aus der Kategorie \textit{Supervised-Tracking} wird ein initial manuell ausgewählter Bildbereich
+    Bei Verfahren aus der Kategorie \textit{Supervised-Tracking} wird ein initial manuell ausgewählter Bildbereich,
+    die sogenannte \textit{Region of Interest} (\acrshort*{roi}), 
     automatisch mit Hilfe eines erlernten Klassifikators verfolgt. Der Klassifikator muss beispielsweise zwischen
     Fahrzeugen und der Umgebung unterscheiden.
 \end{theorem}
@@ -50,14 +57,12 @@ wenig besser als zufallsbedingtes Auswählen sein.
 Starke Klassifikatoren entstehen durch die Kombination von mehreren schwachen Klassifikatoren.
 Die Auswahl von schwachen Klassifikatoren erfolgt über sogenante Selektoren, welche aus einer Menge
 immer jenen wählen, welcher die geringste Fehlerrate bei der Erkennung
-der Trainings-Objekte besitzen. Der Klassifikator mit der schlechtesten Erkennungsrate wird in jeder
-Trainingsiteration ersetzt, um das Training zu verbessern.
+der Trainings-Objekte besitzt. Der Klassifikator mit der schlechtesten Erkennungsrate wird in jeder
+Iteration ersetzt, um das Training zu verbessern.
 Großer Vorteil der On-line AdaBoost Methode ist, dass sie es ermöglicht, starke Klassifikatoren während des
-eigentlichen Trackingvorganges zu erlernen. Nach jedem Trackingschritt wird das erfolgreich erkannte
-Objekt in Trainingssätze zerlegt, auf welche die Klassifikatoren angewandt werden um ihre Performance zu evaluieren.
-So wird in jedem Schritt die Menge der schwachen Klassifikatoren und der Selektoren aktualisiert. Die Wahl
+eigentlichen Trackingvorganges zu erlernen.
+Nach jedem Trackingschritt wird die Menge der schwachen Klassifikatoren und Selektoren aktualisiert. Die Wahl
 von effizient berechenbaren schwachen Klassifikatoren macht dies möglich.
-
 Die in \cite[]{Grabner} verwendeten Klassifikatoren sind binär, das heißt,
 sie teilen Objekte in die zwei Klassen \textit{erkannt} und \textit{nicht erkannt} auf.
 Konkret werden Haar-ähnliche Bildmerkmale nach \cite[]{Viola} als schwache Klassifikatoren verwendet.
@@ -65,10 +70,9 @@ Diese sind ein Mittel zur Identifikation von Kontrastunterschieden in Bildern, w
 zur Erkennung von Kanten und Linien eigenen. Ein Beispiel der Haar-ähnlichen Merkmale und ihres Einsatzes
 bei der Gesichtserkennung ist in Abbildung \ref{fig:grund_hair_like} dargestellt.
 
-Diese Merkmale werden als schwache Klassifikatoren mit zufälliger Skalierung, Größe und Position
-auf dem Bild platziert. Sie suchen in dieser Region anschließend nach den von dem Muster definierten
-Konturunterschieden. Eine Bereich gilt als erkannt, wenn der Betrag der Differenz der Pixelsumme des weißen und
-schwarzen Bereiches des Musters unter einem festgelegten Grenzwert liegt.
+Die Haar-ähnlichen Merkmale werden als schwache Klassifikatoren mit zufälliger Skalierung, Größe und Position
+auf einem Bild platziert. Anschließend wird geprüft, ob die vom Muster definierten Kontrastunterschiede
+an der entsprechenden Bildposition existieren.
 
 \begin{figure}[H]
     \centering
@@ -88,7 +92,7 @@ Kanten identifiziert werden können.
 Gelingt die Verfolgung eines Objektes in einer Videoaufnahme, so existiert nach dem Tracking idealerweise
 für jedes Video-Frame, in welchem das Objekt zu sehen ist, eine Position in Pixel-Koordinaten.
 Der große Nachteil des Supervised-Trackings ist, das die Positionen verfolgter Objekte initial
-manuell definiert werden müssen. Wenn in einer Aufnahme viele Objekte verfolgt werden sollen, dann ist
+manuell definiert werden müssen. Wenn eine Aufnahme viele zu verfolgende Objekte beinhaltet, dann ist
 diese initiale Positionsbestimmung sehr aufwendig.
 
 In nachfolgendem Abschnitt wird daher eine weitere Klasse von Tracking-Verfahren beschrieben,
@@ -96,34 +100,39 @@ welche die Positionen von Objekten voll-automatisch in Aufnahmen ermitteln könn
 
 \subsection{Unsupervised-Tracking}
 
-Von \textit{Unsupervised-Tracking} wird gesprochen, wenn zur Identifikation und Verfolgung eines Objektes
-in einem Video keine initiale \textit{Region of Interest} (\acrshort*{roi}) definiert werden muss,
-welche die Startposition des Objektes festlegt. Die Erkennung und Verfolgung funktioniert daher komplett automatisch.
-Es existieren verschieden Verfahren, welche in die Kategorie des Unsupervised-Tracking fallen. Auch in
-der \textit{Vehicle-Tracker} Anwendung, auf welcher diese Arbeit aufbaut, wird Unsupervised-Tracking eingesetzt,
-um die Positionen der Fahrzeuge in den Videoaufnahmen zu bestimmen. Das hier eingesetzte Verfahren wird nachfolgend
-beispielhaft in groben Zügen erläutert.
+\begin{theorem}[Unsupervised-Tracking]
+    Bei einem Ansatz aus der Kategorie Unsuper-vised-Tracking muss für die Identifikation und Verfolgung 
+    von Objekten keine initiale ROI manuell definiert werden. Die Erkennung und Verfolgung der Objekte funktioniert
+    komplett automatisch.
+\end{theorem}
 
-Während im Fall des oben beschriebenen Supervised-Tracking-Ansatzes
-Objekte grundsätzlich einmal händisch detektiert und anschließend verfolgt werden, werden im Fall des
-Ansatzes, welcher in der \textit{Vehicle-Tracker} Applikation zur Anwendung kommt, die Positionen der Fahrzeuge
-in jedem Video-Frame neu bestimmt. Die Positionsinformationen eines Fahrzeugs werden anschließend zu
-zusammenhängenden Trajektorien zusammengefasst. Erkannt werden
-die Fahrzeuge mithilfe der \textit{Object-Detection-API} von Tensorflow\footnote{Tensorflow - \url{https://www.tensorflow.org/}}.
+Es existieren verschieden Verfahren, welche in die Kategorie des Unsupervised-Tracking fallen. In
+der \textit{Vehicle-Tracker} Anwendung, auf welcher diese Arbeit aufbaut, wird ein solcher Ansatz zur
+Rekonstruktion der Fahrzeugtrajektorien eingesetzt. Dieser wird nachfolgend in groben Zügen beschrieben.
 
-Das quelloffene Machine-Learning Framework Tensorflow bietet in seiner \textit{Object-Detection-API}
+Im Fall des in der Anwendung \textit{Vehicle-Tracker} angewandten Unsupervised-Tracking Ansatzes, werden die
+Positionen der Fahrzeuge in jedem Video-Frame, unabhängig von den vorherigen Positionen, neu bestimmt.
+Die einzelnen Positionsinformationen müssen anschließend eindeutig bestimmten Fahrzeugen zugeordnet werden, um so
+zusammenhängende Trajektorien zu erhalten.
+Hierzu wird versucht, alle Fahrzeugpositionen, welche im Video-Frame $t$ ermittelt wurden, jenen Bewegungsbahnen
+zuzuordnen, welchen sie mit der größten Wahrscheinlichkeit angehören und welche anhand der Positionen aus den
+vorherigen Video-Frames erstellt wurden. Kann eine Position keiner Trajektorie zugeordnet werden,
+so wird eine neue initialisiert.
+
+Erkannt werden die Fahrzeuge mithilfe von Tensorflow\footnote{Tensorflow - \url{https://www.tensorflow.org/}}.
+Das quelloffene Machine-Learning Framework bietet in seiner \textit{Object-Detection-API}
 verschiedene Netzwerk-Architekturen und vortrainierte Modelle an, welche zur Erkennung und Klassifizierung
 von Objekten eingesetzt werden können \cite[]{Huang2018}. Die hierzu angebotenen neuronale Netze sind Weiterentwicklungen
 von \textit{Convolutional Neural Networks} (\acrshort*{cnn}), welche sich gut zur maschinellen Verarbeitung
 von Bilddaten eignen.
 
-In Abbildung \ref{fig:grund_structure_cnn} ist der Aufbau eines CNNs inklusive eines \textit{Fully-Connected Layers} dargestellt.
+In Abbildung \ref{fig:grund_structure_cnn} ist der Aufbau eines CNNs mit \textit{Fully-Connected Layer} dargestellt.
 Ein genaues Verständnis der Funktionsweise eines solchen Netzwerks ist im Fall dieser Arbeit nicht notwendig.
-Grundlegend besteht es allerdings aus zwei Komponenten: Der erste Teil des Netzwerkes ist für
+Grundlegend besteht es allerdings aus zwei Komponenten: Der erste Teil ist für
 das \textit{Feature Learning} verantwortlich, während der zweite Teil der Klassifizierung dient.
 In der Phase des \textit{Feature Learnings} extrahiert das Netzwerk aus einem Bild Merkmale, mittels
-welcher die zu erkennenden Objekte beschrieben werden können. Anhand der extrahierten Merkmale können
-ROIs bestimmt werden. Um welches Objekt es sich in einer speziellen ROI handelt, wird anschließend anhand
+welcher die zu erkennenden Objekte beschrieben werden können. Anhand der extrahierten Merkmale werden die Positionen
+der gesuchten Objekte ermittelt. Um welches Objekt es sich an einer bestimmten Position handelt, wird anschließend anhand
 des \textit{Fully-Connected-Layers} bestimmt.
 
 \begin{figure}[H]
@@ -134,23 +143,18 @@ des \textit{Fully-Connected-Layers} bestimmt.
 \end{figure}
 
 Im Fall der Tensorflow Object Detection API werden die Positionen der erkannten Objekte über sogenannte
-\textit{Bounding-Boxes} beschrieben. Diese leiten sich aus den ROIs ab, welche vom CNN ermittelt werden.
-
-Um aus den Positionsinformationen, welche aus den einzelnen Video-Frames extrahiert wurden, zusammenhängende
-Fahrzeugtrajektorien erstellen zu können, müssen diese eindeutig einzelnen Fahrzeugen zugeordnet werden.
-
-% TODO: Finish after talk with Stefan
+\textit{Bounding-Boxes} beschrieben. Deren Lage und Dimension wird über zwei Pixel-Koordinaten beschrieben.
 
 \section{Positionsbestimmung in Videoaufnahmen}
 
-Nachdem die Positionen der Fahrzeugen in 2D-Bildkoordinaten bestimmt wurden, müssen diese in 3D-Weltkoordinaten
+Nachdem die Positionen der Fahrzeugen in Pixel-Koordinaten bestimmt wurden, müssen diese in 3D-Weltkoordinaten
 umgewandelt werden, um die genauen Fahrzeugpositionen auf der Straße zu erhalten. Dank der Verwendung eines
-statitionären Weltkoordinatensystems mit Einheit Meter, lassen sich zudem reale Entfernungen
+stationären Weltkoordinatensystems mit Einheit Meter, lassen sich zudem reale Entfernungen
 in der Aufnahme ermitteln, was beispielsweise für die Bestimmung der Fahrzeuggeschwindigkeiten sehr wichtig ist.
 
 Um eine Bildkoordinate in eine Weltkoordinate überführen zu können, müssen vorher verschiedene Kameraeigenschaften
 ermittelt werden. Hierzu ist es wichtig ein grundlegendes Verständnis von der Funktionsweise einer Kamera zu besitzen.
-Anhand eines Lochkameramodells lässt sich die Funtkionsweise der Bildprojektion einer Kamera herleiten.
+Anhand eines Lochkameramodells lässt sich die Funktionsweise der Bildprojektion herleiten.
 Ein solches Modell ist in Abbildung \ref{fig:grund_pinhole_model} dargestellt.
 
 \begin{figure}[H]
@@ -165,7 +169,7 @@ zur Bündelung des Lichtes eingestzt. Für die Projektion eines Punktes $P$ auf 
 Bezugsysteme berücksichtigt werden:
 
 \begin{enumerate}
-    \item Das \textbf{Weltkoordinatensystem} ist ein statitionäres Bezugsystem, dessen Ursprung sich an einem beliebigen Punkt
+    \item Das \textbf{Weltkoordinatensystem} ist ein stationäres Bezugsystem, dessen Ursprung sich an einem beliebigen Punkt
             im aufgenommenen Raum befindet. Über dieses System werden Punkte $P = (X, Y, Z)$ definiert.
     \item Das \textbf{Kamerakoordinatensystem} hat seinen Ursprung im Punkt $F_c$, der Öffnung des Kamerasystems.
             Es definiert Punkte $P = (x_c,\ y_c,\ z_c)$ relativ zur Kamera.
@@ -175,7 +179,7 @@ Bezugsysteme berücksichtigt werden:
             Über es werden Punkte $P' = (u,\ v)$ in der Einheit Pixel definiert.
 \end{enumerate}
 
-Unter Berücksichtigung dieser Bezugssysteme können die sogenannten ``intrisischen'' und ``extrinsischen Kameraparameter''
+Unter Berücksichtigung dieser Bezugssysteme können die sogenannten ``intrinsischen'' und ``extrinsischen Kameraparameter''
 bestimmt werden.
 
 \subsubsection{Intrinsische Kamera- und Verzeichnungsparameter}
@@ -219,12 +223,13 @@ Die Transformation ist in Gleichung \ref{eq_point_transformation} beschrieben:
 \end{ceqn}
 
 $R$ und $t$ sind die extrinsischen Kameraparameter. $R$ ist die sogenannte Rotationsmatrix, welche
-die Drehung der Kamera um die X, Y und Z-Achse enthält. $t$ ist der Translationsvektor, welcher angibt
-wieweit der Ursprung des Weltkoordinatensystems von der Kamera entfernt ist.
+die Drehung der Kamera um die X, Y und Z-Achse enthält. $t$ ist der Translationsvektor,
+welcher angibt, wo sich der Ursprung des Weltkoordinatensystems relativ zur Öffnung der Kamera befindet.
 
 Die extrinsischen Parameter einer Aufnahme lassen sich mithilfe der intrinsischen Kamera- und Verzeichnungsparameter
 und mindestens sechs Weltkoordinaten, welche Bildschirmkoordinaten zugeordnet werden können, bestimmen. Bibliotheken
-wie OpenCV bieten auch hierfür Funktionen an.
+wie OpenCV bieten auch hierfür Funktionen an. Mithilfe der sechs Koordinaten lässt sich zudem das Weltkoordinatensystem
+definieren.
 
 \subsubsection{Transformation von Bildschirmpositionen in Weltkoordinaten}
 
@@ -274,7 +279,7 @@ gegeben:
     Die Clusteranalyse ist ein Verfahren um Datenobjekte aufgrund ihrer Eigenschaften und Beziehungen
     untereinander so zu gruppieren, dass sich die Objekte einer Gruppe möglichst stark ähneln und sich
     von den Objekten anderer Gruppen möglichst stark unterscheiden. Die auf diese Art entstehenden
-    Objektgruppen werden \textit{Cluster} genannt. Foo
+    Objektgruppen werden \textit{Cluster} genannt.
 \end{theorem}
 
 Je höher die \textit{Homogenität} in einem Cluster
@@ -293,7 +298,14 @@ Aus diesem Grund wird die Clusteranalyse auch häufig als \textit{unüberwachte 
 
 Das Konzept eines \textit{Clusters} ist nicht genau definiert. Es existieren daher viele unterschiedliche Konzepte
 und Algorithmen, welche sich jeweils für andere Anwendungsfälle eignen und verschiedene Eigenschaften
-besitzen. Somit ist das Clustering kein selbsttätiger Prozess, welcher sich in
+besitzen. Neben der Wahl eines passenden Cluster-Algorithmus ist auch die Auswahl des verwendeten Distanzmaßes wichtig.
+
+\begin{theorem}[Distanzmaß]
+    Ein Distanz- oder Ähnlichkeitsmaß definiert zahlenmäßig wie ``ähnlich'' beziehungsweise ``unähnlich''
+    sich zwei Objekte sind.
+\end{theorem}
+
+Das Clustering ist kein selbsttätiger Prozess, welcher sich in
 einheitlicher Weise auf unterschiedliche Probleme anwenden lässt. Jedes Problem erfordert die individuelle und sorgfältige
 Auswahl eines passenden Algorithmus, eines Distanzmaßes und der richtigen Parameter. Die Bestimmung dieser geschieht
 iterativ und nicht selten nach dem Prinzip des \textit{Trial and Error}. In Abbildung \ref{fig:grund_clustering_example}
@@ -837,7 +849,7 @@ Zudem berücksichtigt das LCSS Maß die Orientierung der Trajektorien, solange $
 Die rekursive Definition des LCSS Algorithmus aus Gleichung \ref{eq_lcss} lässt sich mittels dynamischer Programmierung
 mit Zeitkomplexität $O(n\ m)$ berechnen.
 
-\subsubsection{Übersicht Distanzmaße}
+\subsection{Wahl eines Distanzmaßes}
 
 Anhand der drei ausgewählten und oben exemplarisch beschriebenen Distanzmaße, ist bereits ersichtlich,
 dass die Wahl eines passenden Maßes nicht trivial ist. Es muss die Qualität und Form der Daten berücksichtigt werden
@@ -849,32 +861,31 @@ Dies sind wichtige Fragen, welche vor der Wahl eines Distanzmaßes geklärt werd
 Da die Maße als Distanzfunktionen bei der Clusteranalyse verwendet werden, ist ihr Verhalten ausschlaggebend
 für den Erfolg der Gruppierung von Trajektorien.
 
-Wichtige Eigenschaften einiger in der Literatur häufig verwendeten Vergleichsmaße, inklusive der drei oben beschriebenen,
-sind nachfolgend nochmals in tabellarischer Form festgehalten.
+% Wichtige Eigenschaften einiger in der Literatur häufig verwendeten Vergleichsmaße, inklusive der drei oben beschriebenen,
+% sind nachfolgend nochmals in tabellarischer Form festgehalten.
 
-% TODO: Tablle überarbeiten
-\begin{table}[H]
-    \caption{Eigenschaften verschiedener Distanzmaße}
-    \label{tab:parallelen}
-    \centering
-    \begin{tabular}{l|ccc}
-        \toprule
-        \textbf{Distanzmaß} & \textbf{gerichtet} & \textbf{PreProc. nötig} & \textbf{Ausreißer-resistent} \\
-        \midrule \addlinespace
-        HU \cite[]{Hu2005} & \cmark & \cmark & \cmark \\
-        \addlinespace
-        \acrshort{pca} \cite[]{Bashir2003} & \cmark & \cmark & \cmark \\
-        \addlinespace
-        \acrshort*{dtw} \cite[]{Keogh2000} & \cmark & \xmark & \xmark \\
-        \addlinespace
-        \acrshort*{hd} \cite[]{Chen2011} & \xmark & \xmark & \xmark \\
-        \addlinespace
-        mod. HD \cite[]{Atev2006} & \cmark & \xmark & \cmark \\
-        \addlinespace
-        PF \cite[]{Piciarelli2006} & \cmark & \xmark & \xmark \\
-        \addlinespace
-        LCSS \cite[]{Vlachos2002} & \cmark & \xmark & \cmark \\
-        \addlinespace
-        \bottomrule
-    \end{tabular}
-\end{table}
+% \begin{table}[H]
+%     \caption{Eigenschaften verschiedener Distanzmaße}
+%     \label{tab:parallelen}
+%     \centering
+%     \begin{tabular}{l|ccc}
+%         \toprule
+%         \textbf{Distanzmaß} & \textbf{gerichtet} & \textbf{PreProc. nötig} & \textbf{Ausreißer-resistent} \\
+%         \midrule \addlinespace
+%         HU \cite[]{Hu2005} & \cmark & \cmark & \cmark \\
+%         \addlinespace
+%         \acrshort{pca} \cite[]{Bashir2003} & \cmark & \cmark & \cmark \\
+%         \addlinespace
+%         \acrshort*{dtw} \cite[]{Keogh2000} & \cmark & \xmark & \xmark \\
+%         \addlinespace
+%         \acrshort*{hd} \cite[]{Chen2011} & \xmark & \xmark & \xmark \\
+%         \addlinespace
+%         mod. HD \cite[]{Atev2006} & \cmark & \xmark & \cmark \\
+%         \addlinespace
+%         PF \cite[]{Piciarelli2006} & \cmark & \xmark & \xmark \\
+%         \addlinespace
+%         LCSS \cite[]{Vlachos2002} & \cmark & \xmark & \cmark \\
+%         \addlinespace
+%         \bottomrule
+%     \end{tabular}
+% \end{table}
