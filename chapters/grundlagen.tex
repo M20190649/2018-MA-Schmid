@@ -26,7 +26,7 @@ Nachfolgend werden zwei unterschiedliche Vorgehens-Arten vorgestellt.
 
 \begin{theorem}[Supervised-Tracking]
     Bei Verfahren aus der Kategorie \textit{Supervised-Tracking} wird ein initial manuell ausgewählter Bildbereich,
-    die sogenannte \textit{Region of Interest} (\acrshort*{roi}), 
+    die sogenannte \textit{Region of Interest} (\acrshort*{roi}),
     automatisch mit Hilfe eines erlernten Klassifikators verfolgt. Der Klassifikator muss beispielsweise zwischen
     Fahrzeugen und der Umgebung unterscheiden.
 \end{theorem}
@@ -83,7 +83,7 @@ an der entsprechenden Bildposition existieren.
     \subfloat[]{{
         \includegraphics[width=0.35\linewidth]{resources/img/grundlagen/TrajectoryReconstruction/hair_like_features_2}
     }}
-    \caption[Haar-ähnliche Merkmale a), Beispiele für erkannte Regionen in einem Gesicht b)]{Haar-ähnliche Merkmale a), Beispiele für erkannte Regionen in einem Gesicht b) \cite[]{DivyanshDwivedi2018}}
+    \caption[Haar-ähnliche Bildmerkmale]{Haar-ähnliche Merkmale a), Beispiele für erkannte Regionen in einem Gesicht b) \cite[]{DivyanshDwivedi2018}}
     \label{fig:grund_hair_like}
 \end{figure}
 
@@ -99,9 +99,10 @@ In nachfolgendem Abschnitt wird daher eine weitere Klasse von Tracking-Verfahren
 welche die Positionen von Objekten voll-automatisch in Aufnahmen ermitteln können.
 
 \subsection{Unsupervised-Tracking}
+\label{sec:unsupervised_tracking}
 
 \begin{theorem}[Unsupervised-Tracking]
-    Bei einem Ansatz aus der Kategorie Unsuper-vised-Tracking muss für die Identifikation und Verfolgung 
+    Bei einem Ansatz aus der Kategorie Unsuper-vised-Tracking muss für die Identifikation und Verfolgung
     von Objekten keine initiale ROI manuell definiert werden. Die Erkennung und Verfolgung der Objekte funktioniert
     komplett automatisch.
 \end{theorem}
@@ -262,14 +263,75 @@ in Weltkoordinaten umgewandelt.
 
 \section{Herausforderungen bei der Rekonstruktion von Fahrzeugtrajektorien}
 
-% Unterbrechungen (Verdeckungen, Größe der Fahrzeuge in Aufnahme)
-% Fehlerhafte Detektionen
-% Punktwolken
-% Auswirkungen Perspektive
+Es existieren, unabhängig davon welches Verfahren zur Erkennung und Verfolgung von Fahrzeugen in Videoaufnahmen
+eingesetzt wird, diverse Herausforderungen bei der Rekonstruktion von Trajektorien. Nachfolgend sind
+Herausforderungen und Auswirkungen beschrieben, welche häufig auftreten.
+
+\subsubsection*{False-Positive und False-Negative Detektionen}
+Unter \textit{False-Positive Detektionen} versteht man in diesem Fall die Erkennung und Verfolgung
+von Objekten in einem Video, welche kein Fahrzeug sind.
+Dieses Problem tritt häufig dann auf, wenn ein Unsupervised-Tracking Ansatz, wie in Abschnitt \ref{sec:unsupervised_tracking}
+beschrieben, verwendet wird und das eingesetzte neuronale Netz noch nicht ausreichend trainiert wurde.
+Fälschlicherweise detektierte Objekte können beispielsweise Fußgänger, Fahrradfahrer oder auch Gebäudeausschnitte sein.
+In Abbildung \ref{fig:grund_false_positive_detections} sind False-Positive Detektionen von Fußgängern
+und einem Schild auf einem Grünstreifen zu sehen.
+Aufgrund von False-Positive Detektionen befinden sich in Trajektoriedatensätzen Bewegungsbahnen, welche nicht zu
+Fahrzeugen gehören, häufig außerhalb der Fahrbahnen verlaufen und meist sehr kurz sind.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.45\linewidth]{resources/img/grundlagen/TrajectoryReconstruction/challenges/False-Positives}
+    \caption{False-Positive Detektionen}
+    \label{fig:grund_false_positive_detections}
+\end{figure}
+
+Von \textit{False-Negative Detektionen} wird gesprochen, wenn ein Fahrzeug in einer Aufnahme nicht
+erkannt und verfolgt wird. Hierfür kann es diverse Ursachen geben. Schlechte Belichtungsverhältnisse
+oder eine zu geringe Größe der Fahrzeuge in der Aufnahme sind nur zwei davon.
+In den Trajektoriedaten äußern sich False-Negative Detektionen primär durch das Fehlen von Bewegungsbahnen
+oder deren zu frühen Abbruch.
+
+\subsubsection*{Fahrbahn Verdeckungen}
+
+In Luftaufnahmen von Straßenabschnitten sind Teile der Fahrbahnen nicht selten verdeckt durch beispielsweise
+Bäume oder Brücken. Dies erschwert die Rekonstruktion der Bewegungsbahnen von Fahrzeugen erheblich, da diese
+beim Unterfahren der Hindernisse nicht in der Aufnahe zu sehen sind. In Abbildung \ref{fig:grund_lane_occlusion}
+ist die Verdeckung einer Fahrbahn durch Baumkronen zu sehen.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.45\linewidth]{resources/img/grundlagen/TrajectoryReconstruction/challenges/Verdeckung}
+    \caption{Fahrbahn Verdeckung}
+    \label{fig:grund_lane_occlusion}
+\end{figure}
+
+Fahrbahn-Verdeckungen haben üblicherweise zur Folge, dass die Bewegungsbahnen von Fahrzeugen in den
+Trajektoriedatensätzen unterbrochen sind. Dies kann lediglich verhindert werden, wenn neben der reinen
+Detektion der Fahrzeuge auch Verfahren eingesetzt werden, welche deren Position schätzen, wenn sie kurzzeitig
+nicht in der Aufnahme zu sehen sind.
+
+\subsubsection*{Niedrige Aufnahmewinkel}
+
+Auch niedrige Aufnahmewinkel sind eine Herausforderung bei der Rekonstruktion von Fahrzeugtrajektorien.
+Abbildung \ref{fig:grund_low_angle_detection} zeigt die Detektion eines LKW's in einer Luftbeobachtung,
+welche aus einem niedrigen Aufnahmewinkel erstellt wurde. Problematisch ist hier, dass anhand der Bounding-Box,
+welche die Position des LKW's im Bild definiert, sich nur schlecht dessen reale Position auf der Straße ermitteln lässt.
+Die Bounding-Box ragt weit über die Fahrspur hinaus, auf welcher sich der LKW befindet und auch deren Mittelpunkt
+liegt nicht in der Mitte der Fahrspur. Wenn Fahrzeugpositionen in Bildern mit niedrigem Aufnahmewinkel daher lediglich
+anhand der Mittelpunkte der Bounding-Boxes ermittelt werden, weichen diese von den realen Positionen immer etwas ab.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.45\linewidth]{resources/img/grundlagen/TrajectoryReconstruction/challenges/low_angle}
+    \caption{Fahrzeug-Detektion bei niedrigem Aufnahmewinkel}
+    \label{fig:grund_low_angle_detection}
+\end{figure}
+
+Beim Arbeiten mit Trajektoriedaten muss beachtet werden, dass die oben beschriebenen Effekte auftreten
+können. Ein Spurerkennungs-Algorithmus muss daher auch mit ihnen umgehen können.
 
 \chapter{Clusteranalyse}
 \label{sec:tra_clustering}
-
 
 Die Clusteranalyse (kurz Clustering) ist ein wichtiges Werkzeug zur Auswertung von Daten unterschiedlichster
 Art. Sie stellt dabei kein konkretes Vorgehen oder einen Algorithmus dar, sondern beschreibt ein
