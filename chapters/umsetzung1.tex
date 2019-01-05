@@ -102,7 +102,7 @@ In Abbildung \ref{fig:real_neckartor} a) ist ein Ausschnitt der entsprechenden A
     \subfloat[]{{
         \includegraphics[align=c, width=0.42\linewidth]{resources/img/umsetzung/U1/Plot_RawTrajectories_Neckartor}
     }}
-    \caption{Stuttgarter Neckartor a) und Trajektorien b)}
+    \caption[Stuttgarter Neckartor und rekonstruierte Trajektorien]{Stuttgarter Neckartor a) und rekonstruierte Trajektorien b)}
     \label{fig:real_neckartor}
 \end{figure}
 
@@ -126,7 +126,7 @@ die Fahrzeugverfolgung unterbrochen wird.
     \subfloat[]{{
         \includegraphics[align=c, width=0.37\linewidth]{resources/img/umsetzung/U1/trajectories_defect2}
     }}
-    \caption{Punktwolken vor Lichtsignalanlagen a), Unterbrechungen aufgrund von Überdeckung b)}
+    \caption[Beispiel Defekte in Trajektoriedaten]{Punktwolken vor Lichtsignalanlagen a), Unterbrechungen aufgrund von Überdeckung b)}
     \label{fig:real_defects_trajectories}
 \end{figure}
 
@@ -153,7 +153,6 @@ aufgeführt:
     \item Resampling von Trajektorien auf minimale Punktdistanz,
     \item Entfernung zu kurzer Trajektorien und
     \item Entfernung unterbrochener Trajektorien
-    % \item Anpassung der Trajektorien bei niedrigen Aufnahmewinkeln
 \end{enumerate}
 
 Die einzelnen Schritte und ihr Hintergrund werden anschließend noch genauer erläutert.
@@ -398,7 +397,7 @@ Diese haben sich in unterschiedlichen Versuchen als am besten geeignet erwiesen.
     \subfloat[mit fester Clusteranzahl]{{
         \includegraphics[align=c, width=0.4\linewidth]{resources/img/umsetzung/U1/atev_results/entennest_k6}
     }}
-    \caption{Ergebnisse Clusteranalyse Datensatz Entennest (Ansatz Atev et al.)}
+    \caption{Ergebnisse Clusteranalyse Ansatz Atev et al.}
     \label{fig:real_results_atev1}
 \end{figure}
 
@@ -549,7 +548,7 @@ grundlegend gut.
     \subfloat[Datensatz Neckartor]{{
         \includegraphics[align=c, width=0.4\linewidth]{resources/img/umsetzung/U1/dbscan_lcss/neckartor}
     }}
-    \caption{Ergebnisse Clusteranalyse DBSCAN und LCSS-Distanz}
+    \caption{Ergebnisse Clusteranalyse Ansatz DBSCAN und LCSS-Distanz}
     \label{fig:real_results_dbscan_lcss}
 \end{figure}
 
@@ -594,7 +593,7 @@ dass sich die Fahrzeuge nach dem abbiegen auf drei Fahrstreifen verteilen.
     \subfloat[]{{
         \includegraphics[align=c, width=0.3\linewidth]{resources/img/umsetzung/U1/clusters_with_turning_lanes}
     }}
-    \caption{Abbiegespur a), zugehörige Trajektorien b), Spurcluster mit Abbiegespuren c)}
+    \caption[Abbiegespur Neckartor Kreuzung]{Abbiegespur a), zugehörige Trajektorien b), Spurcluster mit Abbiegespuren c)}
     \label{fig:real_turning_lane}
 \end{figure}
 

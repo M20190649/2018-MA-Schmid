@@ -168,7 +168,7 @@ Ein solches Modell ist in Abbildung \ref{fig:grund_pinhole_model} dargestellt.
 
 In einer Lochkamera fällt Licht durch eine kleine Öffnung auf eine Projektionsfläche. Es werden keine Linsen
 zur Bündelung des Lichtes eingestzt. Für die Projektion eines Punktes $P$ auf diese Fläche müssen vier
-Bezugsysteme berücksichtigt werden:
+Bezugsysteme berücksichtigt werden \cite[]{Jahne2012}:
 
 \begin{enumerate}
     \item Das \textbf{Weltkoordinatensystem} ist ein stationäres Bezugsystem, dessen Ursprung sich an einem beliebigen Punkt
@@ -226,7 +226,7 @@ Die Transformation ist in Gleichung \ref{eq_point_transformation} beschrieben:
 
 $R$ und $t$ sind die extrinsischen Kameraparameter. $R$ ist die sogenannte Rotationsmatrix, welche
 die Drehung der Kamera um die X, Y und Z-Achse enthält. $t$ ist der Translationsvektor,
-welcher angibt, wo sich der Ursprung des Weltkoordinatensystems relativ zur Öffnung der Kamera befindet.
+welcher angibt, wo sich der Ursprung des Weltkoordinatensystems relativ zur Öffnung der Kamera befindet. \cite[]{Jahne2012}
 
 Die extrinsischen Parameter einer Aufnahme lassen sich mithilfe der intrinsischen Kamera- und Verzeichnungsparameter
 und mindestens sechs Weltkoordinaten, welche Bildschirmkoordinaten zugeordnet werden können, bestimmen. Bibliotheken
@@ -235,8 +235,8 @@ definieren.
 
 \subsubsection{Transformation von Bildschirmpositionen in Weltkoordinaten}
 
-Die Trasformation einer Weltkoordinate in eine Bildschirmposition ist, ohne Berücksichtigung der Verzeichnung,
-gegeben durch die Formel \ref{eq_point_transformation2}. $s$ ist hier ein konstanter Skalierungsfaktor.
+Die Transformation einer Weltkoordinate in eine Bildschirmposition ist, ohne Berücksichtigung der Verzeichnung,
+gegeben durch die Formel \ref{eq_point_transformation2} \cite[]{DevTeamOpenCV2018}. $s$ ist hier ein konstanter Skalierungsfaktor.
 
 \begin{ceqn}
 \begin{align}
@@ -246,7 +246,7 @@ gegeben durch die Formel \ref{eq_point_transformation2}. $s$ ist hier ein konsta
 \end{ceqn}
 
 Da bei der Projektion vom Weltkoordinatensystem ins Bildschirmkoordinatensystem eine Dimensionsinformation
-verloren geht, muss bei der Rücktrasformation diese extra bestimmt oder geschätzt werden. Liegt ein Punkt
+verloren geht, muss bei der Rücktransformation diese extra bestimmt oder geschätzt werden. Liegt ein Punkt
 auf der Ebene, welche von der X- und Y-Achse des Weltkoordinatensystems beschrieben wird, kann für dessen
 Höhe $z = 0$ verwendet werden.
 Die Position eines Punktes $P_w$ kann so mithilfe des folgenden Gleichungssystems bestimmt werden:
@@ -379,7 +379,7 @@ dargestellt. Nach \cite[]{Jain2010} kann allerdings kein existierender Clusterin
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\linewidth]{resources/img/grundlagen/clustering_example}
-    \caption[Rohdaten (links) und erwünschtes Clustering-Ergebnis (rechts)]{Rohdaten (links) und erwünschtes Clustering-Ergebnis (rechts) \cite[]{Jain2010}}
+    \caption[Rohdaten und erwünschtes Clustering-Ergebnis]{Rohdaten (links) und erwünschtes Clustering-Ergebnis (rechts) \cite[]{Jain2010}}
     \label{fig:grund_clustering_example}
 \end{figure}
 
@@ -538,7 +538,7 @@ Sein Vorgehen lässt sich sehr gut anhand sogenannter Dendrogramme oder geschach
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.7\linewidth]{resources/img/grundlagen/agglo_clustering}
-    \caption{Agglomeratives Clustering dargestellt als Dendrogramm (links) und geschachteltes Cluster-Diagram (rechts)}
+    \caption[Darstellung Funktionsweise Agglomeratives Clustering]{Agglomeratives Clustering dargestellt als Dendrogramm (links) und geschachteltes Cluster-Diagram (rechts)}
     \label{fig:grund_agglo_clustering}
 \end{figure}
 
@@ -609,7 +609,7 @@ Die Kreuze entsprechen hierbei den Centroids, welche sich über die Iterationen 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.9\linewidth]{resources/img/grundlagen/k-means}
-    \caption[Funktionsweise von k-Means]{Funktionsweise von k-Means \cite[]{tan2007introduction}}
+    \caption[Funktionsweise k-Means Clusteralgorithmus]{Funktionsweise k-Means Clusteralgorithmus \cite[]{tan2007introduction}}
     \label{fig:grund_kmeans_clustering}
 \end{figure}
 
@@ -693,7 +693,7 @@ Abbildung \ref{fig:grund_em_clustering} grafisch dargestellt.
     \subfloat[Iteration 4]{{
         \includegraphics[align=c, width=0.22\linewidth]{resources/img/grundlagen/clustering_EM/EM4}
     }}
-    \caption[Darstellung des EM-Cluster-Algorithmus über mehrere Iterationen]{Darstellung des EM-Cluster-Algorithmus über mehrere Iterationen \cite[]{GeorgeSeif2018}}
+    \caption[Funktionsweise des EM-Cluster-Algorithmus]{Funktionsweise des EM-Cluster-Algorithmus über mehrere Iterationen \cite[]{GeorgeSeif2018}}
     \label{fig:grund_em_clustering}
 \end{figure}
 
@@ -753,7 +753,7 @@ verbunden sind (transitiv). Dies ist in Abbildung \ref{fig:grund_dbscan_reachabi
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.32\linewidth]{resources/img/grundlagen/clustering_dbscan/reachability}
-    \caption[Erreichbarkeit in DBSCAN]{Erreichbarkeit in DBSCAN \cite[]{Gao2012}}
+    \caption[Konzept Erreichbarkeit in DBSCAN]{Konzept Erreichbarkeit in DBSCAN \cite[]{Gao2012}}
     \label{fig:grund_dbscan_reachability}
 \end{figure}
 
@@ -797,7 +797,7 @@ Abbildung \ref{fig:grund_trajectories} zeigt eine Auswahl möglicher Trajektorie
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.6\linewidth]{resources/img/grundlagen/trajectories}
-\caption{Trajektorien im 2-dimensionalen Raum}
+\caption{Trajektorien im zwei-dimensionalen Raum}
 \label{fig:grund_trajectories}
 \end{figure}
 

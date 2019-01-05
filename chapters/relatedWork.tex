@@ -91,7 +91,7 @@ wie folgt definiert:
 Hierbei entspricht $C_{P,Q}$ einem Mapping $P \rightarrow Q$, welches einem Punkt $p \in P$ einen entsprechenden
 Punkt $q \in Q$ zuweist, welcher die selbe relative Position in $Q$ besitzt wie $p$ in $P$.
 $N_Q$ definiert ein Subset von $Q$ als Nachbarschaft des Punktes $q$. Zusammen definieren $N_Q$ und $C_{P,Q}$ eine
-Struktur, in welcher der Abgleich der Trajektorien stattfindet. Dieses Vorgehen wird in Abbildung 
+Struktur, in welcher der Abgleich der Trajektorien stattfindet. Dieses Vorgehen wird in Abbildung
 \ref{fig:relw_atev_modh} visualisiert. Der Operator $ord_{p \in P}^{\alpha} f(p)$ selektiert jenen Wert aus $f(p)$, welcher
 größer ist als $\alpha$-Prozent der Werte.
 
@@ -262,7 +262,7 @@ Ausreißern und Spurwechselvorgängen, stabile Spurmittellinien zu bestimmen. Er
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.95\linewidth]{resources/img/RelatedWork/ren_examples_detection}
-    \caption[Ergebnisse der Spurmittellinien-Erkennung (Ren et al.)]{Ergebnisse der Spurmittellinien-Erkennung \cite[]{Ren2014}}
+    \caption[Ergebnisse Spurmittellinien-Erkennung (Ren et al.)]{Ergebnisse Spurmittellinien-Erkennung \cite[]{Ren2014}}
     \label{fig:relw_ren_example_detection}
 \end{figure}
 
@@ -281,7 +281,7 @@ Arbeiten, welche CV-basierte Ansätze verfolgen, stammen beispielsweise von \cit
 ML-gestützte Arbeiten wurden dahingegend unter anderem von \cite[]{Kim2008}, \cite[]{Gopalan2012} oder
 \cite[]{Neven2018} veröffentlicht.
 Ein häufiges Einsatzgebiet für die visuelle Spurerkennung über eine im Fahrzeug verbaute Kamera, sind Spurhalte- oder
-Spurwechsel-Assistenten. 
+Spurwechsel-Assistenten.
 % Ein mögliches Anwendungsgebiet für solche Ansätze ist Beispiel die Entwicklung eines Spurhalte-Assistenten.
 
 Da oben genannte Ansätze, wie bereits zu Beginn der Arbeit erläutert, aufgrund von Verdeckungen oder Änderungen
@@ -313,7 +313,7 @@ Abbildung \ref{fig:relw_hu_example_envelope} dargestellt.
     \subfloat{{
         \includegraphics[align=c, width=0.49\linewidth]{resources/img/RelatedWork/hu_example_envelope2}
     }}
-    \caption[Spurhüllen in Hu et al., 2006]{Spurhüllen in \cite[]{WeimingHu2006}}
+    \caption[Spurhüllen in Hu et al.]{Spurhüllen in \cite[]{WeimingHu2006}}
     \label{fig:relw_hu_example_envelope}
 \end{figure}
 
@@ -414,8 +414,8 @@ Die Ergebnisse dieses Ansatzes sind in Abbildung \ref{fig:relw_morris_results} b
 Ellipsen repräsentieren die HMM's, welche angeben, wie die erwartete Bewegung eines Fahrzeugs in einem
 bestimmten Bereich aussieht.
 Die in \cite[]{Morris2011} bestimmten Pfade ermöglichen es diverse Aussagen über das Verhalten der Fahrzeuge
-zu treffen. Sie repräsentieren allerdings nicht die realen Spur-Geometrien eines Straßenabschnittes.    
- 
+zu treffen. Sie repräsentieren allerdings nicht die realen Spur-Geometrien eines Straßenabschnittes.
+
 % Hsieh et al., 2006
 \subsubsection*{Automatic Traffic Surveillance System for Vehicle Tracking and Classification}
 % Heat Map --> Spurmittellinien --> Begrenzer aus Mittellinien bestimmen
@@ -486,7 +486,7 @@ befasst. Die in Abschnitt \ref{sec:rw_clustering} vorgestellten Veröffentlichun
 kleine Auswahl dar.
 Die Arbeiten entwickeln Lösungen in verschiedensten Anwendungsgebieten wie der Verkehrs-, Wetter und Verhaltensanalyse
 und suchen daher in den Trajektoriedaten nach unterschiedlichsten Mustern. Die geforderte Genauigkeit der
-Clustering-Ergebnisse unterscheidet sich je nach Anwendungsfall ebenfalls stark.   
+Clustering-Ergebnisse unterscheidet sich je nach Anwendungsfall ebenfalls stark.
 Im Rahmen dieser Masterarbeit muss ein Verfahren identifiziert und entwickelt werden, welches Fahrspur-Cluster
 in Trajektoriedaten zuverlässig identifizieren kann. Die Fahrspuren können hierbei unterschiedlichste
 Geometrien aufweisen.
@@ -495,7 +495,7 @@ Ein Defizit vieler vorhandener Arbeiten ist, dass diese meist mit wenigen unters
 Trajektorie-Datensätzen arbeiten und die verwendeten Daten selten Defekte wie Unterbrechungen,
 Ausreißer oder inkorrekte Positionsinformationen aufweisen, welche durch Fehler in der Fahrzeugverfolgung entstehen.
 In einigen Arbeit wird teilweise nur mit generierten Trajektoriedaten
-gearbeitet. Da in der vorliegenden Thesis davon ausgegangen werden muss, dass all diese Probleme auftreten können, 
+gearbeitet. Da in der vorliegenden Thesis davon ausgegangen werden muss, dass all diese Probleme auftreten können,
 muss ein zuverlässiges Verfahren zur Bereinigung von Trajektoriedaten entwickelt werden. Ohne einen solchen Vorverarbeitungschritt,
 wäre ein akkurates Clustering nicht möglich.
 
@@ -506,17 +506,17 @@ anhand statistischer Verfahren, wie in \cite[]{WeimingHu2006} oder in \cite[]{Te
 \cite[]{Hsieh2006} ermitteln in ihrer Arbeit Spur-Begrenzungslinien, allerdings nur für kurze, parallele
 Fahrspuren eines Autobahnabschnittes. Auch die von \cite[]{Liu2010}, \cite[]{Sochor2014} und \cite[]{Chen2013}
 veröffentlichten Verfahren eignen sich nur zur Identifikation von parallelen Fahrspuren,
-welche von statischen Kameras aufgenommen werden. 
+welche von statischen Kameras aufgenommen werden.
 
 Ziel dieser Arbeit ist es, Fahrspuren in unterschiedlichen Straßentopologien identifizieren zu können.
 Die erkannten Spuren sollen außerdem den realen Abmaßen der Spuren auf der Straße bestmöglich entsprechen.
-Da dies von keiner existierenden Arbeit geboten wird, muss das Verfahren hierzu selbst entwickelt werden. 
+Da dies von keiner existierenden Arbeit geboten wird, muss das Verfahren hierzu selbst entwickelt werden.
 Es muss zudem eine Lösung zur Partitionierung von Fahrspuren entwickelt werden, da sich Spuren
 in dieser Arbeit nicht über einen längeren Bereiche hinweg überlagern dürfen.
 
 % Es muss zudem für jede
 % automatisch erkannte Spur überprüft werden, ob es sich bei ihr tatsächlich um eine real Fahrspur handeln kann,
-% oder ob ihr Verlauf im Verhältnis zu dem der anderen Bahnen nicht plausibel ist. 
+% oder ob ihr Verlauf im Verhältnis zu dem der anderen Bahnen nicht plausibel ist.
 
 % In dieser Arbeit sollen reale Spurgeometrien für unterschiedlichste Straßenabschnitte bestimmt werden,
-% weshalb das hierzu eingesetzte Verfahren selbst entwickelt werden muss. 
+% weshalb das hierzu eingesetzte Verfahren selbst entwickelt werden muss.
