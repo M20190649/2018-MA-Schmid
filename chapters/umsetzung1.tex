@@ -39,7 +39,6 @@ vordersten Punkt eines Fahrzeugs in einem bestimmten Video-Frame und befinden si
 Idealerweise liegt die Front-Position auf der Stoßstange eines Fahrzeugs. In Abbildung \ref{fig:real1_tracked_object_front_position}
 sind beispielhaft zwei verfolgte Objekte dargestellt. Die Front-Positionen entsprechen den runden Markern.
 
-% TODO: Add correct images
 \begin{figure}[H]
     \centering
     \subfloat[]{{
@@ -141,13 +140,15 @@ sind in diesem Abschnitt erläutert.
 
 Das primäre Ziel der Vorverarbeitung ist es, Ausreißer aus der
 Trajektorie-Menge zu entfernen, welche das Ergebnis der Clusteranalyse negativ beeinflussen würden.
-Idealerweise sollen nur jene Trajektorien beibehalten werden, welche eine komplette Bewegung eines
-Fahrzeugs auf einem bestimmten Straßenabschnitt repräsentieren. Anhand dieser Trajektorien kann
-anschließend die Geometrie der realen Fahrspuren ermittelt werden. Ausreißer wie stehende oder unterbrochene Trajektorien
-liefern hingegen keine verwendbaren Informationen für die Spurerkennung.
+Die Qualität der Rohdaten hängt von der Qualität des verwendten Verfahrens zur Rekonstruktion von Fahrzeugtrajektorien
+ab. Welche Probleme hierbei auftreten und wie sich diese auf die Trajektoriedaten auswirken, wurde in
+Abschnitt \ref{sec:grund_challenges_reconstruction} beschrieben.
 
-In nachfolgender Auflistung sind die drei wichtigsten Vorverarbeitungsschritte und ihre Anwendungsreihenfolge
-aufgeführt:
+Idealerweise sollen nach der Vorverarbeitung nur jene Trajektorien weiterverarbeitet werden,
+welche eine ununterbrochene Bewegung eines Fahrzeugs auf einem bestimmten Straßenabschnitt beschreiben.
+Anhand dieser Trajektorien wird anschließend die Geometrie der realen Fahrspuren ermittelt.
+
+In nachfolgender Auflistung sind die drei wichtigsten Vorverarbeitungsschritte aufgeführt:
 
 \begin{enumerate}
     \item Resampling von Trajektorien auf minimale Punktdistanz,
@@ -243,16 +244,16 @@ negativ beeinflussen.
 
 Der erste verwendete Ansatz zur Entfernung von unterbrochenen Trajektorien beruhte auf der Annahme,
 dass komplette Trajektorien immer im Bereich der Szenenränder beginnen und enden. Daher wurden alle Trajektorien,
-welche diese Bedingung nicht erfüllen, entfernt. Es ist jedoch möglich, dass Trajektorien, welche keine
-Defekte besitzen, auch in der Mitte einer Aufnahme beginnen, wenn die verfolgten Fahrzeuge in diesem Bereich
-beispielsweise aus einem Tunnel hervorkommen. Unter Anwendung des obigen Ansatzes würden diese Trajektorien fälschlichweise
-entfernt. Daher wurde ein anderes Vorgehen entwickelt.
+welche diese Bedingung nicht erfüllen, entfernt. Es ist jedoch auch möglich, dass ununterbrochene Trajektorien
+in der Mitte einer Aufnahme beginnen, wenn die verfolgten Fahrzeuge in diesem Bereich beispielsweise aus einem Tunnel hervorkommen.
+Unter Anwendung des obigen Ansatzes würden diese Trajektorien fälschlichweise
+entfernt. Daher wurde ein anderes Vorgehen gewählt.
 
-Das in der Arbeit final eingesetzte Verfahren basiert auf einer anderen Definition von unterbrochenen
-Trajektorien: Bewegungsbahnen gelten grundlegend dann als unterbrochen, wenn sich auf Höhe ihrer Starts
+Das in der Arbeit eingesetzte Verfahren basiert auf einer anderen Definition von unterbrochenen
+Trajektorien: Bewegungsbahnen gelten dann als unterbrochen, wenn sich auf Höhe ihrer Starts
 oder Enden mehrere Trajektorien befinden, welche auf der entsprechenden Höhe nicht starten oder enden.
 Ist dies der Fall, dann ist die untersuchte Bewegungsbahn unterbrochen. Die angrenzenden Trajektorien
-sind sind potenziell vollständig.
+sind sind potenziell vollständig das heißt ununterbrochen.
 Abbildung \ref{fig:real_completeTrajectory} veranschaulicht diese Definition.
 
 \begin{figure}[H]
@@ -269,8 +270,8 @@ die untersuchte Bewegungsbahn als unterbrochen gewertet und entfernt.
 Dieses Vorgehen beruht auf der Annahme, dass für eine Fahrspur neben unterbrochenen auch
 ununterbrochene Trajektorien vorliegen, welche eine vollständige Bewegung auf der Spur beschreiben.
 
-Nach Ausführung dieses Filter-Schrittes, besteht die Menge der übrigen Trajektorien grundsätzlich nurnoch
-aus kompletten Bewegungsbahnen.
+Nach Ausführung dieses Filter-Schrittes, besteht die Menge der übrigen Trajektorien nurnoch
+aus ununterbrochenen Bewegungsbahnen.
 
 \section{Clusteranalyse der Trajektorien}
 \label{sec:realisation_clustering}
@@ -552,8 +553,8 @@ grundlegend gut.
     \label{fig:real_results_dbscan_lcss}
 \end{figure}
 
-Der DBSCAN Algorithmus markiert nun auch atypische Trajektorien als Ausreißer, was den Vorteil hat, dass
-diese nichtmehr anderen Spurclustern zugeordnet werden. Problematisch ist nun allerdings, dass Trajektorien
+Der DBSCAN Algorithmus markiert atypische Trajektorien als Ausreißer, was den Vorteil hat, dass
+diese nichtmehr anderen Spurclustern zugeordnet werden. Problematisch ist allerdings, dass Bewegungsbahnen
 welche Abbiegevorgänge beschreiben und in unterschiedliche Spuren einbiegen, teilweise auch als Ausreißer
 klassifiziert werden. In Abbildung \ref{fig:real_results_dbscan_lcss} b) fehlen so beispielsweise die Trajektorien
 der zwei Abbiegespuren in der oberen linken und unteren rechten Ecke (vergleiche Abbildung \ref{fig:real_neckartor} a)).
@@ -600,7 +601,7 @@ dass sich die Fahrzeuge nach dem abbiegen auf drei Fahrstreifen verteilen.
 Ziel des nachfolgend beschriebenen Verarbeitungsschrittes ist es, Trajektorien, welche Abbiegevorgänge
 beschreiben, zu entsprechenden Clustern zusammenzufassen. Anhand dieser kann anschließend die Geometrie
 der Spuren, wie für alle anderen Fahrspuren auch, bestimmt werden.
-Die Cluster sollen hierbei allerdings nicht aus den vollständigen Trajektorien gebildet werden, sondern
+Die Cluster sollen hierbei allerdings nicht aus den kompletten Trajektorien gebildet werden, sondern
 lediglich aus den Teilen, welche anfänglich identisch verlaufen. Dies ist konzeptionell in Abbildung
 \ref{fig:real_turning_lane} b) dargestellt. Notwendig ist dies, da die Trajektorien nach dem Auseinanderlaufen
 sehr unterschiedliche Bahnen beschreiben können und dies die Spur-Geometrie-Bestimmung negativ beeinflusst.

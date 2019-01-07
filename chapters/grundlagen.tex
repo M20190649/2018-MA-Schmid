@@ -6,11 +6,14 @@
 In diesem Kapitel wird erläutert, wie auf Luftaufnahmen Trajektorien von Fahrzeugen rekonstruiert werden können.
 
 \begin{theorem}[Trajektorie]
-    Eine Trajektorie beschreibt die Bewegungsbahn eines Objektes durch den Raum. Definiert ist sie
-    als Sequenz von Positionsinformationen.
+    Eine Trajektorie beschreibt die Bewegungsbahn eines Objektes durch den Raum.
+    In der Regel wird sie als Sequenz von Punkten in einem n-dimensionalen Koordinatensystem dargestellt.
+    Es sind allerdings auch alternative Darstellung unter Verwendung von Richtungsvektoren oder des zusätzlichen
+    Einbezugs von Geschwindigkeitsinformationen et cetera möglich.
 \end{theorem}
 
-Eine solche Rekonstruktion wird zwar im Rahmen dieser Arbeit nicht entwickelt, allerdings ist es wichtig ein Grundverständnis
+Eine Rekonstruktion von Fahrzeugtrajektorien wird zwar im Rahmen dieser Arbeit nicht entwickelt,
+allerdings ist es wichtig ein Grundverständnis
 der benötigten Methoden und Schritte zu besitzen, um die verwendeten Daten und die darin enthaltenen Defekte
 interpretieren zu können.
 Es wird nachfolgend beschrieben, wie bewegte Objekte in Videoaufnahmen erkannt und verfolgt
@@ -21,6 +24,10 @@ werden einige Schwierigkeiten, welche bei der Rekonstruktion der Trajektorien au
 
 Es existieren unterschiedliche Ansätze, welche zur Erkennung und Verfolgung von Objekten in Videoaufnahmen eingesetzt werden können.
 Nachfolgend werden zwei unterschiedliche Vorgehens-Arten vorgestellt.
+
+% TODO: Supervised Tracking in einem Absatz vorstellen
+% Heute State of the Art: Unsupervised Detection + extra Tracking
+% Zwei Abschnitte: Detektion & Tracking
 
 \subsection{Supervised-Tracking}
 
@@ -124,10 +131,10 @@ Erkannt werden die Fahrzeuge mithilfe von Tensorflow\footnote{Tensorflow - \url{
 Das quelloffene Machine-Learning Framework bietet in seiner \textit{Object-Detection-API}
 verschiedene Netzwerk-Architekturen und vortrainierte Modelle an, welche zur Erkennung und Klassifizierung
 von Objekten eingesetzt werden können \cite[]{Huang2018}. Die hierzu angebotenen neuronale Netze sind Weiterentwicklungen
-von \textit{Convolutional Neural Networks} (\acrshort*{cnn}), welche sich gut zur maschinellen Verarbeitung
+von \textit{Convolutional Neural Networks} (\acrshort*{cnn}s), welche sich gut zur maschinellen Verarbeitung
 von Bilddaten eignen.
 
-In Abbildung \ref{fig:grund_structure_cnn} ist der Aufbau eines CNNs mit \textit{Fully-Connected Layer} dargestellt.
+In Abbildung \ref{fig:grund_structure_cnn} ist der Aufbau eines CNN mit \textit{Fully-Connected Layer} dargestellt.
 Ein genaues Verständnis der Funktionsweise eines solchen Netzwerks ist im Fall dieser Arbeit nicht notwendig.
 Grundlegend besteht es allerdings aus zwei Komponenten: Der erste Teil ist für
 das \textit{Feature Learning} verantwortlich, während der zweite Teil der Klassifizierung dient.
@@ -139,12 +146,12 @@ des \textit{Fully-Connected-Layers} bestimmt.
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.95\linewidth]{resources/img/grundlagen/TrajectoryReconstruction/cnn_structure}
-    \caption[Aufbau eines CNNs]{Aufbau eines CNNs \cite[]{PatelShyamal2017}}
+    \caption[Aufbau eines CNN]{Aufbau eines CNN \cite[]{PatelShyamal2017}}
     \label{fig:grund_structure_cnn}
 \end{figure}
 
 Im Fall der Tensorflow Object Detection API werden die Positionen der erkannten Objekte über sogenannte
-\textit{Bounding-Boxes} beschrieben. Deren Lage und Dimension wird über zwei Pixel-Koordinaten beschrieben.
+\textit{Bounding-Boxes} definiert.
 
 \section{Positionsbestimmung in Videoaufnahmen}
 \label{sec:grund_mapMatching}
@@ -262,6 +269,7 @@ In der Anwendung \textit{Vehicle-Tracker} werden auf diese Weise alle Bildschirm
 in Weltkoordinaten umgewandelt.
 
 \section{Herausforderungen bei der Rekonstruktion von Fahrzeugtrajektorien}
+\label{sec:grund_challenges_reconstruction}
 
 Es existieren, unabhängig davon welches Verfahren zur Erkennung und Verfolgung von Fahrzeugen in Videoaufnahmen
 eingesetzt wird, diverse Herausforderungen bei der Rekonstruktion von Trajektorien. Nachfolgend sind

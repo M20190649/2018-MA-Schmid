@@ -379,7 +379,7 @@ von Fahrspuren zu entfernen, werden in einem weiteren Schritt ``unechte'' Spur-G
 
 Spur-Geometrien sind grundsätzlich dann ``unecht'', wenn sie keine real existierende Fahrspur beschreiben.
 Am häufigsten treten unechte Fahrspuren in Form von zu kurzen Geometrien auf, oder in Form von Geometrien,
-welche einen Spurwechsel beschreiben. Diese zwei Arten von Spurgeometrien werden daher identifiziert
+welche einen Spurwechsel beschreiben. Diese zwei Arten von Spur-Geometrien werden daher identifiziert
 und entfernt.
 
 \begin{figure}[H]
@@ -509,7 +509,7 @@ oder zu früh beziehungsweise zu spät partitioniert wird.
 Nachdem auf die oben beschriebene Weise die sich überlagernden Spur-Paare bestimmt wurden, wird anschließend
 entschieden, welche Spur der Paare partitioniert wird und welche erhalten bleibt. Zuerst wird hierzu
 überprüft, ob es sich bei einer der Geometrien um eine primäre Fahrspur handelt. Ist dies der Fall, so
-bleibt diese vollständig. Existiert in einem Paar keine primäre Spur, so werden verschieden Eigenschaften
+bleibt diese erhalten. Existiert in einem Paar keine primäre Spur, so werden verschieden Eigenschaften
 der Fahrspuren untersucht, um eine Entscheidung zu treffen, welche Geometrie zu partitionieren ist.
 Der hierzu verwendete Algorithmus ist vereinfacht in Listing \ref{lst:pseudo_selectMoreCurvy} dargestellt.
 

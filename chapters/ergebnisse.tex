@@ -79,7 +79,7 @@ Mit Ausnahme des unerwünschten Verhaltens im Fall von Trajektorien, welche am H
 beziehungsweise End-Positionen besitzen, funktioniert die Datenvorverarbeitung zuverlässig und wie gewünscht.
 Voraussetzung dafür, dass nach der Datenvorverarbeitung
 noch genug Trajektorien vorliegen welche weiterverarbeitet werden können, ist, dass in
-den Rohdaten genügend intakte, vollständige Bewegungsbahnen vorhanden sind.
+den Rohdaten genügend intakte, ununterbrochene Bewegungsbahnen vorhanden sind.
 
 \section{Evaluierung der Clusteranalyse}
 \label{sec:results_eval_clustering}
@@ -172,7 +172,7 @@ genau entsprechen. Die angewandten Verfahren sind in Abschnitt \ref{cha:lane_def
 
 Wurden im vorherigen Schritt Trajektorie-Cluster für die in einer Aufnahme enthaltenen Spuren identifiziert,
 so können auf Basis dieser meist zuverlässige Spur-Geometrien abgeleitet werden.
-In Abbildung \ref{fig:results_laneGeometries} sind beispielhaft Spurgeometrien aus drei unterschiedlichen Datensätzen dargestellt.
+In Abbildung \ref{fig:results_laneGeometries} sind beispielhaft Spur-Geometrien aus drei unterschiedlichen Datensätzen dargestellt.
 
 % TODO: Update Plot Steinheim
 \begin{figure}[H]
@@ -190,12 +190,12 @@ In Abbildung \ref{fig:results_laneGeometries} sind beispielhaft Spurgeometrien a
     \label{fig:results_laneGeometries}
 \end{figure}
 
-Anhand der abgebildeten Spurgeometrien ist ersichtlich, dass das in Abschnitt \ref{cha:lane_definition}
+Anhand der abgebildeten Spur-Geometrien ist ersichtlich, dass das in Abschnitt \ref{cha:lane_definition}
 beschriebene Verfahren gute Ergebnisse in unterschiedlichen Situationen liefert.
 Plot a) zeigt die Spur-Geometrien, welche im Fall des Datensatzes der Heilbronner-Straße bestimmt werden.
 Für jedes Spurcluster, welches in Abbildung \ref{fig:results_clusters} a) zu sehen ist, wurde eine Geometrie erstellt.
 Es ist zudem zu sehen, dass die Fahrspuren partitioniert wurden, um Überlagerungen zu vermeiden.
-Plot b) veranschaulicht, dass Spurgeometrien auch korrekt bestimmt werden, wenn in einer Aufnahme
+Plot b) veranschaulicht, dass Spur-Geometrien auch korrekt bestimmt werden, wenn in einer Aufnahme
 Fahrbahnerweiterung existieren.
 Anhand von Plot c), welcher die für den Datensatz \textit{Steinheim} extrahierten Spur-Geometrien zeigt, wird
 außerdem deutlich, dass auch die Geometrien kreisförmiger Fahrspuren und Kreisverkehre bestimmt werden können.
