@@ -41,14 +41,14 @@ sind beispielhaft zwei verfolgte Objekte dargestellt. Die Front-Positionen entsp
 
 \begin{figure}[H]
     \centering
-    \subfloat[]{{
+    \subfloat{{
         \includegraphics[align=c, width=0.23\linewidth]{resources/img/umsetzung/U1/CarInBB2}
     }}
-    \qquad \qquad \qquad
-    \subfloat[]{{
+    \qquad \qquad
+    \subfloat{{
         \includegraphics[align=c, width=0.23\linewidth]{resources/img/umsetzung/U1/CarInBB1}
     }}
-    \caption{Erkannte Fahrzeuge und deren Front-Position}
+    \caption{Erkannte Fahrzeuge und deren Front-Positionen}
     \label{fig:real1_tracked_object_front_position}
 \end{figure}
 
@@ -67,7 +67,7 @@ Abbildung \ref{fig:real_trajectory_classDia} zeigt den Aufbau einer Trajektorie 
 
 Die Felder \textit{id} und \textit{objectClass} werden aus dem der Trajektorie zugrundeliegenden \textit{TrackedObject}
 übernommen.
-Die Positionen eines Fahrzeugs werden in Form von 2D-Welt-Koordinaten (siehe Abschnitt \ref{sec:position_extraction})
+Die Positionen eines Fahrzeugs werden in Form von 2D-Welt-Koord-inaten (siehe Abschnitt \ref{sec:position_extraction})
 in \textit{positions} gespeichert und die Anzahl der Koordinaten zusätzlich in \textit{pointLength}.
 Die Sequenz \textit{distToStart} enthält für jeden Punkt der Bewegungsbahn dessen Distanz zum Start der Trajektorie in Metern.
 Die Werte ergeben sich aus Formel \ref{eq_real_distToStart}, wobei $p_n$ dem $n$-ten Punkt in der Trajektorie entspricht
@@ -101,7 +101,7 @@ In Abbildung \ref{fig:real_neckartor} a) ist ein Ausschnitt der entsprechenden A
     \subfloat[]{{
         \includegraphics[align=c, width=0.42\linewidth]{resources/img/umsetzung/U1/Plot_RawTrajectories_Neckartor}
     }}
-    \caption[Stuttgarter Neckartor und rekonstruierte Trajektorien]{Stuttgarter Neckartor a) und rekonstruierte Trajektorien b)}
+    \caption[Stuttgarter Neckartor und rekonstruierte Trajektorien]{Aufnahme Stuttgarter Neckartor a) und rekonstruierte Trajektorien b)}
     \label{fig:real_neckartor}
 \end{figure}
 
@@ -125,7 +125,7 @@ die Fahrzeugverfolgung unterbrochen wird.
     \subfloat[]{{
         \includegraphics[align=c, width=0.37\linewidth]{resources/img/umsetzung/U1/trajectories_defect2}
     }}
-    \caption[Beispiel Defekte in Trajektoriedaten]{Punktwolken vor Lichtsignalanlagen a), Unterbrechungen aufgrund von Überdeckung b)}
+    \caption[Beispiel Defekte in Trajektoriedaten]{Defekte in Trajektorien - Punktwolken vor Lichtsignalanlagen a), Unterbrechungen aufgrund von Fahrbahnverdeckung b)}
     \label{fig:real_defects_trajectories}
 \end{figure}
 
@@ -229,14 +229,14 @@ kleiner Tracking-Fehler wurden entfernt.
     \subfloat[]{{
         \includegraphics[align=c, width=0.33\linewidth]{resources/img/umsetzung/U1/trajectories_resampled_cleared}
     }}
-    \caption{Ergebnisse der zwei ersten Vorverarbeitungsschritte}
+    \caption[Ergebnisse der zwei ersten Vorverarbeitungsschritte]
+            {Ergebnisse der zwei ersten Vorverarbeitungsschritte - Übersicht (keine stehenden Trajektorien) a), Detailansicht (keine Punktwolken) b)}
     \label{fig:real_result_2nd_Prepro}
 \end{figure}
 
 
 \subsubsection{Entfernung unterbrochener Trajektorien}
 \label{sec:real1_remove_broken_trajectories}
-% TODO: Anpassen Abschnitt wenn Algo. weiter verwendet wird
 
 Nachdem durch die ersten beiden Vorverarbeitungsschritte bereits stehende Trajektorien entfernt wurden,
 müssen nun noch unterbrochene Verfolgungen ausgefiltert werden, da diese das Ergebnis der Clusteranalyse
@@ -259,7 +259,7 @@ Abbildung \ref{fig:real_completeTrajectory} veranschaulicht diese Definition.
 \begin{figure}[H]
 \centering
     \includegraphics[width=0.6\linewidth]{resources/img/umsetzung/U1/complete_trajectories_concept}
-\caption{Identifikation von unterbrochenen Trajektorien}
+\caption{Konzept Identifikation von unterbrochenen Trajektorien}
 \label{fig:real_completeTrajectory}
 \end{figure}
 
@@ -341,8 +341,8 @@ $ord_{p \in P}^{\alpha}$ wählt hierfür jene Distanz, welche größer ist als $
 Mit Hilfe dieses Distanzmaßes, wird eine Distanz-Matrix $D$ konstruiert, welche die Distanzen
 aller Trajektorie-Kombinationen speichert.
 
-Da im Spectral-Clustering Verfahren die modifizierte Hausdorff-Distanz nicht direkt eingesetzt werden kann,
-muss ein zusätzliches Affinitätsmaß verwendet werden. % TODO: Why?
+Um die modifizierte Hausdorff Distanz im Spectral-Clustering Verfahren einsetzten zu können, muss ein
+zusätzliches Affinitätsmaß verwendet werden.
 Dieses definieren Atev et al. als:
 
 \begin{ceqn}
@@ -398,11 +398,11 @@ Diese haben sich in unterschiedlichen Versuchen als am besten geeignet erwiesen.
     \subfloat[mit fester Clusteranzahl]{{
         \includegraphics[align=c, width=0.4\linewidth]{resources/img/umsetzung/U1/atev_results/entennest_k6}
     }}
-    \caption{Ergebnisse Clusteranalyse Ansatz Atev et al.}
+    \caption[Ergebnisse Clusteranalyse Ansatz Atev et al.]
+            {Ergebnisse Clusteranalyse Ansatz Atev et al. - fehlerhaftes Clusterergebnis in a), gewünschtes Ergebnis in b)}
     \label{fig:real_results_atev1}
 \end{figure}
 
-% Die ersten Untersuchungen und Tests des Ansatzes zeigten sehr schnell Schwächen und Grenzen des Vorgehens auf.
 Ein erstes Problem des Verfahrens sind die vielen Parameter und Grenzwerte, welche vom Anwender bestimmt werden müssen und
 nicht alle intuitiv verständlich sind.
 Neben den oben aufgeführten Parametern, gibt es noch weitere, welche bei der Bestimmung der Clusteranzahl zum Einsatz kommen.
@@ -475,7 +475,7 @@ Wenn das Zahlmaß, wie oben dargestellt, rekursiv implementiert wird, liegt die 
 bei $O(2^n)$, was für den Vergleich einer größeren Anzahl von Trajektorien nicht geeignet ist. Die Performance
 kann auf $O(m\ n)$ verbessert werden, indem das Maß mit Hilfe von dynamischer Programmierung und \textit{Memoization}
 umgesetzt wird. Der sich so ergebende Algorithmus ist in Listing \ref{lst:pseudo_LCSS} aufgeführt.
-\begin{lstlisting}[caption=Pseudocode LCSS Bestimmung, language=Pseudo, label=lst:pseudo_LCSS] %TODO: evtl entfernen
+\begin{lstlisting}[caption=Pseudocode LCSS Bestimmung, language=Pseudo, label=lst:pseudo_LCSS] 
 algorithm LCSS:
   input:  trajectory: t1, trajectory: t2, epsilon, deltaFac
   output: LCSS distance between t1 and t2
@@ -496,10 +496,10 @@ algorithm LCSS:
   end
 
   return LCS(t1Len)(t2Len)
-\end{lstlisting}
+\end{lstlisting} %TODO: evtl entfernen
 
 Der Parameter $\delta$ wird in dieser Implementierung nicht, wie meist üblich, fest definiert, sondern er ergibt sich als
-ein Teil der Länge der kurzeren Trajektorie (siehe Lst. \ref{lst:pseudo_LCSS} Zeile 7).
+ein Teil der Länge der kurzeren Trajektorie (siehe Listing \ref{lst:pseudo_LCSS} Zeile 7).
 Als Distanzfunktion für das LCSS Zählmaß, wird in dieser Arbeit das von \cite[]{Vlachos2002} definierte
 Maß aus Gleichung \ref{eq_lcss_distance} verwendet:
 
@@ -549,7 +549,8 @@ grundlegend gut.
     \subfloat[Datensatz Neckartor]{{
         \includegraphics[align=c, width=0.4\linewidth]{resources/img/umsetzung/U1/dbscan_lcss/neckartor}
     }}
-    \caption{Ergebnisse Clusteranalyse Ansatz DBSCAN und LCSS-Distanz}
+    \caption[Ergebnisse Clusteranalyse Ansatz DBSCAN und LCSS-Distanz]
+            {Ergebnisse Clusteranalyse Ansatz DBSCAN und LCSS-Distanz - gewünschte Clusterergebnisse in a) und b)}
     \label{fig:real_results_dbscan_lcss}
 \end{figure}
 
@@ -561,7 +562,6 @@ der zwei Abbiegespuren in der oberen linken und unteren rechten Ecke (vergleiche
 Um diese weiterhin erkennen zu können, wurde ein extra Verarbeitungsschritt eingeführt, welcher in Abschnitt
 \ref{sec:real_detect_turning_lane} beschrieben wird.
 
-% TODO: Andere Cluster-Plots in Anhang
 Grundsätzlich überzeugten allerdings die Ergebnisse der Clusteranalyse. Die Qualität des Ansatzes könnte auch
 durch Anwendung auf weitere Datensätze verifiziert werden. Die nachfolgend beschriebenen Schritte der Spurerkennung
 basieren daher auf den Ergebnissen der hier vorgestellten Cluster-Methode.
@@ -584,15 +584,11 @@ dass sich die Fahrzeuge nach dem abbiegen auf drei Fahrstreifen verteilen.
 \begin{figure}[H]
     \centering
     \subfloat[]{{
-        \includegraphics[align=c, width=0.16\linewidth]{resources/img/umsetzung/U1/turning_lane}
+        \includegraphics[align=c, width=0.15\linewidth]{resources/img/umsetzung/U1/turning_lane}
     }}
-    \qquad
+    \qquad \qquad
     \subfloat[]{{
         \includegraphics[align=c, width=0.3\linewidth]{resources/img/umsetzung/U1/turning_lane_trajs}
-    }}
-    \qquad
-    \subfloat[]{{
-        \includegraphics[align=c, width=0.3\linewidth]{resources/img/umsetzung/U1/clusters_with_turning_lanes}
     }}
     \caption[Abbiegespur Neckartor Kreuzung]{Abbiegespur a), zugehörige Trajektorien b), Spurcluster mit Abbiegespuren c)}
     \label{fig:real_turning_lane}
@@ -654,9 +650,16 @@ Referenz-Trajektorien liegt.
 
 Nachdem der Split-Punkt einer Nachbarschaft gefunden wurde, werden alle in ihr beinhalteten Bewegungsbahnen
 an jenem Trajektorie-Punkt geteilt, der dem Split-Punkt am nächsten ist.
-Die so neu erstellten Trajektorien bilden ein neues Cluster. In Abbildung \ref{fig:real_turning_lane} c)
-sind nun alle Spurcluster dargestellt, welche nach diesem Schritt existieren. Die zwei Cluster der Abbiegespuren,
+Die so neu erstellten Trajektorien bilden ein neues Cluster. In Abbildung \ref{fig:real_turning_lane_result}
+sind alle Spurcluster dargestellt, welche nach diesem Schritt existieren. Die zwei Cluster der Abbiegespuren,
 welche in Abbildung \ref{fig:real_results_dbscan_lcss} b) noch fehlten, sind nun auch vorhanden.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.35\linewidth]{resources/img/umsetzung/U1/clusters_with_turning_lanes}
+    \caption{Ergebnis Clusteranalyse inkl. Abbiegespur-Cluster}
+    \label{fig:real_turning_lane_result}
+\end{figure}
 
 Mithilfe der oben vorgestellten Verfahren können Trajektorie-Cluster entdeckt werden, welche
 die einzelnen Fahrspuren in einer Aufnahme beschreiben. Im nächsten Abschnitt wird darauf eingegangen,

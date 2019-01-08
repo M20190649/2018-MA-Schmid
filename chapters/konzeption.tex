@@ -26,8 +26,8 @@ Zusammenhang stehen.
 Die mithilfe von Drohnen erstellten Videoaufnahmen können in der MEC-View \textit{Vehicle-Tracker} Applikation
 verarbeitet und analysiert werden. In einem ersten Schritt \textit{``MapMatching''} wird für eine Aufnahme
 ein Weltkoordinatensystem in Metern definiert. Anschließend werden die Positionen
-der Fahrzeuge bestimmt. Diese ersten zwei Schritte sind in Abschnitt \ref{sec:position_extraction} genauer beschrieben.
-Die Fahrzeuginformationen, insbesondere die Positionsinformationen, dienen anschließend dem \textit{Spurerkennung}-Modul
+der Fahrzeuge bestimmt. Diese ersten zwei Schritte sind in Kapitel \ref{sec:position_extraction} genauer beschrieben.
+Die Fahrzeuginformationen, insbesondere die Positionsinformationen, dienen dem \textit{Spurerkennung}-Modul
 als Eingabe. Aus ihnen extrahierte Spurdaten können anschließend in der Anwendung visualisiert werden oder in Kombination
 mit den Fahrzeuginformationen zur Analyse des Verkehrsflusses eingesetzt werden.
 
@@ -41,8 +41,8 @@ an das Modul Spurerkennung festgehalten.
 \subsection{Funktionale Anforderungen}
 
 \paragraph{Anforderung 1000 (Top-Level)}
-Das \textit{Spurerkennungs}-Modul soll es ermöglichen mithilfe der Anwendung \textit{Vehicle-Tracker},
-automatisch Fahrspuren in Luftaufnahmen zu erkennen.
+Das \textit{Spurerkennungs}-Modul soll es ermöglichen, mithilfe der Anwendung \textit{Vehicle-Tracker},
+automatisch Fahrspuren in Luftaufnahmen anhand von Trajektoriedaten zu erkennen.
 
 \paragraph{Anforderung 2000}
 Das Modul soll die Erkennung von Fahrspuren in den folgenden Straßentopologien unterstützen:
@@ -93,7 +93,7 @@ ist in Abbildung \ref{fig:concept_laneDetection_activity} in Form eines Aktivit�
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\linewidth]{resources/img/konzeption/activity_laneDetection}
-    \caption{Grundstruktur des Spurerkennungs-Algorithmus}
+    \caption{Basis-Ablauf des Spurerkennungs-Algorithmus}
     \label{fig:concept_laneDetection_activity}
 \end{figure}
 

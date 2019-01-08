@@ -8,7 +8,6 @@ Arbeiten, welche sich mit der Analyse von Trajektoriedaten und insbesondere Fahr
 Zu Beginn werden diverse Arbeiten vorgestellt, welche sich mit der Clusteranalyse von Trajektorien befassen.
 Anschließend wird betrachtet, wie in der Literatur die Erkennung von Fahrspuren, vorzugsweise auf Basis
 von Trajektorien, umgesetzt wird.
-% Zudem werden Arbeiten untersucht, welche sich bereits mit der Klassifizierung von Fahrspuren befassen. % TODO: Evtl. entfernen
 Am Ende des Kapitels werden Defizite der existierenden Lösungen festgehalten und analysiert, welche
 spezifischen Neuerungen für die Umsetzung dieser Arbeit nötig sind.
 
@@ -38,7 +37,7 @@ sie zudem in Richtung der Szenen-Grenzen.
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\linewidth]{resources/img/RelatedWork/Fu_HierarchicalClustering}
-    \caption[Zweistufiger Clustering-Vorgang von Hu et al.]{Zweistufiger Clustering-Vorgang von \cite[]{Hu2005}}
+    \caption[Zweistufiger Clustering-Vorgang von Hu et al.]{Zweistufiger Clustering-Vorgang von \cite[]{Hu2005}; Identifikation von dominanten Pfaden und Fahrspuren}
     \label{fig:relw_hu_two_step_cluster}
 \end{figure}
 
@@ -153,7 +152,7 @@ aufeinanderfolgender Flow-Vektoren. Dies ist anschaulich in Abbildung \ref{fig:r
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.45\linewidth]{resources/img/RelatedWork/Chen_trajectory_splitting}
-    \caption[Zerlegung einer Trajektorie in Sub-Trajektorien]{Zerlegung einer Trajektorie in Sub-Trajektorien \cite[]{Chen2011}}
+    \caption[Zerlegung einer Trajektorie in Sub-Trajektorien (Chen et al.)]{Zerlegung einer Trajektorie in Sub-Trajektorien anhand von ``charakteristischen Vektoren'' \cite[]{Chen2011}}
     \label{fig:relw_chen_flow_vector}
 \end{figure}
 
@@ -262,7 +261,7 @@ Ausreißern und Spurwechselvorgängen, stabile Spurmittellinien zu bestimmen. Er
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.95\linewidth]{resources/img/RelatedWork/ren_examples_detection}
-    \caption[Ergebnisse Spurmittellinien-Erkennung (Ren et al.)]{Ergebnisse Spurmittellinien-Erkennung \cite[]{Ren2014}}
+    \caption[Ergebnisse Spurmittellinien-Erkennung (Ren et al.)]{Ergebnisse Spurmittellinien-Erkennung auf unterschiedlichen Straßenabschnitten \cite[]{Ren2014}}
     \label{fig:relw_ren_example_detection}
 \end{figure}
 
@@ -313,7 +312,7 @@ Abbildung \ref{fig:relw_hu_example_envelope} dargestellt.
     \subfloat{{
         \includegraphics[align=c, width=0.49\linewidth]{resources/img/RelatedWork/hu_example_envelope2}
     }}
-    \caption[Spurhüllen in Hu et al.]{Spurhüllen in \cite[]{WeimingHu2006}}
+    \caption[Spurhüllen in Hu et al.]{Trajektorien und ermittelte Spurhüllen in \cite[]{WeimingHu2006}}
     \label{fig:relw_hu_example_envelope}
 \end{figure}
 
@@ -381,7 +380,7 @@ Ziel des Frameworks ist es, die Bewegungsmuster von Objekten mittels eines erler
 sowie Aktivitäten vorhersagen und Anomalien erkennen zu können.
 In einem ersten Schritt werden daher sogenannte \textit{Points of Interests} (POI) identifiziert. Die von Morris
 et al. untersuchten POI's sind die Eintritts-, Austritts- und Stop-Zonen innerhalb einer Szene.
-Nach der deren Bestimmung identifiziert das vorgestellte Framework übliche Bewegungsmuster in den Trajektorien
+Nach deren Bestimmung identifiziert das vorgestellte Framework übliche Bewegungsmuster in den Trajektorien
 und definiert auf deren Basis anschließend Pfade.
 
 Sich häufig wiederholende Bewegungsmuster werden von den Autoren über eine Clusteranalyse ermittelt.
@@ -403,7 +402,7 @@ werden die Werte $u_{ik}$ verwendet. Die so erstellten Referenz-Linien sind in A
     \subfloat[]{{
         \includegraphics[align=c, width=0.35\linewidth]{resources/img/RelatedWork/morris_routes_paths_2}
     }}
-    \caption[Referenz-Trajektorien und Pfade (Morris et al.)]{a) Refernz-Trajektorien, b) Pfade basierend auf HMM's \cite[]{Morris2011}}
+    \caption[Referenz-Trajektorien und Pfade (Morris et al.)]{a) Refernz-Trajektorien, b) Pfade basierend auf HMMs \cite[]{Morris2011}}
     \label{fig:relw_morris_results}
 \end{figure}
 

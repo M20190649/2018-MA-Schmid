@@ -109,7 +109,7 @@ Ein solches Modell ist in Abbildung \ref{fig:grund_pinhole_model} dargestellt.
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.55\linewidth]{resources/img/grundlagen/TrajectoryReconstruction/pinhole_camera_model}
-    \caption[Lochkameramodell]{Lochkameramodell \cite[]{DevTeamOpenCV2018}}
+    \caption[Bildprojektion im Lochkameramodell]{Projektion eines Punktes P auf die Projektionsfläche einer Lochkameramodell \cite[]{DevTeamOpenCV2018}}
     \label{fig:grund_pinhole_model}
 \end{figure}
 
@@ -228,7 +228,7 @@ Fahrzeugen gehören, häufig außerhalb der Fahrbahnen verlaufen und meist sehr 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.45\linewidth]{resources/img/grundlagen/TrajectoryReconstruction/challenges/False-Positives}
-    \caption{False-Positive Detektionen}
+    \caption[False-Positive Detektionen]{False-Positive Detektionen von Fahrzeugen in einer Luftaufnahme}
     \label{fig:grund_false_positive_detections}
 \end{figure}
 
@@ -248,7 +248,7 @@ ist die Verdeckung einer Fahrbahn durch Baumkronen zu sehen.
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.45\linewidth]{resources/img/grundlagen/TrajectoryReconstruction/challenges/Verdeckung}
-    \caption{Fahrbahn Verdeckung}
+    \caption[Fahrbahn Verdeckung]{Verdeckung einer Fahrbahn durch eine Brücke}
     \label{fig:grund_lane_occlusion}
 \end{figure}
 
@@ -342,7 +342,7 @@ Basierend auf vorangegangener Beschreibung und \cite[]{Jain1999}, lässt sich de
 \begin{figure}[H]
     \centering
     \includegraphics[width=\linewidth]{resources/img/grundlagen/clustering_flow}
-    \caption{Ablauf einer Clusteranalyse}
+    \caption[Ablauf einer Clusteranalyse]{Schrittweiser Ablauf einer Clusteranalyse}
     \label{fig:grund_clustering_workflow}
 \end{figure}
 
@@ -556,7 +556,7 @@ Die Kreuze entsprechen hierbei den Centroids, welche sich über die Iterationen 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.9\linewidth]{resources/img/grundlagen/k-means}
-    \caption[Funktionsweise k-Means Clusteralgorithmus]{Funktionsweise k-Means Clusteralgorithmus \cite[]{tan2007introduction}}
+    \caption[Funktionsweise k-Means Clusteralgorithmus]{Funktionsweise k-Means Clusteralgorithmus über mehrere Iterationen \cite[]{tan2007introduction}}
     \label{fig:grund_kmeans_clustering}
 \end{figure}
 
@@ -742,10 +742,10 @@ Die Menge der zu vergleichenden Trajektorien ist $T = \{t_1, t_2, ..., t_m\}$.
 Abbildung \ref{fig:grund_trajectories} zeigt eine Auswahl möglicher Trajektorien.
 
 \begin{figure}[H]
-\centering
-\includegraphics[width=0.6\linewidth]{resources/img/grundlagen/trajectories}
-\caption{Trajektorien im zwei-dimensionalen Raum}
-\label{fig:grund_trajectories}
+    \centering
+    \includegraphics[width=0.6\linewidth]{resources/img/grundlagen/trajectories}
+    \caption{Trajektorien im zwei-dimensionalen Raum}
+    \label{fig:grund_trajectories}
 \end{figure}
 
 \subsection{HU-Distanz}
@@ -839,7 +839,6 @@ Hierbei gilt $t_1' = \{ t_1(0),\ ...,\ t_1(n-1)\}$. Die Parameter $\epsilon$ und
 Vergleichs-Verhalten des Algorithmus. Über $\epsilon$ wird definiert, wieweit zwei Punkte maximal voneinander entfernt liegen
 können, um immer noch als ``übereinstimmend'' zu gelten. $\delta$ bestimmt hingegen, wieweit man in beide zeitliche Richtungen
 sucht, um einen übereinstimmenden Punkt zu finden.
-% Abbildung XXX veranschaulicht die Bedeutung von $\epsilon$ und $\delta$. TODO: Evtl. Bild noch einfügen
 Da die obige LCSS Funktion nur ein diskretes Zählmaß definiert, ist das eigentliche LCSS-Distanz üblicherweise
 gegeben als \cite[]{Vlachos2002}:
 
@@ -850,7 +849,6 @@ gegeben als \cite[]{Vlachos2002}:
 \end{align}
 \end{ceqn}
 
-% TODO: Bild (LCSS Parametererläuterung) hinzufügen und referenzieren (Vlachos et al.)
 
 Vorteile der LCSS Ähnlichkeitdefinition sind, dass sie mit kompletten Trajektorien arbeitet und robust
 gegenüber Ausreißern ist, da nicht für alle Punkte Übereinstimmungen in den Trajektorien gefunden werden müssen.

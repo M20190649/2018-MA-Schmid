@@ -67,7 +67,7 @@ er allerdings zuverlässig.
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\linewidth]{resources/img/umsetzung/U2/Clusters_Post_Postprocessing}
-    \caption{Trajektorie-Cluster ohne Spurwechselvorgänge}
+    \caption{Bereinigte Trajektorie-Cluster ohne Spurwechselvorgänge}
     \label{fig:real2_clusters_post_postpro}
 \end{figure}
 
@@ -108,7 +108,7 @@ alle an der selben relativen Position befinden. Vorteil der Verwendung der relat
 dass Punkte auf Trajektorien mit einer Position $p_r$ auch dann auf der selben Höhe liegen,
 wenn die Bahnen aufgrund von Oszillationen um die Spurmitte unterschiedliche Längen haben.
 Der verwendete Algorithmus ist nachfolgend beschrieben.
-\begin{lstlisting}[caption=Pseudocode Cluster Post-Processing, language=Pseudo, label=lst:pseudo_post_processing]
+\begin{lstlisting}[caption=Pseudocode Mittellinien-Bestimmung, language=Pseudo, label=lst:pseudo_centerline_definition]
 algorithm calculateCenterline:
   input:  trajectories of cluster: trajsIn
   output: centerline of lane
@@ -207,7 +207,7 @@ Das Ergebnis der Spur-Angleichung ist in Abbildung \ref{fig:real2_lane_alignment
     \subfloat[]{{
         \includegraphics[align=c, width=0.25\linewidth]{resources/img/umsetzung/U2/alignedCenterLines}
     }}
-    \caption[Ergebnis Spurenden-Angleichung]{Mittellinien ohne Angleichung a) und mit Angleichung b)}
+    \caption[Ergebnis Spurenden-Angleichung]{Mittellinien ohne Angleichung a) und Ergebnis mit Angleichung b)}
     \label{fig:real2_lane_alignment}
 \end{figure}
 
@@ -240,7 +240,8 @@ $1/2\ d$.
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.75\linewidth]{resources/img/umsetzung/U2/concept_lane_envelope}
-    \caption{Konzept Bestimmung Spürhüllen}
+    \caption[Konzept Bestimmung Spürhüllen]
+            {Konzept Bestimmung Spürhüllen - Ermittlung von Spurbreiten anhand Abstandes paralleler Spuren}
     \label{fig:real2_envelope_definition_concept}
 \end{figure}
 
@@ -324,13 +325,13 @@ von 3.5 Metern verwendet, welcher sich ebenfalls aus den RAA und RAL Richtlinien
 
 Nachdem auf die oben beschriebene Weise Breiten für alle Fahrspuren bestimmt wurden, können die Hüll-Linien
 berechnet werden. Hierzu werden für jeden Punkt der Mittellinie zwei zugehörige Hüll-Punkte berechnet.
-Das hierzu verwendete Vorgehen ist in Abbildung \ref{fig:real2_envelope_definition_concept} dargestellt.
+Das verwendete Vorgehen ist in Abbildung \ref{fig:real2_envelope_point_calculation_concept} dargestellt.
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\linewidth]{resources/img/umsetzung/U2/calc_env_point}
-    \caption{Berechnung der Spur-Hüllpunkte}
-    \label{fig:real2_envelope_definition_concept}
+    \caption{Konzept Berechnung Spur-Hüllpunkte}
+    \label{fig:real2_envelope_point_calculation_concept}
 \end{figure}
 
 Um die Hüll-Punkte für einen Punkt $B$ einer Mittellinie zu bestimmen, wird eine Gerade $g$ durch die
@@ -367,7 +368,8 @@ sie umgebenden Hüllen. Teil b) zeigt die in die Anwendung \textit{Vehicle-Track
     \subfloat[]{{
         \includegraphics[align=c, width=0.5\linewidth]{resources/img/umsetzung/U2/result_laneEst_Screenshot}
     }}
-    \caption[Ergebnisse Spur-Geometrie-Bestimmung]{Plot Spur-Geometrien a), Ergebnis Spur-Geometrien in Vehicle-Tracker Applikation b)}
+    \caption[Ergebnisse Spur-Geometrie-Bestimmung]
+            {Plot Spur-Geometrien a), Ergebnis Visualisierung Spur-Geometrien in \textit{Vehicle-Tracker} Applikation b)}
     \label{fig:real2_results_geometry_definition}
 \end{figure}
 
@@ -380,7 +382,7 @@ von Fahrspuren zu entfernen, werden in einem weiteren Schritt ``unechte'' Spur-G
 Spur-Geometrien sind grundsätzlich dann ``unecht'', wenn sie keine real existierende Fahrspur beschreiben.
 Am häufigsten treten unechte Fahrspuren in Form von zu kurzen Geometrien auf, oder in Form von Geometrien,
 welche einen Spurwechsel beschreiben. Diese zwei Arten von Spur-Geometrien werden daher identifiziert
-und entfernt.
+und entfernt. Beispiele für solche Geometrien sind in Abbildung \ref{fig:real2_unreal_geometries} dargestellt.
 
 \begin{figure}[H]
     \centering
@@ -392,7 +394,7 @@ und entfernt.
         \includegraphics[align=c, width=0.37\linewidth]{resources/img/umsetzung/U2/LaneChangeLanes}
     }}
     \caption{Beispiele ``unechter'' Spur-Geometrien}
-    \label{fig:real2_results_geometry_definition}
+    \label{fig:real2_unreal_geometries}
 \end{figure}
 
 Zu kurz ist eine Spur-Geometrie dann, wenn sie einen Streckenabschnitt beschreibt, welcher
@@ -410,7 +412,7 @@ $A$ beginnen und auf einer Spur $B$ enden, wobei die Spuren $A$ und $B$ parallel
 Es kann zudem davon ausgegangen werden, dass sich weniger Fahrzeuge auf einer Spurwechsel-Spur bewegen,
 als auf den zwei eigentlichen Fahrspuren.
 Auf Basis dieser Eigenschaften, ergibt sich der nachfolgende Algorithmus.
-\begin{lstlisting}[caption=Pseudocode Identifikation Spurwechsel-Spur, language=Pseudo, label=lst:pseudo_selectMoreCurvy]
+\begin{lstlisting}[caption=Pseudocode Identifikation Spurwechsel-Spur, language=Pseudo, label=lst:pseudo_isLaneChangeLane]
 algorithm isLaneChangeLane:
   input:  lane-geo: l1, sequence of other lane-geos: otherGeos
   output: True or False
@@ -485,7 +487,8 @@ wird wieder die JTS Topology Suite eingesetzt.
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\linewidth]{resources/img/umsetzung/U2/lane_crossing}
-    \caption{Überlagerung zweier Spur-Abschnitte}
+    \caption[Überlagerung zweier Spur-Abschnitte]
+            {Überlagerung zweier Spur-Abschnitte (roter Bereich) zwischen den Punkten $b_1$ und $b_2$}
     \label{fig:real2_lane_crossing}
 \end{figure}
 
@@ -572,7 +575,8 @@ Abbildung \ref{fig:real2_results_partitioning} zeigt das Ergebnis der Spur-Parti
     \subfloat[]{{
         \includegraphics[align=c, width=0.45\linewidth]{resources/img/umsetzung/U2/result_lanePartitioned_Screenshot}
     }}
-    \caption[Ergebnisse Spur-Partitionierung]{Plot partitionierte Spur-Geometrien a), Ergebnis in der Anwendung Vehicle-Tracker b)}
+    \caption[Ergebnisse Spur-Partitionierung]
+            {Plot partitionierte Spur-Geometrien a), Visualisierung Ergebnis in der Anwendung \textit{Vehicle-Tracker} b)}
     \label{fig:real2_results_partitioning}
 \end{figure}
 
@@ -597,7 +601,8 @@ aus der starken Überlagerung der vier Spur-Geometrien zu Beginn, was eine falsc
 \begin{figure}[H]
     \centering
     \fbox{\includegraphics[align=c, width=0.7\linewidth]{resources/img/umsetzung/U2/laneOpt_partitioned_pre}}
-    \caption{Beispiel zu schmale Spur-Geometrien}
+    \caption[Beispiel zu schmale Spur-Geometrien]
+            {Beispiel zu schmale Spur-Geometrien - Parallele rote und schwarze Spur-Geometrien grenzen nicht aneinander an}
     \label{fig:real2_pre_opt}
 \end{figure}
 
@@ -631,7 +636,8 @@ ist nachfolgend dargestellt.
 \begin{figure}[H]
     \centering
     \fbox{\includegraphics[align=c, width=0.7\linewidth]{resources/img/umsetzung/U2/laneOpt_optimized}}
-    \caption{Ergebnis Spur-Optimierung}
+    \caption[Ergebnis Spur-Optimierung]
+            {Ergebnis Spur-Optimierung - rote und schwarze Spuren grenzen aneinander an}
     \label{fig:real2_post_opt}
 \end{figure}
 
@@ -679,7 +685,7 @@ Definition der Spur verwendet werden, und für die gekrümmten Spuren deutlich m
 \begin{figure}[H]
     \centering
     \includegraphics[align=c, width=0.6\linewidth]{resources/img/umsetzung/U2/LaneCreator_Example}
-    \caption{Angelegte Fahrspuren in der Anwendung Vehicle-Tracker}
+    \caption{Angelegte Fahrspuren in der \textit{Vehicle-Tracker} Anwendung}
     \label{fig:real2_lanes_trackerApplication}
 \end{figure}
 
