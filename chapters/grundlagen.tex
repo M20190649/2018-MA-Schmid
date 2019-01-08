@@ -3,19 +3,20 @@
 \chapter{Rekonstruktion von Fahrzeugtrajektorien aus Luftaufnahmen}
 \label{sec:position_extraction}
 
-In diesem Kapitel wird erläutert, wie auf Luftaufnahmen Trajektorien von Fahrzeugen rekonstruiert werden können.
+In diesem Kapitel wird erläutert, wie aus Luftaufnahmen Trajektorien von Fahrzeugen rekonstruiert werden können.
 
 \begin{theorem}[Trajektorie]
     Eine Trajektorie beschreibt die Bewegungsbahn eines Objektes durch den Raum.
     In der Regel wird sie als Sequenz von Punkten in einem n-dimensionalen Koordinatensystem dargestellt.
-    Es sind allerdings auch alternative Darstellung unter Verwendung von Richtungsvektoren oder des zusätzlichen
-    Einbezugs von Geschwindigkeitsinformationen et cetera möglich.
+    Alternative Darstellungen unter Verwendung von Richtungsvektoren oder des zusätzlichen
+    Einbezugs von Geschwindigkeitsinformationen et cetera sind ebenso möglich.
 \end{theorem}
 
-Eine Rekonstruktion von Fahrzeugtrajektorien wird zwar im Rahmen dieser Arbeit nicht entwickelt,
-allerdings ist es wichtig ein Grundverständnis
-der benötigten Methoden und Schritte zu besitzen, um die verwendeten Daten und die darin enthaltenen Defekte
-interpretieren zu können.
+Trajektorien sind grundsätzlich die wichtigste Informationsquelle zur Analyse des Fahrverhaltens aus Luftbeobachtungen.
+Eine Rekonstruktion von Fahrzeugtrajektorien wird zwar im Rahmen dieser Arbeit nicht umgesetzt,
+allerdings ist es wichtig ein Grundverständnis der benötigten Methoden und Schritte zu besitzen,
+um die Trajektoriedaten und die darin enthaltenen Defekte interpretieren zu können.
+
 Es wird nachfolgend beschrieben, wie bewegte Objekte in Videoaufnahmen erkannt und verfolgt
 werden können, um anschließend deren Positionen in einem Weltkoordinatensystem zu bestimmen. Am Ende des Kapitels
 werden einige Schwierigkeiten, welche bei der Rekonstruktion der Trajektorien auftreten können, aufgezeigt.
@@ -23,110 +24,22 @@ werden einige Schwierigkeiten, welche bei der Rekonstruktion der Trajektorien au
 \section{Erkennung und Verfolgung von Objekten in Videoaufnahmen}
 
 Es existieren unterschiedliche Ansätze, welche zur Erkennung und Verfolgung von Objekten in Videoaufnahmen eingesetzt werden können.
-Nachfolgend werden zwei unterschiedliche Vorgehens-Arten vorgestellt.
 
-% TODO: Supervised Tracking in einem Absatz vorstellen
-% Heute State of the Art: Unsupervised Detection + extra Tracking
-% Zwei Abschnitte: Detektion & Tracking
+Ein Verfahren, welches gute Ergebnisse liefern kann aber mit einem nicht unerheblichen manuellen Aufwand verbunden ist,
+ist das \textit{Supervised-Tracking}. Hierbei werden initial manuell ausgewählte Bildbereiche, sogenannte
+\textit{Region of Interests} (\acrshort*{roi}), automatisch mithilfe eines erlernten Klassifikators verfolgt.
+Dieser Klassifikator muss beispielsweise zwischen Fahrzeugen und ihrer Umgebung unterscheiden können \cite[]{Grabner}.
+Der Supervised-Tracking Ansatz entspricht, aufgrund der notwendigen manuellen Detektion von Objekten, nichtmehr
+dem aktuellen Stand der Technik.
 
-\subsection{Supervised-Tracking}
+Modernere Verfahren detektieren Objekte in Videoaufnahmen voll-automatisch und nutzen einen separaten Tracking
+Schritt um anhand der Einzel-Detektionen Trajektorien zu erstellen. Ein solcher Ansatz wird auch in der Anwendung
+\textit{Vehicle-Tracker} eingesetzt. Er wird nachfolgend in groben Zügen beschrieben.
 
-\begin{theorem}[Supervised-Tracking]
-    Bei Verfahren aus der Kategorie \textit{Supervised-Tracking} wird ein initial manuell ausgewählter Bildbereich,
-    die sogenannte \textit{Region of Interest} (\acrshort*{roi}),
-    automatisch mit Hilfe eines erlernten Klassifikators verfolgt. Der Klassifikator muss beispielsweise zwischen
-    Fahrzeugen und der Umgebung unterscheiden.
-\end{theorem}
+\subsection{Objekt-Detektion}
 
-Der hier beispielhaft vorgestellte Supervised-Tracking Ansatz beruht auf der Arbeit von \cite[]{Grabner}.
-Sein grundlegendes Vorgehen ist in Abbildung \ref{fig:grund_tracking} dargestellt und kann wie folgt
-beschrieben werden:
-
-\begin{itemize}
-    \item[a)] Ein zu verfolgendes Objekt befindet sich zum Zeitpunkt $t$ an bekannter Position $p_1$
-    \item[b)] Zum Zeitpunkt $t+1$: Anwendung des Klassifikators auf Positionen um $p_1$
-    \item[c)] Erstellen einer \textit{Confidence Map}, welche die Wahrscheinlichkeit darstellt,
-                das verfolgte Objekt gefunden zu haben
-    \item[d)] Updaten des Trackers auf Position des Maxima der \textit{Confidence Map}
-\end{itemize}
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.7\linewidth]{resources/img/grundlagen/TrajectoryReconstruction/tracking}
-    \caption[Übersicht Tracking mit Klassifikator]{Übersicht Tracking mit Klassifikator \cite[]{Grabner}}
-    \label{fig:grund_tracking}
-\end{figure}
-
-Zum Erlernen eines stabilen Klassifikators, wird in \cite[]{Grabner} ein On-line AdaBoost Algorithmus eingesetzt,
-welcher mehrere \textit{schwache} Klassifikatoren zu einem \textit{starken} Klassifikator kombiniert.
-Schwache Klassifikatoren müssen nur eine Erkennungsrate von mehr als 50\% besitzen und somit
-wenig besser als zufallsbedingtes Auswählen sein.
-Starke Klassifikatoren entstehen durch die Kombination von mehreren schwachen Klassifikatoren.
-Die Auswahl von schwachen Klassifikatoren erfolgt über sogenante Selektoren, welche aus einer Menge
-immer jenen wählen, welcher die geringste Fehlerrate bei der Erkennung
-der Trainings-Objekte besitzt. Der Klassifikator mit der schlechtesten Erkennungsrate wird in jeder
-Iteration ersetzt, um das Training zu verbessern.
-Großer Vorteil der On-line AdaBoost Methode ist, dass sie es ermöglicht, starke Klassifikatoren während des
-eigentlichen Trackingvorganges zu erlernen.
-Nach jedem Trackingschritt wird die Menge der schwachen Klassifikatoren und Selektoren aktualisiert. Die Wahl
-von effizient berechenbaren schwachen Klassifikatoren macht dies möglich.
-Die in \cite[]{Grabner} verwendeten Klassifikatoren sind binär, das heißt,
-sie teilen Objekte in die zwei Klassen \textit{erkannt} und \textit{nicht erkannt} auf.
-Konkret werden Haar-ähnliche Bildmerkmale nach \cite[]{Viola} als schwache Klassifikatoren verwendet.
-Diese sind ein Mittel zur Identifikation von Kontrastunterschieden in Bildern, welche sich sehr gut
-zur Erkennung von Kanten und Linien eigenen. Ein Beispiel der Haar-ähnlichen Merkmale und ihres Einsatzes
-bei der Gesichtserkennung ist in Abbildung \ref{fig:grund_hair_like} dargestellt.
-
-Die Haar-ähnlichen Merkmale werden als schwache Klassifikatoren mit zufälliger Skalierung, Größe und Position
-auf einem Bild platziert. Anschließend wird geprüft, ob die vom Muster definierten Kontrastunterschiede
-an der entsprechenden Bildposition existieren.
-
-\begin{figure}[H]
-    \centering
-    \subfloat[]{{
-        \includegraphics[width=0.4\linewidth]{resources/img/grundlagen/TrajectoryReconstruction/hair_like_features}
-    }}
-    \qquad
-    \subfloat[]{{
-        \includegraphics[width=0.35\linewidth]{resources/img/grundlagen/TrajectoryReconstruction/hair_like_features_2}
-    }}
-    \caption[Haar-ähnliche Bildmerkmale]{Haar-ähnliche Merkmale a), Beispiele für erkannte Regionen in einem Gesicht b) \cite[]{DivyanshDwivedi2018}}
-    \label{fig:grund_hair_like}
-\end{figure}
-
-Haar-ähnliche Bildmerkmale eignen sich auch gut zur Erkennung von Fahrzeugen in Bildern, da auch diese anhand klarer
-Kanten identifiziert werden können.
-Gelingt die Verfolgung eines Objektes in einer Videoaufnahme, so existiert nach dem Tracking idealerweise
-für jedes Video-Frame, in welchem das Objekt zu sehen ist, eine Position in Pixel-Koordinaten.
-Der große Nachteil des Supervised-Trackings ist, das die Positionen verfolgter Objekte initial
-manuell definiert werden müssen. Wenn eine Aufnahme viele zu verfolgende Objekte beinhaltet, dann ist
-diese initiale Positionsbestimmung sehr aufwendig.
-
-In nachfolgendem Abschnitt wird daher eine weitere Klasse von Tracking-Verfahren beschrieben,
-welche die Positionen von Objekten voll-automatisch in Aufnahmen ermitteln können.
-
-\subsection{Unsupervised-Tracking}
-\label{sec:unsupervised_tracking}
-
-\begin{theorem}[Unsupervised-Tracking]
-    Bei einem Ansatz aus der Kategorie Unsuper-vised-Tracking muss für die Identifikation und Verfolgung
-    von Objekten keine initiale ROI manuell definiert werden. Die Erkennung und Verfolgung der Objekte funktioniert
-    komplett automatisch.
-\end{theorem}
-
-Es existieren verschieden Verfahren, welche in die Kategorie des Unsupervised-Tracking fallen. In
-der \textit{Vehicle-Tracker} Anwendung, auf welcher diese Arbeit aufbaut, wird ein solcher Ansatz zur
-Rekonstruktion der Fahrzeugtrajektorien eingesetzt. Dieser wird nachfolgend in groben Zügen beschrieben.
-
-Im Fall des in der Anwendung \textit{Vehicle-Tracker} angewandten Unsupervised-Tracking Ansatzes, werden die
-Positionen der Fahrzeuge in jedem Video-Frame, unabhängig von den vorherigen Positionen, neu bestimmt.
-Die einzelnen Positionsinformationen müssen anschließend eindeutig bestimmten Fahrzeugen zugeordnet werden, um so
-zusammenhängende Trajektorien zu erhalten.
-Hierzu wird versucht, alle Fahrzeugpositionen, welche im Video-Frame $t$ ermittelt wurden, jenen Bewegungsbahnen
-zuzuordnen, welchen sie mit der größten Wahrscheinlichkeit angehören und welche anhand der Positionen aus den
-vorherigen Video-Frames erstellt wurden. Kann eine Position keiner Trajektorie zugeordnet werden,
-so wird eine neue initialisiert.
-
+In der Phase \textit{Objekt-Detektion} werden die Positionen der gesuchten Objekte in der Videoaufnahme ermittelt.
+Im Fall der Anwendung \textit{Vehicle-Tracker} werden die Positionen der Fahrzeuge in jedem Video-Frame neu bestimmt.
 Erkannt werden die Fahrzeuge mithilfe von Tensorflow\footnote{Tensorflow - \url{https://www.tensorflow.org/}}.
 Das quelloffene Machine-Learning Framework bietet in seiner \textit{Object-Detection-API}
 verschiedene Netzwerk-Architekturen und vortrainierte Modelle an, welche zur Erkennung und Klassifizierung
@@ -137,11 +50,13 @@ von Bilddaten eignen.
 In Abbildung \ref{fig:grund_structure_cnn} ist der Aufbau eines CNN mit \textit{Fully-Connected Layer} dargestellt.
 Ein genaues Verständnis der Funktionsweise eines solchen Netzwerks ist im Fall dieser Arbeit nicht notwendig.
 Grundlegend besteht es allerdings aus zwei Komponenten: Der erste Teil ist für
-das \textit{Feature Learning} verantwortlich, während der zweite Teil der Klassifizierung dient.
-In der Phase des \textit{Feature Learnings} extrahiert das Netzwerk aus einem Bild Merkmale, mittels
-welcher die zu erkennenden Objekte beschrieben werden können. Anhand der extrahierten Merkmale werden die Positionen
-der gesuchten Objekte ermittelt. Um welches Objekt es sich an einer bestimmten Position handelt, wird anschließend anhand
-des \textit{Fully-Connected-Layers} bestimmt.
+die \textit{Merkmalsextraktion} verantwortlich, während der zweite Teil der \textit{Klassifizierung} dient.
+In der ersten Phase extrahiert das Netzwerk aus einem Bild Merkmale, mittels
+welcher die zu erkennenden Objekte beschrieben werden können. Nach welchen Merkmalen in einem Bild gesucht wird,
+wird während der Trainingsphase des Netzes ermittelt.
+Anhand der Merkmale werden die Positionen der gesuchten Objekte im Bild ermittelt.
+Um welches Objekt es sich an einer bestimmten Position handelt, wird anschließend anhand
+des \textit{Fully-Connected-Layer} bestimmt. \cite[]{Cornelisse2018}
 
 \begin{figure}[H]
     \centering
@@ -151,7 +66,32 @@ des \textit{Fully-Connected-Layers} bestimmt.
 \end{figure}
 
 Im Fall der Tensorflow Object Detection API werden die Positionen der erkannten Objekte über sogenannte
-\textit{Bounding-Boxes} definiert.
+\textit{Bounding-Boxes} definiert. Die Lage und Größe dieser rechteckigen Detektionen im Bild wird über
+zwei Pixel-Koordinaten angegeben.
+
+
+\subsection{Objekt-Verfolgung}
+
+Nachdem in jedem Video-Frame einer Aufnahme die Positionen der gesuchten Objekte, beispielsweise der
+Fahrzeugen, ermittelt wurden, müssen aus diesen anschließend Trajektorien erstellt werden.
+Hierzu müssen alle Detektion, welche von einem Objekt stammen, einer Bewegungsbahn zugeordnet werden.
+Da sich die einzelnen Detektionen, welche für jedes Video-Frame erstellt wurden, nicht eindeutig bestimmten Objekten
+zurordnen lassen, ist dies nicht trivial.
+
+Ein Algorithmus zur Rekonstruktion der Trajektorien aus den Einzel-Detektionen muss die Objekte im Video
+verfolgen. Um dies zu erreichen kann beispielsweise, wie in der Anwendung \textit{Vehicle-Tracker},
+ein Partikel-Filter basierter Tracking-Ansatz angewandt werden.
+Ein Partikel-Filter, auch bekannt als \textit{sequenzielle Monte-Carlo-Methode}, dient der Schätzung
+des Zustandes eines dynamischen Systems basierend auf vorherigen Messwerten.
+Bei der Objektverfolgung kann mithilfe eines Partikel-Filters ermittelt werden, an welcher Stelle sich
+ein Objekt im Video-Frame $t$, basierend auf dessen vorherigen Positionen, vorraussichtlich befindet \cite[]{Apeltauer2015}.
+Um eine Vorhersage für Frame $t$ einer Objekt-Detektion aus Frame $t$ zuzuweisen, und so Trajektorien aus diesen zu erstellen,
+kann der \textit{Ungarische Algorithmus} von Harold W. Kuhn eingesetzt werden, welcher eine optimale
+Zuweisung berechnet \cite[]{Szottka2011}. Kann eine Vorhersage keiner Detektion zugeordnet werden,
+so wird eine neue Trajektorie initialisiert.
+
+Mithilfe dieses Verfahrens lassen sich Fahrzeugtrajektorien Frame-für-Frame anhand vorher ermittelter
+Detektionen rekonstruieren. Die Trajektorien beschreiben die Bewegungen der Fahrzeuge in Pixel-Koordinaten.
 
 \section{Positionsbestimmung in Videoaufnahmen}
 \label{sec:grund_mapMatching}
@@ -278,8 +218,7 @@ Herausforderungen und Auswirkungen beschrieben, welche häufig auftreten.
 \subsubsection*{False-Positive und False-Negative Detektionen}
 Unter \textit{False-Positive Detektionen} versteht man in diesem Fall die Erkennung und Verfolgung
 von Objekten in einem Video, welche kein Fahrzeug sind.
-Dieses Problem tritt häufig dann auf, wenn ein Unsupervised-Tracking Ansatz, wie in Abschnitt \ref{sec:unsupervised_tracking}
-beschrieben, verwendet wird und das eingesetzte neuronale Netz noch nicht ausreichend trainiert wurde.
+Dieses Problem tritt häufig dann auf, wenn das für die Objekt-Detektion eingesetzte neuronale Netz nicht ausreichend trainiert wurde.
 Fälschlicherweise detektierte Objekte können beispielsweise Fußgänger, Fahrradfahrer oder auch Gebäudeausschnitte sein.
 In Abbildung \ref{fig:grund_false_positive_detections} sind False-Positive Detektionen von Fußgängern
 und einem Schild auf einem Grünstreifen zu sehen.
@@ -313,10 +252,10 @@ ist die Verdeckung einer Fahrbahn durch Baumkronen zu sehen.
     \label{fig:grund_lane_occlusion}
 \end{figure}
 
-Fahrbahn-Verdeckungen haben üblicherweise zur Folge, dass die Bewegungsbahnen von Fahrzeugen in den
-Trajektoriedatensätzen unterbrochen sind. Dies kann lediglich verhindert werden, wenn neben der reinen
-Detektion der Fahrzeuge auch Verfahren eingesetzt werden, welche deren Position schätzen, wenn sie kurzzeitig
-nicht in der Aufnahme zu sehen sind.
+Fahrbahn-Verdeckungen haben häufig zur Folge, dass die Bewegungsbahnen von Fahrzeugen in den
+Trajektoriedatensätzen unterbrochen sind.
+Durch den Einsatz von Verfahren, welche die Position eines Fahrzeugs schätzen, beispielsweise
+Kalman- oder Partikel-Filter, können Unterbrechungen in Trajektorien zum Teil verhindert werden.
 
 \subsubsection*{Niedrige Aufnahmewinkel}
 
