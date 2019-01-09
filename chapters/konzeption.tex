@@ -5,7 +5,7 @@
 
 In diesem Kapitel wird das zu entwickelnde Teilmodul \textit{``Spurerkennung''}
 der Anwendung \textit{Vehicle-Tracker} konzipiert. Hierzu wird zuerst dessen Rolle und Position im Gesamtkontext
-der Anwendung betrachtet. Anschließend werden die Anforderungen und der Entwurf des Moduls vorgestellt.
+der Anwendung betrachtet. Anschließend werden die Anforderungen und ein grober Entwurf des Moduls vorgestellt.
 
 \section{Überblick über das Gesamtsystem}
 
@@ -24,7 +24,7 @@ Zusammenhang stehen.
 \end{figure}
 
 Die mithilfe von Drohnen erstellten Videoaufnahmen können in der MEC-View \textit{Vehicle-Tracker} Applikation
-verarbeitet und analysiert werden. In einem ersten Schritt \textit{``MapMatching''} wird für eine Aufnahme
+verarbeitet und analysiert werden. In einem ersten Schritt namens \textit{``MapMatching''} wird für eine Aufnahme
 ein Weltkoordinatensystem in Metern definiert. Anschließend werden die Positionen
 der Fahrzeuge bestimmt. Diese ersten zwei Schritte sind in Kapitel \ref{sec:position_extraction} genauer beschrieben.
 Die Fahrzeuginformationen, insbesondere die Positionsinformationen, dienen dem \textit{Spurerkennung}-Modul
@@ -86,9 +86,9 @@ dennoch maximal wenige Minuten dauern.
 In diesem Abschnitt wird, basierend auf den Erkenntnissen der Literaturrecherche und den Anforderungen,
 ein grober Entwurf des \textit{Spurerkennung}-Moduls vorgestellt.
 
-Das Modul definiert primär einen Algorithmus, welcher aus Fahrzeuginformationen wie der Position
-oder Geschwindigkeit von Fahrzeugen, Fahrspuren ableitet. Die Grundfunktionsweise dieses Algorithmus
-ist in Abbildung \ref{fig:concept_laneDetection_activity} in Form eines Aktivitätsdiagrams dargestellt.
+Das Modul enthält einen Algorithmus, welcher aus Fahrzeugtrajektorien Fahrspuren ableitet.
+Die Grundfunktionsweise dieses Algorithmus ist in Abbildung \ref{fig:concept_laneDetection_activity}
+in Form eines Aktivitätsdiagrams dargestellt.
 
 \begin{figure}[H]
     \centering
