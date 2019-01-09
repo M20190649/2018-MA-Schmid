@@ -283,7 +283,7 @@ können. Ein Spurerkennungs-Algorithmus muss daher auch mit ihnen umgehen könne
 \label{sec:tra_clustering}
 
 Die Clusteranalyse (kurz Clustering) ist ein wichtiges Werkzeug zur Auswertung von Daten unterschiedlichster
-Art. Sie stellt dabei kein konkretes Vorgehen oder einen Algorithmus dar, sondern beschreibt ein
+Art. Sie stellt kein konkretes Vorgehen oder einen Algorithmus dar, sondern beschreibt ein
 allgemeines Problem, welches auf unterschiedlichste Weise gelöst werden kann. Eine Definition ist nachfolgend
 gegeben:
 
@@ -296,11 +296,11 @@ gegeben:
 
 Je höher die \textit{Homogenität} in einem Cluster
 und die \textit{Differenz} zwischen den Clustern, desto besser ist die gewählte Clustering Methode.
-Der Einsatz einer Clusteranalyse ist in vielen Anwendungsgebieten und in den unterschiedlichsten wissenschaftlichen
-Disziplinen sehr beliebt, um ein Verständnis für Daten zu erhalten, beziehungsweise diese, nach einer Gruppierung,
-sinnvoll weiter verarbeiten zu können.
+Der Einsatz einer Clusteranalyse ist in vielen Anwendungsgebieten und in unterschiedlichen wissenschaftlichen
+Disziplinen sehr beliebt, um ein Verständnis von Daten zu erhalten oder Muster in solchen zu identifizieren.
 So kommt die Clusteranalyse unter anderem in den Feldern des maschinellen Lernens, der Mustererkennung, Bildanalyse,
 der Biologie (Taxonomie) oder im Bereich Data Mining zum Einsatz. \cite[]{tan2007introduction}
+% TODO: Anwendungsfälle anpassen
 
 Die Clusteranalyse hat viel mit dem Problem der Klassifizierung von Daten gemein, insofern sie Datenobjekten
 Label zuordnet. Im Gegensatz zu \textit{überwachten} Klassifizierungsansätzen, wie dem heute populären überwachten
@@ -317,7 +317,7 @@ besitzen. Neben der Wahl eines passenden Cluster-Algorithmus ist auch die Auswah
     sich zwei Objekte sind.
 \end{theorem}
 
-Das Clustering ist kein selbsttätiger Prozess, welcher sich in
+Clustering ist kein selbsttätiger Prozess, welcher sich in
 einheitlicher Weise auf unterschiedliche Probleme anwenden lässt. Jedes Problem erfordert die individuelle und sorgfältige
 Auswahl eines passenden Algorithmus, eines Distanzmaßes und der richtigen Parameter. Die Bestimmung dieser geschieht
 iterativ und nicht selten nach dem Prinzip des \textit{Trial and Error}. In Abbildung \ref{fig:grund_clustering_example}
@@ -337,8 +337,8 @@ mit den zu verarbeitenden Daten beschäftigen. Er muss ein Verständnis dafür b
 haben, beziehungsweise annehmen können, und nach welchen Mustern zu suchen ist.
 Besonders wichtiger ist zudem auch die Auswahl der richtigen, also relevanten, Datenmerkmale (\textit{``Feature Selection''})
 und die Wahl deren Repräsentation (\textit{``Feature Transformation''}).
-Die Selektion und gegebenenfalls Transformation der Daten muss in einem
-Vorverarbeitungsschritt geschehen, dessen Qualität einen maßgeblichen Einfluss auf das finale Clustering-Ergebnis hat.
+Nach der Selektion und Transformation der Daten müssen diese in einem Vorverarbeitungsschritt von eventuell auftretenden
+und unerwünschten Effekten befreit werden. Dieser Schritt hat einen maßgeblichen Einfluss auf die Qualität des finalen Clustering-Ergebnisses.
 Basierend auf vorangegangener Beschreibung und \cite[]{Jain1999}, lässt sich der grundlegende Ablauf einer Clusteranalyse wie folgt darstellen: \\
 
 \begin{figure}[H]
@@ -360,21 +360,21 @@ Basierend auf vorangegangener Beschreibung und \cite[]{Jain1999}, lässt sich de
 
 Cluster-Sets, das heißt die Gesamtheit aller durch eine Analyse gefundenen Cluster, und einzelnen Cluster selbst,
 können in verschiedene Kategorien unterteilt werden, beziehungsweise unterschiedliche Eigenschaften besitzen.
-Nachfolgend sind die wichtigsten basierend auf \cite[]{tan2007introduction} und \cite[]{Jain1999,Jain2010} aufgeführt.
+Nachfolgend sind die wichtigsten basierend auf \cite[]{tan2007introduction}, \cite[]{Jain1999} und \cite[]{Jain2010} aufgeführt.
 
 \subsection{Eigenschaften von Cluster-Sets}
 
-Bei Cluster-Sets kann grundsätzlich zwischen nachfolgenden Eigenschaften unterschieden werden.
+Bei Cluster-Sets kann grundsätzlich zwischen folgenden Kategorien unterschieden werden.
 
 \paragraph{Hierarchisch vs. Partitioniert}
-Von \textit{hierarchischen} Cluster-Sets wird gesprochen, wenn die einzelnen Cluster verschachtelt sind und dabei eine
-Baum-Struktur bilden. Cluster sind hingegen \textit{partitioniert}, wenn keine Überlagerungen zwischen ihnen existiert.
+Von \textit{hierarchischen} Cluster-Sets wird gesprochen, wenn die einzelnen Cluster verschachtelt sind und dadurch eine
+Baum-Struktur bilden. Cluster sind hingegen \textit{partitioniert}, wenn keine Überlagerungen zwischen ihnen existieren.
 
 \paragraph{Exklusiv vs. Überlappend vs. Fuzzy}
 \textit{Exklusive} Cluster-Sets liegen vor, wenn jedem Datenwert ein oder kein Zielcluster zugeordnet wird.
 Im Gegensatz hierzu können bei \textit{überlappenden} Cluster-Sets Objekte einer oder mehrerer Gruppen angehören.
-Bei dem sogenannten \textit{Fuzzy} oder \textit{Soft} Cluster-Sets, gehört ein Datenobjekt einem Cluster
-mit einer bestimmten Wahrscheinlichkeit oder Gewicht an. Algorithmen, welche Daten eine
+Bei sogenannten \textit{Fuzzy} oder \textit{Soft} Cluster-Sets, gehört ein Datenobjekt einem Cluster
+mit einer bestimmten Wahrscheinlichkeit oder Gewichtung an. Algorithmen, welche Daten eine
 Wahrscheinlichkeit für die Zugehörigkeit zu einem Cluster zuweisen, werden \textit{probabilistische}
 Cluster-Algorithmen genannt.
 
@@ -391,33 +391,33 @@ Da, wie oben erwähnt, nicht klar definiert ist, was ein Cluster ausmacht, könn
 besitzen. Die wichtigsten Cluster-Arten sind nachfolgend erläutert.
 
 \paragraph{Klar separierte Cluster}
-Unter \textit{klar separiereten} Clustern versteht man solche, in welchen jedes Datenelement einen geringeren
-Abstand zu allen anderen Elementen des Clusters hat, als zu Elementen außerhalb des Clusters.
+In einem \textit{klar separiereten} Cluster besitzt jedes Datenobjekt einen geringeren Abstand zu allen anderen
+Objekten der Gruppe, also zu Elementen außerhalb des Clusters.
 Dargestellt ist dies in Abbildung \ref{fig:basic_cluster_style} a). Diese idealistische Definition eines
 Clusters ist nur dann erfüllt, wenn die in den Daten enthaltenen Cluster einen großen Abstand voneinander haben.
-Dies ist in der Realität allerdings selten der Fall.
+In der Realität ist dies selten der Fall.
 
-\paragraph{Prototyp basierte Cluster}
-Von einem \textit{Prototyp basierten} Cluster wird gesprochen, wenn alle Elemente einer Gruppe einen
+\paragraph{Prototyp-basierte Cluster}
+Von einem \textit{Prototyp-basierten} Cluster wird gesprochen, wenn alle Elemente einer Gruppe einen
 geringeren Abstand zu einem Prototyp oder Referenzwert des Clusters besitzen, als zu denen anderer Gruppierungen (siehe Abb. \ref{fig:basic_cluster_style} b)).
 Ein solcher Prototyp ist üblicherweise der Mittelwert der Datenelemente eines Clusters (\textit{Centroid}).
 
-\paragraph{Graphen basierte Cluster}
-Die Definition eines \textit{Graphen basierten} Clusters kann immer dann verwendet werden, wenn Daten
+\paragraph{Graphen-basierte Cluster}
+Die Definition eines \textit{Graphen-basierten} Clusters kann immer dann verwendet werden, wenn Daten
 als vernetzter Graph dargestellt werden. In einem solchen sind die Elemente Knoten und die Kanten
 repräsentieren Beziehungen zwischen ihnen. Ein Cluster in einem solchen Graphen ist definiert als Menge von
 Knoten, welche untereinander verbunden sind, jedoch keine Verbindungen zu Elementen außerhalb des Clusters haben.
 Dargestellt ist dies in Abbildung \ref{fig:basic_cluster_style} c).
 
-\paragraph{Dichte basierte Cluster}
-\textit{Dichte basierte} Cluster sind definiert als Regionen mit einer hohen Dichte an Objekten, welche von
-Regionen umgeben sind, welche eine geringe Objektdichte besitzen (siehe Abb. \ref{fig:basic_cluster_style} d)). Elemente, welche in einer solchen Region
-mit geringen Dichte liegen, werden als Ausreißer interpretiert. Dichte Bereiche werden üblicherweise
-gefunden, indem die Nachbarschaften von Elementen untersucht werden.
+\paragraph{Dichte-basierte Cluster}
+\textit{Dichte-basierte} Cluster sind definiert als Regionen mit einer hohen Dichte an Objekten, welche von
+Regionen umgeben sind, welche eine geringe Objektdichte besitzen (siehe Abb. \ref{fig:basic_cluster_style} d)).
+Elemente, welche in einer solchen Region mit geringer Dichte liegen, werden als Ausreißer interpretiert.
+Bereiche mit hoher Objektdichte werden üblicherweise gefunden, indem die Nachbarschaften von Elementen untersucht werden.
 
 \paragraph{Konzeptionelle Cluster}
 Eine sehr allgemeine Definition eines Clusters ist die der \textit{konzeptionellen} Gruppen. Hiermit ist
-gemeint, dass die Elemente eines Clusters einige gemeinsame Eigenschaften besitzen. Dies schließt die oben genannten
+gemeint, dass die Elemente eines Clusters eine gemeinsame Eigenschaft besitzen. Dies schließt alle oben genannten
 Cluster-Arten mit ein, lässt sich allerdings beliebig erweitern. So sind beispielsweise in Abbildung \ref{fig:basic_cluster_style} e)
 konzeptionelle Cluster dargestellt, die die Form zweier Kreise und eines Rechtecks haben. Um solche Muster
 erkennen zu können, benötigt ein Algorithmus ein spezielles ``Verständnis'' eines Clusters.
@@ -454,9 +454,9 @@ erkennen zu können, benötigt ein Algorithmus ein spezielles ``Verständnis'' e
 
 Um mit den oben beschriebenen unterschiedlichen Cluster-Sets und Cluster Definitionen umgehen zu können,
 existieren verschiedene Clustering-Modelle.
-Einige wichtige Clustering-Ansätze sind die Vernetzungs-Modelle, Centroid-basierte-Modelle, Verteilungs-Modelle
-oder Dichte-Modelle. Für jedes dieser Modelle existieren unterschiedliche Algorithmen. Im Folgenden werden
-diese Modelle und jeweils exemplarisch ein Algorithmus, der diese vertritt, vorgestellt.
+Einige wichtige Clustering-Ansätze sind Vernetzungs-Modelle, Centroid-basierte-Modelle, Distributions-Modelle
+oder Dichte-Modelle. Für jede Kategorie existieren unterschiedliche Algorithmen. Im Folgenden werden
+diese Modelle und jeweils exemplarisch ein Algorithmus, vorgestellt.
 
 \subsection{Vernetzungs-Modelle}
 \label{sec:grund_vernetzungs_clustering}
@@ -464,26 +464,23 @@ diese Modelle und jeweils exemplarisch ein Algorithmus, der diese vertritt, vorg
 Vernetzungs-Modelle werden auch häufig \textit{hierarchische Cluster-Modelle} genannt. Sie beruhen auf
 der Annahme, dass Elemente, welche nahe beieinander liegen, eine höhere Gemeinsamkeit besitzen als solche,
 welche weiter voneinander entfernt sind. Zur Bestimmung der Nähe zwischen Elementen benötigen Vernetzungs-Modelle,
-wie auch andere Cluster-Modelle, eine
-Definition von Distanz. Diese legt ein sogenanntes \textit{Distanzmaß} fest. Zusätzlich ist ein \textit{Link-Kriterium} notwendig,
+wie auch andere Cluster-Modelle, eine Definition von Distanz. Diese wird über ein \textit{Distanzmaß} festgelegt.
+Zusätzlich ist ein \textit{Link-Kriterium} notwendig,
 welches bestimmt, wie genau die Entfernung zwischen zwei Clustern ermittelt wird. Übliche Link-Kriterien
 sind \textit{Minimum-Linkage}, welches die minimale Distanz zwischen den Objekten der Cluster als Distanz verwendet,
 oder \textit{Maximum-Linkage} beziehungsweise \textit{Average-Linkage}. \cite[]{Jain1999, GeorgeSeif2018}
 
-% TODO: Evtl Bild Linkage einfügen
-
 Grundsätzlich teilen sich hierarchische Cluster-Algorithmen in zwei Gruppen auf:
 \textit{Agglomerative} (Bottom-Up) und \textit{Divisive} (Top-Down) Algorithmen.
-Agglomerative Ansätze weisen zu Beginn des Cluster-Vorgangs jedem Datenelement eine eigene Gruppe zu und vereinigen
-diese anschließend.
+Agglomerative Ansätze weisen zu Beginn des Clustervorgangs jedem Datenelement eine eigene Gruppe zu
+und vereinen diese anschließend.
 Bei divisiven Ansätzen werden hingegen zu Beginn alle Elemente in einem Cluster zusammengefasst und
 diese in den nachfolgenden Schritten geteilt.
 
 Als Beispiel wird anschließend der \textit{agglomerative-hierarchische Cluster-Algorithmus} genauer vorgestellt.
-Sein Vorgehen lässt sich sehr gut anhand sogenannter Dendrogramme oder geschachtelter Cluster-Diagramme darstellen
+Seine Arbeitsweise lässt sich sehr gut anhand sogenannter Dendrogramme oder geschachtelter Cluster-Diagramme darstellen
 (siehe Abbildung \ref{fig:grund_agglo_clustering}).
 
-% TODO: Bild selbst erstellen
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.7\linewidth]{resources/img/grundlagen/agglo_clustering}
@@ -495,7 +492,7 @@ Im ersten Schritt des Algorithmus werden alle Datenpunkte als separate Cluster m
 repräsentieren die Blätter des Dendrogramms.
 Anschließend muss ein Distanzmaß und ein Link-Kriterium gewählt werden.
 Das am häufigsten verwendete Distanzmaß ist sicherlich der euklidsche Abstand, welcher die Distanz zwischen zwei Punkten
-oder Vektoren im $n$-dimensionalen Raum bestimmt. Er ist definiert durch die Formel \ref{eq_dist}.
+oder Vektoren im $n$-dimensionalen Raum bestimmt. Er ist definiert durch Formel \ref{eq_dist}.
 
 \begin{ceqn}
 \begin{align}
@@ -525,21 +522,21 @@ vorraus festlegen, was problematisch ist, da diese meist nicht bekannt ist. Umga
 indem ein Link-Kriterium gewählt wird, das ab einer bestimmten Distanz zwischen den Clustern diese nichtmehr
 fusioniert \cite[]{GeorgeSeif2018}.
 
-Die Zeitkomplexität des agglomerativen Clusterings beträgt bestenfalls $O(n^2log\ n)$, weshalb die Menge der Daten,
+Die Zeitkomplexität des agglomerativen Clusterings beträgt bestenfalls $O(n^2log\ n)$ weshalb die Menge der Daten,
 welche mit ihm verarbeitet werden können erheblich begrenzt ist \cite[]{tan2007introduction}.
 
 \subsection{Prototyp-Modelle}
 \label{sec:grund_prototype_clustering}
 
-Centroid basierte Cluster-Modelle betrachten im Gegensatz zu hierarchischen Modellen nicht die Distanz
+Centroid-basierte Cluster-Modelle betrachten im Gegensatz zu hierarchischen Modellen nicht die Distanz
 zwischen Clustern, sondern die Entfernung von Objekten zu Referenzpunkten, sogenannten \textit{Prototypen}.
 Die am häufigsten verwendeten Prototypen sind \textit{Centroids}, welche den Mittelpunkt eines Clusters dargestellen.
-\textit{Medoids}, welche auch häufig genutz werden, repräsentieren hingegen den Median eines Clusters.
+\textit{Medoids}, welche teilweise auch genutz werden, repräsentieren hingegen den Median eines Clusters.
 
 Ein Beispiel für einen Centroid-Cluster-Algorithmus ist \textit{k-Means}. Dieser ist aufgrund seines Alters,
 seiner Einfachheit und der vielen Weiterentwicklungen wohl der bekannteste Cluster-Algorithmus überhaupt.
 
-Das Ziel von k-Mean ist es, für eine n-dimensionale Punktmenge $X = \{ x_1 ... x_n \}$ ein Cluster-Set $C = \{ c_1 ... c_k \}$
+Das Ziel von k-Means ist es, für eine n-dimensionale Punktmenge $X = \{ x_1 ... x_n \}$ ein Cluster-Set $C = \{ c_1 ... c_k \}$
 zu finden, welches die Summe der quadratischen Abweichung (Gleichung \ref{eq_kmeans1}) zwischen allein Punkten in einem Cluster und deren
 Mittelwert $\mu_k$ (Centroids) minimiert.
 
@@ -553,7 +550,8 @@ Mittelwert $\mu_k$ (Centroids) minimiert.
 Eine Lösung für dieses Problem zu finden, ist NP-Schwer. Aus diesem Grund
 ist k-Means ein approximativer Ansatz, welcher nicht garantieren kann, ein globales Minimum zu finden.
 Die Funktionsweise des Algorithmus ist in Abbildung \ref{fig:grund_kmeans_clustering} dargestellt.
-Die Kreuze entsprechen hierbei den Centroids, welche sich über die Iterationen hinweg verschieben.
+Die Kreuze entsprechen hierbei den Centroids, welche sich in jeder Iterationen in Richtung der
+Clustermittelpunkte verschieben.
 
 \begin{figure}[H]
     \centering
@@ -574,7 +572,7 @@ Anschließend wird für alle Punkte $x_i$ der nächstgelegene Centroid $\mu_j$ g
 \end{ceqn}
 
 $x_i$ wird daraufhin Mitglied in Cluster $C_j$. Als Distanzmaß ($dist$) kann hier wieder der euklidsche Abstand
-(Gleichung \ref{eq_dist}) verwendet werden oder aber auch beliebige andere sinnvolle Metriken.
+(Gleichung \ref{eq_dist}) verwendet werden oder aber auch beliebige andere sinnvolle Maße.
 Nachdem alle Punkte $x_i$ einem Cluster zugewiesen wurden, werden die Centroid Positionen neu bestimmt.
 Hierzu wird der Durchschnitt aller Punkte eines Clusters berechnet:
 
@@ -610,7 +608,7 @@ auch Korrelationen zwischen einzelnen Attributen aufzeigen können. \cite[]{Ande
 
 Nachfolgend wird der bekannteste Vertreter der Distributions-Cluster-Algorithmen vorgestellt:
 das \textit{Expectation–maximization} (\acrshort*{em}) Verfahren unter Verwendung sogenannter \textit{Gaussian-Mixture-Models} (\acrshort*{gmm}).
-Die Funktionsweise des EM-Algorithmus hat grundsätzlich viel gemein mit der des k-Mean Ansatzes.
+Die Funktionsweise des EM-Algorithmus hat grundsätzlich viel gemein mit der des k-Mean Algorithmus.
 Es wird ebenfalls mit einer festen Anzahl zufällig initialisierter Modelle gestartet, welche anschließend über mehrere Iterationen
 an die Daten angepasst werden. Im Gegensatz zu k-Means, sind die gewählten Modelle hingegen Gauß-Verteilungen,
 welche zwei Parameter besitzen: ihren Mittelwert und die Standardabweichung.
@@ -653,14 +651,14 @@ Ein Element wird jenem Cluster zugeordnet, für welches es die höchste Wahrsche
 \subsection{Dichte-Modelle}
 \label{sec:grund_density_clustering}
 
-Dichte basierte Cluster sind, wie oben beschrieben, definiert als Regionen hoher Objektdichte, welche
+Dichte-basierte Cluster sind, wie oben beschrieben, definiert als Regionen hoher Objektdichte, welche
 von Bereichen geringer Dichte umgeben sind. Dichte-Clustering-Modelle suchen nach eben solchen Regionen.
-Ein großer Vorteil der Algorithmen dieser Klasse ist, dass sie Cluster beliebiger Formen finden können,
+Großer Vorteil der Algorithmen dieser Klasse ist, dass sie Cluster beliebiger Formen identifizieren können,
 nicht auf die Vorgabe einer Clusteranzahl angewiesen sind und mit Ausreißern umgehen können.
 
 Als Vertreter der Dichte-basierten Ansätze wird nachfolgend der \textit{\acrshort*{dbscan}} Algorithmus
 (\textit{Density-Based Spatial Clustering of Applications with Noise}), wie in \cite[]{Gao2012} beschrieben, vorgestellt.
-Er verwendet als Maß für die Dichte einer Region die sogenannte \textit{$\epsilon$ -Nachbarschaft} (\textit{Eps}).
+Er verwendet als Maß für die Dichte einer Region die sogenannte \textit{$\epsilon$ -Nachbarschaft} $N_{\epsilon}$.
 Diese selektiert für ein Objekt $p$ alle Objekte, welche innerhalb des Radius $\epsilon$ um dieses liegen:
 
 \begin{ceqn}
@@ -672,10 +670,10 @@ Diese selektiert für ein Objekt $p$ alle Objekte, welche innerhalb des Radius $
 
 Eine $\epsilon$ -Nachbarschaft besitzt eine hohe Dichte, wenn in ihr mindestens $MinPts$ Objekte liegen.
 
-Basierend auf der Definition von \textit{Eps}, werden die in einem Datensatz vorhandenen Elemente in
+Basierend auf der Definition von $N_{\epsilon}$ werden die in einem Datensatz vorhandenen Elemente in
 drei Klassen unterteilt. Sie sind entweder \textit{Kern-}, \textit{Rand-} oder \textit{Ausreißer-} Objekte.
-Ein Kernobjekt hat mindestens $MinPts$ andere Punkte in \textit{Eps}.
-Randobjekte besitzen weniger als $MinPts$ in \textit{Eps}, liegen aber in der Nachbarschaft eines Kernobjektes.
+Ein Kernobjekt hat mindestens $MinPts$ andere Punkte in $N_{\epsilon}$.
+Randobjekte besitzen weniger als $MinPts$ in $N_{\epsilon}$, liegen aber in der Nachbarschaft eines Kernobjektes.
 Ausreißerobjekte sind weder Kern- noch Randobjekte.
 
 \begin{figure}[H]
@@ -689,14 +687,15 @@ Ausreißerobjekte sind weder Kern- noch Randobjekte.
     \subfloat[]{{
         \includegraphics[align=c, width=0.3\linewidth]{resources/img/grundlagen/clustering_dbscan/dbscan3}
     }}
-    \caption[Schritte des DBSCAN Algorithmus]{Schritte des DBSCAN Algorithmus, a) Rohdaten, b) Klassifizierung in Kern- (grün), Rand- (blau) und Ausreißer- (rot) Punkte, c) Cluster Ergebnis \cite[]{Gao2012}}
+    \caption[Schritte des DBSCAN Algorithmus]
+            {Schritte des DBSCAN Algorithmus, a) Rohdaten, b) Klassifizierung in Kern- (grün), Rand- (blau) und Ausreißer- (rot) Punkte, c) Clustering Ergebnis \cite[]{Gao2012}}
     \label{fig:grund_dbscan_clustering}
 \end{figure}
 
-Auf Basis der drei Objektklassen, lässt sich das Prinzip der dichte-basierten \textit{Erreichbarkeit} definieren.
-Ein Objekt $q$ ist von $p$ \textit{direkt} erreichbar, wenn $p$ ein Kernobjekt ist und $q$ in dessen \textit{Eps} liegt.
+Auf Basis der drei Objektklassen lässt sich das Prinzip der Dichte-basierten \textit{Erreichbarkeit} definieren.
+Ein Objekt $q$ ist von $p$ \textit{direkt} erreichbar, wenn $p$ ein Kernobjekt ist und $q$ in dessen $N_{\epsilon}$ liegt.
 In Abbildung \ref{fig:grund_dbscan_reachability} gilt dies beispielsweise für $p$ und $p_2$.
-Zwei Elemente sind \textit{indirekt} erreichbar, wenn sie über eine Reihe von Zwischenschritten (direkte Relationen)
+Zwei Elemente sind \textit{indirekt} erreichbar, wenn sie über eine Reihe von Zwischenschritten indirekt
 verbunden sind (transitiv). Dies ist in Abbildung \ref{fig:grund_dbscan_reachability} für $q$ und $p$ der Fall.
 
 \begin{figure}[H]
@@ -706,19 +705,19 @@ verbunden sind (transitiv). Dies ist in Abbildung \ref{fig:grund_dbscan_reachabi
     \label{fig:grund_dbscan_reachability}
 \end{figure}
 
-Der DBSCAN Algorithmus lässt sich, basierend auf den obigen Definitionen, informell wie folgt beschreiben:
+Der DBSCAN Algorithmus kann, basierend auf den obigen Definitionen, wie folgt beschrieben werden:
 
 \begin{description}
     \item[1)] Unterteilung der Objekte in die drei Objektklassen. (Abb. \ref{fig:grund_dbscan_clustering} b))
     \item[2)] Aussortierung der Ausreißer-Objekte.
     \item[3)] Wahl eines nicht zugewiesenen Kernobjektes.
-    \item[4)] Erstellung eines neuen Clusters für das Kernobjekt und alle von ihm ausgehend direkt oder indirekt erreichbaren Objekte.
+    \item[4)] Erstellung eines neuen Clusters für das Kernobjekt und alle von ihm ausgehend direkt und indirekt erreichbaren Objekte.
     \item[5)] Wiederholdung der Schritte 3) und 4), bis alle Kern- und Randobjekte einem Cluster zugewiesen sind. (Abb. \ref{fig:grund_dbscan_clustering} c))
 \end{description}
 
-DBSCAN besitzt die oben beschriebenen Vorteile Dichte-basierter Cluster-Algorithmen. Dank einer Zeitkomplexität
-von $O(n\ log\ n)$ kann er außerdem auch auf große Datensätze angewendet werden.
-Nachteil des Ansatzes ist hingegen, dass er schlecht mit Clustern umgehen kann, welche unterschiedliche Dichten besitzen.
+DBSCAN besitzt die oben erwähnten Vorteile Dichte-basierter Cluster-Algorithmen. Dank einer Zeitkomplexität
+von $O(n\ log\ n)$ kann er außerdem auch auf größere Datensätze angewendet werden.
+Nachteil des Ansatzes ist, dass er schlecht mit Clustern umgehen kann, welche unterschiedliche Dichten besitzen.
 
 \section{Distanzmaße zum Vergleich von Fahrzeugtrajektorien}
 \label{sec:distance_measures}
@@ -727,21 +726,20 @@ Bei der Clusteranalyse ist neben der Wahl des passenden Cluster-Algorithmus insb
 die Entscheidung, welches Distanzmaß verwendet wird, ausschlaggebend.
 Im obigen Abschnitt wurden bereits die euklidsche Distanz (Gleichung \ref{eq_dist}) als ein mögliches Distanzmaß
 definiert. Dieses kann jedoch nur zur Bestimmung der Distanz zwischen $n$-dimensionalen Punkten im euklidschen Raum verwendet
-werden. Dies gilt ebenso für andere einfache Maße wie die Manhatten-Distanz oder die Pearson-Distanz.
+werden. Dasselbe gilt für andere einfache Maße wie die Manhatten-Distanz oder die Pearson-Distanz.
 
 Um Fahrzeugtrajektorien korrekt gruppieren zu können, ist ein Distanzmaß notwendig, welches je nach Anforderungen
 die unterschiedlichen Aspekte der Trajektorien vergleicht. Häufig werden die Eigenschaften Lage, Form und Länge
 hierzu herangezogen. In der Literatur werden diverse Maße zum Vergleich von Trajektorien vorgestellt. Diese besitzen
 alle unterschiedliche Eigenschaften, Vor- und Nachteile.
 
-% TODO: Unterschied Metric und Maß
-
 Nachfolgend werden exemplarisch drei Distanzmaße vorgestellt, anhand welcher ersichtlich ist, welche Abwägungen
 bei der Wahl des Maßes gemacht werden müssen.
-In allen drei Fällen werden die Trajektorien als Reihen 2-dimensionaler Punkte mit Länge $n$ interpretiert: $t_i = \{(x_1, y_1), (x_2, y_2), ..., (x_n, y_n)\}$.
+In allen drei Fällen werden die Trajektorien als Reihen zwei-dimensionaler Punkte mit Länge $n$ interpretiert:
+$t_i = \{(x_1, y_1), (x_2, y_2), ..., (x_n, y_n)\}$.
 Der $n$-te Punkt einer Trajektorie ist gegeben über $t_i(n)$ und deren Punkt-Länge über $len(t_i)$.
 Die Menge der zu vergleichenden Trajektorien ist $T = \{t_1, t_2, ..., t_m\}$.
-Abbildung \ref{fig:grund_trajectories} zeigt eine Auswahl möglicher Trajektorien.
+Abbildung \ref{fig:grund_trajectories} zeigt eine Auswahl von Trajektorien mit unterschiedlichen Bewegungsmustern.
 
 \begin{figure}[H]
     \centering
@@ -754,7 +752,7 @@ Abbildung \ref{fig:grund_trajectories} zeigt eine Auswahl möglicher Trajektorie
 \label{sec:hu_distance}
 
 Die HU-Distanz wurde erstmals in der Arbeit \textit{``Similarity based vehicle trajectory clustering and anomaly detection''}
-von \cite[]{Hu2005} verwendet. Es ist ein sehr einfaches Distanzmaß, welches auf der mittleren euklidschen Distanz
+von \cite[]{Hu2005} vorgestellt. Es ist ein sehr einfaches Distanzmaß, welches auf der mittleren euklidschen Distanz
 zwischen zwei Trajektorien basiert. Berechnet wird die HU-Distanz für zwei Trajektorien $t_1$ und $t_2$ wie folgt:
 
 \begin{ceqn}
@@ -773,14 +771,15 @@ Kriterien erfüllen. So sollten Trajektorien, welche einem Cluster angehören, a
 damit deren mittlerer Abstand nicht, aufgrund einer Verschiebung, erhöht wird.
 Außerdem ist es notwendig, die Abstände zwischen den Punkten der Trajektorien auf die selbe Länge zu bringen,
 damit beim paarweisen Vergleich immer Elemente verglichen werden, welche gleichweit vom Start der Spuren entfernt sind.
+
 Diese Eigenschaften der Trajektorien müssen über einen Vorverarbeitungsschritt geschaffen werden.
 Problematisch bei der Verwendung der HU-Distanz ist außerdem, dass beim Vergleich zweier Trajektorien immer nur
 die ersten $N$ Punkte (s. Gleichung \ref{eq_hu_distance2}) betrachtet werden. Die kann dazu führen, dass zwei
 Trajektorien, welche zu Beginn fast identisch sind und später auseinanderlaufen, trotzdem einen hohen Ähnlichkeitswert besitzen
-(siehe $t_5$ und $t_6$ in Abbildung \ref{fig:grund_trajectories}).
+(vergleiche $t_5$ und $t_6$ in Abbildung \ref{fig:grund_trajectories}).
 
-Die HU-Distanz kann aufgrund der genannten Einschränken nur in speziellen Fällen oder unter Verwendung eines
-Vorverarbeitungsschrittes angewandt werden. Sie liefert ansonsten schlechte Clustering Ergebnisse.
+Die HU-Distanz kann aufgrund der genannten Einschränken nur in speziellen Fällen oder nach starker Vorverarbeitung
+der Trajektorien angewandt werden. Sie liefert ansonsten schlechte Clustering Ergebnisse.
 
 \subsection{Hausdorff-Distanz}
 \label{sec:hausdorff_distance}
@@ -799,7 +798,7 @@ Trajektorien definiert über die Gleichungen \cite[]{Atev2010}:
 \end{ceqn}
 
 $h(t_1, t_2)$ wird als gerichtete Hausdorff-Distanz \textit{von} $t_1$ \textit{nach} $t_2$ bezeichnet.
-Sie findet die maximale Distanz einer Trajektorie zum nächsten Punkt der anderen Trajektorie \cite[]{Huttenlocher}.
+Sie findet die maximale Distanz einer Trajektorie zum nächsten Punkt einer anderen Trajektorie \cite[]{Huttenlocher}.
 Da $h$ gerichtet ist, gilt $h(t_1, t_2) \neq h(t_2, t_1)$. Aus diesem Grund wird die Hausdorff-Distanz
 \textit{zwischen} zwei Trajektorien mittels $D_{HD}$ bestimmt. $dist$ kann ein beliebiges Maß für die Distanz zweier
 Punkte sein, wie beispielsweise die euklidsche Distanz.
@@ -808,10 +807,10 @@ wenn jeder Punkt einer Trajektorie einen nahegelegenen Punkt in der Vergleichsba
 
 Vorteil der Hausdorff-Distanz im Vergleich zur HU-Distanz ist, dass diese immer vollständige Trajektorien vergleicht
 und nicht nur Teile. Außerdem ist bei ihrer Verwendung keine Vorverarbeitung in Form von Resampling et cetera notwendig.
-Problematisch ist das Distanzmaß hingegen, da es mit ungeordneten Sets arbeitet und somit im Fall von Trajektorien, deren
+Problematisch ist das Distanzmaß hingegen, da es mit ungeordneten Sets arbeitet und somit im Fall von Trajektorien deren
 Orientierung nicht beachtet. Zwei parallel aber in entgegengesetzte Richtungen laufende Trajektorien, wie beispielsweise
-die Trajektorien $t2$ und $t3$ in Abbildung \ref{fig:grund_trajectories}, würden nach Hausdorff daher eine hohe Ähnlichkeit besitzen.
-Zudem kann das Distanzmaß schlecht mit Ausreißern umgehen, da bereits ein einzelner dieser Punkte, bei ansonsten identischen
+die Trajektorien $t2$ und $t3$ in Abbildung \ref{fig:grund_trajectories}, würden nach Hausdorff eine hohe Ähnlichkeit besitzen.
+Zudem kann das Distanzmaß schlecht mit Ausreißern umgehen, da bereits ein einzelner Ausreißer, bei ansonsten identischen
 Trajektorien, zu einer beliebig kleinen Ähnlichkeit führen kann.
 Von Nachteil ist auch, dass die Zeitkomplexität der Hausdorff-Distanz bei $O(n\ m)$ liegt.
 
@@ -819,9 +818,9 @@ Von Nachteil ist auch, dass die Zeitkomplexität der Hausdorff-Distanz bei $O(n\
 \label{sec:lcss_distance}
 
 Das \textit{Longest-Common-Subsequence} (\acrshort*{lcss}) Distanzmaß basiert auf dem allgemeinen Problem der Findung
-einer längsten gemeinsamen Subsequenz zwischen zwei Sequenzen. Da Trajektorien, nach obiger Definition, lediglich Punktfolgen sind,
-lässt sich das Verfahren sehr gut auf diese anwenden. Aufgrund einiger kleiner Erweiterungen des Basis-Algorithmus, besitzt
-das LCSS Distanzmaß einige besondere Eigenschaften. Der LCSS Algorithmus für Trajektorien ist grundsätzlich
+einer längsten gemeinsamen Subsequenz zwischen zwei Sequenzen. Da Trajektorien, nach obiger Definition, lediglich Punktsequenzen sind,
+lässt sich das Verfahren sehr gut auf sie anwenden. Aufgrund von Erweiterungen des Basis-Algorithmus, besitzt
+das LCSS Distanzmaß einige besondere Eigenschaften. Der Algorithmus für Trajektorien ist grundsätzlich
 wie folgt definiert \cite[]{Vlachos2002}:
 
 \begin{ceqn}
@@ -837,8 +836,9 @@ wie folgt definiert \cite[]{Vlachos2002}:
 \end{align}
 \end{ceqn}
 
-Hierbei gilt $t_1' = \{ t_1(0),\ ...,\ t_1(n-1)\}$. Die Parameter $\epsilon$ und $\delta$ bestimmen das
-Vergleichs-Verhalten des Algorithmus. Über $\epsilon$ wird definiert, wieweit zwei Punkte maximal voneinander entfernt liegen
+Hierbei gilt $t_i' = \{ t_i(0),\ ...,\ t_i(n-1)\}$.
+Die Parameter $\epsilon$ und $\delta$ bestimmen das
+Vergleichsverhalten des Algorithmus. Über $\epsilon$ wird definiert, wieweit zwei Punkte maximal voneinander entfernt liegen
 können, um immer noch als ``übereinstimmend'' zu gelten. $\delta$ bestimmt hingegen, wieweit man in beide zeitliche Richtungen
 sucht, um einen übereinstimmenden Punkt zu finden.
 Da die obige LCSS Funktion nur ein diskretes Zählmaß definiert, ist das eigentliche LCSS-Distanz üblicherweise
@@ -852,21 +852,22 @@ gegeben als \cite[]{Vlachos2002}:
 \end{ceqn}
 
 
-Vorteile der LCSS Ähnlichkeitdefinition sind, dass sie mit kompletten Trajektorien arbeitet und robust
+Vorteil der LCSS Ähnlichkeitdefinition ist, dass sie mit kompletten Trajektorien arbeitet und robust
 gegenüber Ausreißern ist, da nicht für alle Punkte Übereinstimmungen in den Trajektorien gefunden werden müssen.
 Über $\epsilon$ und $\delta$ kann die ``Strenge'' des Algorithmus geregelt werden.
-Zudem berücksichtigt das LCSS Maß die Orientierung der Trajektorien, solange $\delta$ nicht zu hoch gewählt wird.
+Zudem berücksichtigt das LCSS Maß die Orientierung der Trajektorien.
 Die rekursive Definition des LCSS Algorithmus aus Gleichung \ref{eq_lcss} lässt sich mittels dynamischer Programmierung
 mit Zeitkomplexität $O(n\ m)$ berechnen.
 
 \subsection{Wahl eines Distanzmaßes}
 
-Anhand der drei ausgewählten und oben exemplarisch beschriebenen Distanzmaße, ist bereits ersichtlich,
-dass die Wahl eines passenden Maßes nicht trivial ist. Es muss die Qualität und Form der Daten berücksichtigt werden
-und abgewogen werden, in wieweit es möglich beziehungsweise gewünscht ist, die Daten vorzuverarbeiten.
-Das primäre Auswahlkriterium ist allerdings natürlich die situationsabhängige Definition von ``Distanz'':
-Sind sich Trajektorien ähnlich, wenn sie lediglich die selbe Form haben und ansonsten irgendwo im Raum liegen? Sind sie
-sich ähnlich, wenn sie die selbe Form haben und im Raum nahe beieinander liegen? Ist ihre Orientierung relevant?
+Anhand der drei ausgewählten und oben exemplarisch beschriebenen Distanzmaße ist bereits ersichtlich,
+dass die Wahl eines passenden Maßes nicht trivial ist. Es muss die Qualität und Form der Daten berücksichtigt werden.
+Außerdem muss abgewogen werden, in wieweit es möglich beziehungsweise gewünscht ist, die Daten vorzuverarbeiten.
+
+Das primäre Auswahlkriterium ist natürlich die situationsabhängige Definition von ``Distanz'':
+Sind sich Trajektorien ähnlich, wenn sie lediglich die selbe Form haben und ansonsten an beliebigen Stellen im Raum liegen?
+Sind sie sich ähnlich, wenn sie die selbe Form haben und im Raum nahe beieinander liegen? Ist ihre Orientierung relevant?
 Dies sind wichtige Fragen, welche vor der Wahl eines Distanzmaßes geklärt werden müssen.
 Da die Maße als Distanzfunktionen bei der Clusteranalyse verwendet werden, ist ihr Verhalten ausschlaggebend
 für den Erfolg der Gruppierung von Trajektorien.
