@@ -4,11 +4,11 @@
 \label{cha:introduction}
 
 Staus und zäh fließender Verkehr sind sowohl auf Schnell- und Autobahnen, als auch in Städten ein großes
-Problem und Ärgerniss für Autofahrer. Sie kosten diese nicht nur wertvolle Zeit, sondern auch viel Geld.
+Problem und Ärgernis für Autofahrer. Sie kosten diese nicht nur wertvolle Zeit, sondern auch viel Geld.
 Laut einer Studie von \cite[]{Cookson} kosten Staus jeden deutschen Autofahren pro Jahr durchschnittlich 1770 €.
 In Summe ergeben sich hieraus beinahe 80 Milliarden Euro an Kosten.
-Stau ist allerdings nicht nur finanziell für Privatpersonen oder auch Unternehmen ein großer Faktor,
-sondern er erhöht auch das Unfallrisiko und trägt maßgeblich zur schlechten Luftqualität in Innenstädten bei.
+Staus sind allerdings nicht nur finanziell für Privatpersonen oder Unternehmen ein Problem,
+sondern sie erhöhen auch das Unfallrisiko und tragen maßgeblich zur schlechten Luftqualität in Innenstädten bei.
 Aufgrund längerer Fahrzeiten und der häufigen Be- und Entschleunigung, steigt der Kraftstoffverbrauch der
 Fahrzeuge und dadurch auch die Schadstoffbelastung in der Luft \cite[]{Hemmerle2016}.
 
@@ -46,8 +46,8 @@ vorgestellt.
 
 Das Forschungsprojekt MEC-View, welches vom Bundesministerium für Wirtschaft und Energie (BMWi) gefordert wird,
 hat das Ziel, autonomes Fahren im urbanen Raum zu ermöglichen und für alle Verkehrsteilnehmer sicher zu gestalten.
-Gerade in Innenstädten sind die Möglichkeiten des autonomen Fahrens aufgrund von unübersichtlichen Kreuzungen,
-Fußgängern und Fahrradfahrern, verdeckten Sichten und anderen Faktoren begrenzt.
+Gerade in Innenstädten sind die Möglichkeiten des autonomen Fahrens, aufgrund von unübersichtlichen Kreuzungen,
+Fußgängern und Fahrradfahrern, verdeckten Sichten und anderen Faktoren, begrenzt.
 Abbildung \ref{fig:intro_mec_view_arch} gibt einen Überblick über das Forschungsprojekt und veranschaulicht dessen Ziel.
 
 \begin{figure}[H]
@@ -60,9 +60,9 @@ Abbildung \ref{fig:intro_mec_view_arch} gibt einen Überblick über das Forschun
 In urbanen Umgebungen
 sollen neben Daten von fahrzeuginternen Sensoren auch Informationen externer Infrastruktur-Sensoren verwendet werden,
 damit ein Fahrzeug eine fundierte Verhaltensentscheidung auf Basis eines detaillierten Umfeldmodells treffen kann.
-Im Rahmen des Projektes MEC-View wird eine Pilot-Anlage zur Umfelderfassung an einer vorfahrtsberechtigten Straßenkreuzung
+Im Rahmen des Forschungsprojektes MEC-View wird eine Pilot-Anlage zur Umfelderfassung an einer vorfahrtberechtigten Straßenkreuzung
 in Ulm aufgebaut und getestet. In dieser Anlage werden die Verkehrsteilnehmer über Kameras und LIDAR-Sensoren erfasst
-und die ermittelten Daten über ein schnelles LTE/5G-Mobilfunknetz an einen \textit{Mobile Edge Computing} (MEC) Server übertragen.
+und die ermittelten Daten über ein schnelles LTE/5G-Mobilfunknetz an einen \textit{Mobile Edge Computing} (\acrshort*{mec}) Server übertragen.
 Hier werden die Daten in Echtzeit zu einem Umfeldmodell fusioniert, welches anschließend den autonomen Fahrzeugen
 zur besseren Navigation zur Verfügung gestellt wird. Beteiligt an diesem Forschungsprojekt sind neben
 der IT-Designers GmbH unter anderem auch die Daimler AG, die Robert Bosch GmbH, Osram, Nokia und die Universität Ulm.
@@ -78,6 +78,7 @@ das Verhalten des Verkehrs besser zu verstehen und es somit ermöglichen, diesen
 Mithilfe der Analysen kann beispielsweise untersucht werden, wie durch die Anpassung von Verkehrssteuerungsanlagen
 oder durch die Änderung des Fahrverhaltens einzelner Fahrzeuge, eine Verbesserung der Verkehrssituation erreicht werden kann.
 Die Erkenntnisse können insbesondere auch in die Verhaltenssteuerung von autonomen Fahrzeugen mit einfließen.
+Aus diesem Grund sind entsprechende Untersuchungen auch für das Hauptprojekt MEC-View interessant.
 
 Die Analysen werden im MEC-View Projekt anhand von Luftbeobachtungen erstellt, welche von Drohnen getätigt werden.
 In den Videoaufnahmen werden mithilfe eines neuronalen Netzes die Positionen und Fahrzeugklassen der Verkehrsteilnehmer ermittelt.
@@ -91,7 +92,7 @@ Kenngrößen wie der Verkehrsfluss oder die Verkehrsdichte ermittelt werden.
 
 Im Rahmen dieser Arbeit wird ein Verfahren zur automatischen Erkennung von Fahrspuren in Luftaufnahmen
 auf Basis von Trajektoriedaten entwickelt. Die Spurerkennung wird in die Anwendung \textit{Vehicle-Tracker}
-integriert, welche im Rahmen des MEC-View Luftbeobachtungs Projekt erstellt wird. Sie dient der Analyse
+integriert, welche im Rahmen des MEC-View Luftbeobachtungs Projekt erstellt wird. Sie dient der Auswertung
 von Luftbeobachtungen des Straßenverkehrs.
 In der \textit{Vehicle-Tracker} Applikation mussten bislang die Fahrspurverläufe in jeder Aufnahme
 händisch definiert werden. Dieser Prozess ist insbesondere dann aufwendig, wenn die zu untersuchenden
@@ -101,10 +102,10 @@ in Zukunft mehr Luftaufnahmen mit weniger Aufwand auszuwerten.
 
 Der Verlauf und die Geometrie der Fahrspuren wird in dieser Thesis anhand der Bewegungsbahnen von Fahrzeugen, den sogenannten Trajektorien,
 ermittelt. Im Gegensatz zu einer visuellen Detektierung hat das Verfahren den Vorteil, dass Fahrspuren auch in Aufnahmen
-mit schlechten Lichtverhältnissen oder Verdeckungen der Fahrbahnen erkannt werden können.
+mit schlechten Lichtverhältnissen oder Verdeckungen der Fahrbahnen und Spurmarkierungen erkannt werden können.
 
-Zum Thema Spurerkennung existieren zwar bereits einige Veröffentlichungen (siehe Abschnitt \ref{sec:rw_lane_detection}),
-allerdings können die hierin
+Zum Thema Spurerkennung existieren zwar bereits Veröffentlichungen (siehe Abschnitt \ref{sec:rw_lane_detection}),
+allerdings können die
 vorgestellten Methoden meist nur in sehr speziellen Szenarien eingesetzt werden oder die erkannten Spuren
 entsprechen den realen Fahrspurverläufen nur schlecht. Ziel dieser Arbeit ist es, ein Verfahren zu entwickeln,
 welches Fahrspuren in möglichst vielen unterschiedlichen Szenarien erkennen kann.
@@ -118,7 +119,7 @@ Die vorliegende Arbeit ist wie folgt strukturiert:
 \begin{itemize}
     \item Die zur Verständnis der Arbeit und des entwickelten Spurerkennungs-Algorithmus benötigten
             Grundlagen sind in \textbf{Kapitel \ref{sec:position_extraction} und \ref{sec:tra_clustering}} beschrieben.
-            Kapitel \ref{sec:position_extraction} erläutert, wie aus Luftaufnahmen die Positionen von Fahrzeugen
+            Kapitel \ref{sec:position_extraction} erläutert, wie aus Luftaufnahmen die Trajektorien von Fahrzeugen
             rekonstruiert und in ein Weltkoodinatensystem überführt werden können.
             Kapitel \ref{sec:tra_clustering} stellt die grundlegenden Konzepte der Clusteranalyse vor, welche
             bei der Umsetzung der Spurerkennung zum Einsatz kommt.
@@ -130,13 +131,13 @@ Die vorliegende Arbeit ist wie folgt strukturiert:
             der Applikation \textit{Vehicle-Tracker} eingeordnet.
     \item Nach der Konzeption wird in \textbf{Kapitel \ref{cha:realisation}} erläutert, wie die Spurerkennung konkret
             umgesetzt wurde. Es werden die verschiedenen Schritte des entwickelten Algorithmus beschrieben.
-    \item In \textbf{Kapitel \ref{cha:results}} wird die entwickelte Methode zur Spurerkennung evaluiert.
-            Es wird auf die Qualität und Probleme der wichtigsten Verarbeitungsschritte des Algorithmus eingegangen.
+    \item In \textbf{Kapitel \ref{cha:results}} wird der entwickelte Spurerkennungsalgorithmus evaluiert.
+            Es wird auf die Stärken und Schwächen der wichtigsten Verarbeitungsschritte des Algorithmus eingegangen.
             Außerdem werden die konkreten Ergebnisse in Form von Screenshots vorgestellt.
     \item \textbf{Kapitel \ref{cha:end}} bildet den Schluss dieser Masterarbeit. Hier wird
             ein Fazit gezogen und ein Ausblick gegeben, welche Verbesserungen in Zukunft an dem entwickelten
             Algorithmus noch vorgenommen werden können.
-    \item Im \hyperref[cha:anhang_a]{Anhang} dieser Arbeit sind Aufnahmen der Straßenabschnitte dargestellt,
+    \item Im \textbf{\hyperref[cha:anhang_a]{Anhang}} dieser Arbeit sind Aufnahmen der Straßenabschnitte dargestellt,
             mit deren Hilfe der Spurerkennungs-Algorithmus entwickelt und evaluiert wurde.
 \end{itemize}
 

@@ -12,51 +12,52 @@ In diesem Kapitel wird erläutert, wie aus Luftaufnahmen Trajektorien von Fahrze
     Einbezugs von Geschwindigkeitsinformationen et cetera sind ebenso möglich.
 \end{theorem}
 
-Trajektorien sind grundsätzlich die wichtigste Informationsquelle zur Analyse des Fahrverhaltens aus Luftbeobachtungen.
+Trajektorien sind grundsätzlich die wichtigste Informationsquelle bei der Analyse des Fahrverhaltens aus Luftbeobachtungen.
 Eine Rekonstruktion von Fahrzeugtrajektorien wird zwar im Rahmen dieser Arbeit nicht umgesetzt,
 allerdings ist es wichtig ein Grundverständnis der benötigten Methoden und Schritte zu besitzen,
 um die Trajektoriedaten und die darin enthaltenen Defekte interpretieren zu können.
 
-Es wird nachfolgend beschrieben, wie bewegte Objekte in Videoaufnahmen erkannt und verfolgt
+Es wird nachfolgend beschrieben, wie Fahrzeuge in Videoaufnahmen erkannt und verfolgt
 werden können, um anschließend deren Positionen in einem Weltkoordinatensystem zu bestimmen. Am Ende des Kapitels
 werden einige Schwierigkeiten, welche bei der Rekonstruktion der Trajektorien auftreten können, aufgezeigt.
 
-\section{Erkennung und Verfolgung von Objekten in Videoaufnahmen}
+\section{Erkennung und Verfolgung von Fahrzeugen in Videoaufnahmen}
 
-Es existieren unterschiedliche Ansätze, welche zur Erkennung und Verfolgung von Objekten in Videoaufnahmen eingesetzt werden können.
+Es existieren unterschiedliche Ansätze, welche zur Erkennung und Verfolgung von Fahrzeugen in Videoaufnahmen
+eingesetzt werden können.
 
 Ein Verfahren, welches gute Ergebnisse liefern kann aber mit einem nicht unerheblichen manuellen Aufwand verbunden ist,
 ist das \textit{Supervised-Tracking}. Hierbei werden initial manuell ausgewählte Bildbereiche, sogenannte
-\textit{Region of Interests} (\acrshort*{roi}), automatisch mithilfe eines erlernten Klassifikators verfolgt.
-Dieser Klassifikator muss beispielsweise zwischen Fahrzeugen und ihrer Umgebung unterscheiden können \cite[]{Grabner}.
-Der Supervised-Tracking Ansatz entspricht, aufgrund der notwendigen manuellen Detektion von Objekten, nichtmehr
+\textit{Region of Interests} (\acrshort*{roi}s), automatisch mithilfe eines erlernten Klassifikators verfolgt.
+Dieser Klassifikator muss zwischen Fahrzeugen und ihrer Umgebung unterscheiden können \cite[]{Grabner}.
+Der Supervised-Tracking Ansatz entspricht, aufgrund der notwendigen manuellen Detektion von Fahrzeugen, nichtmehr
 dem aktuellen Stand der Technik.
 
-Modernere Verfahren detektieren Objekte in Videoaufnahmen voll-automatisch und nutzen einen separaten Tracking
-Schritt um anhand der Einzel-Detektionen Trajektorien zu erstellen. Ein solcher Ansatz wird auch in der Anwendung
+Modernere Verfahren detektieren Fahrzeuge in Videoaufnahmen voll-automatisch und nutzen einen separaten
+Tracking-Schritt um anhand der Einzel-Detektionen Trajektorien zu erstellen. Ein solcher Ansatz wird auch in der Anwendung
 \textit{Vehicle-Tracker} eingesetzt. Er wird nachfolgend in groben Zügen beschrieben.
 
-\subsection{Objekt-Detektion}
+\subsection{Fahrzeug-Detektion}
 
-In der Phase \textit{Objekt-Detektion} werden die Positionen der gesuchten Objekte in der Videoaufnahme ermittelt.
-Im Fall der Anwendung \textit{Vehicle-Tracker} werden die Positionen der Fahrzeuge in jedem Video-Frame neu bestimmt.
-Erkannt werden die Fahrzeuge mithilfe von Tensorflow\footnote{Tensorflow - \url{https://www.tensorflow.org/}}.
+In der Detektionsphase werden die Positionen der Fahrzeuge in der Videoaufnahme ermittelt.
+Üblicherweise wird die Detektion auf jedem Frame des Videos ausgeführt.
+Erkannt werden die Fahrzeuge in der Anwendung \textit{Vehicle-Tracker} mithilfe von Tensorflow\footnote{Tensorflow - \url{https://www.tensorflow.org/}}.
 Das quelloffene Machine-Learning Framework bietet in seiner \textit{Object-Detection-API}
 verschiedene Netzwerk-Architekturen und vortrainierte Modelle an, welche zur Erkennung und Klassifizierung
-von Objekten eingesetzt werden können \cite[]{Huang2018}. Die hierzu angebotenen neuronale Netze sind Weiterentwicklungen
+von Objekten eingesetzt werden können \cite[]{Huang2018}. Die angebotenen neuronalen Netze sind Weiterentwicklungen
 von \textit{Convolutional Neural Networks} (\acrshort*{cnn}s), welche sich gut zur maschinellen Verarbeitung
 von Bilddaten eignen.
 
 In Abbildung \ref{fig:grund_structure_cnn} ist der Aufbau eines CNN mit \textit{Fully-Connected Layer} dargestellt.
 Ein genaues Verständnis der Funktionsweise eines solchen Netzwerks ist im Fall dieser Arbeit nicht notwendig.
 Grundlegend besteht es allerdings aus zwei Komponenten: Der erste Teil ist für
-die \textit{Merkmalsextraktion} verantwortlich, während der zweite Teil der \textit{Klassifizierung} dient.
+die \textit{Merkmals-Extraktion} verantwortlich, während der zweite Teil der \textit{Klassifizierung} dient.
 In der ersten Phase extrahiert das Netzwerk aus einem Bild Merkmale, mittels
 welcher die zu erkennenden Objekte beschrieben werden können. Nach welchen Merkmalen in einem Bild gesucht wird,
 wird während der Trainingsphase des Netzes ermittelt.
-Anhand der Merkmale werden die Positionen der gesuchten Objekte im Bild ermittelt.
-Um welches Objekt es sich an einer bestimmten Position handelt, wird anschließend anhand
-des \textit{Fully-Connected-Layer} bestimmt. \cite[]{Cornelisse2018}
+Anhand der Merkmale werden die Positionen der gesuchten Objekte im Bild bestimmt.
+Um welches Objekt es sich an einer bestimmten Position handelt, wird anschließend vom sogenannten
+\textit{Fully-Connected-Layer} ermittelt. \cite[]{Cornelisse2018}
 
 \begin{figure}[H]
     \centering
@@ -69,22 +70,22 @@ Im Fall der Tensorflow Object Detection API werden die Positionen der erkannten 
 \textit{Bounding-Boxes} definiert. Die Lage und Größe dieser rechteckigen Detektionen im Bild wird über
 zwei Pixel-Koordinaten angegeben. \cite[]{Huang2018}
 
-\subsection{Objekt-Verfolgung}
+\subsection{Fahrzeug-Verfolgung}
 
-Nachdem in jedem Video-Frame einer Aufnahme die Positionen der gesuchten Objekte, beispielsweise der
-Fahrzeugen, ermittelt wurden, müssen aus diesen anschließend Trajektorien erstellt werden.
-Hierzu müssen alle Detektion, welche von einem Objekt stammen, einer Bewegungsbahn zugeordnet werden.
-Da sich die einzelnen Detektionen, welche für jedes Video-Frame erstellt wurden, nicht eindeutig bestimmten Objekten
-zurordnen lassen, ist dies nicht trivial.
+Nachdem in jedem Video-Frame einer Aufnahme die Positionen der Fahrzeuge ermittelt wurden,
+müssen aus diesen Einzel-Detektionen anschließend Trajektorien erstellt werden.
+Hierzu müssen alle Positionsinformationen, welche von einem Fahrzeug stammen, einer Bewegungsbahn zugeordnet werden.
+Eine solche Zuordnung ist nicht trivial, da nie bekannt ist, an welcher Position sich ein Fahrzeug im
+nächsten Video-Frame befinden wird.
 
-Ein Algorithmus zur Rekonstruktion der Trajektorien aus den Einzel-Detektionen muss die Objekte im Video
+Ein Algorithmus zur Rekonstruktion der Trajektorien aus den Einzel-Detektionen muss die Fahrzeuge im Video
 verfolgen. Um dies zu erreichen kann beispielsweise, wie in der Anwendung \textit{Vehicle-Tracker},
-ein Partikel-Filter basierter Tracking-Ansatz angewandt werden.
+ein auf einem Partikel-Filter basierender Tracking-Ansatz verwendet werden.
 Ein Partikel-Filter, auch bekannt als \textit{sequenzielle Monte-Carlo-Methode}, dient der Schätzung
 des Zustandes eines dynamischen Systems basierend auf vorherigen Messwerten.
-Bei der Objektverfolgung kann mithilfe eines Partikel-Filters ermittelt werden, an welcher Stelle sich
-ein Objekt im Video-Frame $t$, basierend auf dessen vorherigen Positionen, vorraussichtlich befindet \cite[]{Apeltauer2015}.
-Um eine Vorhersage für Frame $t$ einer Objekt-Detektion aus Frame $t$ zuzuweisen, und so Trajektorien aus diesen zu erstellen,
+Bei der Fahrzeug-Verfolgung kann mithilfe eines Partikel-Filters ermittelt werden, an welcher Stelle sich
+ein solches im Video-Frame $t$, basierend auf dessen vorherigen Positionen, vorraussichtlich befindet \cite[]{Apeltauer2015}.
+Um eine Vorhersage für Frame $t$ einer Detektion aus Frame $t$ zuzuweisen, und so Trajektorien aus diesen zu erstellen,
 kann der \textit{Ungarische Algorithmus} von Harold W. Kuhn eingesetzt werden, welcher eine optimale
 Zuweisung berechnet \cite[]{Szottka2011}. Kann eine Vorhersage keiner Detektion zugeordnet werden,
 so wird eine neue Trajektorie initialisiert.
@@ -95,20 +96,20 @@ Detektionen rekonstruieren. Die Trajektorien beschreiben die Bewegungen der Fahr
 \section{Positionsbestimmung in Videoaufnahmen}
 \label{sec:grund_mapMatching}
 
-Nachdem die Positionen der Fahrzeugen in Pixel-Koordinaten bestimmt wurden, müssen diese in 3D-Weltkoordinaten
+Nachdem die Positionen der Fahrzeuge in Pixel-Koordinaten bestimmt wurden, müssen diese in 3D-Weltkoordinaten
 umgewandelt werden, um die genauen Fahrzeugpositionen auf der Straße zu erhalten. Dank der Verwendung eines
 stationären Weltkoordinatensystems mit Einheit Meter, lassen sich zudem reale Entfernungen
 in der Aufnahme ermitteln, was beispielsweise für die Bestimmung der Fahrzeuggeschwindigkeiten sehr wichtig ist.
 
 Um eine Bildkoordinate in eine Weltkoordinate überführen zu können, müssen vorher verschiedene Kameraeigenschaften
 ermittelt werden. Hierzu ist es wichtig ein grundlegendes Verständnis von der Funktionsweise einer Kamera zu besitzen.
-Anhand eines Lochkameramodells lässt sich die Funktionsweise der Bildprojektion herleiten.
+Anhand eines Lochkameramodells lässt sich die Funktionsweise der Bildprojektion erklären.
 Ein solches Modell ist in Abbildung \ref{fig:grund_pinhole_model} dargestellt.
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.55\linewidth]{resources/img/grundlagen/TrajectoryReconstruction/pinhole_camera_model}
-    \caption[Bildprojektion im Lochkameramodell]{Projektion eines Punktes P auf die Projektionsfläche einer Lochkameramodell \cite[]{DevTeamOpenCV2018}}
+    \caption[Bildprojektion im Lochkameramodell]{Projektion eines Punktes P auf die Projektionsfläche einer Lochkamera \cite[]{DevTeamOpenCV2018}}
     \label{fig:grund_pinhole_model}
 \end{figure}
 
@@ -118,7 +119,7 @@ Bezugsysteme berücksichtigt werden \cite[]{Jahne2012}:
 
 \begin{enumerate}
     \item Das \textbf{Weltkoordinatensystem} ist ein stationäres Bezugsystem, dessen Ursprung sich an einem beliebigen Punkt
-            im aufgenommenen Raum befindet. Über dieses System werden Punkte $P = (X, Y, Z)$ definiert.
+            im aufgenommenen Raum befindet. Über dieses System werden Weltkoordinaten $P = (X, Y, Z)$ definiert.
     \item Das \textbf{Kamerakoordinatensystem} hat seinen Ursprung im Punkt $F_c$, der Öffnung des Kamerasystems.
             Es definiert Punkte $P = (x_c,\ y_c,\ z_c)$ relativ zur Kamera.
     \item Das \textbf{Projektionskoordinatensystem} hat seinen Ursprung im Punkt $C = (c_x,\ c_y)$ der Projektionsfläche.
@@ -127,14 +128,14 @@ Bezugsysteme berücksichtigt werden \cite[]{Jahne2012}:
             Über es werden Punkte $P' = (u,\ v)$ in der Einheit Pixel definiert.
 \end{enumerate}
 
-Unter Berücksichtigung dieser Bezugssysteme können die sogenannten ``intrinsischen'' und ``extrinsischen Kameraparameter''
-bestimmt werden.
+Unter Berücksichtigung dieser Bezugssysteme können die sogenannten \textit{intrinsischen} und
+\textit{extrinsischen} Kameraparameter bestimmt werden.
 
 \subsubsection{Intrinsische Kamera- und Verzeichnungsparameter}
 
 Die intrinsischen Kamera- und Verzeichnungsparameter sind abhängig von der Bauart der Kamera und gelten
 daher für alle Aufnahmen, welche mit der selben Hardware-Konfiguration getätigt werden.
-Die Parameter $c_x$ und $c_y$, welche die Bildmitte festlegen und die
+Die Parameter $c_x$ und $c_y$, welche die Bildmitte festlegen, und die
 horizontale und vertikale Brennweite $f_x$ und $f_y$ definieren die intrinsischen Kameraparameter.
 Mit ihrer Hilfe lässt sich eine Kameramatrix der Form
 
@@ -150,11 +151,11 @@ A =
 \end{ceqn}
 
 bilden.
-Die Verzeichungsparameter sind abhängig von den Linsen, welche in einer Kamera verwendet werden. Diese sorgen
-für radiale und tangentiale Verzerrungen des Bildes. Die Parameter $k_1$, $k_2$ und $k_3$ definieren die
-radiale Verzeichnung und $p_1$ und $p_2$ die tangentiale Verzeichnung. \cite[]{Meissner2007}
+Die Verzeichnungsparameter sind abhängig von den Linsen, welche in einer Kamera verwendet werden. Diese sorgen
+für eine radiale und tangentiale Verzeichnung des Bildes. Die Parameter $k_1$, $k_2$ und $k_3$ definieren die
+radiale und $p_1$ und $p_2$ die tangentiale Verzeichnung. \cite[]{Meissner2007}
 
-Die intrinsischen Kamera- und Verzeichungsparameter können durch ein Kalibrierungsverfahren bestimmt werden.
+Die intrinsischen Kamera- und Verzeichnungsparameter können durch ein Kalibrierungsverfahren bestimmt werden.
 Computervision-Bibliotheken wie OpenCV bieten hierfür Hilfsfunktionen an \cite[]{DevTeamOpenCV2018}.
 
 \subsubsection{Extrinsische Kameraparameter}
@@ -176,7 +177,7 @@ welcher angibt, wo sich der Ursprung des Weltkoordinatensystems relativ zur Öff
 
 Die extrinsischen Parameter einer Aufnahme lassen sich mithilfe der intrinsischen Kamera- und Verzeichnungsparameter
 und mindestens sechs Weltkoordinaten, welche Bildschirmkoordinaten zugeordnet werden können, bestimmen. Bibliotheken
-wie OpenCV bieten auch hierfür Funktionen an. Mithilfe der sechs Koordinaten lässt sich zudem das Weltkoordinatensystem
+wie OpenCV bieten auch hierfür Funktionen an. Mithilfe der Weltkoordinaten lässt sich zudem das Weltkoordinatensystem
 definieren.
 
 \subsubsection{Transformation von Bildschirmpositionen in Weltkoordinaten}
@@ -195,12 +196,12 @@ Da bei der Projektion vom Weltkoordinatensystem ins Bildschirmkoordinatensystem 
 verloren geht, muss bei der Rücktransformation diese extra bestimmt oder geschätzt werden. Liegt ein Punkt
 auf der Ebene, welche von der X- und Y-Achse des Weltkoordinatensystems beschrieben wird, kann für dessen
 Höhe $z = 0$ verwendet werden.
-Die Position eines Punktes $P_w$ kann so mithilfe des folgenden Gleichungssystems bestimmt werden:
+Die Position eines Welt-Punktes $P$ kann so mithilfe des folgenden Gleichungssystems bestimmt werden:
 
 \begin{ceqn}
 \begin{align}
 \label{eq_point_transformation3}
-    \big[x_w\ y_w\ 0\big]^T = R^{-1}\Big(sA^{-1} \big[u\ v\ 1\big]^T - t\Big)
+    \big[X\ Y\ 0\big]^T = R^{-1}\Big(sA^{-1} \big[u\ v\ 1\big]^T - t\Big)
 \end{align}
 \end{ceqn}
 
@@ -212,12 +213,12 @@ in Weltkoordinaten umgewandelt.
 
 Es existieren, unabhängig davon welches Verfahren zur Erkennung und Verfolgung von Fahrzeugen in Videoaufnahmen
 eingesetzt wird, diverse Herausforderungen bei der Rekonstruktion von Trajektorien. Nachfolgend sind
-Herausforderungen und Auswirkungen beschrieben, welche häufig auftreten.
+Probleme, welche häufiger auftreten, und deren Auswirkungen beschrieben. 
 
 \subsubsection*{False-Positive und False-Negative Detektionen}
-Unter \textit{False-Positive Detektionen} versteht man in diesem Fall die Erkennung und Verfolgung
+Unter \textit{False-Positive Detektionen} versteht man die Erkennung und Verfolgung
 von Objekten in einem Video, welche kein Fahrzeug sind.
-Dieses Problem tritt häufig dann auf, wenn das für die Objekt-Detektion eingesetzte neuronale Netz nicht ausreichend trainiert wurde.
+Dieses Problem tritt häufig dann auf, wenn das für die Detektion eingesetzte neuronale Netz nicht ausreichend trainiert wurde.
 Fälschlicherweise detektierte Objekte können beispielsweise Fußgänger, Fahrradfahrer oder auch Gebäudeausschnitte sein.
 In Abbildung \ref{fig:grund_false_positive_detections} sind False-Positive Detektionen von Fußgängern
 und einem Schild auf einem Grünstreifen zu sehen.
@@ -239,8 +240,8 @@ oder deren zu frühen Abbruch.
 
 \subsubsection*{Fahrbahn Verdeckungen}
 
-In Luftaufnahmen von Straßenabschnitten sind Teile der Fahrbahnen nicht selten verdeckt durch beispielsweise
-Bäume oder Brücken. Dies erschwert die Rekonstruktion der Bewegungsbahnen von Fahrzeugen erheblich, da diese
+In Luftaufnahmen von Straßenabschnitten sind Teile der Fahrbahnen nicht selten durch beispielsweise
+Bäume oder Brücken verdeckt. Dies erschwert die Rekonstruktion der Bewegungsbahnen von Fahrzeugen erheblich, da diese
 beim Unterfahren der Hindernisse nicht in der Aufnahe zu sehen sind. In Abbildung \ref{fig:grund_lane_occlusion}
 ist die Verdeckung einer Fahrbahn durch Baumkronen zu sehen.
 
@@ -275,6 +276,8 @@ anhand der Mittelpunkte der Bounding-Boxes ermittelt werden, weichen diese von d
 
 Beim Arbeiten mit Trajektoriedaten muss beachtet werden, dass die oben beschriebenen Effekte auftreten
 können. Ein Spurerkennungs-Algorithmus muss daher auch mit ihnen umgehen können.
+
+
 
 \chapter{Clusteranalyse}
 \label{sec:tra_clustering}
