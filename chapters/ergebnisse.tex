@@ -5,7 +5,7 @@
 
 Die Stärken, Schwächen und Ergebnisse des entwickelten Algorithmus werden im nachfolgenden Kapitel
 zusammengefasst, diskutiert und ausgewertet. Es wird zuerst abschnittsweise auf die drei primären Schritte
-des Verfahrens eingegangen. Endergebnisse der Spurerkennung werden anschließend
+des entwickelten Verfahrens eingegangen. Endergebnisse der Spurerkennung werden anschließend
 in Form von Screenshots vorgestellt, in welchen die erkannten Fahrspuren zu sehen sind.
 
 \section{Evaluierung der Datenvorverarbeitung}
@@ -16,10 +16,10 @@ den Roh-Trajektorien die meisten Defekte entfernt wurden, können die nachfolgen
 Schritte zuverlässig funktionieren. Die angewandten Schritte zur
 Entfernung der Anomalien sind in Abschnitt \ref{sec:realisation_preprocessing} beschrieben.
 
-Dass die Entfernung von Ausreißern funktioniert, wurde bereits zum Teil in Abbildung
-\ref{fig:real_result_2nd_Prepro} anhand des \textit{Neckartor}-Datensatzes gezeigt.
-In Abbildung \ref{fig:results_prePro_heilbronner} sind nun die Trajektorien eines weiteren Datensatzes dargestellt,
-welcher von der Heilbronner-Straße in Stuttgart stammt.
+Anhand von Abbildung \ref{fig:real_result_2nd_Prepro} im Umsetzungskapitel wurde bereits gezeigt,
+dass die Datenvorverarbeitung grundsätzlich funktioniert.
+In Abbildung \ref{fig:results_prePro_heilbronner} sind nun die Roh-Trajektorien und bereinigten Bewegungsbahnen
+eines weiteren Datensatzes dargestellt, welcher von der Heilbronner-Straße in Stuttgart stammt.
 
 \begin{figure}[H]
     \centering
@@ -35,10 +35,10 @@ welcher von der Heilbronner-Straße in Stuttgart stammt.
     \label{fig:results_prePro_heilbronner}
 \end{figure}
 
-Die zwei obigen Plots zeigen gut, dass die vielen in a) vorkommenden Ausreißer entfernt wurden. Von den
+Die Plots zeigen gut, dass die vielen in a) vorkommenden Defekte entfernt wurden. Von den
 circa 1050 Roh-Trajektorien im ursprünglichen Datensatz bleiben nach der Vorverarbeitung etwa 450 intakte
-Bewegungsbahnen übrig. Die Mehrzahl der Defekte in diesem Fall stammt von fehlerhaften Objekterkennungen
-und unterbrochener Fahrzeug-Detektionen, welche aufgrund der Verdeckung von Fahrspuren durch Bäume entstehen.
+Bewegungsbahnen übrig. Die Mehrzahl der Defekte in diesem Fall stammt von \textit{False-Positive}-Detektionen
+und unterbrochener Fahrzeug-Detektionen (siehe Abschnitt \ref{sec:grund_challenges_reconstruction}).
 
 Ein problematisches Verhalten des Vorverarbeitungsschrittes wurde beim Testen der Spurerkennung anhand eines
 Datensatzes aus Steinheim deutlich. In Abbildung \ref{fig:results_horizon_problem} a) ist der
@@ -64,15 +64,15 @@ von der Kamera weit entfernten Horizont zulaufen.
 
 Da Fahrzeuge im Bereich eines solchen Horizonts grundsätzlich unzuverlässig erkannt werden, ist auch eine Fahrverhaltensanalyse
 mithilfe von Fahrspuren hier nicht sinnvoll. Es wurde daher entschieden, dem Anwender die Möglichkeit zu geben, eine
-Horizont-Linie zu definieren. In einem ersten Vorverarbeitungsschritt werden alle Trajektorie-Punkte oberhalb dieser
+Horizont-Linie zu definieren. Diese sollte vor der Höhe liegen, ab welcher die Fahrzeugerkennung unzuverlässig wird.
+In einem ersten Vorverarbeitungsschritt werden alle Trajektorie-Punkte oberhalb dieser
 Linie entfernt. Dank der Beschneidung der Trajektorien bleiben diese in den nachfolgenden Verarbeitungsschritten
 erhalten und es können Spuren im gewünschten Ausschnitt erkannt werden.
 
 Mit Ausnahme des unerwünschten Verhaltens im Fall von Trajektorien, welche am Horizont sehr unterschiedliche Start-
 beziehungsweise End-Positionen besitzen, funktioniert die Datenvorverarbeitung zuverlässig und wie gewünscht.
-Voraussetzung dafür, dass nach der Datenvorverarbeitung
-noch genug Trajektorien vorliegen welche weiterverarbeitet werden können, ist, dass in
-den Rohdaten genügend intakte, ununterbrochene Bewegungsbahnen vorhanden sind.
+Voraussetzung dafür, dass nach der Datenvorverarbeitung noch genug Trajektorien vorliegen, welche weiterverarbeitet werden können,
+ist, dass in den Rohdaten genügend intakte, ununterbrochene Bewegungsbahnen vorhanden sind.
 
 \section{Evaluierung der Clusteranalyse}
 \label{sec:results_eval_clustering}
@@ -91,7 +91,7 @@ fünf Trajektorien bestehen muss. Diese Untergrenze wurde gewählt, um nicht zu 
 eigentlich keine Fahrspur beschreiben. Würde die Grenze niedriger angesetzt werden, so würden beispielsweise
 vermehrt Cluster aus Trajektorien gebildet, welche Überholvorgänge beschreiben.
 
-In den meisten Datensätzen anhand derer der in dieser Arbeit entwickelte Algorithmus getestet wurde,
+In den meisten Datensätzen, anhand derer der in dieser Arbeit entwickelte Algorithmus getestet wurde,
 existierten ausreichend Trajektorien pro Fahrspur, um diese zuverlässig zu identifizieren. Eine Ausnahme
 stellt der Datensatz von der Heilbronner-Straße in Stuttgart dar, dessen Trajektorien bereits
 in Abschnitt \ref{sec:results_eval_dataprocessing} dargestellt sind. In Abbildung \ref{fig:results_prePro_heilbronner} b)
@@ -126,8 +126,8 @@ den \textit{Neckartor}-Datensatz, aus welchem vor Anwendung des Algorithmus zuf�
 \end{figure}
 
 Auch hier wird deutlich, dass das Ergebnis maßgeblich von der Anzahl der Trajektorien pro Spur abhängt.
-In Plot b) wurden viele vertikal verlaufende Trajektorien entfernt, weshalb hier nur wenige Spurcluster identifiziert werden.
-In Plot c) wurden hingegen, trotz des Fehlens von 50\% der Trajektorien, fast alle Spurcluster erkannt
+In Plot a) wurden vorwiegend vertikal verlaufende Trajektorien entfernt, weshalb hier nur wenige Spurcluster identifiziert werden.
+In Plot b) wurden hingegen, trotz des Fehlens von 50\% der Trajektorien, fast alle Spurcluster erkannt
 (vergleiche Abbildung \ref{fig:real_turning_lane} c)).
 
 Außer von der Anzahl der Trajektorien hängt das Ergebnis der Clusteranalyse maßgeblich von den gewählten
@@ -165,13 +165,13 @@ zur Beschreibung einer Spur vorliegen. Ihr Verhalten kann bei Bedarf zudem angep
 \section{Evaluierung der Spur-Geometrie-Bestimmung}
 
 Nach der Clusteranalyse werden anhand der identifizierten Trajektoriecluster die Geometrien der Fahrspuren
-bestimmt. Ziel dieses Schrittes ist es, Spur-Geometrien zu definieren, welche den realen Spur-Abmaßen möglichst
-genau entsprechen. Die angewandten Verfahren sind in Abschnitt \ref{cha:lane_definition} beschrieben.
+bestimmt. Die hierzu angewandten Verfahren sind in Abschnitt \ref{cha:lane_definition} beschrieben.
 
 Wurden im vorherigen Schritt Trajektorie-Cluster für die in einer Aufnahme enthaltenen Spuren identifiziert,
 so können auf Basis dieser meist zuverlässige Spur-Geometrien abgeleitet werden.
 In Abbildung \ref{fig:results_laneGeometries} sind beispielhaft Spur-Geometrien aus drei unterschiedlichen Datensätzen dargestellt.
 
+% TODO: Testen Plots schwarz
 % TODO: Update Plot Steinheim
 \begin{figure}[H]
     \centering
@@ -181,7 +181,7 @@ In Abbildung \ref{fig:results_laneGeometries} sind beispielhaft Spur-Geometrien 
     \subfloat[Düsseldorf]{{
         \includegraphics[align=c, width=0.29\linewidth]{resources/img/results/Duesseldorf/improvedLanes_Duesseldorf}
     }}
-    \subfloat[Steinheim]{{
+    \subfloat[Steinheim (UPDATEN)]{{
         \includegraphics[align=c, width=0.29\linewidth]{resources/img/results/Steinheim/improvedLanes_Steinheim}
     }}
     \caption[Ergebnisse Spur-Geometrie-Bestimmung]{Verschiedene Ergebnisse der Spur-Geometrie-Bestimmung}
@@ -194,7 +194,7 @@ Plot a) zeigt die Spur-Geometrien, welche im Fall des Datensatzes der Heilbronne
 Für jedes Spurcluster, welches in Abbildung \ref{fig:results_clusters_heilbronner} a) zu sehen ist, wurde eine Geometrie erstellt.
 Es ist zudem zu sehen, dass die Fahrspuren partitioniert wurden, um Überlagerungen zu vermeiden.
 Plot b) veranschaulicht, dass Spur-Geometrien auch korrekt bestimmt werden, wenn in einer Aufnahme
-Fahrbahnerweiterung existieren, wie dies in 
+Fahrbahnerweiterung existieren, wie dies in der \textit{Düsseldorf}-Aufnahme der Fall ist (siehe Anhang).
 Anhand von Plot c), welcher die für den Datensatz \textit{Steinheim} extrahierten Spur-Geometrien zeigt, wird
 außerdem deutlich, dass auch die Geometrien kreisförmiger Fahrspuren und Kreisverkehre bestimmt werden können.
 
@@ -221,13 +221,14 @@ verschmälert sich am linken Rand die Fahrbahn und die unterste Spur (rot) geht 
 Bei der Partitionierung der Spuren sollte daher eigentlich die mittlere Spur vollständig erhalten bleiben
 und das Ende der unteren entfernt werden. Wie oben zu sehen ist, wird allerdings die mittlere Spur partitioniert
 und die untere bleibt erhalten. Hier trifft der in Abschnitt \ref{sec:real2_lane_partitioning} beschrieben
-Algorithmus die ``falsche'' Entscheidung.
+Algorithmus eine ``falsche'' Entscheidung.
 
 In Abbildung \ref{fig:results_defekts_laneGeos} b) ist zu sehen, dass die blau markierte Spur
 in ihrem Verlauf nach unten hin schmäler wird. Dies entspricht nicht ihrem realen Verlauf auf der Straße.
 Diese Schmälerung tritt auf, da der Algorithmus zur Optimierung der Spurbreiten (siehe Abschnitt \ref{sec:real2_lane_geo_opt})
 auf einer bestimmten Höhe den Abstand zur falschen Spur zur Neu-Berechnung der Breite verwendet.
-Die fehlerhafte Breite wird anschließend für den Rest der Spur weiterverwendet.
+Die fehlerhafte Breite wird anschließend für den Rest der Spur weiterverwendet, da anschließend keine neue,
+korrekte Spurbreite bestimmt werden kann.
 
 Die beiden oben abgebildeten und beschrieben Fehler treten in ähnlicher Art gelegentlich auf. Der Grund hierfür
 ist, dass es sowohl im Fall der Spur-Partitionierung als auch im Fall der Bestimmung der Spur-Breite sehr schwierig ist,
@@ -252,9 +253,10 @@ Spuren im Fall der Datensätze \textit{Entennest} und \textit{Düsseldorf}.
 Anhand der Aufnahmen ist ersichtlich, dass die erstellten Fahrspuren gut mit den realen Verläufen der
 Spuren auf der Fahrbahn übereinstimmen.
 Dies gilt auch im Fall des Datensatzes \textit{Düsseldorf}, obwohl die hier detektierten Fahrzeugpositionen
-aufgrund des niedrigen Aufnahmewinkels nicht immer in der Nähe der Spurmitte liegen.
-% TODO: Evtl. Grund fehlende Spur Düsseldorf
+aufgrund des niedrigen Aufnahmewinkels nicht immer in der Nähe der Spurmitte liegen
+(siehe Abschnitt \ref{sec:grund_challenges_reconstruction}).
 
+% TODO: Evtl. Grund fehlende Spur Düsseldorf
 \begin{figure}[H]
     \centering
     \subfloat[Fahrspuren Entennest]{{

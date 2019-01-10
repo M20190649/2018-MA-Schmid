@@ -3,7 +3,7 @@
 \chapter{Zusammenfassung und Ausblick}
 \label{cha:end}
 
-Am Ende dieser Arbeit wird nun der Inhalt der vorliegenden Arbeit und deren Ergebnisse noch
+Am Ende dieser Arbeit wird nun der Inhalt der Thesis und deren Ergebnisse noch
 zusammengefasst. Zudem wird ein Ausblick gegeben, welche Optimierungen beziehungsweise
 Weiterentwicklungen in Zukunft an der Spurerkennung noch vorgenommen werden können.
 
@@ -12,24 +12,29 @@ Weiterentwicklungen in Zukunft an der Spurerkennung noch vorgenommen werden kön
 Im Rahmen dieser Arbeit wurde ein Verfahren zur automatischen Erkennung von Fahrspuren in Videoaufnahmen
 anhand von Trajektoriedaten entwickelt.
 
+Zu Beginn der Thesis wurde beschrieben, wie Trajektoriedaten aus Luftaufnahmen rekonstruiert werden können
+und welche Defekte, die bei einer Fahrspurerkennung berücksichtigt werden müssen, die Bewegungsbahnen eventuell aufweisen.
+Außerdem wurden wichtige Konzepte einer Clusteranalysen vorgestellt, da eine solche im Spurerkennungsalgorithmus
+zum Einsatz kommt.
+
 Eine initiale Untersuchung der Literatur im Bereich Fahrspurerkennung und Trajektorieauswertung
 machte deutlich, dass ein Algorithmus mit den gewünschten Eigenschaften weitestgehend neu entwickelt werden muss.
 Die in den verwandten Arbeiten vorgestellten Verfahren eignen sich meist nur zur Erkennung von Fahrspuren
 in bestimmten Straßentopologien. Außerdem stimmen die von ihnen ermittelten Spur-Geometrien nur selten
 mit den realen Abmaßen der Fahrspuren auf der Straße überein.
-Der im Rahmen dieser Thesis entwickelte Spurerkennungsalgorithmus sollte beide diese Anforderungen erfüllen.
+Der im Rahmen dieser Thesis entwickelte Spurerkennungsalgorithmus sollte diese beiden Anforderungen erfüllen.
 
-Das erstellte Verfahren besteht aus mehreren, aufeinander aufbauenden Verarbeitungsschritten. Die aus den
-Luftaufnahmen extrahierten Fahrzeugtrajektorien werden in einer ersten Vorverarbeitung weitestgehend von
+Das entwickelte Spurerkennungs-Verfahren besteht aus mehreren, aufeinander aufbauenden Verarbeitungsschritten. Die aus den
+Luftaufnahmen extrahierten Fahrzeugtrajektorien werden in einer ersten Vorverarbeitung von
 Ausreißern und Defekten befreit. Die nach diesem Schritt vorliegenden Trajektorien beschreiben
 ununterbrochene Bewegungsbahnen von Fahrzeugen durch einen bestimmten Straßenabschnitt.
 Mittels einer Clusteranalyse werden anschließend Gruppen von Trajektorien identifiziert, welche Bewegungen
 auf der selben Fahrspur beschreiben.
-Diese Spurcluster dienen als Basis für die Bestimmung der Spur-Geometrien. Für jedes Cluster wird eine
+Diese Spurcluster dienen als Basis für die Bestimmung der Spur-Geometrien. Für jedes Cluster wird anschließend eine
 Spurmittellinie und Hüll-Linien definiert, welche den Verlauf und die Breite der Fahrspur beschreiben.
 Die Spur-Geometrien werden zudem noch partitioniert, um Überlagerungen von Spuren zu entfernen.
-Eine finale Optimierung der Spur-Geometrien sorgt dafür, dass die algorithmisch ermittelten Fahrspuren
-mit den realen Spurabmaßen bestmöglich übereinstimmen. 
+Eine finale Optimierung der Spur-Geometrien sorgt dafür, dass die algorithmisch ermittelten Spuren
+mit den realen Bahnabmaßen bestmöglich übereinstimmen. 
 
 In Kapitel \ref{cha:results} wurden die Fähigkeiten und noch existierenden Schwächen des entwickelten
 Verfahrens evaluiert. Zudem wurden Ergebnisse der Spurerkennung von unterschiedlichen Straßenabschnitten
@@ -37,7 +42,7 @@ vorgestellt. Es wurde deutlich, dass das Verfahren Fahrspuren in den meisten Sit
 ermitteln kann. Die erstellten Spur-Geometrien stimmen mit den realen Fahrbahnverläufen gut überein.
 Kleine Abweichungen sind in der Regel zu vernachlässigen, da sie die Zuweisung von Fahrzeugen zu Fahrspuren
 nicht beeinträchtigen.
-Deutlich wurde allerdings auch, dass die größte Schwäche des entwickelten Spurerkennungsalgorithmus
+Deutlich wurde auch, dass eine Schwäche des entwickelten Spurerkennungsalgorithmus
 dessen Abhängigkeit von einer ausreichenden Anzahl ununterbrochener Trajektorien ist. Wenn für eine
 Fahrspur eines Straßenabschnitts nicht ausreichend Trajektorien vorliegen, oder die existierenden an sehr
 unterschiedlichen Positionen unterbrochen sind, gelingt es dem Algorithmus nicht für die Spuren
@@ -50,22 +55,23 @@ schneller ausgewertet werden.
 
 \section{Ausblick}
 
-Der im Rahmen dieser Thesis entwickelte Spurerkennungsalgorithmus ermöglicht eine schnellere Auswertung
+Der im Rahmen dieser Thesis entwickelte Spurerkennungsalgorithmus ermöglicht in Zukunft eine schnellere Auswertung
 des Fahrverhaltens von Fahrzeugen in Luftaufnahmen. Mithilfe der ermittelten Spurinformationen können
 unter anderem Überhol- und Spurwechselvorgänge sowie das Verhalten der Fahrzeuge auf einer Spur
 untereinander untersucht werden.
 
-Die Spur-Geometrien könnten in Zukunft zudem zur Evaluierung der Qualität der Fahrzeugerkennung und Verfolgung
-und insbesondere zur Identifikation von Ausreißern eingesetzt werden. Da die relevanten Fahrzeuge sich
-auf den Fahrbahnen eines Straßenabschnittes befinden, kann anhand der Spurinformationen ermittelt werden, 
-welche Trajektorien außerhalb dieser liegen und daher vermutlich Ausreißer sind.
+Die Spur-Geometrien könnten in Zukunft zudem zur Evaluierung der Qualität der Fahrzeugerkennung und Verfolgung,
+und insbesondere zur Identifikation von Ausreißern, eingesetzt werden.
+Da Fahrzeuge, deren Fahrverhalten untersucht werden soll, sich auf den Fahrbahnen eines Straßenabschnittes befinden,
+kann anhand der Spurinformationen ermittelt werden, welche Trajektorien außerhalb dieser liegen und
+daher vermutlich Ausreißer sind.
 
 Die Zuverlässigkeit der Fahrspurerkennung könnte in Zukunft durch die Identifizierung und Implementierung
 eines alternativen Verfahrens zur Clusteranalyse weiter gesteigert werden.
 Der derzeit eingesetzte Ansatz, welcher komplette Trajektorien gruppiert, liefert zwar in der Mehrzahl der Fälle
 gute Ergebnisse, ist jedoch auch dafür verantwortlich, dass in manchen Situationen Fahrspuren nicht erkannt werden.
 Ein alternatives Verfahren könnte sich beispielsweise an der Arbeit von \cite[]{Xu2015} orientieren, in welcher
-anhand der Trajektoriedaten eine \textit{``Heat-Map''} erstellt wird, aus welcher anschließend ``Mittellinien''
+anhand von Trajektoriedaten eine \textit{``Heat-Map''} erstellt wird, aus welcher anschließend ``Mittellinien''
 anhand eines \textit{``Adaptive Multi-Kernel-Based Shrinkage''}-Algorithmus extrahiert werden.
 Hierbei fallen Unterbrechungen von Trajektorien nicht ins Gewicht.
 Da die einzelnen Schritte der Spurerkennung unabhängig voneinander arbeiten, könnte ein
