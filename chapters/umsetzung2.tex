@@ -126,8 +126,8 @@ algorithm calculateCenterline:
 
   centerline :=
     for each relP in relPositions do
-      pointsAtRelPos := get points at relP for each traj in trajsIn
-      yield mean of all points in pointsAtRelPos
+      pointsAtRelPos := get points at relP (*for each*) traj (*in*) trajsIn
+      yield mean of all points (*in*) pointsAtRelPos
     end
 
   return centerline
@@ -301,13 +301,13 @@ algorithm lanesAreParallel:
   input:  lane-centerline: l1, lane-centerline: l2, delta
   output: True or False
 
-  inOppositeDirections := check if l1 and l2 run in opposite directions
+  inOppositeDirections := check (*if*) l1 and l2 run (*in*) opposite directions
   if inOppositeDirections then
     reverse points of centerline l2
   end
 
-  l1DirectionVec := calculate direction vectors for l1
-  l2DirectionVec := calculate direction vectors for l2
+  l1DirectionVec := calculate direction vectors (*for*) l1
+  l2DirectionVec := calculate direction vectors (*for*) l2
   dirDifferences := calculate pairwise the angle between two direction vectors
 
   meanDiff := calculate mean angle of deviation between l1 and l2
@@ -315,7 +315,6 @@ algorithm lanesAreParallel:
 
   return meanDiff < delta && lengthDiff >= 0.8
 \end{lstlisting}
-% TODO: Keywords escapen
 
 Für $\delta$ wurde experimentell der Wert 0.1 bestimmt. In den verschiedenen Test-Datensätzen konnten
 so zuverlässig parallele Spur-Paare identifiziert werden. Anhand dieser werden im nächsten Schritt
@@ -428,12 +427,12 @@ algorithm isLaneChangeLane:
   input:  lane-geo: l1, sequence of other lane-geos: otherGeos
   output: True or False
 
-  overlaysAtStart := find lanes in otherGeos that are overlayed by l1 at its start
-  overlaysAtEnd := find lanes in otherGeos that are overlayed by l1 at its end
+  overlaysAtStart := find lanes (*in*) otherGeos that are overlayed by l1 at its start
+  overlaysAtEnd := find lanes (*in*) otherGeos that are overlayed by l1 at its (*end*)
 
   if overlaysAtStart.nonEmpty && overlaysAtEnd.nonEmpty then:
-    a := identify more traveled parallel lanes in overlaysAtStart
-    b := identify more traveled parallel lanes in overlaysAtEnd
+    a := identify more traveled parallel lanes (*in*) overlaysAtStart
+    b := identify more traveled parallel lanes (*in*) overlaysAtEnd
     return a.nonEmpty && b.nonEmpty
   else return false
   end
