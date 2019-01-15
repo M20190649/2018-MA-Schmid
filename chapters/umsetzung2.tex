@@ -593,11 +593,11 @@ Spur-Geometrien in einem weiteren Schritt nochmals optimiert.
 Die nach dem Partitionierungs-Schritt vorliegenden Spur-Geometrien besitzen in einigen Fällen noch Defekte.
 Das am häufigsten auftretende Problem ist, dass die Spur-Geometrien nicht breit genug sind.
 Abbildung \ref{fig:real2_pre_opt} zeigt beispielsweise die Spur-Geometrien eines Straßen-Abschnitts,
-in welchem sich zu Beginn zwei parallele Fahrspuren befinden, welche sich am Ende in vier Spuren aufteilen.
+in welchem sich rechts zwei parallele Fahrspuren befinden, welche sich links in vier Spuren aufteilen.
 Es ist erkennbar, dass die zwei Fahrspuren zu Beginn nicht direkt aneinander angrenzen
 und daher in diesem Abschnitt nicht breit genug sind. In diesem Fall resultiert die zu niedrige Fahrbahnbreite
-aus der starken Überlagerung der vier Spur-Geometrien zu Beginn, was eine falsche Schätzung der Spur-Breite verursacht
-(siehe Abschnitt \ref{sec:real2_define_lane_envelope}).
+aus der starken Überlagerung der vier Spur-Geometrien im rechten Bereich vor deren Partitionierung.
+Diese verursacht eine falsche Schätzung der Spur-Breite (siehe Abschnitt \ref{sec:real2_define_lane_envelope}).
 
 \begin{figure}[H]
     \centering
