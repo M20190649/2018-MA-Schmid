@@ -32,7 +32,7 @@ als Eingabe. Aus ihnen extrahierte Spurdaten können anschließend in der Anwend
 mit den Fahrzeuginformationen zur Analyse des Verkehrsflusses eingesetzt werden.
 
 
-\section{Anforderungen an das Modul}
+\section{Anforderungen an die Spurerkennung}
 \label{sec:requirements}
 
 In diesem Abschnitt werden die wichtigsten funktionalen und nicht funktionalen Anforderungen
@@ -48,7 +48,7 @@ automatisch Fahrspuren in Luftaufnahmen anhand von Trajektoriedaten zu erkennen.
 Das Modul soll die Erkennung von Fahrspuren in den folgenden Straßentopologien unterstützen:
 
 \begin{itemize}
-    \item Gerade Fahrbahnen
+    \item Gerade Fahrbahnen (Landstraßen, Autobahnen, et cetera)
     \item Kreuzungen
     \item Kreisverkehre
     \item Sich öffnende oder schließende Spuren (z.B. Be- oder Entschleunigungsstreifen)
@@ -60,25 +60,24 @@ Das Modul soll unabhängig vom Aufnahmewinkel der Kamera Fahrspuren zuverlässig
 \paragraph{Anforderung 2200}
 Das Modul soll Fahrspuren bei Überlagerungen sinnvoll partitionieren können.
 
-\paragraph{Anforderung 2300}
-Das Modul soll die Plausibilität von Fahrspuren bewerten können und nicht plausible Spuren entfernen.
+% \paragraph{Anforderung 2300}
+% Das Modul soll die Plausibilität von Fahrspuren bewerten können und nicht plausible Spuren entfernen.
 
-\paragraph{Anforderung 2400}
+\paragraph{Anforderung 2300}
 Das Modul soll die Enden benachbarter und paralleler Fahrspuren aneinander angleichen.
 
-\paragraph{Anforderung 2500}
+\paragraph{Anforderung 2400}
 Das Modul soll es ermöglichen, die aus den Trajektorien abgeleiteten Fahrspuren in der Anwendung \textit{Vehicle-Tracker}
 zu visualisieren.
 
 \subsection{Nicht funktionale Anforderungen}
 
 \paragraph{Anforderung 3000}
-Das \textit{Spurerkennungs}-Modul muss robust mit Ausreißern und Tracking-Fehlern in den Trajektorien umgehen können.
+Das \textit{Spurerkennungs}-Modul muss möglichst robust mit Ausreißern und Defekten in den Trajektorien umgehen können.
 
 \paragraph{Anforderung 3100}
 Die Performance des Spurerkennung-Vorgangs ist nicht von höchster Priorität. Eine Erkennung soll allerdings
 dennoch maximal wenige Minuten dauern.
-
 
 \section{Entwurf des Moduls}
 \label{sec:design}

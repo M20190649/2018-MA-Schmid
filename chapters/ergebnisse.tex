@@ -175,7 +175,7 @@ In Abbildung \ref{fig:results_laneGeometries} sind beispielhaft Spur-Geometrien 
 \begin{figure}[H]
     \centering
     \subfloat[Heilbronner-Straße]{{
-        \includegraphics[align=c, width=0.35\linewidth]{resources/img/results/Heilbronner/improvedLanes_Heilbronner}
+        \includegraphics[align=c, width=0.35\linewidth]{resources/img/results/Heilbronner/improvedLanes_Heilbronner2}
     }}
     \qquad \qquad
     \subfloat[Düsseldorf]{{
@@ -199,49 +199,38 @@ Fahrbahnerweiterung existieren, wie dies in der \textit{Düsseldorf}-Aufnahme de
 Anhand von Plot c), welcher die für den Datensatz \textit{Steinheim} extrahierten Spur-Geometrien zeigt, wird
 außerdem deutlich, dass auch die Geometrien kreisförmiger Fahrspuren und Kreisverkehre bestimmt werden können.
 
-Zwei Probleme, welche bei der Bestimmung der Spur-Geometrien auftreten können, sind in Abbildung
-\ref{fig:results_defekts_laneGeos} dargestellt. In diesem Fall stammen die Beispiele aus den Geometrien
+Ein Problem, welches bei der Bestimmung der Spur-Geometrien auftreten kann, ist in Abbildung
+\ref{fig:results_defekts_laneGeos} dargestellt. Das Beispiel stammt aus den Geometrien
 des Datensatzes \textit{Heilbronner-Straße}.
 
 \begin{figure}[H]
     \centering
-    \subfloat[Problem Partitionierung]{{
-        \includegraphics[align=c, width=0.4\linewidth]{resources/img/results/Defekte/Defekt_Part}
-    }}
-    \qquad \qquad
-    \subfloat[Problem Spurbreite]{{
-        \includegraphics[align=c, width=0.3\linewidth]{resources/img/results/Defekte/Defekt_Width}
-    }}
-    \caption[Probleme in den Spur-Geometrien]{Probleme in den Spur-Geometrien}
+    \includegraphics[width=0.5\linewidth]{resources/img/results/Defekte/Defekt_Part2}
+    \caption{Partitionierungsproblem in den Spur-Geometrien}
     \label{fig:results_defekts_laneGeos}
 \end{figure}
 
-Teil a) der Abbildung zeigt drei Fahrspuren, welche parallel zueinander verlaufen.
-Auf dem entsprechenden Staßenabschnitt der Heilbronner-Straße, auf welchem sich die drei Spuren befinden,
-verschmälert sich am linken Rand die Fahrbahn und die unterste Spur (rot) geht in die mittlere Spur (blau) über.
-Bei der Partitionierung der Spuren sollte daher eigentlich die mittlere Spur vollständig erhalten bleiben
-und das Ende der unteren entfernt werden. Wie oben zu sehen ist, wird allerdings die mittlere Spur partitioniert
-und die untere bleibt erhalten. Hier trifft der in Abschnitt \ref{sec:real2_lane_partitioning} beschrieben
-Algorithmus eine ``falsche'' Entscheidung.
+Die Abbildung zeigt drei Fahrspuren, welche parallel zueinander verlaufen.
+Auf dem entsprechenden Staßenabschnitt der Heilbronner-Straße (vergleiche Abb. \ref{fig:results_lanes2} b)),
+auf welchem sich die Spuren befinden, verbreitert sich am rechten Rand der Aufnahme die Fahrbahn nach oben hin.
+Es entstehen zwei neue Fahrspuren. In den partitionierten Spur-Geometrien sollte daher eigentlich die
+oberer Spur (rot) aus der mittlere Spur (schwarz) hervorgehen, welche wiederum selbst aus der unteren
+Spur (blau) hervorgeht.
+Wie in der Abbildung oben zu sehen ist, wird allerdings die mittlere Spur partitioniert
+und die obere bleibt erhalten. Hier trifft der in Abschnitt \ref{sec:real2_lane_partitioning} beschrieben
+Algorithmus eine ``falsche'' Partitionierungs-Entscheidung.
 
-In Abbildung \ref{fig:results_defekts_laneGeos} b) ist zu sehen, dass die blau markierte Spur
-in ihrem Verlauf nach unten hin schmäler wird. Dies entspricht nicht ihrem realen Verlauf auf der Straße.
-Diese Schmälerung tritt auf, da der Algorithmus zur Optimierung der Spurbreiten (siehe Abschnitt \ref{sec:real2_lane_geo_opt})
-auf einer bestimmten Höhe den Abstand zur falschen Spur zur Neu-Berechnung der Breite verwendet.
-Die fehlerhafte Breite wird anschließend für den Rest der Spur weiterverwendet, da anschließend keine neue,
-korrekte Spurbreite bestimmt werden kann.
-
-Die beiden oben abgebildeten und beschrieben Fehler treten in ähnlicher Art gelegentlich auf. Der Grund hierfür
-ist, dass es sowohl im Fall der Spur-Partitionierung als auch im Fall der Bestimmung der Spur-Breite sehr schwierig ist,
-ein Verfahren zu definieren, welches in allen Fällen die ``richtige'' Entscheidung trifft.
+Partitionierungsprobleme können in ähnlicher Art gelegentlich auftreten. Der Grund hierfür
+ist, dass es sehr schwierig ist, ein Verfahren zu definieren, welches in allen möglichen
+Spurüberlagerungs-Konstellationen die ``richtige'' Entscheidung trifft.
 Ein menschlicher Betrachter kann bei der Überlagerung zweier Spuren zwar meist intuitiv feststellen, welche
-partitioniert werden muss, einem Algorithmus dies beizubringen ist allerdings schwierig.
+partitioniert werden muss, einem Algorithmus dies beizubringen, ist allerdings schwierig.
 
-Die verwendeten Ansätze liefern in der Mehrzahl der Fälle allerdings die ``richtige'' Lösung, was in diesem Anwendungsszenario
-absolut ausreichend ist. Gerade bei der Partitionierung der Spuren gibt es oft auch kein eindeutiges ``richtig'' und ``falsch''.
-Welche Spur erhalten bleiben soll, ist häufig Interpretationssache. Daher, und da die oben beschriebenen ``Fehler''
-leicht über die Oberfläche der \textit{Vehicle-Tracker} Anwendung korrigiert werden können, wurden die verwendeten
-Algorithmen hier nicht weiter angepasst.
+Der verwendete Partitionierungsansätz liefert in der Mehrzahl der Fälle die ``richtige'' Lösung. 
+Häufig gibt es bei der Teilung der Spuren allerdings auch kein eindeutiges ``Richtig'' und ``Falsch''.
+Welche Spur erhalten bleiben soll, ist dann Interpretationssache. Daher, und da der ``Fehler''
+leicht über die Oberfläche der \textit{Vehicle-Tracker} Anwendung korrigiert werden kann, wurde der verwendete
+Algorithmus hier nicht weiter angepasst.
 
 \section{Ergebnisse der Spurerkennung}
 
@@ -304,5 +293,13 @@ mit den realen Fahrbahnverläufen überein.
     \label{fig:results_lanes3}
 \end{figure}
 
-% TODO: evlt mehr bilder
-% TODO: Schluss
+% TODO: evtl mehr bilder
+
+Die oben beschriebenen Ergebnisse zeigen, dass der entwickelte Spurerkennungsalgorithmus die in
+Abschnitt \ref{sec:requirements} aufgestellten Anforderungen erfüllt.
+Es können Fahrspuren in Straßen mit unterschiedlichen Topologien erkannt werden. Diese stimmen
+mit den realen Spur-Geometrien zudem gut überein. Auch bei niedrigen, nicht senkrechten Aufnahmewinkeln können
+Fahrspuren aus den Trajektorien abgeleitet werden, welche den Verlauf der Fahrbahnen ausreichend genau
+beschreiben. Mit den meisten Defekten und Ausreißern in den Trajektorien kann gut umgegangen werden.
+Problematisch für das Verfahren ist es allerdings, wenn die Mehrzahl der Trajektorien einer Fahrspur
+Unterbrechungen aufweisen.
