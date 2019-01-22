@@ -48,7 +48,7 @@ von Objekten eingesetzt werden können \cite[]{Huang2018}. Die angebotenen neuro
 von \textit{Convolutional Neural Networks} (\acrshort*{cnn}s), welche sich gut zur maschinellen Verarbeitung
 von Bilddaten eignen.
 
-In Abbildung \ref{fig:grund_structure_cnn} ist der Aufbau eines CNN mit \textit{Fully-Connected Layer} dargestellt.
+In Abbildung \ref{fig:grund_structure_cnn} ist der Aufbau eines CNN dargestellt.
 Ein genaues Verständnis der Funktionsweise eines solchen Netzwerks ist im Fall dieser Arbeit nicht notwendig.
 Grundlegend besteht es allerdings aus zwei Komponenten: Der erste Teil ist für
 die \textit{Merkmals-Extraktion} verantwortlich, während der zweite Teil der \textit{Klassifizierung} dient.
@@ -91,7 +91,9 @@ Zuweisung berechnet \cite[]{Szottka2011}. Kann eine Vorhersage keiner Detektion 
 so wird eine neue Trajektorie initialisiert.
 
 Mithilfe dieses Verfahrens lassen sich Fahrzeugtrajektorien Frame-für-Frame anhand vorher ermittelter
-Detektionen rekonstruieren. Die Trajektorien beschreiben die Bewegungen der Fahrzeuge in Pixel-Koordinaten.
+Detektionen rekonstruieren. Messlücken in den Detektionen können unter Verwendung eines Partikel-Trackers
+außerdem interpoliert werden, solange diese nicht zu groß sind. 
+Die Trajektorien beschreiben die Bewegungen der Fahrzeuge in Pixel-Koordinaten.
 
 \section{Positionsbestimmung in Videoaufnahmen}
 \label{sec:grund_mapMatching}
@@ -211,9 +213,9 @@ in Weltkoordinaten umgewandelt.
 \section{Herausforderungen bei der Rekonstruktion von Fahrzeugtrajektorien}
 \label{sec:grund_challenges_reconstruction}
 
-Es existieren, unabhängig davon welches Verfahren zur Erkennung und Verfolgung von Fahrzeugen in Videoaufnahmen
-eingesetzt wird, diverse Herausforderungen bei der Rekonstruktion von Trajektorien. Nachfolgend sind
-Probleme, welche häufiger auftreten, und deren Auswirkungen beschrieben. 
+Unabhängig vom eingesetzten Verfahren zur Erkennung und Verfolgung von Fahrzeugen in Videoaufnahmen
+existieren, diverse Herausforderungen bei der Rekonstruktion von Trajektorien. Nachfolgend sind
+häufig auftretende Probleme und deren Auswirkungen beschrieben. 
 
 \subsubsection*{False-Positive und False-Negative Detektionen}
 Mit \textit{False-Positive Detektionen} sind Objekt-Identifikationen gemeint, welche kein Fahrzeug zeigen.
@@ -231,13 +233,14 @@ Fahrzeugen gehören, häufig außerhalb der Fahrbahnen verlaufen und meist sehr 
     \label{fig:grund_false_positive_detections}
 \end{figure}
 
-Von \textit{False-Negative Detektionen} wird gesprochen, wenn ein Fahrzeug in einer Aufnahme nicht
-erkannt und verfolgt wird. Hierfür kann es diverse Ursachen geben. Schlechte Belichtungsverhältnisse
-oder eine zu geringe Größe der Fahrzeuge in der Aufnahme sind nur zwei davon.
+Wird ein Fahrzeug in einer Aufnahme nicht erkannt und verfolgt, so handelt es sich dabei um eine
+\textit{False-Negative Detektion}.
+Die häufigsten Ursachen für diese Problematik sind schlechte Belichtungsverhältnisse oder eine zu geringe
+Größe der Fahrzeuge in der Aufnahme.
 In den Trajektoriedaten äußern sich False-Negative Detektionen primär durch das Fehlen von Bewegungsbahnen
 oder deren zu frühen Abbruch.
 
-\subsubsection*{Fahrbahn Verdeckungen}
+\subsubsection*{Verdeckungen der Fahrbahn}
 
 In Luftaufnahmen von Straßenabschnitten sind Teile der Fahrbahnen nicht selten durch beispielsweise
 Bäume oder Brücken verdeckt. Dies erschwert die Rekonstruktion der Bewegungsbahnen von Fahrzeugen erheblich, da diese
@@ -274,15 +277,16 @@ anhand der Mittelpunkte der Bounding-Boxes ermittelt werden, weichen diese von d
 \end{figure}
 
 Beim Arbeiten mit Trajektoriedaten muss beachtet werden, dass die oben beschriebenen Effekte auftreten
-können. Ein Spurerkennungs-Algorithmus muss daher auch mit ihnen umgehen können.
+können. Ein Spurerkennungsalgorithmus muss daher auch mit ihnen umgehen können.
 
 
 
-\chapter{Clusteranalyse}
+\chapter{Clusteranalysen}
 \label{sec:tra_clustering}
 
-Die Clusteranalyse (kurz Clustering) ist ein wichtiges Werkzeug, welches im Bereich Data-Mining zur Auswertung von Daten unterschiedlichster
-Art eingesetzt wird. Sie stellt kein konkretes Vorgehen oder einen Algorithmus dar, sondern beschreibt ein
+Die Clusteranalyse (kurz Clustering) ist ein wichtiges Werkzeug aus dem Bereich Data-Mining und Machine-Learning,
+welches zur Auswertung von Daten unterschiedlichster Art eingesetzt wird.
+Sie stellt kein konkretes Vorgehen oder einen Algorithmus dar, sondern beschreibt ein
 allgemeines Problem, welches auf unterschiedlichste Weise gelöst werden kann. Eine Definition ist nachfolgend
 gegeben:
 
@@ -296,24 +300,24 @@ gegeben:
 Je höher die \textit{Homogenität} in einem Cluster
 und die \textit{Differenz} zwischen den Clustern, desto besser ist die gewählte Clustering Methode.
 Der Einsatz einer Clusteranalyse ist in vielen Anwendungsgebieten und in unterschiedlichen wissenschaftlichen
-Disziplinen sehr beliebt, um ein Verständnis von Daten zu erhalten oder Muster in solchen zu identifizieren.
-So kommt die Clusteranalyse unter anderem in den Feldern des maschinellen Lernens, der Mustererkennung, Bildanalyse,
-der Biologie (Taxonomie) oder im Bereich Data Mining zum Einsatz. \cite[]{tan2007introduction}
-% TODO: Anwendungsfälle anpassen
+Disziplinen sehr beliebt, um ein Verständnis von Daten zu erhalten oder Muster in solchen zu identifizieren \cite[]{tan2007introduction}.
+Die Clusteranalyse kommt so beispielsweise in der Bild- \cite[]{Pappas1992} und Dokumentverarbeitung \cite[]{Hammouda2004},
+der IT-Sicherheit \cite[]{Portnoy2001} oder auch in Sozialen Netzwerken \cite[]{Handcock2007} zum Einsatz.
 
 Die Clusteranalyse hat viel mit dem Problem der Klassifizierung von Daten gemein, insofern sie Datenobjekten
 Label zuordnet. Im Gegensatz zu \textit{überwachten} Klassifizierungsansätzen, wie dem heute populären überwachten
 Lernen, leiten Cluster-Algorithmen die Label allerdings alleine aus den vorhandenen Daten ab.
 Es kommen keine Vergleichsobjekte mit bekannten, händisch vergebenen Labeln zum Einsatz.
-Aus diesem Grund wird die Clusteranalyse auch häufig als \textit{unüberwachte Klassifizierung} bezeichnet. \cite[]{tan2007introduction}
+Aus diesem Grund wird die Clusteranalyse auch als \textit{unüberwachte Klassifizierung} bezeichnet. \cite[]{tan2007introduction}
 
 Das Konzept eines \textit{Clusters} ist nicht genau definiert. Es existieren daher viele unterschiedliche Konzepte
-und Algorithmen, welche sich jeweils für andere Anwendungsfälle eignen und verschiedene Eigenschaften
+und Algorithmen zur deren Identifikation, welche sich jeweils für andere Anwendungsfälle eignen und verschiedene Eigenschaften
 besitzen. Neben der Wahl eines passenden Cluster-Algorithmus ist auch die Auswahl des verwendeten Distanzmaßes wichtig.
 
 \begin{theorem}[Distanzmaß]
     Ein Distanz- oder Ähnlichkeitsmaß definiert zahlenmäßig wie ``ähnlich'' beziehungsweise ``unähnlich''
-    sich zwei Objekte sind.
+    sich zwei Objekte sind. Auf Basis der ermittelten Distanz beziehungsweise ``Ähnlichkeit'' werden
+    Cluster gebildet.
 \end{theorem}
 
 Clustering ist kein selbsttätiger Prozess, welcher sich in

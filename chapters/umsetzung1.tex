@@ -506,7 +506,7 @@ algorithm LCSS:
   end
 
   return LCS(t1Len)(t2Len)
-\end{lstlisting} %TODO: evtl entfernen
+\end{lstlisting}
 
 Der Parameter $\delta$ wird in dieser Implementierung nicht, wie meist üblich, fest definiert, sondern er ergibt sich als
 ein Teil der Länge der kurzeren Trajektorie (siehe Listing \ref{lst:pseudo_LCSS} Zeile 7).
@@ -547,13 +547,13 @@ Die Ergebnisse aus Abbildung \ref{fig:real_results_dbscan_lcss} a) und b) zeigen
 dieses Verfahrens zwischen allen Fahrspuren korrekt unterschieden wird und die einzelnen Trajektorien
 richtig gruppiert werden. Zudem funktioniert die Bestimmung der Clusteranzahl zuverlässig.
 Auch die Performance der Clusteranalyse konnte unter Verwendung des DBSCAN Algorithmus und der LCSS-Distanz
-verbessert werden. Die benötigte Zeit für den Entennest-Datensatz sank auf circa 6 Sekunden und die des
-Neckartor-Datensatzes auf etwa 30 Sekunden. Für den vorliegenden Anwendungsfall eignet sich der Ansatz daher
+verbessert werden. Die benötigte Zeit für den Datensatz \textit{Esslingen} sank auf circa 6 Sekunden und die des
+\textit{Neckartor}-Datensatzes auf etwa 30 Sekunden. Für den vorliegenden Anwendungsfall eignet sich der Ansatz daher
 gut.
 
 \begin{figure}[H]
     \centering
-    \subfloat[Datensatz Entennest]{{
+    \subfloat[Datensatz Esslingen]{{
         \includegraphics[align=c, width=0.4\linewidth]{resources/img/umsetzung/U1/dbscan_lcss/entennest}
     }}
     \qquad \qquad

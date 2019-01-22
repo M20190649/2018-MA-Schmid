@@ -30,8 +30,8 @@ eines weiteren Datensatzes dargestellt, welcher von der Heilbronner-Straße in S
     \subfloat[]{{
         \includegraphics[align=c, width=0.33\linewidth]{resources/img/results/Heilbronner/preProTrajs}
     }}
-    \caption[Ergebnis Vorverarbeitung Heilbronner-Straße]
-            {Roh-Trajektorien Heilbronner-Straße in a), vorverarbeitete Trajektorien in b)}
+    \caption[Ergebnis Trajektorie-Vorverarbeitung der Heilbronner-Straße]
+            {Fahrzeugtrajektorien im Rohformat a), vorverarbeitete Trajektorien b) - Datensatz \textit{Heilbronner-Straße}}
     \label{fig:results_prePro_heilbronner}
 \end{figure}
 
@@ -46,21 +46,21 @@ untersuchte Straßenabschnitt dargestellt.
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.4\linewidth]{resources/img/results/Steinheim/steinheim}
+    \includegraphics[width=0.5\linewidth]{resources/img/results/Steinheim/steinheim}
     \caption[Straßenabschnitt Datensatz Steinheim]
             {Straßenabschnitt Datensatz Steinheim mit am Horizont verschwindenden Fahrspuren}
     \label{fig:results_horizon_problem}
 \end{figure}
 
-Kritisch an dieser Aufnahme ist, dass die Fahrzeuge, welche sich auf der oben links startenden Fahrbahn bewegen,
+Schwierig an dieser Aufnahme ist, dass die Fahrzeuge, welche sich auf der oben links startenden Fahrbahn bewegen,
 am Anfang beziehungsweise Ende ihrer Fahrt sehr klein sind. Da Fahrzeuge in einer Aufnahme ab einer gewissen Größe
 nurnoch sehr unzuverlässig detektiert werden, brechen die Trajektorien in diesem Fall auf sehr
-unterschiedlichen Höhen ab. % TODO: Evtl Plot dazu hinzufügen
-Problematisch ist nun, dass der in Abschnitt \ref{sec:real1_remove_broken_trajectories} beschriebene Algorithmus
-zur Entfernung unterbrochener Trajektorien, aufgrund der stark variierenden Start- und End-Positionen,
-auch die meisten Trajektorien auf der nach hinten verlaufenden Fahrbahn entfernt und somit die Spuren
-nicht erkannt werden können. Dieses Verhalten kann immer dann auftreten, wenn Fahrbahnen auf einen
-von der Kamera weit entfernten Horizont zulaufen.
+unterschiedlichen Höhen ab.
+Aufgrund der stark variierenden Start- und End-Positionen, entfernt der in Abschnitt
+\ref{sec:real1_remove_broken_trajectories} beschriebene Algorithmus zur Identifikation unterbrochener
+Trajektorien, auch die meisten Bewegungsbahnen von Fahrzeugen, welche sich auf den Horizont zu oder von im weg bewegen.
+Somit können für diese Fahrspuren auch keine Spur-Geometrien bestimmt werden.
+Dieses Verhalten kann immer dann auftreten, wenn Fahrbahnen auf einen von der Kamera weit entfernten Horizont zulaufen.
 
 Da Fahrzeuge im Bereich eines solchen Horizonts grundsätzlich unzuverlässig erkannt werden, ist auch eine Fahrverhaltensanalyse
 mithilfe von Fahrspuren hier nicht sinnvoll. Es wurde daher entschieden, dem Anwender die Möglichkeit zu geben, eine
@@ -80,7 +80,7 @@ ist, dass in den Rohdaten genügend intakte, ununterbrochene Bewegungsbahnen vor
 Die Clusteranalyse der Trajektorien bildet die Grundlage für die anschließende Bestimmung der Spur-Geometrien.
 Sie ist daher ein kritischer Bestandteil der Spurerkennung. Der in dieser Arbeit eingesetzte Ansatz zur
 Gruppierung der Trajektorien wurde in Abschnitt \ref{sec:real_ansatz_dbscan_lcss} beschrieben.
-Hier wurden auch bereits Ergebnisse der Clusteranalyse für die Datensätze \textit{Entennest} und
+Hier wurden auch bereits Ergebnisse der Clusteranalyse für die Datensätze \textit{Esslingen} und
 \textit{Neckartor} vorgestellt.
 
 Da der angewandte Clustering-Algorithmus die vollständigen Verläufe der
@@ -105,7 +105,7 @@ weshalb hier kein Cluster identifiziert wird.
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.31\linewidth]{resources/img/results/Heilbronner/filteredClusters_Heilbronner}
-    \caption{Ergebnis Trajektorie-Cluster Heilbronner-Straße}
+    \caption{Ergebnis Trajektorie-Cluster der Heilbronner-Straße}
     \label{fig:results_clusters_heilbronner}
 \end{figure}
 
@@ -121,7 +121,8 @@ den \textit{Neckartor}-Datensatz, aus welchem vor Anwendung des Algorithmus zuf�
     \subfloat[]{{
         \includegraphics[align=c, width=0.31\linewidth]{resources/img/results/Neckartor/filteredClusters2}
     }}
-    \caption{Trajektorie-Cluster Neckator-Datensatz nach zufälliger Entfernung von 50\% der Trajektorien}
+    \caption[Ergebnisse Test Clusteranalyse auf Neckartor Datensatz]
+            {Trajektorie-Cluster des Neckator-Datensatzes nach zufälliger Entfernung von 50\% der Trajektorien}
     \label{fig:results_clusters_neckartor}
 \end{figure}
 
@@ -134,13 +135,15 @@ Außer von der Anzahl der Trajektorien hängt das Ergebnis der Clusteranalyse ma
 Parametern des DBSCAN Algorithmus und des LCSS Distanzmaßes ab. Die in Abschnitt \ref{sec:results_clustering_dbscan_lcss} definierten
 Standardparameter liefern in der Mehrzahl der Fälle gute Ergebnisse. Alle oben dargestellten Plots
 wurden mit diesen Parametern erstellt.
-Anderer Parameter müssen lediglich dann gewählt werden, wenn sich die Trajektorien unterschiedlicher
+Anderer Parameterwerte müssen lediglich dann gewählt werden, wenn sich die Trajektorien unterschiedlicher
 Fahrspuren in einer Aufnahme stark überlagern.
 Dies ist beispielsweise im Datensatz \textit{Düsseldorf} der Fall, da sich hier eine Fahrspur nach circa 400 Metern in drei Spuren unterteilt.
 Die Trajektorien des Datensatzes sind in Abbildung \ref{fig:results_clusters_duesseldorf} a) dargestellt.
-Um sie klar in Spurcluster unterteilen zu können, muss statt dem Standardwert
-$\epsilon_{DBSCAN} = 0.3$ der Wert $\epsilon_{DBSCAN} = 0.1$ verwendet werden. Das Ergebnis der Clusteranalyse
-unter Einsatz dieses Parameters ist in Abbildung \ref{fig:results_clusters_duesseldorf} b) zu sehen.
+Um sie klar in Spurcluster unterteilen zu können, hat sich hier für den Parameter $\epsilon_{DBSCAN}$
+der Wert $0.1$ statt $0.3$ als besser geeignet erwiesen. Das Ergebnis der Clusteranalyse
+unter Einsatz dieses Parameterwertes ist in Abbildung \ref{fig:results_clusters_duesseldorf} b) zu sehen.
+Es werden für alle Fahrspuren, auch für jene, welche sich abschnittsweise stark überlagern, eigene Cluster
+identifiziert.
 
 \begin{figure}[H]
     \centering
@@ -151,7 +154,8 @@ unter Einsatz dieses Parameters ist in Abbildung \ref{fig:results_clusters_duess
     \subfloat[]{{
         \includegraphics[align=c, width=0.31\linewidth]{resources/img/results/Duesseldorf/filteredClusters_Duesseldorf}
     }}
-    \caption[Ergebnis Clusteranalyse Düsseldorf Datensatz]{Roh-Trajektorien Datensatz Düsseldorf a), Ergebnis Clusteranalyse b)}
+    \caption[Ergebnis Clusteranalyse Düsseldorf Datensatz]
+            {Roh-Trajektorien des Datensatzes Düsseldorf a), Ergebnis der Clusteranalyse b)}
     \label{fig:results_clusters_duesseldorf}
 \end{figure}
 
@@ -218,38 +222,38 @@ oberer Spur (rot) aus der mittlere Spur (schwarz) hervorgehen, welche wiederum s
 Spur (blau) hervorgeht.
 Wie in der Abbildung oben zu sehen ist, wird allerdings die mittlere Spur partitioniert
 und die obere bleibt erhalten. Hier trifft der in Abschnitt \ref{sec:real2_lane_partitioning} beschrieben
-Algorithmus eine ``falsche'' Partitionierungs-Entscheidung.
+Algorithmus eine falsche Partitionierungs-Entscheidung.
 
 Partitionierungsprobleme können in ähnlicher Art gelegentlich auftreten. Der Grund hierfür
 ist, dass es sehr schwierig ist, ein Verfahren zu definieren, welches in allen möglichen
-Spurüberlagerungs-Konstellationen die ``richtige'' Entscheidung trifft.
+Spurüberlagerungs-Konstellationen die richtige Entscheidung trifft.
 Ein menschlicher Betrachter kann bei der Überlagerung zweier Spuren zwar meist intuitiv feststellen, welche
-partitioniert werden muss, einem Algorithmus dies beizubringen, ist allerdings schwierig.
+partitioniert werden muss, einem Algorithmus dies beizubringen, ist allerdings schwierig,
+da die Entscheidung von vielen verschiedenen, situationsbezogenen Kriterien abhängt.
 
-Der verwendete Partitionierungsansätz liefert in der Mehrzahl der Fälle die ``richtige'' Lösung. 
+Der verwendete Partitionierungsansätz liefert in der Mehrzahl der Fälle die richtige Lösung. 
 Häufig gibt es bei der Teilung der Spuren allerdings auch kein eindeutiges ``Richtig'' und ``Falsch''.
-Welche Spur erhalten bleiben soll, ist dann Interpretationssache. Daher, und da der ``Fehler''
-leicht über die Oberfläche der \textit{Vehicle-Tracker} Anwendung korrigiert werden kann, wurde der verwendete
+Welche Spur erhalten bleiben soll, ist dann Interpretationssache. Daher, und da die Fehler
+leicht über die Oberfläche der \textit{Vehicle-Tracker} Anwendung korrigiert werden können, wurde der verwendete
 Algorithmus hier nicht weiter angepasst.
 
 \section{Ergebnisse der Spurerkennung}
 
-Nachdem in den obigen Abschnitten auf die Fähigkeiten und Probleme der drei Hauptschritte des
-Spurerkennungs-Algorithmus eingegangen wurde, werden nun Ergebnisse in Form von Screenshots vorgestellt.
+Nachdem in den vorherigen Abschnitten auf die Fähigkeiten und Probleme der drei Hauptschritte des
+Spurerkennungsalgorithmus eingegangen wurde, werden nun Ergebnisse in Form von Screenshots vorgestellt.
 In ihnen sind die automatisch erkannten und erstellten Spuren in der Anwendung \textit{Vehicle-Tracker} zu sehen.
 
 Die ersten zwei Screenshots, welche in Abbildung \ref{fig:results_lanes1} dargestellt sind, zeigen die erkannten
-Spuren im Fall der Datensätze \textit{Entennest} und \textit{Düsseldorf}.
+Spuren im Fall der Datensätze \textit{Esslingen} und \textit{Düsseldorf}.
 Anhand der Aufnahmen ist ersichtlich, dass die erstellten Fahrspuren gut mit den realen Verläufen der
 Spuren auf der Fahrbahn übereinstimmen.
 Dies gilt auch im Fall des Datensatzes \textit{Düsseldorf}, obwohl die hier detektierten Fahrzeugpositionen
 aufgrund des niedrigen Aufnahmewinkels nicht immer in der Nähe der Spurmitte liegen
 (siehe Abschnitt \ref{sec:grund_challenges_reconstruction}).
 
-% TODO: Evtl. Grund fehlende Spur Düsseldorf
 \begin{figure}[H]
     \centering
-    \subfloat[Fahrspuren Entennest]{{
+    \subfloat[Fahrspuren Esslingen]{{
         \includegraphics[align=c, width=0.5\linewidth]{resources/img/results/Lanes/Entennest_Lanes}
     }}
     \subfloat[Fahrspuren Düsseldorf]{{
