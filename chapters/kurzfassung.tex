@@ -1,5 +1,28 @@
 %!TEX root = ../Thesis.tex
 
+\chapter{Abstract}
+
+In this thesis a method for automatic detection of driving lanes in aerial photographs based on trajectory data was developed.
+The work was created in the context of the MEC-View research project, which is funded by the german Federal Ministry of Economics and Energy (BMWi).
+In this project, among other things, the driving behaviour of vehicles is being investigated using aerial observations.
+Lane informations are important because they are required in the analysis of overtaking and lane change manoeuvres.
+
+The method developed in the scope of this work can recognize lanes on roads with differently complex lane topologies.
+The algorithmically defined track geometries usually correspond very well to the real lane profiles.
+In these respects, the procedure developed goes beyond the approaches to lane identification presented so far
+in the related work.
+The lane recognition algorithm uses a cluster analysis and a newly developed, multi-stage procedure to
+derive lane geometries from trajectory data.
+
+In an evaluation, the strengths and weaknesses of the developed track detection method were determined.
+It was shown that this method can reliably identify lanes in most of the aerial photographs examined.
+The primary requirement for this is that each lane of a road section is described by a sufficient number
+of uninterrupted trajectories.
+
+The developed Lane recognition approach has been integrated into the \textit{Vehicle-Tracker} application,
+which is used in the MEC-View subproject ``Air Observation'' for the analysis of traffic.
+Thanks to the automatic lane recognition, aerial photographs of road traffic can be evaluated more quickly in the future.
+
 \chapter{Kurzfassung}
 
 In dieser Arbeit wurde ein Verfahren zur automatischen Erkennung von Fahrspuren in Luftaufnahmen
@@ -9,13 +32,13 @@ anhand von Luftbeobachtungen untersucht wird. Fahrspurinformationen sind für so
 wichtig, da nur mit ihnen beispielsweise Überhol- oder Spurwechselvorgänge untersucht werden können.
 
 Das im Rahmen dieser Arbeit entwickelte Verfahren kann Fahrspuren auf Straßen mit unterschiedlich komplexen Spur-Topologien erkennen.
-Die Verläufe und Breiten der algorithmisch definierten Spuren stimmen zudem gut mit den realen
+Die algorithmisch definierten Spur-Geometrien stimmen meist sehr gut mit den realen
 Fahrspurverläufen überein. In diesen Punkten geht das entwickelte Verfahren über die bislang von den
 verwandten Arbeiten vorgestellten Ansätze zur Fahrspuridentifikation hinaus.
-Der Spurerkennungsalgorithmus nutzt eine Clusteranalyse und verschiedene, selbst entwickelte Verfahren zur
+Der Spurerkennungsalgorithmus nutzt eine Clusteranalyse und ein neu entwickeltes, mehrstufiges Verfahren zur
 Ableitung von Fahrspur-Geometrien aus Trajektoriedaten.
 
-In einer Auswertung und Evaluation wurden die Stärken und Schwächen des entwickelten Spurerkennungsverfahrens ermittelt.
+In einer Evaluation wurden die Stärken und Schwächen des entwickelten Spurerkennungsverfahrens ermittelt.
 Es zeigte sich, dass dieses in den meisten untersuchten Luftaufnahmen zuverlässig Fahrspuren identifizieren kann.
 Primäre Anforderung hierfür ist, dass jede Fahrspur eines Straßenabschnitts von ausreichend vielen ununterbrochenen
 Trajektorien beschrieben wird.
@@ -24,5 +47,3 @@ Die Spurerkennung wurde in die Anwendung \textit{Vehicle-Tracker} integriert,
 welche im MEC-View Teilprojekt ``Luftbeobachtung'' zur Analyse des Verkehrs eingesetzt wird.
 Dank der automatischen Spurerkennung können in Zukunft Luftaufnahmen des Straßenverkehrs schneller
 ausgewertet werden.
-
-% TODO: English

@@ -9,16 +9,6 @@ Nachfolgend werden die Ergebnisse der Thesis zusammengefasst und ein kurzer Ausb
 
 \section{Ergebnisse dieser Arbeit}
 
-% Verweis Literatur und Defizite --> Auswirkungen (kein zuverlässiger Einsatz in einer weitestgehend automatisierten Auswertung von Verkehrsmessungen)
-% Der in dieser Arbeit entwickelte Spurerkennungsalgorithmus löst diese Problem.
-% Ermittlung von Spuren mit unterschiedlichen Geometrien (unterschiedliche Situationen) und mit guter Übereinstimmung der Geometrien zu realen Spuren
-% Erreicht werden die Ergebnisse durch die Verwendung einer Clusteranalyse, mit deren Hilfe Spur-Trajektorie-Cluster identifiziert werden,
-% und mehreren selbstentwickelten Verarbeitungsschritten, welche aus diesen Clustern Spur-Geometrien ableiten.
-% Um diese zu ermitteln, wurde ein robustes Verfahren konzipiert, um Spurmittellinien zu bestimmen.
-% Es stellte sich heraus, dass sich die Breite von Fahrspuren sehr gut anhand des Abstandes paralleler Mittellinien bestimmen lässt.
-% Plausibilitätschecks, Partitionierung, Optimierung
-
-
 Eine Untersuchung der Literatur zum Thema Fahrspurerkennung zu Beginn dieser Arbeit
 (siehe Kapitel \ref{cha:related_work}) machte deutlich, dass die existierenden Ansätze diverse
 Defizite besitzen.
@@ -47,6 +37,11 @@ Mit seiner Hilfe können Fahrspuren in Straßenabschnitten mit unterschiedlichst
 Die ermittelten Spur-Geometrien stimmen zudem meist sehr gut mit den realen Fahrbahnverläufen überein
 und besitzen keine Überlagerungen.
 
+Der entwickelte Algorithmus wurde in die Anwendung \textit{Vehicle-Tracker} integriert,
+welche im MEC-View Teilprojekt ``Luftbeobachtung'' zur Analyse des Fahrverhaltens von Verkehrsteilnehmern
+eingesetzt wird. Dank der automatischen Spurerkennung können in Zukunft lange Verkehrsmesskampagnen deutlich
+schneller und nahezu vollständig automatisch ausgewertet werden.
+
 % Während der Umsetzung des Verfahrens und der Auswertung wurde deutlich, dass insbesondere die Qualität der Rohdaten und dahergehend
 % auch die Performance der Datenvorverarbeitung und Bereinigung ausschlaggebend für die Qualität der Fahrspurerkennung ist.
 % Damit das entwickelte Verfahren zuverlässig funktioniert, muss eine ausreichende Anzahl von ununterbrochenen Trajektorien vorliegen,
@@ -55,12 +50,6 @@ und besitzen keine Überlagerungen.
 % alle Fällen optimale Ergebnisse liefert. Eine zu starke Anpassung der Algorithmen auf eine bestimmte Spur-Topologie
 % resultiert meist in schlechteten Ergebnissen in anderen Szenarien. Es wurde daher ein Verfahren entwickelt, welches in
 % möglichst allen Szenarien gute Ergebnisse liefert und nicht in einem Optimale.
-
-Der entwickelte Algorithmus wurde in die Anwendung \textit{Vehicle-Tracker} integriert,
-welche im MEC-View Teilprojekt ``Luftbeobachtung'' zur Analyse des Fahrverhaltens von Verkehrsteilnehmern
-eingesetzt wird. Dank der automatischen Spurerkennung können in Zukunft lange Verkehrsmesskampagnen deutlich
-schneller und nahezu vollständig automatisch ausgewertet werden.
-
 
 % Ermittelt werden die Fahrspuren anhand von Fahrzeugtrajektorien unter Verwendung einer Clusteranalyse und
 % eines neu entwickelten, mehrstufigen Verfahrens zur Erstellung von Spur-Geometrien.
@@ -74,7 +63,6 @@ schneller und nahezu vollständig automatisch ausgewertet werden.
 % Fahrspur eines Straßenabschnitts nicht ausreichend Trajektorien vorliegen, oder die existierenden an sehr
 % unterschiedlichen Positionen unterbrochen sind, gelingt es dem Algorithmus nicht für die Spuren
 % Spur-Geometrien zu bestimmen.
-% % TODO: Updaten
 
 \section{Ausblick}
 
