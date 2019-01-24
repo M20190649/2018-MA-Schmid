@@ -153,9 +153,9 @@
   \else
     \thmt@shortoptarg
   \fi}
-\def\l@thmt@theorem{} 
+\def\l@thmt@theorem{}
 \makeatother
-    
+
 % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 % 7. PDF related packages
 % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -205,6 +205,7 @@
    %pdfproducer={pdfeTeX 1.10b-2.1} %Produzent
    pdfstartview=FitH,       % Dokument wird Fit Width geaefnet
    pdfpagemode=UseOutlines, % Bookmarks im Viewer anzeigen
+   pdfpagelayout=TwoPageRight,
 %   pdfpagelabels=true,      % set PDF page labels
 }
 
@@ -370,22 +371,28 @@ captionpos=b
 
 % %%% Kopfzeile
 % einseitig: Bei einseitigem Layout, nur folgende Zeilen verwenden !!!
-\ihead[]{\leftmark} % links: Kapitel
+% \ihead[]{\leftmark} % links: Kapitel
  %\chead[\pagemark]{\pagemark} % mitte:
 % \ohead[]{\rightmark} % rechts: Section
 
 % %zweiseitig: Bei zweiseitigem Layout, nur folgende Zeilen verwenden !!!
-%\ihead[]{} % innen
+% \ihead[]{} % innen
 % % \chead[\pagemark]{\pagemark} % mitte:
-%\ohead[]{\headmark} % aussen: Kapitel (linke Seite) und Section (rechte Seite)
-%
+% \ohead[]{\headmark} % aussen: Kapitel (linke Seite) und Section (rechte Seite)
+
+\setkomafont{pageheadfoot}{\normalfont}
+\ohead[\pagemark]{\pagemark}
+\ihead[\headmark]{\headmark}
+
+\automark[chapter]{chapter}
+
 % %%% Fusszeile
-\ifoot[\workMarkDateTime]{\workMarkDateTime} % innen:
+% \ifoot[\workMarkDateTime]{\workMarkDateTime} % innen:
 %\cfoot[\pagemark]{\pagemark} % mitte:
-\ofoot[\pagemark]{\pagemark} % aussen: Seitenzahl
+% \ofoot[\pagemark]{\pagemark} % aussen: Seitenzahl
 
 % Angezeigte Abschnitte im Header
-\automark[section]{chapter} % Inhalt von [\rightmark]{\leftmark}
+% \automark[section]{chapter} % Inhalt von [\rightmark]{\leftmark}
 %
 % Linie zwischen Kopf und Textk�rper
 \setheadsepline{.4pt}[\color{black}]
@@ -399,6 +406,11 @@ captionpos=b
                                 % Fussnoten auf der gegen�berligenden Seite
 
 %% Schriften (Sections )==================================================
+
+% SCHRIFTART
+% \usepackage{courier}
+% % Standardschriftart ohne Serifen festlegen
+% \renewcommand*\familydefault{\sfdefault}
 
 % -- Koma Schriften --
 \newcommand\SectionFontStyle{\sffamily}

@@ -6,40 +6,36 @@
 \newcommand{\titleemph}[1]{\textbf{#1}} % Hervorheben
 
 \begin{titlepage}
- \sffamily % Titelseite in seriefenloser Schrift
+ \sffamily
       \includegraphics[scale=0.7]{resources/img/logo_itdesigners}
       \hfill
-      % Logo Hochschule
       \includegraphics[width=5cm]{resources/img/logo_hfu}
       \HRule{13pt}{1pt}
       \centering
       \Large
       \vlinespace{1}\\
-      \workTyp\\
-      \vspace{1em}
+      \workTyp\\[5mm]
+      im Studiengang\\[5mm]
+      \workStudiengang\\
+      \vspace{2em}
       \huge
       \workTitel\\
-%
-      \Large
-      \vlinespace{2}
-          im Master-Studiengang \workStudiengang\\
-          der Hochschule Furtwangen\\
 
-      \vlinespace{2}
-      \workNameStudent
-%
-   \vfill
-   \raggedright
-%
-   \large
-   \titleemph{Zeitraum:} \workSemester \\ % Nur bei Abschluss-Arbeiten
-   \titleemph{Prüfer:} \workPruefer \\
-   \titleemph{Zweitprüfer:} \workBetreuer \\ % Nur bei Abschluss-Arbeiten
+\vfill
+\normalsize
 
- % Folgenden Abschnitt nur bei Industrie-Arbeiten darstellen
-   \vlinespace{1}
-   \HRule{13pt}{1pt} \\
-   \titleemph{Firma:} \workFirma \\
-   \titleemph{Betreuer:} \workBetreuer
-%
+\begin{center}
+\begin{tabular}{lcl}
+   Prüfer:      &&  \workPruefer \\
+   Zweitprüfer:   && \workBetreuer \\
+   Firma:         && IT-Designers GmbH \\
+   Vorgelegt am:  && \workDatum \\
+   Vorgelegt von: &&  Steffen Schmid \\
+                  && 257721 \\
+                  && Robert-Gerwig-Platz 1 \\
+                  && 78120 Furtwangen \\
+                  && \href{mailto:steffen.schmid@hs-furtwangen.de}{steffen.schmid@hs-furtwangen.de} \\
+\end{tabular}
+\end{center}
+
 \end{titlepage}
