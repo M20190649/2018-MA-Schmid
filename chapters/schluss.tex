@@ -3,71 +3,72 @@
 \chapter{Zusammenfassung und Ausblick}
 \label{cha:end}
 
-Am Ende dieser Arbeit wird nun der Inhalt der Thesis und deren Ergebnisse noch
-zusammengefasst. Zudem wird ein Ausblick gegeben, welche Optimierungen beziehungsweise
-Weiterentwicklungen in Zukunft an der Spurerkennung noch vorgenommen werden können.
-
-\section{Zusammenfassung}
-
 Im Rahmen dieser Arbeit wurde ein Verfahren zur automatischen Erkennung von Fahrspuren in Videoaufnahmen
 anhand von Trajektoriedaten entwickelt.
+Nachfolgend werden die Ergebnisse der Thesis zusammengefasst und ein kurzer Ausblick gegeben.
 
-Zu Beginn der Thesis wurde beschrieben, wie Trajektoriedaten aus Luftaufnahmen rekonstruiert werden können
-und welche Defekte, die bei einer Fahrspurerkennung berücksichtigt werden müssen, die Bewegungsbahnen eventuell aufweisen.
-Außerdem wurden wichtige Konzepte einer Clusteranalysen vorgestellt, da eine solche im Spurerkennungsalgorithmus
-zum Einsatz kommt.
+\section{Ergebnisse dieser Arbeit}
 
-Eine initiale Untersuchung der Literatur im Bereich Fahrspurerkennung und Trajektorieauswertung
-machte deutlich, dass ein Algorithmus mit den gewünschten Eigenschaften weitestgehend neu entwickelt werden muss.
-Die in den verwandten Arbeiten vorgestellten Verfahren eignen sich meist nur zur Erkennung von Fahrspuren
-in bestimmten Straßentopologien. Außerdem stimmen die von ihnen ermittelten Spur-Geometrien nur selten
-mit den realen Abmaßen der Fahrspuren auf der Straße überein.
-Der im Rahmen dieser Thesis entwickelte Spurerkennungsalgorithmus sollte diese beiden Anforderungen erfüllen.
+Eine Untersuchung der Literatur zum Thema Fahrspurerkennung zu Beginn der Arbeit
+(siehe Kapitel \ref{cha:related_work}) machte deutlich, dass die existierenden Ansätze diverse
+Defizite besitzen.
+Jene Vorgehen, welche mit Fahrzeugtrajektorien arbeiten, können meist nur zur Identifikation von Fahrspuren
+in sehr speziellen Straßentopologien eingesetzt werden.
+Des Weiteren stimmen die in den verwandten Arbeiten ermittelten Spur-Geometrien nur selten mit den realen Dimensionen
+der Fahrspuren auf der Straße überein.
+Aus diesen Gründen eignen sich die existierenden Verfahren nicht für den Einsatz in einer
+Anwendung, mit deren Hilfe detaillierte Verkehrsanalysen aus Luftbeobachtungen erstellt werden.
 
-Das entwickelte Spurerkennungs-Verfahren besteht aus mehreren, aufeinander aufbauenden Verarbeitungsschritten. Die aus den
-Luftaufnahmen extrahierten Fahrzeugtrajektorien werden in einer ersten Vorverarbeitung von
-Ausreißern und Defekten befreit. Die nach diesem Schritt vorliegenden Trajektorien beschreiben
-ununterbrochene Bewegungsbahnen von Fahrzeugen durch einen bestimmten Straßenabschnitt.
-Mittels einer Clusteranalyse werden anschließend Gruppen von Trajektorien identifiziert, welche Bewegungen
-auf der selben Fahrspur beschreiben.
-Diese Spurcluster dienen als Basis für die Bestimmung der Spur-Geometrien. Für jedes Cluster wird anschließend eine
-Spurmittellinie und Hüll-Linien definiert, welche den Verlauf und die Breite der Fahrspur beschreiben.
-Die Spur-Geometrien werden zudem noch partitioniert, um Überlagerungen von Spuren zu entfernen.
-Eine finale Optimierung der Spur-Geometrien sorgt dafür, dass die algorithmisch ermittelten Spuren
-mit den realen Bahnabmaßen bestmöglich übereinstimmen. 
+Erkannt werden Fahrspuren in dieser Arbeit anhand von Fahrzeugtrajektorien, welche aus den zu analysierenden
+Luftaufnahmen rekonstruiert wurden. Das Verfahren setzt hierzu auf eine Clusteranalyse der Bewegungsbahnen
+und ein neu entwickeltes, mehrstufiges Verfahren zur Erstellung von Spur-Geometrien.
+Die Clusteranalyse dient der Identifikation von Spur-Clustern, welche Bewegungen von Fahrzeugen auf einer Fahrspur beschreiben.
+Jene Cluster können auch in Trajektorie-Datensätzen mit komplexen Fahrbahnverläufen identifiziert werden.
+Die Ergebnisse der Clusteranalyse dienen als Grundlage für die Ermittlung der Spur-Geometrien.
+Zur Erstellung dieser wurde ein robustes Verfahren für die Bestimmung der Spurmittellinien entwickelt.
+Anhand der Mittellinien und deren relativer Lage zueinander, werden Hülllinien definiert,
+welche die Dimensionen der Spur-Geometrien beschreiben. Diese werden partitioniert,
+um Spurüberlagerungen zu entfernen und in einem finalen Schritt nochmals optimiert,
+bevor sie in den Verkehrsanalysen verwendet werden können.
 
-In Kapitel \ref{cha:results} wurden die Fähigkeiten und noch existierenden Schwächen des entwickelten
-Verfahrens evaluiert. Zudem wurden Ergebnisse der Spurerkennung von unterschiedlichen Straßenabschnitten
-vorgestellt. Es wurde deutlich, dass das Verfahren Fahrspuren in den meisten Situationen zuverlässig
-ermitteln kann. Die erstellten Spur-Geometrien stimmen mit den realen Fahrbahnverläufen gut überein.
-Kleine Abweichungen sind in der Regel zu vernachlässigen, da sie die Zuweisung von Fahrzeugen zu Fahrspuren
-nicht beeinträchtigen.
-Deutlich wurde auch, dass eine Schwäche des entwickelten Spurerkennungsalgorithmus
-dessen Abhängigkeit von einer ausreichenden Anzahl ununterbrochener Trajektorien ist. Wenn für eine
-Fahrspur eines Straßenabschnitts nicht ausreichend Trajektorien vorliegen, oder die existierenden an sehr
-unterschiedlichen Positionen unterbrochen sind, gelingt es dem Algorithmus nicht für die Spuren
-Spur-Geometrien zu bestimmen.
+In einer Evaluation konnte bestätigt werden, dass das entwickelte Spurerkennungsverfahren die in Abschnitt
+\ref{sec:requirements} definierten Anforderungen erfüllt und die oben genannten Probleme der verwandten Arbeiten löst.
+Mit seiner Hilfe können Fahrspuren in Straßenabschnitten mit unterschiedlichsten Fahrbahnverläufen identifiziert werden.
+Die ermittelten Spur-Geometrien stimmen zudem meist sehr gut mit den realen Fahrbahnverläufen überein
+und besitzen keine Überlagerungen.
 
 Der entwickelte Algorithmus wurde in die Anwendung \textit{Vehicle-Tracker} integriert,
 welche im MEC-View Teilprojekt ``Luftbeobachtung'' zur Analyse des Fahrverhaltens von Verkehrsteilnehmern
-eingesetzt wird. Dank der automatischen Spurerkennung können in Zukunft Luftaufnahmen des Straßenverkehrs
-schneller ausgewertet werden.
+eingesetzt wird. Dank der automatischen Spurerkennung können in Zukunft lange Verkehrsmesskampagnen deutlich
+schneller und nahezu vollständig automatisch ausgewertet werden.
+
+% Während der Umsetzung des Verfahrens und der Auswertung wurde deutlich, dass insbesondere die Qualität der Rohdaten und dahergehend
+% auch die Performance der Datenvorverarbeitung und Bereinigung ausschlaggebend für die Qualität der Fahrspurerkennung ist.
+% Damit das entwickelte Verfahren zuverlässig funktioniert, muss eine ausreichende Anzahl von ununterbrochenen Trajektorien vorliegen,
+% welche die Fahrbewegungen auf den Fahrspuren beschreiben.
+% Außerdem wurde deutlich, dass bei der Bestimmung der Spur-Geometrien kein Verfahren entwickelt werden kann, welches in
+% alle Fällen optimale Ergebnisse liefert. Eine zu starke Anpassung der Algorithmen auf eine bestimmte Spur-Topologie
+% resultiert meist in schlechteten Ergebnissen in anderen Szenarien. Es wurde daher ein Verfahren entwickelt, welches in
+% möglichst allen Szenarien gute Ergebnisse liefert und nicht in einem Optimale.
 
 \section{Ausblick}
 
-Der im Rahmen dieser Thesis entwickelte Spurerkennungsalgorithmus ermöglicht in Zukunft eine schnellere Auswertung
+Das im Rahmen dieser Thesis entwickelte Spurerkennungsverfahren ermöglicht in Zukunft eine schnellere Auswertung
 des Fahrverhaltens von Fahrzeugen in Luftaufnahmen. Mithilfe der ermittelten Spurinformationen können
 unter anderem Überhol- und Spurwechselvorgänge sowie das Verhalten der Fahrzeuge auf einer Spur
-untereinander untersucht werden.
+untereinander untersucht werden. Die Durchführung dieser Untersuchungen ist wichtig für die Erstellung
+detaillierter Verkehrsanalysen. Erkenntnisse, welche aus diesen Analysen gewonnen werden, können, im
+Rahmen des MEC-View Projektes, in Zukunft auch zur Optimierung des Fahrverhaltens von autonomen
+Fahrzeugen eingesetzt werden.
 
-Die Spur-Geometrien könnten in Zukunft zudem zur Evaluierung der Qualität der Fahrzeugerkennung und Verfolgung,
+Die Spur-Geometrien könnten zudem zur Evaluierung der Qualität der Fahrzeugerkennung und Verfolgung,
 und insbesondere zur Identifikation von Ausreißern, eingesetzt werden.
 Da Fahrzeuge, deren Fahrverhalten untersucht werden soll, sich auf den Fahrbahnen eines Straßenabschnittes befinden,
 kann anhand der Spurinformationen ermittelt werden, welche Trajektorien außerhalb dieser liegen und
 daher vermutlich Ausreißer sind.
 
 Die Zuverlässigkeit der Fahrspurerkennung könnte in Zukunft durch die Identifizierung und Implementierung
-eines alternativen Verfahrens zur Clusteranalyse weiter gesteigert werden.
+eines alternativen Clustering-Verfahrens weiter gesteigert werden.
 Der derzeit eingesetzte Ansatz, welcher komplette Trajektorien gruppiert, liefert zwar in der Mehrzahl der Fälle
 gute Ergebnisse, ist jedoch auch dafür verantwortlich, dass in manchen Situationen Fahrspuren nicht erkannt werden.
 Ein alternatives Verfahren könnte sich beispielsweise an der Arbeit von \cite[]{Xu2015} orientieren, in welcher
