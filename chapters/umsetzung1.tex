@@ -388,7 +388,7 @@ Arbeit angewandt.
 
 Nachdem das Verfahren, wie in \cite[]{Atev2006} und \cite[]{Ng2002} beschrieben, implementiert wurde,
 wurde eine Evaluation durchgeführt. Die Clustering-Performance des Ansatzes
-wurde hierzu initial anhand von zwei Trajektorie-Datensätzen untersucht.
+wurde hierzu initial anhand von zwei Trajektoriedatensätzen untersucht.
 
 Die Ergebnisse der Clusteranalyse für den einfacheren Datensatz sind in Abbildung \ref{fig:real_results_atev1}
 dargestellt. An diesem Beispiel lassen sich die Probleme bereits identifizieren.
@@ -433,7 +433,7 @@ zwischen zwei Fahrspuren nicht richtig unterschieden wird. In Teil b) wurde die 
 was in einer korrekten Gruppierung der Fahrspuren resultierte.
 
 Ausschlaggenend dafür, dass der Ansatz von Atev et al. nicht weiter verfolgt und optimiert wurde, war schlussendlich
-jedoch die Performance der Clusteranalyse. Für den Trajektorie-Datensatz aus Abbildung \ref{fig:real_results_atev1},
+jedoch die Performance der Clusteranalyse. Für den Trajektoriedatensatz aus Abbildung \ref{fig:real_results_atev1},
 welcher nach der Vorverarbeitung nur 132 Bewegungsbahnen beinhaltet, benötigt die Clusteranalyse bereits über
 90 Sekunden. Für einen Datensatz mit über 400 Trajektorien, beträgt die Verarbeitungsdauer über 8 Minuten.
 Die schlechte Performance lässt sich auf das aufwendige Distanz- und Affinitätsmaß, aber auch auf die mehrfache
@@ -541,7 +541,7 @@ Sind diese Bedingungen erfüllt, gelten zwei Trajektorie-Punkte als übereinstim
 5 Trajektorien bestehen und die Differenzen der Trajektorie-Distanzen im Cluster untereinander dürfen nicht größer als 0.3 sein.
 Für $\epsilon_{DBSCAN}$ gilt grundsätzlich: Je stärker sich Fahrspuren überlagern, umso kleiner muss der gewählte Wert sein, da
 ein kleiner Wert für eine striktere Gruppierung der Trajektorien sorgt. Allerding sorgt ein kleinerer Wert
-daher auch dafür, dass mehr Trajektorien als Ausreißer klassifiziert werden.
+auch dafür, dass mehr Trajektorien als Ausreißer klassifiziert werden.
 
 Die Ergebnisse aus Abbildung \ref{fig:real_results_dbscan_lcss} a) und b) zeigen, dass bei Verwendung
 dieses Verfahrens zwischen allen Fahrspuren korrekt unterschieden wird und die einzelnen Trajektorien
@@ -573,25 +573,11 @@ der zwei Abbiegespuren in der oberen linken und unteren rechten Ecke (vergleiche
 Um diese weiterhin erkennen zu können, wurde ein extra Verarbeitungsschritt eingeführt, welcher in Abschnitt
 \ref{sec:real_detect_turning_lane} beschrieben wird.
 
-Grundsätzlich überzeugten allerdings die Ergebnisse der Clusteranalyse. Die Qualität des Ansatzes könnte auch
-durch Anwendung auf weitere Datensätze verifiziert werden. Die nachfolgend beschriebenen Schritte der Spurerkennung
-basieren daher auf den Ergebnissen der hier vorgestellten Clustering-Methode.
+Grundsätzlich überzeugten die Ergebnisse der Clusteranalyse. Die nachfolgend beschriebenen Schritte
+der Spurerkennung basieren daher auf den Ergebnissen der hier vorgestellten Clustering-Methode.
 
-\subsection{Automatische Anpassung der Cluster-Parameter}
-
-% Beschreibung Problem (siehe Auswertung) --> Bei langen Überlagerungen der Spuren anderer epsilon Parameter notwendig
-% Richtige Lösung bei Parameter 0.1
-% Zeigen Bilder Plots Düsseldorf (siehe Auswertung)
-% --> Notwendigkeit für adaptive Anpasssung von Parameter
-% Beschreibung vorgehen:
-%   Verfahren nutzt nicht die unmittelbaren Ergebnisse der Clusteranalyse, sondern die Fahrspur-Geometrien, die auf Basis der
-%   identifizierten Cluster ermittelt werden (Beschreibung in Abschnitt 6.3)
-%   Erstellung von Weg-Zeit-Linien für Trajektorien, welche Bewegung der Trajektorien auf den entsprechenden Fahrbahnen beschreiben
-%   Überprüfung ob diese Linien sich kreugen. Kreuzungen können nicht vorkommen, wenn Spurgeometrie tatsächlich nur eine beschreibt
-% Zeigen Plots Weg-Zeit-Diagramme --> 2 Beispiele mit und ohne Kreuzungen
-% Beschreibung Algo. --> Bestimmung Anzahl Kreuzungen. Prüfen ob Spur existiert, mit mehr als 20% kreuzungen
-% --> Wenn ja Parameter anpassen und Spurbestimmung erneut durchlaufen
-
+% Die Qualität des Ansatzes konnte auch
+% durch Anwendung auf weitere Datensätze verifiziert werden.
 
 \subsection{Erkennung von Abbiegespuren}
 \label{sec:real_detect_turning_lane}
@@ -603,7 +589,7 @@ Problematisch an diesen Trajektorien, aus Sicht der Clusteranalyse, ist, dass si
 gemeinsamen Spur -- der Abbiegespur -- beginnen, sich dann jedoch aufteilen und auf mehrere Fahrspuren verteilen.
 Die Trajektorien haben aus diesem Grund, trotz anfänglich identischem Verlauf, zu hohe Distanzen zueinander, um
 als ein Cluster identifiziert zu werden. Hinzu kommt, dass die Anzahl der Fahrzeuge, welche eine Abbiegespur
-benutzen, häufig nicht hoch genug ist, damit auf Basis einer Abbiege-Varianten ein Cluster geformt werden kann.
+benutzen, häufig nicht hoch genug ist, damit auf Basis einer Abbiege-Variante ein Cluster geformt werden kann.
 In Abbildung \ref{fig:real_turning_lane} a) und b) sind beispielhaft eine Abbiegespur der Neckartor-Kreuzung und
 die dazugehörigen Trajektorien abgebildet. Anhand der Straßentopologie und der Trajektorien wird deutlich,
 dass sich die Fahrzeuge nach dem Abbiegen auf drei Fahrstreifen verteilen.
@@ -691,3 +677,106 @@ welche in Abbildung \ref{fig:real_results_dbscan_lcss} b) noch fehlten, sind nun
 Mithilfe der oben vorgestellten Verfahren können Trajektorie-Cluster entdeckt werden, welche
 die einzelnen Fahrspuren in einer Aufnahme beschreiben. Im nächsten Abschnitt wird darauf eingegangen,
 wie aus diesen Clustern Spur-Geometrien abgeleitet werden.
+
+\subsection{Automatische Anpassung der Clustering-Parameter}
+
+Das oben beschriebene Clustering-Verfahren erkennt, unter Verwendung der in Abschnitt \ref{sec:results_clustering_dbscan_lcss}
+genannten Standardparameter, Spur-Cluster in den meisten Trajektoriedatensätzen zuverlässig.
+Das Standardverfahren stößt allerdings an seine Grenzen, wenn sich die Trajektorien unterschiedlicher Fahrspuren
+in einem Datensatz über eine größere Strecke hinweg stark überlagern. Dies ist beispielsweise im Datensatz
+\textit{Düsseldorf} der Fall, dessen Trajektorien in Abbildung \ref{fig:real1_clusters_duesseldorf} a) dargestellt sind.
+Es ist erkennbar, dass die zwei oben liegenden Fahrspuren sich nach circa 400 Metern auf vier Fahrspuren aufteilen.
+Herausfordernd für die Clusteranalyse ist zudem, dass der Datensatz sehr viele Bewegungsbahnen beinhaltet,
+welche Spurwechselvorgänge beschreiben.
+Das Ergebnis der Clusteranalyse unter Verwendung der Standardparameter für den \textit{Düsseldorf} Datensatz ist
+in Abbildung \ref{fig:real1_clusters_duesseldorf} b) dargestellt.
+
+\begin{figure}[H]
+    \centering
+    \subfloat[]{{
+        \includegraphics[align=c, width=0.31\linewidth]{resources/img/umsetzung/U1/Plots_Duesseldorf/preProTraj}
+    }}
+    \subfloat[]{{
+        \includegraphics[align=c, width=0.31\linewidth]{resources/img/umsetzung/U1/Plots_Duesseldorf/filteredClusters_03}
+    }}
+    \subfloat[]{{
+        \includegraphics[align=c, width=0.31\linewidth]{resources/img/umsetzung/U1/Plots_Duesseldorf/filteredClusters}
+    }}
+    \caption[Ergebnis Clusteranalyse Düsseldorf Datensatz]
+            {a) Roh-Trajektorien des Datensatzes Düsseldorf, b) Ergebnis der Clusteranalyse unter Verwendung
+            der Standardparameter ($\epsilon_{DBSCAN} = 0.3$), c) Erwünschtes Clustering-Ergebnis unter Verwendung $\epsilon_{DBSCAN} = 0.1$}
+    \label{fig:real1_clusters_duesseldorf}
+\end{figure}
+
+Es ist erkennbar, dass das Clustering-Verfahren die einzelnen Fahrspuren nicht korrekt identifizieren
+konnte. Das gewünschte Ergebnis wird allerdings erzielt, wenn der Standardwert für den Parameter $\epsilon_{DBSCAN}$
+von $0.3$ auf $0.1$ reduziert wird. Um das Verhalten der Clusteranalyse in dieser Hinsicht steuern zu können,
+wurde dem Nutzer die Möglichkeit gegeben, $\epsilon_{DBSCAN}$ beim Start der Spurerkennung anzupassen.
+Da das manuelle Setzen des Wertes allerdings Expertenwissen voraussetzt, wurde zudem ein Verfahren entwickelt,
+welches $\epsilon_{DBSCAN}$ automatisch anpasst, wenn die identifizierten Spur-Cluster beziehungsweise Fahrspuren
+nicht mit den realen Spuren übereinstimmen. 
+
+Das Verfahren zur automatischen Anpassung des Clustering-Parameters nutzt die Spur-Geometrien, welche auf Basis
+der identifizierten Spur-Cluster ermittelt werden (siehe Abschnitt \ref{cha:lane_definition}).
+Mithilfe der Geometrien, welche sich jeweils aus einem Trajektorie-Cluster ableiten, und den Trajektorien des
+Clusters lassen sich sogenannte \textit{Weg-Zeit-Diagramme} erstellen, welche die Bewegungen der Fahrzeuge auf einer
+Fahrspur abbilden.
+Beschreibt eine ermittelte Spur-Geometrie eine reale Fahrspur korrekt, dann schneiden sich die Trajektorien
+in dem entsprechenden Weg-Zeit-Diagramm nicht, da die Fahrzeuge auf der Spur hintereinander herfahren
+und sich nicht überholen. Ein entsprechendes Diagramm ist in Abbildung \ref{fig:real1_way_time_diagramms} a) zu sehen.
+Beschreibt eine Spur-Geometrie hingegen, aufgrund einer fehlerhaften Clusteranalyse, mehrere reale Fahrspuren,
+dann existieren in dem dafür erstellten Weg-Zeit-Diagramm Überschneidungen von Trajektorien, da die Fahrzeuge
+sich auf den realen Fahrspuren überholen können. Ein solches Diagramm ist in Abbildung \ref{fig:real1_way_time_diagramms}
+b) dargestellt.
+
+\begin{figure}[H]
+    \centering
+    \subfloat[]{{
+        \includegraphics[align=c, width=0.35\linewidth]{resources/img/umsetzung/U1/way_time_lines_without_crossings}
+    }}
+    \qquad
+    \subfloat[]{{
+        \includegraphics[align=c, width=0.35\linewidth]{resources/img/umsetzung/U1/way_time_lines_with_crossings}
+    }}
+    \caption[Weg-Zeit-Diagramme mit und ohne Trajektorie-Schnittpunkten]
+            {a) Weg-Zeit-Diagramm ohne Trajektorie-Überschneidungen, b) Weg-Zeit-Diagramm mit Trajektorie-Überschneidungen}
+    \label{fig:real1_way_time_diagramms}
+\end{figure}
+
+Der Algorithmus zur Anpassung des Clustering-Parameters $\epsilon_{DBSCAN}$ nutzt die oben beschriebene
+Eigenschaft der Weg-Zeit-Diagramme, um zu erkennen, ob die ermittelten Spur-Geometrien mit den realen
+Fahrspuren übereinstimmen, oder ob diese weiter untergliedert werden müssen.
+Der Ablauf des Verfahrens kann grob wie folgt beschrieben werden:
+
+\begin{enumerate}
+    \item Durchführung Spurerkennung
+    \item Erstellung von Weg-Zeit-Trajektorien auf Basis der Spur-Geometrien
+    \item Überprüfung auf Überschneidungen in Trajektorien:
+    \begin{enumerate}
+        \item Anzahl Überschneidungen über Grenzwert $\sigma$: Zurück zu 1) und Anpassung von $\epsilon_{DBSCAN}$
+        \item Anzahl Überschneidungen unter Grenzwert $\sigma$: Verwende Spur-Geometrien
+    \end{enumerate}
+\end{enumerate}
+
+Der Wert für $\epsilon_{DBSCAN}$ wird in diesem iterativen Verfahren nicht sukzessive reduziert oder erhöht,
+sondern es werden verschiedene, vordefinierte Werte getestet, welche in unterschiedlichen Situationen
+gute Ergebnisse liefern.
+Unter Verwendung des Verfahrens werden auch im Fall des \textit{Düsseldorf} Datensatzes, die erwarteten
+Spur-Cluster identifiziert, welche in Abbildung \ref{fig:real1_clusters_duesseldorf} c) zu sehen sind.
+
+Dank der Parameteranpassung, kann das Verhalten der Clusteranalyse automatisch geändert werden,
+wenn die Ergebnisse nicht die erwartete Qualität besitzen. Dem Nutzer wird dadurch eine eventuell notwendige
+manuelle Parametrisierung abgenommen.
+
+% Beschreibung Problem (siehe Auswertung) --> Bei langen Überlagerungen der Spuren anderer epsilon Parameter notwendig
+% Richtige Lösung bei Parameter 0.1
+% Zeigen Bilder Plots Düsseldorf (siehe Auswertung)
+% --> Notwendigkeit für adaptive Anpasssung von Parameter
+% Beschreibung vorgehen:
+%   Verfahren nutzt nicht die unmittelbaren Ergebnisse der Clusteranalyse, sondern die Fahrspur-Geometrien, die auf Basis der
+%   identifizierten Cluster ermittelt werden (Beschreibung in Abschnitt 6.3)
+%   Erstellung von Weg-Zeit-Linien für Trajektorien, welche Bewegung der Trajektorien auf den entsprechenden Fahrbahnen beschreiben
+%   Überprüfung ob diese Linien sich kreugen. Kreuzungen können nicht vorkommen, wenn Spurgeometrie tatsächlich nur eine beschreibt
+% Zeigen Plots Weg-Zeit-Diagramme --> 2 Beispiele mit und ohne Kreuzungen
+% Beschreibung Algo. --> Bestimmung Anzahl Kreuzungen. Prüfen ob Spur existiert, mit mehr als 20% kreuzungen
+% --> Wenn ja Parameter anpassen und Spurbestimmung erneut durchlaufen
