@@ -679,6 +679,7 @@ die einzelnen Fahrspuren in einer Aufnahme beschreiben. Im nächsten Abschnitt w
 wie aus diesen Clustern Spur-Geometrien abgeleitet werden.
 
 \subsection{Automatische Anpassung der Clustering-Parameter}
+\label{sec:real1_adjustment_clustering_parameter}
 
 Das oben beschriebene Clustering-Verfahren erkennt, unter Verwendung der in Abschnitt \ref{sec:results_clustering_dbscan_lcss}
 genannten Standardparameter, Spur-Cluster in den meisten Trajektoriedatensätzen zuverlässig.
@@ -767,16 +768,3 @@ Spur-Cluster identifiziert, welche in Abbildung \ref{fig:real1_clusters_duesseld
 Dank der Parameteranpassung, kann das Verhalten der Clusteranalyse automatisch geändert werden,
 wenn die Ergebnisse nicht die erwartete Qualität besitzen. Dem Nutzer wird dadurch eine eventuell notwendige
 manuelle Parametrisierung abgenommen.
-
-% Beschreibung Problem (siehe Auswertung) --> Bei langen Überlagerungen der Spuren anderer epsilon Parameter notwendig
-% Richtige Lösung bei Parameter 0.1
-% Zeigen Bilder Plots Düsseldorf (siehe Auswertung)
-% --> Notwendigkeit für adaptive Anpasssung von Parameter
-% Beschreibung vorgehen:
-%   Verfahren nutzt nicht die unmittelbaren Ergebnisse der Clusteranalyse, sondern die Fahrspur-Geometrien, die auf Basis der
-%   identifizierten Cluster ermittelt werden (Beschreibung in Abschnitt 6.3)
-%   Erstellung von Weg-Zeit-Linien für Trajektorien, welche Bewegung der Trajektorien auf den entsprechenden Fahrbahnen beschreiben
-%   Überprüfung ob diese Linien sich kreugen. Kreuzungen können nicht vorkommen, wenn Spurgeometrie tatsächlich nur eine beschreibt
-% Zeigen Plots Weg-Zeit-Diagramme --> 2 Beispiele mit und ohne Kreuzungen
-% Beschreibung Algo. --> Bestimmung Anzahl Kreuzungen. Prüfen ob Spur existiert, mit mehr als 20% kreuzungen
-% --> Wenn ja Parameter anpassen und Spurbestimmung erneut durchlaufen

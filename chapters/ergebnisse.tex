@@ -131,40 +131,48 @@ In Plot a) wurden vorwiegend vertikal verlaufende Trajektorien entfernt, weshalb
 In Plot b) wurden hingegen, trotz des Fehlens von 50\% der Trajektorien, fast alle Spurcluster erkannt
 (vergleiche Abbildung \ref{fig:real_turning_lane} c)).
 
-Außer von der Anzahl der Trajektorien hängt das Ergebnis der Clusteranalyse maßgeblich von den gewählten
-Parametern des DBSCAN Algorithmus und des LCSS Distanzmaßes ab. Die in Abschnitt \ref{sec:results_clustering_dbscan_lcss} definierten
-Standardparameter liefern in der Mehrzahl der Fälle gute Ergebnisse. Alle oben dargestellten Plots
-wurden mit diesen Parametern erstellt.
-Anderer Parameterwerte müssen lediglich dann gewählt werden, wenn sich die Trajektorien unterschiedlicher
-Fahrspuren in einer Aufnahme stark überlagern.
-Dies ist beispielsweise im Datensatz \textit{Düsseldorf} der Fall, da sich hier eine Fahrspur nach circa 400 Metern in drei Spuren unterteilt.
-Die Trajektorien des Datensatzes sind in Abbildung \ref{fig:results_clusters_duesseldorf} a) dargestellt.
-Um sie klar in Spurcluster unterteilen zu können, hat sich hier für den Parameter $\epsilon_{DBSCAN}$
-der Wert $0.1$ statt $0.3$ als besser geeignet erwiesen. Das Ergebnis der Clusteranalyse
-unter Einsatz dieses Parameterwertes ist in Abbildung \ref{fig:results_clusters_duesseldorf} b) zu sehen.
-Es werden für alle Fahrspuren, auch für jene, welche sich abschnittsweise stark überlagern, eigene Cluster
-identifiziert.
+Außer von der Anzahl der Trajektorien, hängt das Ergebnis der Clusteranalyse primär von den gewählten
+Parametern des DBSCAN Clusteralgorithmus ab. Die Standardparameter für das Clustering-Verfahren wurden
+in Abschnitt \ref{sec:results_clustering_dbscan_lcss} definiert. In Abschnitt \ref{sec:real1_adjustment_clustering_parameter}
+wurde zudem ein entwickeltes Verfahren vorgestellt, mit dessen Hilfe der Parameter $\epsilon_{DBSCAN}$ 
+automatisch angepasst werden kann, wenn die Qualität der ermittelten Spur-Cluster nicht den Erwartungen entspricht.
+Alle bislang in der Arbeit gezeigten Ergebnisse der Clusteranalysen wurden ohne manuelle Parameteranpassungen bestimmt.
+Die Spur-Cluster beschreiben die in einem Straßenabschnitt existierenden Fahrspuren meist sehr gut.
+
+In speziellen Fällen kann es allerdings vorkommen, dass trotz schlechter Clustering-Ergebnisse
+keine automatische Anpassung der Parameter vorgenommen wird, weshalb nur über eine manuelle Anpassung
+die Spur-Cluster zuverlässig identifiziert werden können. Dies trifft beispielsweise auf den Datensatz
+\textit{Steinheim} zu. Die unter Einsatz der Standardparameter ermittelten Spur-Cluster sind in Abbildung
+\ref{fig:results_clusters_steinheim} a) dargestellt.
 
 \begin{figure}[H]
     \centering
     \subfloat[]{{
-        \includegraphics[align=c, width=0.31\linewidth]{resources/img/results/Duesseldorf/preProTrajs}
+        \includegraphics[align=c, width=0.35\linewidth]{resources/img/results/Steinheim/filteredClusters_03}
     }}
     \qquad \qquad
     \subfloat[]{{
-        \includegraphics[align=c, width=0.31\linewidth]{resources/img/results/Duesseldorf/filteredClusters_Duesseldorf}
+        \includegraphics[align=c, width=0.35\linewidth]{resources/img/results/Steinheim/filteredClusters_015}
     }}
-    \caption[Ergebnis Clusteranalyse Düsseldorf Datensatz]
-            {Roh-Trajektorien des Datensatzes Düsseldorf a), Ergebnis der Clusteranalyse b)}
-    \label{fig:results_clusters_duesseldorf}
+    \caption[Ergebnisse Clusteranalyse Steinheim]
+            {a) Ergebnis Standard-Clusteranalyse ($\epsilon_{DBSCAN} = 0.3$),
+            b) Ergebnis Clusteranalyse nach manuelle Anpassung von $\epsilon_{DBSCAN}$ auf 0.1}
+    \label{fig:results_clusters_steinheim}
 \end{figure}
 
-Die Verwendung des alternativen Wertes für $\epsilon_{DBSCAN}$ liefert in Fällen, in welchen sich Spuren stark überlagern,
-gute Resultate. Um das Verhalten des Algorithmus in dieser Hinsicht steuern zu können, wurde dem Nutzer die Möglichkeit
-gegeben, $\epsilon_{DBSCAN}$ beim starten des Spurerkennungs-Jobs anzupassen.
+Da die Spur-Geometrien, welche anhand der in Abbildung \ref{fig:results_clusters_steinheim} a) zu sehenden
+Cluster gebildet werden, jeweils nur eine Fahrspur des Straßenabschnittes \textit{Steinheim} beschreiben,
+existieren in den abgeleiteten Weg-Zeit-Trajektorien keine Überschneidungen. Die Spurerkennung wird daher
+nicht automatisch unter Verwendung eines angepassten Parameters wiederholt. Um die zweite, nach hinten verlaufende Fahrspur
+zu identifizieren, muss $\epsilon_{DBSCAN}$ manuell angepasst werden. Das Ergebnis ist in Abbildung
+\ref{fig:results_clusters_steinheim} b) dargestellt.
+Da die Trajektorien auf den nach hinten verlaufenden Fahrspuren aufgrund der drei Brücken
+(siehe Abbildung \ref{fig:results_horizon_problem}) sehr viele Unterbrechungen
+aufweisen, kann der Clusteralgorithmus für die linke Spur zudem nur ein Cluster identifizieren, welches bis
+knapp vor die Brücken verläuft.
 
-Für die Clusteranalyse kann zusammenfassend festgehalten werden, dass sie gut funktioniert, wenn ausreichend Trajektorien
-zur Beschreibung einer Spur vorliegen. Ihr Verhalten kann bei Bedarf zudem angepasst werden.
+Für die Clusteranalyse kann zusammenfassend festgehalten werden, dass sie gut funktioniert, wenn ausreichend
+ununterbrochene Trajektorien zur Beschreibung einer Spur vorliegen.
 
 \section{Evaluierung der Spur-Geometrie-Bestimmung}
 
@@ -175,7 +183,6 @@ Wurden im vorherigen Schritt Trajektorie-Cluster für die in einer Aufnahme enth
 so können auf Basis dieser meist zuverlässige Spur-Geometrien abgeleitet werden.
 In Abbildung \ref{fig:results_laneGeometries} sind beispielhaft Spur-Geometrien aus drei unterschiedlichen Datensätzen dargestellt.
 
-% TODO: Update Plot Steinheim
 \begin{figure}[H]
     \centering
     \subfloat[Heilbronner-Straße]{{
@@ -187,7 +194,7 @@ In Abbildung \ref{fig:results_laneGeometries} sind beispielhaft Spur-Geometrien 
     }}
     \hfill
     \subfloat[Steinheim (UPDATEN)]{{
-        \includegraphics[align=c, width=0.35\linewidth]{resources/img/results/Steinheim/improvedLanes_Steinheim}
+        \includegraphics[align=c, width=0.35\linewidth]{resources/img/results/Steinheim/improvedLanes}
     }}
     \caption[Ergebnisse Spur-Geometrie-Bestimmung]{Verschiedene Ergebnisse der Spur-Geometrie-Bestimmung}
     \label{fig:results_laneGeometries}
@@ -284,9 +291,8 @@ Der Grund hierfür wurde in Abschnitt \ref{sec:results_eval_clustering} beschrie
 Der Screenshot in Abbildung \ref{fig:results_lanes3} zeigt die erkannten Fahrspuren im Datensatz \textit{Steinheim}.
 Dieses Beispiel zeigt, dass Fahrspuren auch in Straßenabschnitten mit Kreisverkehren oder kreisförmigen Spuren
 erkannt werden. Auch hier stimmen, trotz des niedrigen Aufnahmewinkels, die Fahrspuren weitestgehend
-mit den realen Fahrbahnverläufen überein.
-
-% TODO: wenn finale Aufnahe vorliegt, weiter ausführen
+mit den realen Fahrbahnverläufen überein. Der frühe Abbruch der linken, nach oben verlaufenden Fahrspur
+lässt sich auf die Unterbrechungen der Trajektorien in diesem Bereich zurückführen.
 
 \begin{figure}[H]
     \centering
@@ -296,8 +302,6 @@ mit den realen Fahrbahnverläufen überein.
     \caption{Erkannte Fahrspuren auf kreisförmigen Fahrbahnen}
     \label{fig:results_lanes3}
 \end{figure}
-
-% TODO: evtl mehr bilder
 
 Die oben beschriebenen Ergebnisse zeigen, dass der entwickelte Spurerkennungsalgorithmus die in
 Abschnitt \ref{sec:requirements} aufgestellten Anforderungen erfüllt.
