@@ -15,11 +15,10 @@ Fahrzeuge und dadurch auch die Schadstoffbelastung in der Luft \cite[]{Hemmerle2
 Die wichtigste Voraussetzung, um Staus präventiv entgegenwirken zu können, ist, den Verkehr so gut wie
 möglich zu verstehen. Nötig ist ein Verständnis des Straßenverkehrs als Ganzes, sowie der Auswirkungen,
 welche einzelne Verkehrsteilnehmer und deren Verhalten, auf diesen haben. Hierzu ist das Erstellen von
-Simulationen sowie die Auswertung realer Verkehrsaufkommen unerlässlich.
-Die auf diese Weise gesammelten Erkenntnisse bilden die Grundlage, um Straßenabschnitte, insbesondere
-auch in Innenstädten, intelligent zu gestalten.
-Des Weiteren können sie eingesetzt werden, um beispielsweise Ampelschaltungen in Städten zu optimieren,
-wovon auch bestehende Infrastrukturen profitieren können.
+Simulationen sowie die Auswertung realer Verkehrsaufkommen in Analysen unerlässlich.
+Die auf diese Weise gesammelten Erkenntnisse bilden die Grundlage, um Straßenabschnitte und Infrastrukturanlagen
+wie Ampeln, insbesondere auch in Innenstädten, intelligent zu gestalten. In Zukünft könnten auch
+autonome Fahrzeuge von Erkenntnissen aus Verkehrsanalysen profitieren.
 
 Dank der Tatsache, dass unbemannte Luftfahrzeuge (\acrshort*{uav}) wie Drohnen immer leichter und günstiger
 verfügbar sind, und die von ihnen erstellten Aufnahmen teils eine sehr gute Qualität besitzen, werden
@@ -28,18 +27,18 @@ maschinellen Sehens und maschinellen Lernens können aus Luftaufnahmen eine Viel
 Informationen extrahiert werden.
 
 Diese Arbeit beschäftigt sich mit der Realisierung einer automatischen Fahrspurerkennung in Luftaufnahmen.
-Hierzu werden die Trajektoriedaten von Fahrzeugen ausgewertet.
+Hierzu werden die Trajektoriedaten von Fahrzeugen ausgewertet, welche aus Luftaufnahmen rekonstruiert wurden.
 Die Analyse von Verkehrssituationen wird, aufgrund der oben genannten Probleme und der zunehmenden Relevanz
 des autonomen Fahrens, immer wichtiger.
-Eine automatisierte Spurerkennung ist hierbei ein wichtiger Teil des Analyseprozesses, da mit Hilfe der
+Eine automatisierte Spurerkennung ist ein wichtiger Teil des Analyseprozesses, da mit Hilfe der
 erkannten Spuren unter anderem Spurwechsel- und Überholvorgänge sowie das Verhalten der Fahrzeuge
 auf einer Spur untereinander untersucht werden können.
 
 \section{Rahmen der Arbeit}
 \label{sec:rahmen_arbeit}
 
-In den nachfolgenden Abschnitten wird das Forschungsprojekt MEC-View und dessen Teilprojekt Luftbeobachtung
-vorgestellt.
+Diese Masterthesis wurde im Rahmen des Forschungsprojektes MEC-View umgesetzt. Das Projekt und dessen
+Teilprojekt Luftbeobachtung wird nachfolgend vorgestellt.
 
 \subsection{Das Projekt MEC-View}
 \label{sec:mec_view}
@@ -59,7 +58,7 @@ Abbildung \ref{fig:intro_mec_view_arch} gibt einen Überblick über das Forschun
 
 In urbanen Gebieten
 sollen neben Daten von fahrzeuginternen Sensoren auch Informationen externer Infrastruktur-Sensoren verwendet werden,
-damit ein Fahrzeug eine fundierte Verhaltensentscheidung auf Basis eines detaillierten Umfeldmodells treffen kann.
+damit autonome Fahrzeuge eine fundierte Verhaltensentscheidung auf Basis eines detaillierten Umfeldmodells treffen können.
 Im Rahmen des Forschungsprojektes MEC-View wird eine Pilot-Anlage zur Umfelderfassung an einer vorfahrtberechtigten Straßenkreuzung
 in Ulm aufgebaut und getestet. In dieser Anlage werden die Verkehrsteilnehmer über Kameras und LIDAR-Sensoren erfasst
 und die ermittelten Daten über ein schnelles LTE/5G-Mobilfunknetz an einen \textit{Mobile Edge Computing} (\acrshort*{mec}) Server übertragen.
@@ -78,7 +77,7 @@ das Verhalten des Verkehrs besser zu verstehen und es somit ermöglichen, diesen
 Mithilfe der Analysen kann beispielsweise untersucht werden, wie durch die Anpassung von Verkehrssteuerungsanlagen
 oder durch die Änderung des Fahrverhaltens einzelner Fahrzeuge, eine Verbesserung der Verkehrssituation erreicht werden kann.
 Die Erkenntnisse können insbesondere auch in die Verhaltenssteuerung von autonomen Fahrzeugen mit einfließen.
-Aus diesem Grund sind entsprechende Untersuchungen auch für das Hauptprojekt MEC-View interessant.
+Aus diesem Grund sind entsprechende Untersuchungen auch für das MEC-View Hauptprojekt relevant.
 
 Die Untersuchungen werden im MEC-View Projekt anhand von Luftbeobachtungen durchgeführt, welche von Drohnen getätigt werden.
 In den Videoaufnahmen werden mithilfe eines neuronalen Netzes die Positionen und Fahrzeugklassen der Verkehrsteilnehmer ermittelt.
