@@ -45,7 +45,7 @@ sie in Richtung der Szenen-Grenzen.
 Unter Verwendung des definierten Distanzmaßes werden die Trajektorien in einem zweistufigen Verfahren verarbeitet.
 In den zwei Phasen werden, wie in Abbildung \ref{fig:relw_hu_two_step_cluster} dargestellt, zuerst dominante
 Fahrpfade extrahiert, welche anschließend weiter in einzelne Fahrspuren untergliedert werden.
-Als Cluster-Algorithmen vergleichen die Autoren den \textit{Spectral-Clustering} Ansatz \cite[]{Ng2002}
+Als Clusteralgorithmen vergleichen die Autoren den \textit{Spectral-Clustering} Ansatz \cite[]{Ng2002}
 mit einem \textit{Fuzzy-k-Means} Verfahren \cite[]{xie1991validity}.
 Die Untersuchungen zeigen, dass der Spectral Clustering Ansatz nicht nur bessere Ergebnisse liefert, sonderen dieser
 über mehrere Durchläufe hinweg auch stabil sind, wohingegen die Resultate des Fuzzy-Ansatzes variieren.
@@ -75,7 +75,7 @@ extrahierten Fußgänger-Trajektorien.
 \label{sec:atev_et_al}
 In \cite[]{Atev2010} ist das Ziel der Autoren, ein Verfahren zu finden, mit welchem Fahrzeugtrajektorien
 bestmöglich gruppiert werden können, ohne diese im Voraus anpassen zu müssen.
-Sie vergleichen hierzu die Performance von drei unterschiedlichen Distanzmaßen unter Verwendung von zwei Cluster-Algorithmen.
+Sie vergleichen hierzu die Performance von drei unterschiedlichen Distanzmaßen unter Verwendung von zwei Clusteralgorithmen.
 Primäres Augenmerk legen die Autoren auf ein von ihnen bereits in \cite[]{Atev2006} entwickeltes Distanzmaß,
 welches auf der Hausdorff-Distanz basiert und sowohl die Orientierung von Trajektorien berücksichtigt
 als auch robust gegenüber Ausreißern ist. Dieses neue Maß ist für zwei Trajektorien $P$ und $Q$
@@ -107,7 +107,7 @@ $C_{P,Q}$ sorgt für den Einbezug der Orientierung und über die Nachbarschaft $
 kann der Einfluss von Ausreißern minimiert werden.
 
 Das Distanzmaß vergleichen Atev et al. unter Verwendung eines Spectral und eines Agglomerativen
-Cluster-Algorithmus mit der \textit{Longest-Common-Subsequence} (LCSS) und der \textit{Dynamic-Time-Warping}-Distanz (\acrshort*{dtw}).
+Clusteralgorithmus mit der \textit{Longest-Common-Subsequence} (LCSS) und der \textit{Dynamic-Time-Warping}-Distanz (\acrshort*{dtw}).
 Die Ergebnisse der Untersuchungen für vier verschiedene Datensätze zeigen, dass die beste Cluster-Performance
 mit Hilfe der modifizierten Hausdorff-Distanz und des Spectral-Clustering erreicht wird.
 
@@ -120,7 +120,7 @@ ebenso gut oder teilweise besser.
 Eine weitere interessante Arbeit zur Clusteranalyse von Trajektorien stammt von \cite[]{Chen2011}.
 Die Autoren haben das Ziel, Muster in den Bewegungsbahnen von Hurrikans, welche im Zeitraum von 1850 bis 2010
 über den Atlantik zogen, zu erkennen.
-Sie verwenden hierzu einen angepassten DBSCAN Cluster-Algorithmus und das Hausdorff-Distanzmaß.
+Sie verwenden hierzu einen angepassten DBSCAN Clusteralgorithmus und das Hausdorff-Distanzmaß.
 Um die Missachtung der Orientierung kompensieren zu können, und zudem auch Ähnlichkeiten
 in Sub-Trajektorien zu erkennen, wählen die Autoren eine etwas andere Darstellung der Trajektorien.
 Sie definieren eine Bewegungsbahn als eine Folge sogenannter \textit{``Flow-Vektoren''}, welche neben

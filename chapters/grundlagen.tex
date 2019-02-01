@@ -306,13 +306,13 @@ der IT-Sicherheit \cite[]{Portnoy2001} oder auch in Sozialen Netzwerken \cite[]{
 
 Die Clusteranalyse hat viel mit dem Problem der Klassifizierung von Daten gemein, insofern sie Datenobjekten
 Label zuordnet. Im Gegensatz zu \textit{überwachten} Klassifizierungsansätzen, wie dem heute populären überwachten
-Lernen, leiten Cluster-Algorithmen die Label allerdings alleine aus den vorhandenen Daten ab.
+Lernen, leiten Clusteralgorithmen die Label allerdings alleine aus den vorhandenen Daten ab.
 Es kommen keine Vergleichsobjekte mit bekannten, händisch vergebenen Labeln zum Einsatz.
 Aus diesem Grund wird die Clusteranalyse auch als \textit{unüberwachte Klassifizierung} bezeichnet. \cite[]{tan2007introduction}
 
 Das Konzept eines \textit{Clusters} ist nicht genau definiert. Es existieren daher viele unterschiedliche Konzepte
 und Algorithmen zur deren Identifikation, welche sich jeweils für andere Anwendungsfälle eignen und verschiedene Eigenschaften
-besitzen. Neben der Wahl eines passenden Cluster-Algorithmus ist auch die Auswahl des verwendeten Distanzmaßes wichtig.
+besitzen. Neben der Wahl eines passenden Clusteralgorithmus ist auch die Auswahl des verwendeten Distanzmaßes wichtig.
 
 \begin{theorem}[Distanzmaß]
     Ein Distanz- oder Ähnlichkeitsmaß definiert zahlenmäßig wie ``ähnlich'' beziehungsweise ``unähnlich''
@@ -335,7 +335,7 @@ dargestellt. Nach \cite[]{Jain2010} kann allerdings kein existierender Clusterin
     \label{fig:grund_clustering_example}
 \end{figure}
 
-Aufgrund der Einschränkungen, welche alle Cluster-Algorithmen besitzen, muss der Analyst sich vor deren Anwendung intensiv
+Aufgrund der Einschränkungen, welche alle Clusteralgorithmen besitzen, muss der Analyst sich vor deren Anwendung intensiv
 mit den zu verarbeitenden Daten beschäftigen. Er muss ein Verständnis dafür besitzen, welche Struktur die Daten
 haben, beziehungsweise annehmen können, und nach welchen Mustern zu suchen ist.
 Besonders wichtiger ist zudem auch die Auswahl der richtigen, also relevanten, Datenmerkmale (\textit{``Feature Selection''})
@@ -379,7 +379,7 @@ Im Gegensatz hierzu können bei \textit{überlappenden} Cluster-Sets Objekte ein
 Bei sogenannten \textit{Fuzzy} oder \textit{Soft} Cluster-Sets, gehört ein Datenobjekt einem Cluster
 mit einer bestimmten Wahrscheinlichkeit oder Gewichtung an. Algorithmen, welche Daten eine
 Wahrscheinlichkeit für die Zugehörigkeit zu einem Cluster zuweisen, werden \textit{probabilistische}
-Cluster-Algorithmen genannt.
+Clusteralgorithmen genannt.
 
 \paragraph{Komplett vs. Partielle}
 Von \textit{kompletten} Cluster-Sets wird gesprochen, wenn jedes Element der Eingangsdaten einem Cluster zugeordnet wird.
@@ -450,7 +450,7 @@ erkennen zu können, benötigt ein Algorithmus ein spezielles ``Verständnis'' e
     \label{fig:basic_cluster_style}
 \end{figure}
 
-\section{Cluster-Algorithmen}
+\section{Clusteralgorithmen}
 \label{sec:cluster_algos}
 
 Um mit den oben beschriebenen unterschiedlichen Cluster-Sets und Cluster Definitionen umgehen zu können,
@@ -471,14 +471,14 @@ welches bestimmt, wie genau die Entfernung zwischen zwei Clustern ermittelt wird
 sind \textit{Minimum-Linkage}, welches die minimale Distanz zwischen den Objekten der Cluster als Distanz verwendet,
 oder \textit{Maximum-Linkage} beziehungsweise \textit{Average-Linkage}. \cite[]{Jain1999, GeorgeSeif2018}
 
-Grundsätzlich teilen sich hierarchische Cluster-Algorithmen in zwei Gruppen auf:
+Grundsätzlich teilen sich hierarchische Clusteralgorithmen in zwei Gruppen auf:
 \textit{Agglomerative} (Bottom-Up) und \textit{Divisive} (Top-Down) Algorithmen.
 Agglomerative Ansätze weisen zu Beginn des Clustervorgangs jedem Datenelement eine eigene Gruppe zu
 und vereinen diese anschließend.
 Bei divisiven Ansätzen werden hingegen zu Beginn alle Elemente in einem Cluster zusammengefasst und
 diese in den nachfolgenden Schritten geteilt.
 
-Als Beispiel wird anschließend der \textit{agglomerative-hierarchische Cluster-Algorithmus} genauer vorgestellt.
+Als Beispiel wird anschließend der \textit{agglomerative-hierarchische Clusteralgorithmus} genauer vorgestellt.
 Seine Arbeitsweise lässt sich sehr gut anhand sogenannter Dendrogramme oder geschachtelter Cluster-Diagramme darstellen
 (siehe Abbildung \ref{fig:grund_agglo_clustering}).
 
@@ -534,8 +534,8 @@ zwischen Clustern, sondern die Entfernung von Objekten zu Referenzpunkten, sogen
 Die am häufigsten verwendeten Prototypen sind \textit{Centroids}, welche den Mittelpunkt eines Clusters dargestellen.
 \textit{Medoids}, welche teilweise auch genutz werden, repräsentieren hingegen den Median eines Clusters.
 
-Ein Beispiel für einen Centroid-Cluster-Algorithmus ist \textit{k-Means}. Dieser ist aufgrund seines Alters,
-seiner Einfachheit und der vielen Weiterentwicklungen wohl der bekannteste Cluster-Algorithmus überhaupt.
+Ein Beispiel für einen Centroid-Clusteralgorithmus ist \textit{k-Means}. Dieser ist aufgrund seines Alters,
+seiner Einfachheit und der vielen Weiterentwicklungen wohl der bekannteste Clusteralgorithmus überhaupt.
 
 Das Ziel von k-Means ist es, für eine n-dimensionale Punktmenge $X = \{ x_1 ... x_n \}$ ein Cluster-Set $C = \{ c_1 ... c_k \}$
 zu finden, welches die Summe der quadratischen Abweichung (Gleichung \ref{eq_kmeans1}) zwischen allein Punkten in einem Cluster und deren
@@ -607,7 +607,7 @@ Zudem ist die Annahme, dass vielen realen Datensätzen ein statistisches Verteil
 Ist diese These jedoch berechtigt, haben die Modelle den Vorteil, dass sie neben der Zuweisung von Objekten zu Clustern
 auch Korrelationen zwischen einzelnen Attributen aufzeigen können. \cite[]{AndersDrachen2014}
 
-Nachfolgend wird der bekannteste Vertreter der Distributions-Cluster-Algorithmen vorgestellt:
+Nachfolgend wird der bekannteste Vertreter der Distributions-Clusteralgorithmen vorgestellt:
 das \textit{Expectation–maximization} (\acrshort*{em}) Verfahren unter Verwendung sogenannter \textit{Gaussian-Mixture-Models} (\acrshort*{gmm}).
 Die Funktionsweise des EM-Algorithmus hat grundsätzlich viel gemein mit der des k-Mean Algorithmus.
 Es wird ebenfalls mit einer festen Anzahl zufällig initialisierter Modelle gestartet, welche anschließend über mehrere Iterationen
@@ -641,7 +641,7 @@ Abbildung \ref{fig:grund_em_clustering} grafisch dargestellt.
     \subfloat[Iteration 4]{{
         \includegraphics[align=c, width=0.22\linewidth]{resources/img/grundlagen/clustering_EM/EM4}
     }}
-    \caption[Funktionsweise des EM-Cluster-Algorithmus]{Funktionsweise des EM-Cluster-Algorithmus über mehrere Iterationen \cite[]{GeorgeSeif2018}}
+    \caption[Funktionsweise des EM-Clusteralgorithmus]{Funktionsweise des EM-Clusteralgorithmus über mehrere Iterationen \cite[]{GeorgeSeif2018}}
     \label{fig:grund_em_clustering}
 \end{figure}
 
@@ -716,14 +716,14 @@ Der DBSCAN Algorithmus kann, basierend auf den obigen Definitionen, wie folgt be
     \item[5)] Wiederholdung der Schritte 3) und 4), bis alle Kern- und Randobjekte einem Cluster zugewiesen sind. (Abb. \ref{fig:grund_dbscan_clustering} c))
 \end{description}
 
-DBSCAN besitzt die oben erwähnten Vorteile Dichte-basierter Cluster-Algorithmen. Dank einer Zeitkomplexität
+DBSCAN besitzt die oben erwähnten Vorteile Dichte-basierter Clusteralgorithmen. Dank einer Zeitkomplexität
 von $O(n\ log\ n)$ kann er außerdem auch auf größere Datensätze angewendet werden.
 Nachteil des Ansatzes ist, dass er schlecht mit Clustern umgehen kann, welche unterschiedliche Dichten besitzen.
 
 \section{Distanzmaße zum Vergleich von Fahrzeugtrajektorien}
 \label{sec:distance_measures}
 
-Bei der Clusteranalyse ist neben der Wahl des passenden Cluster-Algorithmus insbesondere
+Bei der Clusteranalyse ist neben der Wahl des passenden Clusteralgorithmus insbesondere
 die Entscheidung, welches Distanzmaß verwendet wird, ausschlaggebend.
 Im obigen Abschnitt wurden bereits die euklidsche Distanz (Gleichung \ref{eq_dist}) als ein mögliches Distanzmaß
 definiert. Dieses kann jedoch nur zur Bestimmung der Distanz zwischen $n$-dimensionalen Punkten im euklidschen Raum verwendet
