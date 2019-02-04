@@ -6,7 +6,7 @@
 In diesem Kapitel wird die Realisierung des Spurerkennungsalgorithmus thematisiert.
 Es wird zuerst darauf eingegangen, wie die Trajektoriedaten im Algorithmus repräsentiert
 und, vor der Clusteranalyse, vorverarbeitet werden.
-Anschließend wird darauf eingegangen, wie in den Trajektoriedatensätzen Cluster identifiziert werden,
+Anschließend wird beschrieben, wie in den Trajektoriedatensätzen Cluster identifiziert werden,
 welche den Verlauf von Fahrspuren beschreiben.
 Den Schluss des Kapitels bildet die Vorstellung des Vorgehens zur Bestimmung der Spur-Geometrien.
 
@@ -61,7 +61,7 @@ Abbildung \ref{fig:real_trajectory_classDia} zeigt den Aufbau einer Trajektorie 
 
 \begin{figure}[H]
 \centering
-    \includegraphics[width=0.38\linewidth]{resources/img/umsetzung/U1/Trajectory_ClassDia}
+    \includegraphics[width=0.35\linewidth]{resources/img/umsetzung/U1/Trajectory_ClassDia}
 \caption{Aufbau Trajektorie-Klasse}
 \label{fig:real_trajectory_classDia}
 \end{figure}
@@ -116,8 +116,9 @@ beeinflussen würden.
 Zwei sind in Abbildung \ref{fig:real_defects_trajectories} dargestellt.
 Teil a) zeigt, wie Fahrzeuge Punktwolken beim Stilstand vor Lichtsignalanlagen bilden.
 Teil b) der Abbildung veranschaulicht, dass in bestimmten Bereichen sehr viele Trajektorie-Unterbrechungen
-existieren. In diesen Bereichen werden die Fahrbahnen üblicherweise von Bäumen, Brücken et cetera überlagert, wodurch
-die Fahrzeugverfolgung unterbrochen wird.
+existieren.
+In diesen Bereichen werden die Fahrbahnen üblicherweise von Bäumen, Brücken et cetera überlagert, wodurch
+die Fahrzeugverfolgung unterbrochen wird (siehe Abschnitt \ref{sec:grund_challenges_reconstruction}).
 
 \begin{figure}[H]
     \centering
@@ -128,7 +129,8 @@ die Fahrzeugverfolgung unterbrochen wird.
     \subfloat[]{{
         \includegraphics[align=c, width=0.37\linewidth]{resources/img/umsetzung/U1/trajectories_defect2}
     }}
-    \caption[Beispiel Defekte in Trajektoriedaten]{Defekte in Trajektorien - Punktwolken vor Lichtsignalanlagen a), Unterbrechungen aufgrund von Fahrbahnverdeckung b)}
+    \caption[Beispiel Defekte in Trajektoriedaten]
+            {Defekte in Trajektorien - Punktwolken vor Lichtsignalanlagen a), Unterbrechungen aufgrund von Fahrbahnverdeckung b)}
     \label{fig:real_defects_trajectories}
 \end{figure}
 
@@ -137,9 +139,6 @@ Um von diesen und weiteren Effekten bei der Clusteranalyse nicht beeinflusst zu 
 
 \subsection{Vorverarbeitung der Trajektorien}
 \label{sec:realisation_preprocessing}
-
-Die unterschiedlichen Verfahren, welche zur Vorverarbeitung und Bereinigung der Roh-Trajektorien angewandt werden,
-sind in diesem Abschnitt erläutert.
 
 Primäres Ziel der Vorverarbeitung ist es, Ausreißer aus der
 Trajektorie-Menge zu entfernen, welche das Ergebnis der Clusteranalyse negativ beeinflussen würden.
@@ -159,7 +158,7 @@ In folgender Auflistung sind die drei wichtigsten Vorverarbeitungsschritte aufge
     \item Entfernung unterbrochener Trajektorien
 \end{enumerate}
 
-Die einzelnen Schritte und ihr Hintergrund werden anschließend noch genauer erläutert.
+Die einzelnen Schritte und ihre Hintergründe werden anschließend noch genauer erläutert.
 
 \subsubsection{Resampling von Trajektorien auf minimale Punktdistanz}
 Der erste Vorverarbeitungsschritt reduziert die Anzahl der Koordinaten, welche eine Bewegungsbahn beschreiben, erheblich.
@@ -289,7 +288,7 @@ im Rahmen der Arbeit genauer untersucht wurde.
 \label{sec:real_ansatz_spec_modHD}
 
 Als erster Ansatz für die Clusteranalyse wurde das von \cite[]{Atev2010} vorgestellte Verfahren untersucht.
-Es wurde gewählt, da es sowohl in der Arbeit von Atev et al. selbst, wie auch in\cite[]{Morris2009}, gute Ergebnisse
+Es wurde gewählt, da es sowohl in der Arbeit von Atev et al. selbst, wie auch in \cite[]{Morris2009}, gute Ergebnisse
 bei der Clusteranalyse lieferte.
 Das Verfahren nutzt die in \cite[]{Atev2006} vorgestellte modifizierte Hausdorff-Distanz und den
 Spectral-Clustering-Algorithmus. Die Grundlagen des Distanzmaßes wurden bereits in Abschnitt
@@ -344,7 +343,7 @@ Zur Berechnung der Distanzen $d(p,q)$ zwischen $p$ und allen Punkte $q \in N_Q(C
 Distanz verwendet. Wurden auf diese Weise alle minimalen Distanzen zwischen Punkten und ihren Nachbarschaften in
 der Vergleichs-Trajektorie bestimmt, so wird aus ihnen der finale Distanzwert bestimmt. Der Operator
 $ord_{p \in P}^{\alpha}$ wählt hierfür jene Distanz, welche größer ist als $\alpha$-Prozent aller Werte.
-Mit Hilfe dieses Distanzmaßes, wird eine Distanz-Matrix $D$ konstruiert, welche die Distanzen
+Mit Hilfe dieses Distanzmaßes wird eine Distanz-Matrix $D$ konstruiert, welche die Distanzen
 aller Trajektorie-Kombinationen speichert.
 
 Um die modifizierte Hausdorff Distanz im Spectral-Clustering Verfahren einsetzten zu können, muss ein
@@ -384,8 +383,8 @@ und anschließend jeweils ein Verzerrungs-Maß $\rho_k$ berechnet, welches angib
 die Datenpunkte beschreiben. Für $k$ wird daher jener Wert gewählt, welcher das
 kleineste $\rho_k$ erzeugt. Diese Methode zur Schätzung der Clusteranzahl wurde auch in der vorliegenden
 Arbeit angewandt.
-Die mithilfe des Verfahrens von Atev et al. identifizierten Cluster-Sets sind partitioniert, exklusiv und komplett
-(siehe Abschnitt \ref{sec:grund_property_cluster_sets}).
+Die auf diese Weise mithilfe des Verfahrens von Atev et al. identifizierten Cluster-Sets sind partitioniert,
+exklusiv und komplett (siehe Abschnitt \ref{sec:grund_property_cluster_sets}).
 
 \subsubsection{Auswertung des Verfahrens}
 
@@ -429,7 +428,7 @@ einem Spur-Cluster zugeordnet, was nicht korrekt ist.
 Diese falsche Zuordnung der Ausreißer, würde die Bestimmung der Spur-Geometrien im nächsten Schritt des
 Algorithmus aus Abschnitt \ref{fig:concept_laneDetection_activity} erschweren.
 
-Die schlechten Clustering-Ergebnisse des Ansatzes sind zudem Folge der nicht zuverlässig funktionierenden Schätzung
+Die schlechten Clustering-Ergebnisse des Ansatzes sind primär Folge der nicht zuverlässig funktionierenden Schätzung
 der Clusteranzahl $k$. Im Fall des Datensatzes aus Abbildung \ref{fig:real_results_atev1}, wird $k = 5$
 statt korrekterweise $k = 6$ geschätzt. Hieraus ergibt sich, dass in Abbildung \ref{fig:real_results_atev1} a)
 zwischen zwei Fahrspuren nicht richtig unterschieden wird. In Teil b) wurde die Clusteranzahl händisch spezifiziert,
@@ -766,7 +765,6 @@ Der Ablauf des Verfahrens kann grob wie folgt beschrieben werden:
 \begin{enumerate}
     \item Durchführung der Spurerkennung.
     \item Erstellung von Weg-Zeit-Trajektorien auf Basis der Spur-Geometrien.
-    % \item Überprüfung auf Überschneidungen in Trajektorien:
     \item Bestimmung der Anzahl der Überschneidungen in Weg-Zeit-Trajektorien:
     \begin{enumerate}
         \item bei Überschreitung des Grenzwertes $\rho$: Zurück zu 1) und Anpassung von\\ $\epsilon_{DBSCAN}$, sonst
