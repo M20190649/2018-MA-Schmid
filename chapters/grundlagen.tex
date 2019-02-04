@@ -13,36 +13,37 @@ In diesem Kapitel wird erläutert, wie aus Luftaufnahmen Trajektorien von Fahrze
 \end{theorem}
 
 Trajektorien sind grundsätzlich die wichtigste Informationsquelle bei der Analyse des Fahrverhaltens aus Luftbeobachtungen.
-Eine Rekonstruktion von Fahrzeugtrajektorien wird zwar im Rahmen dieser Arbeit nicht umgesetzt,
-allerdings ist es wichtig ein Grundverständnis der benötigten Methoden und Schritte zu besitzen,
+Eine Rekonstruktion von Fahrzeugtrajektorien wird im Rahmen dieser Arbeit nicht umgesetzt,
+allerdings ist es wichtig ein Grundverständnis der hierzu benötigten Methoden und Schritte zu besitzen,
 um die Trajektoriedaten und die darin enthaltenen Defekte interpretieren zu können.
 
-Es wird nachfolgend beschrieben, wie Fahrzeuge in Videoaufnahmen erkannt und verfolgt
+Nachfolgend wird beschrieben, wie Fahrzeuge in Videoaufnahmen erkannt und verfolgt
 werden können, um anschließend deren Positionen in einem Weltkoordinatensystem zu bestimmen. Am Ende des Kapitels
-werden einige Schwierigkeiten, welche bei der Rekonstruktion der Trajektorien auftreten können, aufgezeigt.
+werden einige Herausforderungen, welche bei der Rekonstruktion der Trajektorien auftreten, aufgezeigt.
 
 \section{Erkennung und Verfolgung von Fahrzeugen in Videoaufnahmen}
 
 Es existieren unterschiedliche Ansätze, welche zur Erkennung und Verfolgung von Fahrzeugen in Videoaufnahmen
 eingesetzt werden können.
 
-Ein Verfahren, welches gute Ergebnisse liefern kann aber mit einem nicht unerheblichen manuellen Aufwand verbunden ist,
+Ein Verfahren, welches gute Ergebnisse liefern kann, aber mit einem nicht unerheblichen manuellen Aufwand verbunden ist,
 ist das \textit{Supervised-Tracking}. Hierbei werden initial manuell ausgewählte Bildbereiche, sogenannte
 \textit{Region of Interests} (\acrshort*{roi}s), automatisch mithilfe eines erlernten Klassifikators verfolgt.
 Dieser Klassifikator muss zwischen Fahrzeugen und ihrer Umgebung unterscheiden können \cite[]{Grabner}.
 Der Supervised-Tracking Ansatz entspricht, aufgrund der notwendigen manuellen Detektion von Fahrzeugen, nichtmehr
 dem aktuellen Stand der Technik.
 
-Modernere Verfahren detektieren Fahrzeuge in Videoaufnahmen voll-automatisch und nutzen einen separaten
-Tracking-Schritt um anhand der Einzel-Detektionen Trajektorien zu erstellen. Ein solcher Ansatz wird auch in der Anwendung
-\textit{Vehicle-Tracker} eingesetzt. Er wird nachfolgend in groben Zügen beschrieben.
+Modernere Verfahren detektieren Fahrzeuge in Videoaufnahmen vollautomatisch und nutzen einen separaten
+Tracking-Schritt, um anhand der Einzeldetektionen Trajektorien zu erstellen. Ein solcher zweistufiger
+Ansatz wird auch in der Anwendung \textit{Vehicle-Tracker} eingesetzt. Er wird nachfolgend in groben
+Zügen beschrieben.
 
 \subsection{Fahrzeug-Detektion}
 
 In der Detektionsphase werden die Positionen der Fahrzeuge in der Videoaufnahme ermittelt.
-Üblicherweise wird die Detektion auf jedem Frame des Videos ausgeführt.
+Üblicherweise wird die Detektion für jedes Frame des Videos ausgeführt.
 Erkannt werden die Fahrzeuge in der Anwendung \textit{Vehicle-Tracker} mithilfe von Tensorflow\footnote{Tensorflow - \url{https://www.tensorflow.org/}}.
-Das quelloffene Machine-Learning Framework bietet in seiner \textit{Object-Detection-API}
+Das quelloffene Machine-Learning Framework bietet in seiner \textit{Object DetectionAPI}
 verschiedene Netzwerk-Architekturen und vortrainierte Modelle an, welche zur Erkennung und Klassifizierung
 von Objekten eingesetzt werden können \cite[]{Huang2018}. Die angebotenen neuronalen Netze sind Weiterentwicklungen
 von \textit{Convolutional Neural Networks} (\acrshort*{cnn}s), welche sich gut zur maschinellen Verarbeitung
@@ -53,7 +54,7 @@ Ein genaues Verständnis der Funktionsweise eines solchen Netzwerks ist im Fall 
 Grundlegend besteht es allerdings aus zwei Komponenten: Der erste Teil ist für
 die \textit{Merkmals-Extraktion} verantwortlich, während der zweite Teil der \textit{Klassifizierung} dient.
 In der ersten Phase extrahiert das Netzwerk aus einem Bild Merkmale, mittels
-welcher die zu erkennenden Objekte beschrieben werden können. Nach welchen Merkmalen in einem Bild gesucht wird,
+welcher die zu erkennenden Objekte beschrieben werden können. Nach welchen Kriterien in einem Bild gesucht wird,
 wird während der Trainingsphase des Netzes ermittelt.
 Anhand der Merkmale werden die Positionen der gesuchten Objekte im Bild bestimmt.
 Um welches Objekt es sich an einer bestimmten Position handelt, wird anschließend vom sogenannten
@@ -67,23 +68,23 @@ Um welches Objekt es sich an einer bestimmten Position handelt, wird anschließe
 \end{figure}
 
 Im Fall der Tensorflow Object Detection API werden die Positionen der erkannten Objekte über sogenannte
-\textit{Bounding-Boxes} definiert. Die Lage und Größe dieser rechteckigen Detektionen im Bild wird über
+\textit{Bounding-Boxes} definiert. Die Lage und Größe dieser rechteckigen Markierungen im Bild, wird über
 zwei Pixel-Koordinaten angegeben. \cite[]{Huang2018}
 
-\subsection{Fahrzeug-Verfolgung}
+\subsection{Fahrzeugverfolgung}
 
 Nachdem in jedem Video-Frame einer Aufnahme die Positionen der Fahrzeuge ermittelt wurden,
-müssen aus diesen Einzel-Detektionen anschließend Trajektorien erstellt werden.
+müssen aus diesen Einzeldetektionen anschließend Trajektorien erstellt werden.
 Hierzu müssen alle Positionsinformationen, welche von einem Fahrzeug stammen, einer Bewegungsbahn zugeordnet werden.
 Eine solche Zuordnung ist nicht trivial, da nie bekannt ist, an welcher Position sich ein Fahrzeug im
 nächsten Video-Frame befinden wird.
 
-Ein Algorithmus zur Rekonstruktion der Trajektorien aus den Einzel-Detektionen muss die Fahrzeuge im Video
-verfolgen. Um dies zu erreichen kann beispielsweise, wie in der Anwendung \textit{Vehicle-Tracker},
+Ein Algorithmus zur Rekonstruktion der Trajektorien aus den Einzeldetektionen muss die Fahrzeuge im Video
+verfolgen. Um dies zu erreichen, kann beispielsweise, wie in der Anwendung \textit{Vehicle-Tracker},
 ein auf einem Partikel-Filter basierender Tracking-Ansatz verwendet werden.
 Ein Partikel-Filter, auch bekannt als \textit{sequenzielle Monte-Carlo-Methode}, dient der Schätzung
 des Zustandes eines dynamischen Systems basierend auf vorherigen Messwerten.
-Bei der Fahrzeug-Verfolgung kann mithilfe eines Partikel-Filters ermittelt werden, an welcher Stelle sich
+Bei der Fahrzeugverfolgung kann mithilfe eines Partikel-Filters ermittelt werden, an welcher Stelle sich
 ein solches im Video-Frame $t$, basierend auf dessen vorherigen Positionen, vorraussichtlich befindet \cite[]{Apeltauer2015}.
 Um eine Vorhersage für Frame $t$ einer Detektion aus Frame $t$ zuzuweisen, und so Trajektorien aus diesen zu erstellen,
 kann der \textit{Ungarische Algorithmus} von Harold W. Kuhn eingesetzt werden, welcher eine optimale
@@ -92,13 +93,13 @@ so wird eine neue Trajektorie initialisiert.
 
 Mithilfe dieses Verfahrens lassen sich Fahrzeugtrajektorien Frame-für-Frame anhand vorher ermittelter
 Detektionen rekonstruieren. Messlücken in den Detektionen können unter Verwendung eines Partikel-Trackers
-außerdem interpoliert werden, solange diese nicht zu groß sind. 
-Die Trajektorien beschreiben die Bewegungen der Fahrzeuge in Pixel-Koordinaten.
+außerdem interpoliert werden, solange diese nicht zu groß sind.
+Die erstellten Trajektorien beschreiben die Bewegungen der Fahrzeuge anschließend in Pixel-Koordinaten.
 
 \section{Positionsbestimmung in Videoaufnahmen}
 \label{sec:grund_mapMatching}
 
-Nachdem die Positionen der Fahrzeuge in Pixel-Koordinaten bestimmt wurden, müssen diese in 3D-Weltkoordinaten
+Nachdem die Positionen der Fahrzeuge in Pixel-Koordinaten bestimmt wurden, müssen diese in 3D Weltkoordinaten
 umgewandelt werden, um die genauen Fahrzeugpositionen auf der Straße zu erhalten. Dank der Verwendung eines
 stationären Weltkoordinatensystems mit Einheit Meter, lassen sich zudem reale Entfernungen
 in der Aufnahme ermitteln, was beispielsweise für die Bestimmung der Fahrzeuggeschwindigkeiten sehr wichtig ist.
@@ -111,22 +112,23 @@ Ein solches Modell ist in Abbildung \ref{fig:grund_pinhole_model} dargestellt.
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.55\linewidth]{resources/img/grundlagen/TrajectoryReconstruction/pinhole_camera_model}
-    \caption[Bildprojektion im Lochkameramodell]{Projektion eines Punktes P auf die Projektionsfläche einer Lochkamera \cite[]{DevTeamOpenCV2018}}
+    \caption[Bildprojektion im Lochkameramodell]
+            {Projektion eines Punktes P auf die Projektionsfläche einer Lochkamera \cite[]{DevTeamOpenCV2018}}
     \label{fig:grund_pinhole_model}
 \end{figure}
 
 In einer Lochkamera fällt Licht durch eine kleine Öffnung auf eine Projektionsfläche. Es werden keine Linsen
-zur Bündelung des Lichtes eingestzt. Für die Projektion eines Punktes $P$ auf diese Fläche müssen vier
-Bezugsysteme berücksichtigt werden \cite[]{Jahne2012}:
+zur Bündelung des Lichtes eingesetzt. Für die Projektion eines Punktes $P$ auf diese Fläche müssen vier
+Bezugssysteme berücksichtigt werden \cite[]{Jahne2012}:
 
 \begin{enumerate}
-    \item Das \textbf{Weltkoordinatensystem} ist ein stationäres Bezugsystem, dessen Ursprung sich an einem beliebigen Punkt
+    \item Das \textbf{Weltkoordinatensystem} ist ein stationäres Bezugssystem, dessen Ursprung sich an einem beliebigen Punkt
             im aufgenommenen Raum befindet. Über dieses System werden Weltkoordinaten $P = (X, Y, Z)$ definiert.
     \item Das \textbf{Kamerakoordinatensystem} hat seinen Ursprung im Punkt $F_c$, der Öffnung des Kamerasystems.
             Es definiert Punkte $P = (x_c,\ y_c,\ z_c)$ relativ zur Kamera.
     \item Das \textbf{Projektionskoordinatensystem} hat seinen Ursprung im Punkt $C = (c_x,\ c_y)$ der Projektionsfläche.
-            Über es werden zweidimensione Punkte $P' = (x_p, y_p)$ definiert.
-    \item Der Ursprung des \textbf{Bildschirmkoordinatensystem} ist die linke obere Ecke der Projektionsfläche.
+            Über es werden zweidimensionale Punkte $P' = (x_p, y_p)$ definiert.
+    \item Der Ursprung des \textbf{Bildschirmkoordinatensystems} ist die linke obere Ecke der Projektionsfläche.
             Über es werden Punkte $P' = (u,\ v)$ in der Einheit Pixel definiert.
 \end{enumerate}
 
@@ -136,7 +138,7 @@ Unter Berücksichtigung dieser Bezugssysteme können die sogenannten \textit{int
 \subsubsection{Intrinsische Kamera- und Verzeichnungsparameter}
 
 Die intrinsischen Kamera- und Verzeichnungsparameter sind abhängig von der Bauart der Kamera und gelten
-daher für alle Aufnahmen, welche mit der selben Hardware-Konfiguration getätigt werden.
+daher für alle Aufnahmen, welche mit der selben Hardwarekonfiguration getätigt werden.
 Die Parameter $c_x$ und $c_y$, welche die Bildmitte festlegen, und die
 horizontale und vertikale Brennweite $f_x$ und $f_y$ definieren die intrinsischen Kameraparameter.
 Mit ihrer Hilfe lässt sich eine Kameramatrix der Form
@@ -158,13 +160,13 @@ für eine radiale und tangentiale Verzeichnung des Bildes. Die Parameter $k_1$, 
 radiale und $p_1$ und $p_2$ die tangentiale Verzeichnung. \cite[]{Meissner2007}
 
 Die intrinsischen Kamera- und Verzeichnungsparameter können durch ein Kalibrierungsverfahren bestimmt werden.
-Computervision-Bibliotheken wie OpenCV bieten hierfür Hilfsfunktionen an \cite[]{DevTeamOpenCV2018}.
+Computervision Bibliotheken wie OpenCV bieten hierfür Hilfsfunktionen an \cite[]{DevTeamOpenCV2018}.
 
 \subsubsection{Extrinsische Kameraparameter}
 
-Die extrinsischen Kameraparameter definieren, wie ein Punkt des 3D-Weltkoordinatensystems in einen 3D-Punkt
-des Kamerakoordinatensystems überführt wird.
-Die Transformation ist in Gleichung \ref{eq_point_transformation} beschrieben:
+Die extrinsischen Kameraparameter definieren, wie ein Punkt $P_w$ des 3D-Weltkoordinaten-systems in einen 3D-Punkt $P_c$
+des Kamerakoordinatensystems überführt wird. Die Transformation ist in Gleichung \ref{eq_point_transformation}
+beschrieben:
 
 \begin{ceqn}
 \begin{align}
@@ -174,18 +176,19 @@ Die Transformation ist in Gleichung \ref{eq_point_transformation} beschrieben:
 \end{ceqn}
 
 $R$ und $t$ sind die extrinsischen Kameraparameter. $R$ ist die sogenannte Rotationsmatrix, welche
-die Drehung der Kamera um die X, Y und Z-Achse enthält. $t$ ist der Translationsvektor,
+die Drehung der Kamera um die X, Y und Z-Achse beschreibt. $t$ ist der Translationsvektor,
 welcher angibt, wo sich der Ursprung des Weltkoordinatensystems relativ zur Öffnung der Kamera befindet. \cite[]{Jahne2012}
 
 Die extrinsischen Parameter einer Aufnahme lassen sich mithilfe der intrinsischen Kamera- und Verzeichnungsparameter
 und mindestens sechs Weltkoordinaten, welche Bildschirmkoordinaten zugeordnet werden können, bestimmen. Bibliotheken
-wie OpenCV bieten auch hierfür Funktionen an. Mithilfe der Weltkoordinaten lässt sich zudem das Weltkoordinatensystem
+wie OpenCV bieten auch hierfür Funktionen an. Mithilfe der Weltkoordinaten lässt sich zudem auch das Weltkoordinatensystem
 definieren.
 
 \subsubsection{Transformation von Bildschirmpositionen in Weltkoordinaten}
 
 Die Transformation einer Weltkoordinate in eine Bildschirmposition ist, ohne Berücksichtigung der Verzeichnung,
-gegeben durch die Formel \ref{eq_point_transformation2} \cite[]{DevTeamOpenCV2018}. $s$ ist hier ein konstanter Skalierungsfaktor.
+gegeben durch die Formel \ref{eq_point_transformation2} \cite[]{DevTeamOpenCV2018}. $s$ ist hier ein konstanter
+Skalierungsfaktor.
 
 \begin{ceqn}
 \begin{align}
@@ -198,29 +201,29 @@ Da bei der Projektion vom Weltkoordinatensystem ins Bildschirmkoordinatensystem 
 verloren geht, muss bei der Rücktransformation diese extra bestimmt oder geschätzt werden. Liegt ein Punkt
 auf der Ebene, welche von der X- und Y-Achse des Weltkoordinatensystems beschrieben wird, kann für dessen
 Höhe $z = 0$ verwendet werden.
-Die Position eines Welt-Punktes $P$ kann so mithilfe des folgenden Gleichungssystems bestimmt werden:
+Die Position eines Weltpunktes $P$ kann so mithilfe des folgenden Gleichungssystems bestimmt werden:
 
 \begin{ceqn}
 \begin{align}
 \label{eq_point_transformation3}
-    \big[X\ Y\ 0\big]^T = R^{-1}\Big(sA^{-1} \big[u\ v\ 1\big]^T - t\Big)
+    P = \big[X\ Y\ 0\big]^T = R^{-1}\Big(sA^{-1} \big[u\ v\ 1\big]^T - t\Big)
 \end{align}
 \end{ceqn}
 
 In der Anwendung \textit{Vehicle-Tracker} werden auf diese Weise alle Bildschirmkoordinaten der Trajektorien
-in Weltkoordinaten umgewandelt.
+in Weltkoordinaten umgewandelt. Dieser Vorgang wird \textit{MapMatching} genannt.
 
 \section{Herausforderungen bei der Rekonstruktion von Fahrzeugtrajektorien}
 \label{sec:grund_challenges_reconstruction}
 
 Unabhängig vom eingesetzten Verfahren zur Erkennung und Verfolgung von Fahrzeugen in Videoaufnahmen
-existieren, diverse Herausforderungen bei der Rekonstruktion von Trajektorien. Nachfolgend sind
-häufig auftretende Probleme und deren Auswirkungen beschrieben. 
+existieren diverse Herausforderungen bei der Rekonstruktion von Trajektorien. Nachfolgend sind
+häufig auftretende Probleme und deren Auswirkungen beschrieben.
 
 \subsubsection*{False-Positive und False-Negative Detektionen}
-Mit \textit{False-Positive Detektionen} sind Objekt-Identifikationen gemeint, welche kein Fahrzeug zeigen.
+Mit \textit{False-Positive Detektionen} sind Objekterkennungen gemeint, welche kein Fahrzeug zeigen.
 Dieses Problem tritt häufig dann auf, wenn das für die Detektion eingesetzte neuronale Netz nicht ausreichend trainiert wurde.
-Fälschlicherweise detektierte Objekte können beispielsweise Fußgänger, Fahrradfahrer oder auch Gebäudeausschnitte sein.
+Fälschlicherweise detektierte Objekte können beispielsweise Fußgänger, Fahrradfahrer oder auch Gebäude- und Lanschaftsabschnitte sein.
 In Abbildung \ref{fig:grund_false_positive_detections} sind False-Positive Detektionen von Fußgängern
 und einem Schild auf einem Grünstreifen zu sehen.
 Aufgrund von False-Positive Detektionen befinden sich in Trajektoriedatensätzen Bewegungsbahnen, welche nicht zu
@@ -236,7 +239,7 @@ Fahrzeugen gehören, häufig außerhalb der Fahrbahnen verlaufen und meist sehr 
 Wird ein Fahrzeug in einer Aufnahme nicht erkannt und verfolgt, so handelt es sich dabei um eine
 \textit{False-Negative Detektion}.
 Die häufigsten Ursachen für diese Problematik sind schlechte Belichtungsverhältnisse oder eine zu geringe
-Größe der Fahrzeuge in der Aufnahme.
+Größe der Fahrzeuge in der Videoaufnahme.
 In den Trajektoriedaten äußern sich False-Negative Detektionen primär durch das Fehlen von Bewegungsbahnen
 oder deren zu frühen Abbruch.
 
@@ -250,11 +253,11 @@ ist die Verdeckung einer Fahrbahn durch Baumkronen zu sehen.
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.45\linewidth]{resources/img/grundlagen/TrajectoryReconstruction/challenges/Verdeckung}
-    \caption[Fahrbahn Verdeckung]{Verdeckung einer Fahrbahn durch eine Brücke}
+    \caption[Fahrbahn Verdeckung]{Verdeckung einer Fahrbahn durch Baumkronen}
     \label{fig:grund_lane_occlusion}
 \end{figure}
 
-Fahrbahn-Verdeckungen haben häufig zur Folge, dass die Bewegungsbahnen von Fahrzeugen in den
+Fahrbahnverdeckungen haben häufig zur Folge, dass die Bewegungsbahnen von Fahrzeugen in den
 Trajektoriedatensätzen unterbrochen sind.
 Durch den Einsatz von Verfahren, welche die Position eines Fahrzeugs schätzen, beispielsweise
 Kalman- oder Partikel-Filter, können Unterbrechungen in Trajektorien zum Teil verhindert werden.
@@ -291,16 +294,16 @@ allgemeines Problem, welches auf unterschiedlichste Weise gelöst werden kann. E
 gegeben:
 
 \begin{theorem}[Clusteranalyse]
-    Die Clusteranalyse ist ein Verfahren um Datenobjekte aufgrund ihrer Eigenschaften und Beziehungen
+    Die Clusteranalyse ist ein Verfahren, um Datenobjekte aufgrund ihrer Eigenschaften und Beziehungen
     untereinander so zu gruppieren, dass sich die Objekte einer Gruppe möglichst stark ähneln und sich
     von den Objekten anderer Gruppen möglichst stark unterscheiden. Die auf diese Art entstehenden
     Objektgruppen werden \textit{Cluster} genannt.
 \end{theorem}
 
 Je höher die \textit{Homogenität} in einem Cluster
-und die \textit{Differenz} zwischen den Clustern, desto besser ist die gewählte Clustering Methode.
+und die \textit{Differenz} zwischen den Clustern, desto besser ist die gewählte Clustering-Methode.
 Der Einsatz einer Clusteranalyse ist in vielen Anwendungsgebieten und in unterschiedlichen wissenschaftlichen
-Disziplinen sehr beliebt, um ein Verständnis von Daten zu erhalten oder Muster in solchen zu identifizieren \cite[]{tan2007introduction}.
+Disziplinen sehr beliebt, um ein Verständnis von Daten zu erhalten und um Muster in solchen zu identifizieren \cite[]{tan2007introduction}.
 Die Clusteranalyse kommt so beispielsweise in der Bild- \cite[]{Pappas1992} und Dokumentverarbeitung \cite[]{Hammouda2004},
 der IT-Sicherheit \cite[]{Portnoy2001} oder auch in Sozialen Netzwerken \cite[]{Handcock2007} zum Einsatz.
 
@@ -341,8 +344,9 @@ haben, beziehungsweise annehmen können, und nach welchen Mustern zu suchen ist.
 Besonders wichtiger ist zudem auch die Auswahl der richtigen, also relevanten, Datenmerkmale (\textit{``Feature Selection''})
 und die Wahl deren Repräsentation (\textit{``Feature Transformation''}).
 Nach der Selektion und Transformation der Daten müssen diese in einem Vorverarbeitungsschritt von eventuell auftretenden
-und unerwünschten Effekten befreit werden. Dieser Schritt hat einen maßgeblichen Einfluss auf die Qualität des finalen Clustering-Ergebnisses.
-Basierend auf vorangegangener Beschreibung und \cite[]{Jain1999}, lässt sich der grundlegende Ablauf einer Clusteranalyse wie folgt darstellen: \\
+und unerwünschten Effekten befreit werden. Dieser Schritt hat einen maßgeblichen Einfluss auf die Qualität
+des finalen Clustering-Ergebnisses. Basierend auf vorangegangener Beschreibung und \cite[]{Jain1999},
+lässt sich der grundlegende Ablauf einer Clusteranalyse wie folgt darstellen: \\
 
 \begin{figure}[H]
     \centering
@@ -362,10 +366,11 @@ Basierend auf vorangegangener Beschreibung und \cite[]{Jain1999}, lässt sich de
 \section{Cluster-Sets und Cluster}
 
 Cluster-Sets, das heißt die Gesamtheit aller durch eine Analyse gefundenen Cluster, und einzelnen Cluster selbst,
-können in verschiedene Kategorien unterteilt werden, beziehungsweise unterschiedliche Eigenschaften besitzen.
-Nachfolgend sind die wichtigsten basierend auf \cite[]{tan2007introduction}, \cite[]{Jain1999} und \cite[]{Jain2010} aufgeführt.
+können in verschiedene Kategorien unterteilt werden beziehungsweise unterschiedliche Eigenschaften besitzen.
+Nachfolgend sind die wichtigsten, basierend auf \cite[]{tan2007introduction}, \cite[]{Jain1999} und \cite[]{Jain2010}, aufgeführt.
 
 \subsection{Eigenschaften von Cluster-Sets}
+\label{sec:grund_property_cluster_sets}
 
 Bei Cluster-Sets kann grundsätzlich zwischen folgenden Kategorien unterschieden werden.
 
@@ -388,11 +393,11 @@ werden, welche keine Gruppe besitzen.
 
 \subsection{Eigenschaften von Clustern}
 
-Da, wie oben erwähnt, nicht klar definiert ist, was ein Cluster ausmacht, können auch diese unterschiedliche Eigenschaften
-besitzen. Die wichtigsten Cluster-Arten sind nachfolgend erläutert.
+Da, wie oben erwähnt, das Konzept eines Clusters nicht klar definiert ist, können auch diese unterschiedliche
+Eigenschaften besitzen. Die wichtigsten Cluster-Arten sind nachfolgend erläutert.
 
 \paragraph{Klar separierte Cluster}
-In einem \textit{klar separiereten} Cluster besitzt jedes Datenobjekt einen geringeren Abstand zu allen anderen
+In einem \textit{klar separierten} Cluster besitzt jedes Datenobjekt einen geringeren Abstand zu allen anderen
 Objekten der Gruppe, also zu Elementen außerhalb des Clusters.
 Dargestellt ist dies in Abbildung \ref{fig:basic_cluster_style} a). Diese idealistische Definition eines
 Clusters ist nur dann erfüllt, wenn die in den Daten enthaltenen Cluster einen großen Abstand voneinander haben.
@@ -400,7 +405,8 @@ In der Realität ist dies selten der Fall.
 
 \paragraph{Prototyp-basierte Cluster}
 Von einem \textit{Prototyp-basierten} Cluster wird gesprochen, wenn alle Elemente einer Gruppe einen
-geringeren Abstand zu einem Prototyp oder Referenzwert des Clusters besitzen, als zu denen anderer Gruppierungen (siehe Abb. \ref{fig:basic_cluster_style} b)).
+geringeren Abstand zu einem Prototyp oder Referenzwert des Clusters besitzen, als zu denen anderer
+Gruppierungen (siehe Abb. \ref{fig:basic_cluster_style} b)).
 Ein solcher Prototyp ist üblicherweise der Mittelwert der Datenelemente eines Clusters (\textit{Centroid}).
 
 \paragraph{Graphen-basierte Cluster}
@@ -446,7 +452,8 @@ erkennen zu können, benötigt ein Algorithmus ein spezielles ``Verständnis'' e
     \subfloat[Konzeptionelle Cluster]{{
         \includegraphics[align=c, width=0.6\linewidth]{resources/img/grundlagen/cluster/Cluster05}
     }}
-    \caption[Visualisierung verschiedener Clusterarten]{Visualisierung verschiedener Clusterarten (basierend auf \cite[]{tan2007introduction})}
+    \caption[Visualisierung verschiedener Clusterarten]
+            {Visualisierung verschiedener Clusterarten (basierend auf \cite[]{tan2007introduction})}
     \label{fig:basic_cluster_style}
 \end{figure}
 
@@ -455,17 +462,17 @@ erkennen zu können, benötigt ein Algorithmus ein spezielles ``Verständnis'' e
 
 Um mit den oben beschriebenen unterschiedlichen Cluster-Sets und Cluster Definitionen umgehen zu können,
 existieren verschiedene Clustering-Modelle.
-Einige wichtige Clustering-Ansätze sind Vernetzungs-Modelle, Centroid-basierte-Modelle, Distributions-Modelle
-oder Dichte-Modelle. Für jede Kategorie existieren unterschiedliche Algorithmen. Im Folgenden werden
-diese Modelle und jeweils exemplarisch ein Algorithmus, vorgestellt.
+Einige wichtige Clustering-Ansätze sind Vernetzungsmodelle, Prototyp-Modelle, Verteilungsmodelle
+und Dichtemodelle. Für jede Kategorie existieren unterschiedliche Algorithmen. Im Folgenden werden
+diese Modelle und jeweils exemplarisch ein Algorithmus vorgestellt.
 
-\subsection{Vernetzungs-Modelle}
+\subsection{Vernetzungsmodelle}
 \label{sec:grund_vernetzungs_clustering}
 
-Vernetzungs-Modelle werden auch häufig \textit{hierarchische Cluster-Modelle} genannt. Sie beruhen auf
+Vernetzungsmodelle werden auch häufig \textit{hierarchische Cluster-Modelle} genannt. Sie beruhen auf
 der Annahme, dass Elemente, welche nahe beieinander liegen, eine höhere Gemeinsamkeit besitzen als solche,
-welche weiter voneinander entfernt sind. Zur Bestimmung der Nähe zwischen Elementen benötigen Vernetzungs-Modelle,
-wie auch andere Cluster-Modelle, eine Definition von Distanz. Diese wird über ein \textit{Distanzmaß} festgelegt.
+welche weiter voneinander entfernt sind. Zur Bestimmung der Nähe zwischen Elementen benötigen Vernetzungsmodelle,
+wie auch andere Cluster-Modelle, eine Verständnis von Distanz. Dieses wird über ein \textit{Distanzmaß} definiert.
 Zusätzlich ist ein \textit{Link-Kriterium} notwendig,
 welches bestimmt, wie genau die Entfernung zwischen zwei Clustern ermittelt wird. Übliche Link-Kriterien
 sind \textit{Minimum-Linkage}, welches die minimale Distanz zwischen den Objekten der Cluster als Distanz verwendet,
@@ -485,7 +492,8 @@ Seine Arbeitsweise lässt sich sehr gut anhand sogenannter Dendrogramme oder ges
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.7\linewidth]{resources/img/grundlagen/agglo_clustering}
-    \caption[Darstellung Funktionsweise Agglomeratives Clustering]{Agglomeratives Clustering dargestellt als Dendrogramm (links) und geschachteltes Cluster-Diagram (rechts)}
+    \caption[Darstellung Funktionsweise Agglomeratives Clustering]
+            {Agglomeratives Clustering dargestellt als Dendrogramm (links) und geschachteltes Cluster-Diagram (rechts) \cite[]{tan2007introduction}}
     \label{fig:grund_agglo_clustering}
 \end{figure}
 
@@ -520,17 +528,17 @@ die gewünschte Clusteranzahl übrig ist. \cite[]{GeorgeSeif2018, tan2007introdu
 
 Bei den meisten Varianten des agglomerativen Clusterings muss der Nutzer die Anzahl der Zielcluster im
 vorraus festlegen, was problematisch ist, da diese meist nicht bekannt ist. Umgangen werden kann dies nur,
-indem ein Link-Kriterium gewählt wird, das ab einer bestimmten Distanz zwischen den Clustern diese nichtmehr
+indem ein Link-Kriterium gewählt wird, das ab einer bestimmten Distanz zwischen den Clustern diese nicht weiter
 fusioniert \cite[]{GeorgeSeif2018}.
 
 Die Zeitkomplexität des agglomerativen Clusterings beträgt bestenfalls $O(n^2log\ n)$ weshalb die Menge der Daten,
-welche mit ihm verarbeitet werden können erheblich begrenzt ist \cite[]{tan2007introduction}.
+welche mit ihm verarbeitet werden können, erheblich begrenzt ist \cite[]{tan2007introduction}.
 
 \subsection{Prototyp-Modelle}
 \label{sec:grund_prototype_clustering}
 
-Centroid-basierte Cluster-Modelle betrachten im Gegensatz zu hierarchischen Modellen nicht die Distanz
-zwischen Clustern, sondern die Entfernung von Objekten zu Referenzpunkten, sogenannten \textit{Prototypen}.
+Prototyp-basierte Clustering-Modelle betrachten im Gegensatz zu hierarchischen Modellen nicht die Distanz
+zwischen Clustern, sondern die Entfernung von Objekten zu Referenzpunkten, den \textit{Prototypen}.
 Die am häufigsten verwendeten Prototypen sind \textit{Centroids}, welche den Mittelpunkt eines Clusters dargestellen.
 \textit{Medoids}, welche teilweise auch genutz werden, repräsentieren hingegen den Median eines Clusters.
 
@@ -539,7 +547,7 @@ seiner Einfachheit und der vielen Weiterentwicklungen wohl der bekannteste Clust
 
 Das Ziel von k-Means ist es, für eine n-dimensionale Punktmenge $X = \{ x_1 ... x_n \}$ ein Cluster-Set $C = \{ c_1 ... c_k \}$
 zu finden, welches die Summe der quadratischen Abweichung (Gleichung \ref{eq_kmeans1}) zwischen allein Punkten in einem Cluster und deren
-Mittelwert $\mu_k$ (Centroids) minimiert.
+Mittelwerte $\mu_k$ (Centroids) minimiert.
 
 \begin{ceqn}
 \begin{align}
@@ -557,7 +565,8 @@ Clustermittelpunkte verschieben.
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.9\linewidth]{resources/img/grundlagen/k-means}
-    \caption[Funktionsweise k-Means Clusteralgorithmus]{Funktionsweise k-Means Clusteralgorithmus über mehrere Iterationen \cite[]{tan2007introduction}}
+    \caption[Funktionsweise k-Means Clusteralgorithmus]
+            {Funktionsweise k-Means Clusteralgorithmus über mehrere Iterationen \cite[]{tan2007introduction}}
     \label{fig:grund_kmeans_clustering}
 \end{figure}
 
@@ -573,7 +582,7 @@ Anschließend wird für alle Punkte $x_i$ der nächstgelegene Centroid $\mu_j$ g
 \end{ceqn}
 
 $x_i$ wird daraufhin Mitglied in Cluster $C_j$. Als Distanzmaß ($dist$) kann hier wieder der euklidsche Abstand
-(Gleichung \ref{eq_dist}) verwendet werden oder aber auch beliebige andere sinnvolle Maße.
+(Gleichung \ref{eq_dist}) verwendet werden oder aber auch beliebige andere Maße.
 Nachdem alle Punkte $x_i$ einem Cluster zugewiesen wurden, werden die Centroid Positionen neu bestimmt.
 Hierzu wird der Durchschnitt aller Punkte eines Clusters berechnet:
 
@@ -588,44 +597,44 @@ Diese zwei Schritte werden mehrfach wiederholt, bis das Ergebnis konvergiert, da
 nurnoch geringfügig ändern. \cite[]{Jain2010}
 
 Der primäre Nachteil des k-Means Algorithmus ist, das auch bei ihm die Anzahl der Zielcluster spezifiziert
-werden muss. Desweiteren ist sein Ergebnis aufgrund der zufälligen Initialisierung der Centroids
-nicht deterministisch. Vorteil von k-Means ist hingegen, dass seine Zeitkomplexität bei $O(n)$ liegt.
+werden muss. Des Weiteren ist sein Ergebnis aufgrund der zufälligen Initialisierung der Centroids
+nicht deterministisch. Ein Vorteil von k-Means ist hingegen, dass seine Zeitkomplexität bei $O(n)$ liegt.
 
 Um die genannten Nachteile, zumindest in Teilen, umgehen zu können, existieren diverse Weiterentwicklungen des k-Mean
 Algorithmus. So stammen beispielsweise von \cite[]{Hamerly} und \cite[]{Pelleg} die Algorithmen \textit{g-Means}
 beziehungsweise \textit{x-Means}, welche die Clusteranzahl $k$ auf Basis mehrerer k-Means Durchläufe und
 statistischer Kennzahlen bestimmen.
 
-\subsection{Distributions-Modelle}
+\subsection{Verteilungsmodelle}
 \label{sec:grund_distribution_clustering}
 
-Distributions-Cluster-Modelle basieren auf der Verwendung von statistischen Wahrscheinlichkeitsverteilungen wie
+Verteilungs-Clustering-Modelle basieren auf der Verwendung von statistischen Wahrscheinlichkeitsverteilungen wie
 beispielsweise der Gauß-Verteilung. Cluster werden darüber definiert, wie wahrscheinlich es ist, dass Objekte
-der selben Verteilung angehören. Problematisch ist die Verwendung dieser Cluster-Methodik, da sie anfällig für
+der selben Verteilung angehören. Problematisch ist die Verwendung dieser Clustering-Methodik, da sie anfällig für
 das Problem des \textit{``Overfitting''} ist, wenn die Komplexität der verwendeten Modelle nicht beschränkt wird.
 Zudem ist die Annahme, dass vielen realen Datensätzen ein statistisches Verteilungsmodell zugrundeliegt, gefährlich.
-Ist diese These jedoch berechtigt, haben die Modelle den Vorteil, dass sie neben der Zuweisung von Objekten zu Clustern
+Ist diese These jedoch berechtigt, dann haben die Modelle den Vorteil, dass sie neben der Zuweisung von Objekten zu Clustern
 auch Korrelationen zwischen einzelnen Attributen aufzeigen können. \cite[]{AndersDrachen2014}
 
-Nachfolgend wird der bekannteste Vertreter der Distributions-Clusteralgorithmen vorgestellt:
-das \textit{Expectation–maximization} (\acrshort*{em}) Verfahren unter Verwendung sogenannter \textit{Gaussian-Mixture-Models} (\acrshort*{gmm}).
+Nachfolgend wird der bekannteste Vertreter der Verteilungs-Clusteralgorithmen vorgestellt:
+das \textit{Expectation–maximization} (\acrshort*{em}) Verfahren unter Verwendung sogenannter \textit{Gaus-sian-Mixture-Models} (\acrshort*{gmm}).
 Die Funktionsweise des EM-Algorithmus hat grundsätzlich viel gemein mit der des k-Mean Algorithmus.
 Es wird ebenfalls mit einer festen Anzahl zufällig initialisierter Modelle gestartet, welche anschließend über mehrere Iterationen
-an die Daten angepasst werden. Im Gegensatz zu k-Means, sind die gewählten Modelle hingegen Gauß-Verteilungen,
+hinweg an die Daten angepasst werden. Im Gegensatz zu k-Means, sind die gewählten Modelle hingegen Gauß-Verteilungen,
 welche zwei Parameter besitzen: ihren Mittelwert und die Standardabweichung.
 Das Vorgehen des EM-Algorithmus ist nachfolgend, basierend auf \cite[]{GeorgeSeif2018}, beschrieben und in
 Abbildung \ref{fig:grund_em_clustering} grafisch dargestellt.
 
-\begin{description}
-    \item[1)] Wahl der Clusteranzahl $k$ und Initialisierung der Gauß-Modelle für die entsprechenden Cluster.
-    \item[2)] Berechnung der Wahrscheinlichkeit, dass ein Datenpunkt zu einem Cluster gehört. Je näher
+\begin{enumerate}
+    \item Wahl der Clusteranzahl $k$ und Initialisierung der Gauß-Modelle für die entsprechenden Cluster.
+    \item Berechnung der Wahrscheinlichkeit, dass ein Datenpunkt zu einem Cluster gehört. Je näher
               ein Datenpunkt dem Zentrum einer Gauß-Verteilung ist, desto höher die Wahrscheinlichkeit für dessen Zugehörigkeit.
-    \item[3)] Basierend auf den Wahrscheinlichkeiten werden die Parameter der Verteilungen neu berechnet.
+    \item Basierend auf den Wahrscheinlichkeiten werden die Parameter der Verteilungen neu berechnet.
               Hierzu wird die gewichtete Summe der Datenpunkt-Positionen errechnet. Die Gewichte entsprechen dabei
               den Wahrscheinlichkeiten, dass ein Element zu einem Cluster gehört. Hierdurch werden die Gauß-Modelle automatisch
               den in den Daten enthaltenen Clustern angepasst.
-    \item[4)] Wiederholdung der Schritte 2) und 3), bis das Clustering-Ergebnis konvergiert.
-\end{description}
+    \item Wiederholdung der Schritte 2) und 3), bis das Clustering-Ergebnis konvergiert.
+\end{enumerate}
 
 \begin{figure}[H]
     \centering
@@ -645,11 +654,12 @@ Abbildung \ref{fig:grund_em_clustering} grafisch dargestellt.
     \label{fig:grund_em_clustering}
 \end{figure}
 
-Ziel des EM-Algorithmus ist es, die Parameter der Gauß-Modelle so zu optimieren, dass diese die Verteilung der Daten bestmöglich beschreiben.
-Am Ende des Clusterings besitzt jeder Datenwert die Zugehörigkeits-Wahrscheinlichkeiten für die einzelnen Cluster.
-Ein Element wird jenem Cluster zugeordnet, für welches es die höchste Wahrscheinlichkeit besitzt.
+Ziel des EM-Algorithmus ist es, die Parameter der Gauß-Modelle so zu optimieren, dass diese die Verteilung
+der Daten bestmöglich beschreiben. Am Ende des Clusterings besitzt jeder Datenwert die Zugehörigkeits-Wahrscheinlichkeiten
+für die einzelnen Cluster. Ein Element wird jenem Cluster zugeordnet, für welches es die höchste
+Wahrscheinlichkeit besitzt.
 
-\subsection{Dichte-Modelle}
+\subsection{Dichtemodelle}
 \label{sec:grund_density_clustering}
 
 Dichte-basierte Cluster sind, wie oben beschrieben, definiert als Regionen hoher Objektdichte, welche
@@ -669,9 +679,9 @@ Diese selektiert für ein Objekt $p$ alle Objekte, welche innerhalb des Radius $
 \end{align}
 \end{ceqn}
 
-Eine $\epsilon$ -Nachbarschaft besitzt eine hohe Dichte, wenn in ihr mindestens $MinPts$ Objekte liegen.
+Eine $\epsilon$-Nachbarschaft besitzt eine hohe Dichte, wenn in ihr mindestens $MinPts$ Objekte liegen.
 
-Basierend auf der Definition von $N_{\epsilon}$ werden die in einem Datensatz vorhandenen Elemente in
+Basierend auf der Definition von $N_{\epsilon}$, werden die in einem Datensatz vorhandenen Elemente in
 drei Klassen unterteilt. Sie sind entweder \textit{Kern-}, \textit{Rand-} oder \textit{Ausreißer-} Objekte.
 Ein Kernobjekt hat mindestens $MinPts$ andere Punkte in $N_{\epsilon}$.
 Randobjekte besitzen weniger als $MinPts$ in $N_{\epsilon}$, liegen aber in der Nachbarschaft eines Kernobjektes.
@@ -702,22 +712,23 @@ verbunden sind (transitiv). Dies ist in Abbildung \ref{fig:grund_dbscan_reachabi
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.32\linewidth]{resources/img/grundlagen/clustering_dbscan/reachability}
-    \caption[Konzept Erreichbarkeit in DBSCAN]{Konzept Erreichbarkeit in DBSCAN \cite[]{Gao2012}}
+    \caption[Konzept Erreichbarkeit in DBSCAN]
+            {Konzept der Dichte-basierten Erreichbarkeit in DBSCAN \cite[]{Gao2012}}
     \label{fig:grund_dbscan_reachability}
 \end{figure}
 
 Der DBSCAN Algorithmus kann, basierend auf den obigen Definitionen, wie folgt beschrieben werden:
 
-\begin{description}
-    \item[1)] Unterteilung der Objekte in die drei Objektklassen. (Abb. \ref{fig:grund_dbscan_clustering} b))
-    \item[2)] Aussortierung der Ausreißer-Objekte.
-    \item[3)] Wahl eines nicht zugewiesenen Kernobjektes.
-    \item[4)] Erstellung eines neuen Clusters für das Kernobjekt und alle von ihm ausgehend direkt und indirekt erreichbaren Objekte.
-    \item[5)] Wiederholdung der Schritte 3) und 4), bis alle Kern- und Randobjekte einem Cluster zugewiesen sind. (Abb. \ref{fig:grund_dbscan_clustering} c))
-\end{description}
+\begin{enumerate}
+    \item Unterteilung der Objekte in die drei Objektklassen (vgl. Abb. \ref{fig:grund_dbscan_clustering} b)).
+    \item Aussortierung der Ausreißer-Objekte.
+    \item Wahl eines nicht zugewiesenen Kernobjektes.
+    \item Erstellung eines neuen Clusters für das Kernobjekt und alle von ihm ausgehend direkt und indirekt erreichbaren Objekte.
+    \item Wiederholdung der Schritte 3) und 4), bis alle Kern- und Randobjekte einem Cluster zugewiesen sind. (vgl. Abb. \ref{fig:grund_dbscan_clustering} c))
+\end{enumerate}
 
 DBSCAN besitzt die oben erwähnten Vorteile Dichte-basierter Clusteralgorithmen. Dank einer Zeitkomplexität
-von $O(n\ log\ n)$ kann er außerdem auch auf größere Datensätze angewendet werden.
+von $O(n\ log\ n)$, kann er außerdem auch auf große Datensätze angewendet werden.
 Nachteil des Ansatzes ist, dass er schlecht mit Clustern umgehen kann, welche unterschiedliche Dichten besitzen.
 
 \section{Distanzmaße zum Vergleich von Fahrzeugtrajektorien}

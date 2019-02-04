@@ -68,7 +68,7 @@ Abbildung \ref{fig:real_trajectory_classDia} zeigt den Aufbau einer Trajektorie 
 
 Die Felder \textit{id} und \textit{objectClass} werden aus dem, der Trajektorie zugrundeliegenden, \textit{TrackedObject}
 übernommen.
-Die Positionen eines Fahrzeugs werden in Form von 2D-Welt-Koord-inaten (siehe Abschnitt \ref{sec:position_extraction})
+Die Positionen eines Fahrzeugs werden in Form von 2D Weltkoordinaten (siehe Abschnitt \ref{sec:position_extraction})
 in \textit{positions} gespeichert und die Anzahl der Koordinaten zusätzlich in \textit{pointLength}.
 Die Sequenz \textit{distToStart} enthält für jeden Punkt der Bewegungsbahn dessen Distanz zum Start der Trajektorie in Metern.
 Die Werte ergeben sich aus Formel \ref{eq_real_distToStart}, wobei $p_n$ dem $n$-ten Punkt in der Trajektorie entspricht
@@ -384,6 +384,8 @@ und anschließend jeweils ein Verzerrungs-Maß $\rho_k$ berechnet, welches angib
 die Datenpunkte beschreiben. Für $k$ wird daher jener Wert gewählt, welcher das
 kleineste $\rho_k$ erzeugt. Diese Methode zur Schätzung der Clusteranzahl wurde auch in der vorliegenden
 Arbeit angewandt.
+Die mithilfe des Verfahrens von Atev et al. identifizierten Cluster-Sets sind partitioniert, exklusiv und komplett
+(siehe Abschnitt \ref{sec:grund_property_cluster_sets}).
 
 \subsubsection{Auswertung des Verfahrens}
 
@@ -429,7 +431,7 @@ Algorithmus aus Abschnitt \ref{fig:concept_laneDetection_activity} erschweren.
 
 Die schlechten Clustering-Ergebnisse des Ansatzes sind zudem Folge der nicht zuverlässig funktionierenden Schätzung
 der Clusteranzahl $k$. Im Fall des Datensatzes aus Abbildung \ref{fig:real_results_atev1}, wird $k = 5$
-statt korrekterweise $k = 6$ geschätzt. Hieraus ergibt sich, dass in Abb. \ref{fig:real_results_atev1} a)
+statt korrekterweise $k = 6$ geschätzt. Hieraus ergibt sich, dass in Abbildung \ref{fig:real_results_atev1} a)
 zwischen zwei Fahrspuren nicht richtig unterschieden wird. In Teil b) wurde die Clusteranzahl händisch spezifiziert,
 was in einer korrekten Gruppierung der Fahrspuren resultierte.
 
@@ -456,7 +458,10 @@ in Kombination mit dem LCSS-Distanzmaß für die Clusteranalyse von Trajektoried
 
 Vorteil des dichte-basierten DBSCAN-Algorithmus, dessen Funktionsweise bereits in Abschnitt
 \ref{sec:grund_density_clustering} erläutert wurde, ist, dass er Ausreißer erkennt und die Anzahl der
-Zielcluster selbst bestimmen kann. Das LCSS Distanzmaß, grundlegend in Abbschnitt \ref{sec:lcss_distance}
+Zielcluster selbst bestimmen kann.
+Die auf diese Weise identifizierten Cluster-Sets sind also ebenso wie bei Atev et al. partitioniert und exklusiv,
+sind aber außerdem partielle (siehe Abschnitt \ref{sec:grund_property_cluster_sets}).
+Das LCSS Distanzmaß, grundlegend in Abbschnitt \ref{sec:lcss_distance}
 beschrieben, ähnelt der modifizierten Hausdorff-Distanz, lässt sich allerdings performanter implementieren
 und besitzt eine intuitivere Parametrisierung. Es lieferte in den Arbeiten \cite[]{Morris2011} und
 \cite[]{Chen2014} gute Clustering-Ergebnisse.
