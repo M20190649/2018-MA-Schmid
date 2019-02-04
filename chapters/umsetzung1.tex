@@ -364,17 +364,17 @@ Der in dieser Arbeit und von Atev et al. verwendete Spectral-Clusteralgorithmus 
 der Standard-Definition von \cite[]{Ng2002}.
 Für eine feste Clusteranzahl $k$ kann er wie folgt zusammengefasst werden:
 
-\begin{description}
-    \item[1)] Erstellen einer Affinitätsmatrix $A \in \mathbb{R}^{n \times n}$ basierend auf dem Affinitätsmaß, wobei $A_{ii} = 0$
-    \item[2)] Definieren einer Diagonalenmatrix $D$, deren Elemente an der Stelle $(i,i)$ der Summe der $i$-ten
+\begin{enumerate}
+    \item Erstellen einer Affinitätsmatrix $A \in \mathbb{R}^{n \times n}$ basierend auf dem Affinitätsmaß, wobei $A_{ii} = 0$
+    \item Definieren einer Diagonalenmatrix $D$, deren Elemente an der Stelle $(i,i)$ der Summe der $i$-ten
             Zeile von $A$ entsprechen. Basierend auf $D$ wird die Matrix $L = D^{-1/2} AD^{-1/2}$ erstellt.
-    \item[3)] Durchführen einer Eigenwert Dekomposition auf $L$, um die $k$ größten Eigenvektoren
+    \item Durchführen einer Eigenwert Dekomposition auf $L$, um die $k$ größten Eigenvektoren
             $\{x_1, x_2, ..., x_k\}$ zu finden.
-    \item[4)] Erstellen einer Matrix $X = [x_1, x_2,..., x_k]$ durch spaltenweises Zusammenführen der Eigenvektoren und
+    \item Erstellen einer Matrix $X = [x_1, x_2,..., x_k]$ durch spaltenweises Zusammenführen der Eigenvektoren und
             Normalisierung der Zeilen auf die Länge 1.
-    \item[5)] Gruppierung der Zeilen von Matrix $X$ in $k$-Cluster unter Zuhilfenahme von k-Means et cetera.
+    \item Gruppierung der Zeilen von Matrix $X$ in $k$-Cluster unter Zuhilfenahme von k-Means et cetera.
             Jede Zeile wird als Datenpunkt interpretiert.
-\end{description}
+\end{enumerate}
 
 Ein großer Nachteil des Spectral-Clustering-Ansatzes ist es, dass bei seiner Verwendung üblicherweise die Clusteranzahl $k$
 bereits im vorraus bekannt und angegeben sein muss. Aus diesem Grund verwenden Atev et al. ein Schätzmaß für
@@ -647,7 +647,7 @@ minimalen mittleren Abstand zu allen anderen Trajektorien besitzt:
 \end{align}
 \end{ceqn}
 
-Die Referenz-Trajektorie beschreibt die Nachbarschaft. Im Fall der Trajektorien aus Abbildung
+Die Referenztrajektorie beschreibt die Nachbarschaft. Im Fall der Trajektorien aus Abbildung
 \ref{fig:real_turning_lane} b) ist es beispielsweise eine Bahn, welche auf die mittlere Fahrspur abbiegt.
 Nachdem $refT$ bestimmt wurde, wird die Trajektorie punktweise durchwandert. Es werden die Bereiche um jeden
 Punkt überprüft, um so festzustellen, wo die Trajektorien der Nachbarschaft auseinanderlaufen. Der hierzu
@@ -673,7 +673,7 @@ Zur Bestimmung der Regionen um einen Punkt und der Schnittpunkte der Trajektorie
 wird die JTS Topology Suite\footnote{JTS Topology Suite: \url{https://locationtech.github.io/jts/}}
 (JTS) eingesetzt. Der Split-Punkt einer Nachbarschaft ist jener Punkt, in dessen Umfeld die Anzahl der
 Trajektorien erstmals unter 75\% fällt. Er ist zudem nur gültig, wenn er nicht im ersten Drittel der
-Referenz-Trajektorien liegt.
+Referenztrajektorien liegt.
 
 Nachdem der Split-Punkt einer Nachbarschaft gefunden wurde, werden alle in ihr beinhalteten Bewegungsbahnen
 an jenem Trajektorie-Punkt geteilt, der dem Split-Punkt am nächsten ist.
@@ -764,12 +764,13 @@ Fahrspuren übereinstimmen, oder ob diese weiter untergliedert werden müssen.
 Der Ablauf des Verfahrens kann grob wie folgt beschrieben werden:
 
 \begin{enumerate}
-    \item Durchführung Spurerkennung
-    \item Erstellung von Weg-Zeit-Trajektorien auf Basis der Spur-Geometrien
-    \item Überprüfung auf Überschneidungen in Trajektorien:
+    \item Durchführung der Spurerkennung.
+    \item Erstellung von Weg-Zeit-Trajektorien auf Basis der Spur-Geometrien.
+    % \item Überprüfung auf Überschneidungen in Trajektorien:
+    \item Bestimmung der Anzahl der Überschneidungen in Weg-Zeit-Trajektorien:
     \begin{enumerate}
-        \item Anzahl Überschneidungen über Grenzwert $\rho$: Zurück zu 1) und Anpassung von $\epsilon_{DBSCAN}$
-        \item Anzahl Überschneidungen unter Grenzwert $\rho$: Verwendung der Spur-Geometrien
+        \item bei Überschreitung des Grenzwertes $\rho$: Zurück zu 1) und Anpassung von\\ $\epsilon_{DBSCAN}$, sonst
+        \item Verwendung der ermittelten Spur-Geometrien.
     \end{enumerate}
 \end{enumerate}
 

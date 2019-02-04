@@ -3,12 +3,12 @@
 \chapter{Verwandte Arbeiten}
 \label{cha:related_work}
 
-Das folgende Kapitel gibt eine Überblick über wissenschaftliche
+Das folgende Kapitel gibt eine Überblick über verwandte wissenschaftliche
 Arbeiten, welche sich bereits mit der Analyse von Trajektoriedaten und der Erkennung von Fahrspuren beschäftigen.
 Zu Beginn werden Arbeiten vorgestellt, welche sich mit der Clusteranalyse von Trajektorien befassen.
 Anschließend wird betrachtet, wie in der Literatur die Erkennung von Fahrspuren auf Basis
-von Trajektorien umgesetzt wird.
-Am Ende des Kapitels werden Defizite der existierenden Lösungen aufgezeigt und analysiert, welche
+von Trajektorien bislang umgesetzt wird.
+Am Ende des Kapitels werden Defizite der existierenden Lösungen aufgezeigt und es wird analysiert, welche
 spezifischen Neuerungen für die Umsetzung dieser Arbeit nötig sind.
 
 \section{Clusteranalyse von Trajektorien}
@@ -17,7 +17,7 @@ spezifischen Neuerungen für die Umsetzung dieser Arbeit nötig sind.
 Aufgrund der vielen Erkenntnisse welche aus Trajektoriedaten gewonnen werden können, ist ihre
 Auswertung schon seit geraumer Zeit Gegenstand wissenschaftlicher Untersuchungen.
 Nachfolgende Arbeiten beschäftigen sich mit der Clusteranalyse von Trajektorien.
-Die Auswahl zeigt prototypisch, wie unterschiedliche die Anwendungsszenarien und Ziele bei solchen Analyse sind.
+Die Auswahl zeigt prototypisch, wie unterschiedlich die Anwendungsszenarien und Ziele bei solchen Analysen sind.
 
 % Fu et al., 2005
 \subsubsection*{Similarity based vehicle trajectory clustering and anomaly detection}
@@ -38,22 +38,22 @@ sie in Richtung der Szenen-Grenzen.
     \centering
     \includegraphics[width=0.5\linewidth]{resources/img/RelatedWork/Fu_HierarchicalClustering}
     \caption[Zweistufiger Clustering-Vorgang von Hu et al.]
-            {Zweistufiger Clustering-Vorgang von \cite[]{Hu2005}; Identifikation von dominanten Pfaden und Fahrspuren}
+            {Zweistufiger Clustering-Vorgang von Hu et al., Identifikation von dominanten Pfaden und Fahrspuren \cite[]{Hu2005}}
     \label{fig:relw_hu_two_step_cluster}
 \end{figure}
 
 Unter Verwendung des definierten Distanzmaßes werden die Trajektorien in einem zweistufigen Verfahren verarbeitet.
 In den zwei Phasen werden, wie in Abbildung \ref{fig:relw_hu_two_step_cluster} dargestellt, zuerst dominante
-Fahrpfade extrahiert, welche anschließend weiter in einzelne Fahrspuren untergliedert werden.
-Als Clusteralgorithmen vergleichen die Autoren den \textit{Spectral-Clustering} Ansatz \cite[]{Ng2002}
+Fahrpfade extrahiert. Diese werden anschließend weiter in einzelne Fahrspuren untergliedert.
+Die Autoren vergleichen den \textit{Spectral-Clustering} Algorithmus \cite[]{Ng2002}
 mit einem \textit{Fuzzy-k-Means} Verfahren \cite[]{xie1991validity}.
-Die Untersuchungen zeigen, dass der Spectral Clustering Ansatz nicht nur bessere Ergebnisse liefert, sonderen dieser
+Die Untersuchungen zeigen, dass der Spectral-Clustering Ansatz nicht nur bessere Ergebnisse liefert, sonderen dieser
 über mehrere Durchläufe hinweg auch stabil sind, wohingegen die Resultate des Fuzzy-Ansatzes variieren.
 
 
 % Junejo et al., 2004
 \subsubsection*{Multi Feature Path Modeling for Video Surveillance}
-Eine weitere Arbeit welche das Ziel hat, anormale Bewegungsmuster auf Basis von Trajektorien zu entdecken,
+Eine weitere Arbeit, welche das Ziel hat anormale Bewegungsmuster auf Basis von Trajektorien zu entdecken,
 stammt von \cite[]{Junejo2004}. In diesem Fall geht es den Autoren allerdings nicht um das Finden von Fahrzeug-Fahrspuren,
 sondern um die Extraktion von Laufpfaden von Fußgängern.
 Die Bewegungsbahnen der Passanten werden aus Aufnahmen stationärer Überwachungskameras gewonnen und
@@ -61,7 +61,7 @@ als zwei-dimensionale Punktreihen repräsentiert.
 Zum Vergleich der Trajektorien, verwenden die Autoren die Hausdorff-Distanz als Distanzmaß.
 Die üblicherweise negativen Eigenschaften dieses
 Vergleichkriteriums (siehe Abschnitt \ref{sec:hausdorff_distance}), konkret die Missachtung der
-Trajektorie-Orientierung, sind bei diesem Anwendungsfall kein Nachteil, sondern gewünscht.
+Orientierung, sind bei diesem Anwendungsfall kein Nachteil, sondern gewünscht.
 Da Fußgänger auf einem Weg in entgegengesetzte Richtungen gehen können, muss die Orientierung
 ihrer Trajektorien ignoriert werden.
 Auf Basis der Hausdorff-Distanz erstellen Junejo et al. einen vollständigen Graphen, in welchem die Knoten Trajektorien
@@ -108,8 +108,8 @@ kann der Einfluss von Ausreißern minimiert werden.
 
 Das Distanzmaß vergleichen Atev et al. unter Verwendung eines Spectral und eines Agglomerativen
 Clusteralgorithmus mit der \textit{Longest-Common-Subsequence} (LCSS) und der \textit{Dynamic-Time-Warping}-Distanz (\acrshort*{dtw}).
-Die Ergebnisse der Untersuchungen für vier verschiedene Datensätze zeigen, dass die beste Cluster-Performance
-mit Hilfe der modifizierten Hausdorff-Distanz und des Spectral-Clustering erreicht wird.
+Die Ergebnisse der Untersuchungen für vier verschiedene Datensätze zeigen, dass die beste Clustering-Performance
+mit Hilfe der modifizierten Hausdorff-Distanz und des Spectral-Clusterings erreicht wird.
 
 Dass das von Atev et al. vorgeschlagene Distanzmaß gute Clusterergebnisse produziert, wurde auch von \cite[]{Morris2009}
 bestätigt. In ihrer Untersuchung waren alledings die Ergebnisse, welche mithilfe des LCSS Maßes erreicht wurden,
@@ -158,7 +158,7 @@ Veranschaulicht ist dies in Abbildung \ref{fig:relw_chen_flow_vector}.
     \label{fig:relw_chen_flow_vector}
 \end{figure}
 
-Die auf diese Weise ermittelten Sub-Trajektorien, werden von den Autoren mittels eines DBSCAN Algorithmus gruppiert.
+Die auf diese Weise ermittelten Sub-Trajektorien werden von den Autoren mittels eines DBSCAN Algorithmus gruppiert.
 Sie können so die üblichen Bewegungsbahnen von Hurrikans über dem Atlantik bestimmen.
 
 
@@ -166,7 +166,7 @@ Sie können so die üblichen Bewegungsbahnen von Hurrikans über dem Atlantik be
 \subsubsection*{Discovering Similar Multidimensional Trajectories}
 \label{sec:relw_vlachos}
 Die Arbeit \cite[]{Vlachos2002} thematisiert nicht direkt die Clusteranalyse von Trajektorien sondern
-beschäftigt sich mit dem Vergleich von Bewegungsbahnen im drei-dimensionalen Raum. Konkret ist ihr Ziel,
+beschäftigt sich mit dem Vergleich von Bewegungsbahnen im drei-dimension-alen Raum. Konkret ist ihr Ziel,
 Trajektorien vergleichen zu können, welche etwa die Handbewegungen beim Ausführen von Zeichensprache beschreiben.
 Hierzu definieren die Autoren erstmals die Grundversion des LCSS Distanzmaßes, welches in vielen Arbeiten,
 unter anderem in \cite[]{Atev2006}, \cite[]{Buzan2004} und \cite[]{Chen2005} zum Einsatz kommt.
@@ -190,9 +190,10 @@ Sie besitzen die Form
 \end{align}
 \end{ceqn}
 
-Abbildung \ref{fig:relw_vlachos_translation} veranschaulicht die Funktionsweise des Distanzmaßes. Es eignet sich immer dann, wenn Trajektorien
-mit ähnlicher Form gefunden werden sollen, welche zudem eine gewisse räumliche Verschiebung aufweisen können.
-Diese kann über die Größe von $F$ gesteuert werden.
+Abbildung \ref{fig:relw_vlachos_translation} veranschaulicht die Funktionsweise des Distanzmaßes.
+Sein Einsatz eignet sich immer dann, wenn Trajektorien mit ähnlicher Form gefunden werden sollen,
+welche zudem eine gewisse räumliche Verschiebung aufweisen können. Diese kann über die Größe von $F$
+gesteuert werden.
 
 \begin{figure}[H]
     \centering
@@ -207,11 +208,11 @@ Diese kann über die Größe von $F$ gesteuert werden.
 \cite[]{Ren2014} stellen in ihrer Arbeit ein Vorgehen zur Clusteranalyse von Trajektorien vor,
 welches auf der \textit{Rough-Set}-Theorie beruht. Sie extrahieren Fahrzeugpositionen aus Aufnahmen stationärer
 Überwachungskameras und stellen diese, wie die meisten Autoren, als Sequenzen zwei-dimensionaler
-Punkte dar. Ihr Ziel ist anschließend, anhand einer Gruppierung der Fahrzeugtrajektorien,
-die Spurmittelpunkte der Fahrbahnen zu bestimmen. Da ein nicht unerheblicher Anteil der Trajektorien Spurwechselvorgänge
+Punkte dar. Ihr Ziel ist es anschließend, anhand einer Gruppierung der Fahrzeugtrajektorien
+die Spurmittellinien der Fahrbahnen zu bestimmen. Da ein nicht unerheblicher Anteil der Trajektorien Spurwechselvorgänge
 enthält, welche eine Extraktion der Mittellinien erschweren, verwenden Ren et al. einen iterativen \textit{Rough-k-Means}
 Algorithmus zur Gruppierung der Trajektorien. Hierbei wird jedes Cluster über eine obere und untere Approximation beschrieben.
-Die untere Approximation enthält dabei die Trajektorien, welche eindeutig der Spur zugeordnet werden können.
+Die untere Approximation enthält dabei die Trajektorien, welche eindeutig einer Spur zugeordnet werden können.
 Die obere Näherung hingegen auch jene, welche Spurwechsel et cetera beschreiben. Bei der Berechnung der Spurmitten, werden
 die Trajektorien der unteren Approximation höher gewichtet, als die der oberen. Ein sehr ähnlicher Cluster-Ansatz wurde
 bereits in \cite[]{Lingras2004} vorgestellt.
@@ -256,7 +257,7 @@ anhand Gleichung \ref{eq_ren_rough} errechnet.
 
 Als Gewichtungen $w_l$ verwenden Ren et al. Werte im Bereich $[0.5, 1]$. $| \cdot |$ entspricht hier der Kardinalität einer Menge.
 
-Unter Verwendung dieser Clustering-Methode ist es den Autoren von \cite[]{Ren2014} möglich, auch bei einer hohen Anzahl von
+Unter Verwendung dieser Clustering-Methode ist es den Autoren möglich, auch bei einer hohen Anzahl von
 Ausreißern und Spurwechselvorgängen, stabile Spurmittellinien zu bestimmen. Ergebnisse, welche dies zeigen, sind in Abbildung
 \ref{fig:relw_ren_example_detection} dargestellt.
 
@@ -278,7 +279,7 @@ geht daher auf Veröffentlichungen mit ähnlichen Zielen ein.
 Die meisten Veröffentlichungen in diesem Bereich lösen das Problem, indem sie nach visuellen Merkmalen,
 primär Spurtrennlinien, in Videoaufnahmen suchen. Die Aufnahmen werden dabei entweder von stationären Kameras,
 von bemannten oder unbemannten Luftfahrzeugen oder einem Fahrzeug selbst erstellt. Zur Extraktion der Merkmale werden
-üblicherweise Methoden aus den Gebieten des maschinellen Sehen (\acrshort*{cv}) oder maschinellen Lernens (\acrshort*{ml}) verwendet.
+üblicherweise Methoden aus den Gebieten des maschinellen Sehens (\acrshort*{cv}) oder maschinellen Lernens (\acrshort*{ml}) verwendet.
 Arbeiten, welche CV-basierte Ansätze verfolgen, stammen beispielsweise von \cite[]{Lai2000}, \cite[]{McCall2006} oder \cite[]{Aly2008}.
 ML-gestützte Arbeiten wurden dahingegend unter anderem von \cite[]{Kim2008}, \cite[]{Gopalan2012} oder
 \cite[]{Neven2018} veröffentlicht.
@@ -295,13 +296,13 @@ In der Repräsentation und Extraktion der Fahrspuren variieren die Ansätze hing
 %   Clustering und dann Bestimmung Envelopes basierend auf Varianz der Trajektorien in Cluster
 \subsubsection*{A System for Learning Statistical Motion Patterns}
 Die Arbeit \cite[]{WeimingHu2006} basiert auf dem bereits früher veröffentlichten Artikel \cite[]{Hu2005} der selben Autoren,
-welcher oben beschrieben wurde. In dieser Publikation gehen Hu et al. genauer darauf ein, wie sie auf Basis
+welcher in Abschitt \ref{sec:rw_clustering} beschrieben wurde. In dieser Publikation gehen Hu et al. genauer darauf ein, wie sie auf Basis
 der Ergebnisse der Clusteranalyse, statistische Informationen über die Fahrbahnen berechnen.
-Hierzu wird für jedes Cluster zuerst eine Referenz-Trajektorie $T_r$ bestimmt. Dies ist jene Bewegungsbahn,
+Hierzu wird für jedes Cluster zuerst eine Referenztrajektorie $T_r$ bestimmt. Dies ist jene Bewegungsbahn,
 bei welcher die Summe der Distanzen zu allen anderen Trajektorien des Clusters minimal ist. Das verwendete
 Distanzmaß ist hierbei des selbe, welches auch bei der Clusteranalyse zum Einsatz kam.
 Die Autoren berechnen anschließend für jede Trajektorie-Gruppe eine Kette Gausscher-Wahrscheinlichkeits-Verteilungen
-$\{ \varphi_1, \varphi_2, ..., \varphi_l \}$, wobei $l$ die Anzahl der Punkte der Referenz-Trajektorie ist.
+$\{ \varphi_1, \varphi_2, ..., \varphi_l \}$, wobei $l$ die Anzahl der Punkte der Referenztrajektorie ist.
 Für jedes $\varphi_i$ wird der Mittelwert und die Kovarianz, basierend auf den Trajektorie-Punkten, welche dem
 $i$-ten Punkt von $T_r$ am nächsten liegen, berechnet.
 Anhand der Kovarianz-Werte erstellen die Autoren Hüllen für die Fahrbahnen. Ergebnisse dieses Vorgehens sind in
@@ -369,7 +370,8 @@ Ein Ergebnis des Verfahrens ist in Abbildung \ref{fig:relw_results_makris} b) da
     \subfloat[]{{
         \includegraphics[align=c, width=0.4\linewidth]{resources/img/RelatedWork/makris_result}
     }}
-    \caption[Routen-Definition und Ergebnisse Routen-Erkennung (Makris et al.)]{a) Routen Definition, b) Ergebnisse Routen-Erkennung \cite[]{Makris2005}}
+    \caption[Routen-Definition und Ergebnisse Routen-Erkennung (Makris et al.)]
+            {a) Aufbau einer Route, b) Ergebnisse der Routen-Erkennung \cite[]{Makris2005}}
     \label{fig:relw_results_makris}
 \end{figure}
 
@@ -390,7 +392,7 @@ Zum Vergleich der Trajektorien kommt das in Abschnitt \ref{sec:lcss_distance} vo
 und als Clusteralgorithmus das Spectral-Clustering. Morris et al. verwenden statt des im Spectral-Clustering
 üblicherweise eingesetzten k-Mean-Algorithmus, einen Fuzzy-C-Mean Ansatz, welcher für jede Trajektorie
 einen Zugehörigkeitswert $u_{ik} \in [0, 1]$ zum Cluster $k$ bestimmt.
-Anhand der Zugehörigkeiten der Bewegungsbahnen zu den Clustern werden Referenz-Trajektorien bestimmt.
+Anhand der Zugehörigkeiten der Bewegungsbahnen zu den Clustern werden Referenztrajektorien bestimmt.
 Diese ergeben sich für jedes Cluster als gewichteter Durchschnitt aller Trajektorien. Als Gewichte
 werden die Werte $u_{ik}$ verwendet. Die so erstellten Referenz-Linien sind in Abbildung
 \ref{fig:relw_morris_results} a) zu sehen.
@@ -404,7 +406,7 @@ werden die Werte $u_{ik}$ verwendet. Die so erstellten Referenz-Linien sind in A
     \subfloat[]{{
         \includegraphics[align=c, width=0.35\linewidth]{resources/img/RelatedWork/morris_routes_paths_2}
     }}
-    \caption[Referenz-Trajektorien und Pfade (Morris et al.)]{a) Refernz-Trajektorien, b) Pfade basierend auf HMMs \cite[]{Morris2011}}
+    \caption[Referenztrajektorien und Pfade (Morris et al.)]{a) Referenztrajektorien, b) Pfade basierend auf HMMs \cite[]{Morris2011}}
     \label{fig:relw_morris_results}
 \end{figure}
 
@@ -414,7 +416,7 @@ welche sie mittels der Baum-Welch-Methode trainieren.
 Die Ergebnisse dieses Ansatzes sind in Abbildung \ref{fig:relw_morris_results} b) dargestellt. Die
 Ellipsen repräsentieren die HMM's, welche angeben, wie die erwartete Bewegung eines Fahrzeugs in einem
 bestimmten Bereich aussieht.
-Die in \cite[]{Morris2011} bestimmten Pfade ermöglichen es diverse Aussagen über das Verhalten der Fahrzeuge
+Die in \cite[]{Morris2011} bestimmten Pfade ermöglichen es, diverse Aussagen über das Verhalten der Fahrzeuge
 zu treffen. Sie repräsentieren allerdings nicht die realen Spur-Geometrien eines Straßenabschnittes.
 
 % Hsieh et al., 2006
@@ -463,7 +465,7 @@ aus den Gleichungen \ref{eq_hsieh3} und \ref{eq_hsieh4}.
 \end{ceqn}
 
 Ein Beispiel für die Ergebnisse der Spurerkennung von Hsieh et al. ist in Abbildung \ref{fig:relw_hsieh_results} b) dargestellt.
-Das Verfahren funktioniert gut, wenn Fahrspuren nebeneinader und parallel zueinander liegen. Die Dimensionen
+Das Verfahren funktioniert gut, wenn alle Fahrspuren nebeneinader und parallel zueinander liegen. Die Dimensionen
 sich kreuzender Fahrspuren können mit dem Verfahren beispielsweise allerdings nicht bestimmt werden.
 
 \begin{figure}[H]
@@ -510,7 +512,8 @@ veröffentlichten Verfahren eignen sich nur zur Identifikation von parallelen Fa
 welche von statischen Kameras aufgenommen werden.
 
 Ziel dieser Arbeit ist es, Fahrspuren in unterschiedlichen Straßentopologien identifizieren zu können.
-Die erkannten Spuren sollen außerdem den realen Abmaßen der Spuren auf der Straße bestmöglich entsprechen.
+Die erkannten Spuren müssen außerdem den realen Abmaßen der Spuren auf der Straße bestmöglich entsprechen,
+damit diese zuverlässig in Verkehrsanalysen eingesetzt werden können. 
 Da dies von keiner existierenden Arbeit geboten wird, muss das Verfahren hierzu selbst entwickelt werden.
 Es muss zudem eine Lösung zur Partitionierung von Fahrspuren entwickelt werden, da sich Spuren
 in dieser Arbeit nicht über längere Bereiche hinweg überlagern dürfen.

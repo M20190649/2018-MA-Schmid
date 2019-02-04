@@ -736,11 +736,11 @@ Nachteil des Ansatzes ist, dass er schlecht mit Clustern umgehen kann, welche un
 
 Bei der Clusteranalyse ist neben der Wahl des passenden Clusteralgorithmus insbesondere
 die Entscheidung, welches Distanzmaß verwendet wird, ausschlaggebend.
-Im obigen Abschnitt wurden bereits die euklidsche Distanz (Gleichung \ref{eq_dist}) als ein mögliches Distanzmaß
-definiert. Dieses kann jedoch nur zur Bestimmung der Distanz zwischen $n$-dimensionalen Punkten im euklidschen Raum verwendet
+Im obigen Abschnitt wurde bereits die euklidsche Distanz (Gleichung \ref{eq_dist}) als ein mögliches Distanzmaß
+vorgestellt. Dieses kann jedoch nur zur Bestimmung der Distanz zwischen $n$-dimensionalen Punkten im euklidschen Raum verwendet
 werden. Dasselbe gilt für andere einfache Maße wie die Manhatten-Distanz oder die Pearson-Distanz.
 
-Um Fahrzeugtrajektorien korrekt gruppieren zu können, ist ein Distanzmaß notwendig, welches je nach Anforderungen
+Um Fahrzeugtrajektorien korrekt gruppieren zu können, ist ein Distanzmaß notwendig, welches, je nach Anforderungen,
 die unterschiedlichen Aspekte der Trajektorien vergleicht. Häufig werden die Eigenschaften Lage, Form und Länge
 hierzu herangezogen. In der Literatur werden diverse Maße zum Vergleich von Trajektorien vorgestellt. Diese besitzen
 alle unterschiedliche Eigenschaften, Vor- und Nachteile.
@@ -751,7 +751,8 @@ In allen drei Fällen werden die Trajektorien als Reihen zwei-dimensionaler Punk
 $t_i = \{(x_1, y_1), (x_2, y_2), ..., (x_n, y_n)\}$.
 Der $n$-te Punkt einer Trajektorie ist gegeben über $t_i(n)$ und deren Punkt-Länge über $len(t_i)$.
 Die Menge der zu vergleichenden Trajektorien ist $T = \{t_1, t_2, ..., t_m\}$.
-Abbildung \ref{fig:grund_trajectories} zeigt eine Auswahl von Trajektorien mit unterschiedlichen Bewegungsmustern.
+Abbildung \ref{fig:grund_trajectories} zeigt beispielhaft eine Auswahl von Trajektorien mit
+unterschiedlichen Bewegungsmustern.
 
 \begin{figure}[H]
     \centering
@@ -779,16 +780,17 @@ zwischen zwei Trajektorien basiert. Berechnet wird die HU-Distanz für zwei Traj
 Aus dieser Formel lassen sich sowohl die Vor- als auch Nachteile der HU-Distanz ableiten. Der klare Vorteile der
 HU-Distanz ist deren Einfachheit und die Effizienz von $O(n)$.
 Nachteil ist hingegen, dass das Distanzmaß nur gut funktioniert, wenn die Trajektorien bestimmte
-Kriterien erfüllen. So sollten Trajektorien, welche einem Cluster angehören, auch immer möglichst auf selber Höhe beginnen,
+Kriterien erfüllen. So sollten Trajektorien, welche einem Cluster angehören, auch immer möglichst auf der selben Höhe beginnen,
 damit deren mittlerer Abstand nicht, aufgrund einer Verschiebung, erhöht wird.
 Außerdem ist es notwendig, die Abstände zwischen den Punkten der Trajektorien auf die selbe Länge zu bringen,
-damit beim paarweisen Vergleich immer Elemente verglichen werden, welche gleichweit vom Start der Spuren entfernt sind.
+damit beim paarweisen Vergleich immer Elemente verglichen werden, welche gleichweit vom Start der
+Trajektorien entfernt sind.
 
-Diese Eigenschaften der Trajektorien müssen über einen Vorverarbeitungsschritt geschaffen werden.
+Diese Eigenschaften der Bewegungsbahnen müssen über einen Vorverarbeitungsschritt geschaffen werden.
 Problematisch bei der Verwendung der HU-Distanz ist außerdem, dass beim Vergleich zweier Trajektorien immer nur
-die ersten $N$ Punkte (s. Gleichung \ref{eq_hu_distance2}) betrachtet werden. Die kann dazu führen, dass zwei
-Trajektorien, welche zu Beginn fast identisch sind und später auseinanderlaufen, trotzdem einen hohen Ähnlichkeitswert besitzen
-(vergleiche $t_5$ und $t_6$ in Abbildung \ref{fig:grund_trajectories}).
+die ersten $N$ Punkte (s. Gleichung \ref{eq_hu_distance2}) betrachtet werden. Dies kann dazu führen, dass zwei
+Trajektorien, welche anfangs fast identisch verlaufen und sich später voneinander entfernen, trotzdem einen hohen
+Ähnlichkeitswert besitzen (vergleiche $t_5$ und $t_6$ in Abbildung \ref{fig:grund_trajectories}).
 
 Die HU-Distanz kann aufgrund der genannten Einschränken nur in speziellen Fällen oder nach starker Vorverarbeitung
 der Trajektorien angewandt werden. Sie liefert ansonsten schlechte Clustering Ergebnisse.
@@ -820,7 +822,7 @@ wenn jeder Punkt einer Trajektorie einen nahegelegenen Punkt in der Vergleichsba
 Vorteil der Hausdorff-Distanz im Vergleich zur HU-Distanz ist, dass diese immer vollständige Trajektorien vergleicht
 und nicht nur Teile. Außerdem ist bei ihrer Verwendung keine Vorverarbeitung in Form von Resampling et cetera notwendig.
 Problematisch ist das Distanzmaß hingegen, da es mit ungeordneten Sets arbeitet und somit im Fall von Trajektorien deren
-Orientierung nicht beachtet. Zwei parallel aber in entgegengesetzte Richtungen laufende Trajektorien, wie beispielsweise
+Orientierung nicht beachtet. Zwei parallele aber in entgegengesetzte Richtungen laufende Trajektorien, wie beispielsweise
 die Trajektorien $t2$ und $t3$ in Abbildung \ref{fig:grund_trajectories}, würden nach Hausdorff eine hohe Ähnlichkeit besitzen.
 Zudem kann das Distanzmaß schlecht mit Ausreißern umgehen, da bereits ein einzelner Ausreißer, bei ansonsten identischen
 Trajektorien, zu einer beliebig kleinen Ähnlichkeit führen kann.
@@ -869,7 +871,7 @@ gegenüber Ausreißern ist, da nicht für alle Punkte Übereinstimmungen in den 
 Über $\epsilon$ und $\delta$ kann die ``Strenge'' des Algorithmus geregelt werden.
 Zudem berücksichtigt das LCSS Maß die Orientierung der Trajektorien.
 Die rekursive Definition des LCSS Algorithmus aus Gleichung \ref{eq_lcss} lässt sich mittels dynamischer Programmierung
-mit Zeitkomplexität $O(n\ m)$ berechnen.
+und \textit{Memoisation} mit Zeitkomplexität $O(n\ m)$ berechnen.
 
 \subsection{Wahl eines Distanzmaßes}
 
