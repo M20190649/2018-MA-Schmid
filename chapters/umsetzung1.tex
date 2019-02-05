@@ -448,7 +448,7 @@ Es wurde ein Ansatz gesucht, welcher mit den beschriebenen Herausforderungen bes
 \subsection{Ansatz DBSCAN und LCSS}
 \label{sec:real_ansatz_dbscan_lcss}
 
-Nachdem das in Abbschnitt \ref{sec:real_ansatz_spec_modHD} beschriebene Verfahren in
+Nachdem das in Abschnitt \ref{sec:real_ansatz_spec_modHD} beschriebene Verfahren in
 den Untersuchungen schlechte Ergebnisse lieferte, wurde nach neuen Ansätze gesucht.
 Kriterien für diese waren primär, dass sie mit Ausreißern sinnvoll umgehen können, weniger Parametrisierung
 benötigen beziehungsweise diese intuitiver ist, und sie eine bessere Performance besitzen.
@@ -457,10 +457,10 @@ in Kombination mit dem LCSS-Distanzmaß für die Clusteranalyse von Trajektoried
 
 Vorteil des dichte-basierten DBSCAN-Algorithmus, dessen Funktionsweise bereits in Abschnitt
 \ref{sec:grund_density_clustering} erläutert wurde, ist, dass er Ausreißer erkennt und die Anzahl der
-Zielcluster selbst bestimmen kann.
-Die auf diese Weise identifizierten Cluster-Sets sind also ebenso wie bei Atev et al. partitioniert und exklusiv,
+Zielcluster selbstständig bestimmen kann.
+Die auf diese Weise identifizierten Cluster-Sets sind also, ebenso wie bei Atev et al., partitioniert und exklusiv,
 sind aber außerdem partielle (siehe Abschnitt \ref{sec:grund_property_cluster_sets}).
-Das LCSS Distanzmaß, grundlegend in Abbschnitt \ref{sec:lcss_distance}
+Das LCSS Distanzmaß, grundlegend in Abschnitt \ref{sec:lcss_distance}
 beschrieben, ähnelt der modifizierten Hausdorff-Distanz, lässt sich allerdings performanter implementieren
 und besitzt eine intuitivere Parametrisierung. Es lieferte in den Arbeiten \cite[]{Morris2011} und
 \cite[]{Chen2014} gute Clustering-Ergebnisse.
@@ -484,13 +484,13 @@ Die Grundgleichung des LCSS Distanzmaßes wurde, basierend auf \cite[]{Vlachos20
 
 Mit ihrer Hilfe lässt sich bestimmen, wie groß die längste, übereinstimmende Subsequenz zweier Trajektorien
 $t_1$ und $t_2$ ist. Damit Punkte zweier Trajektorien als übereinstimmend gewertet werden, dürfen sie
-höchstens die Distanz $\epsilon$ zueinander haben und ihre Position in den Bewegungsbahnen sich um $\delta$
+höchstens die Distanz $\epsilon$ zueinander haben und ihre Position in den Bewegungsbahnen sich höchstens um $\delta$
 unterscheiden.
 Wenn das Zählmaß, wie oben dargestellt, rekursiv implementiert wird, liegt die Zeitkomplexität des Algorithmus
 bei $O(2^n)$, was für den Vergleich einer größeren Anzahl von Trajektorien nicht geeignet ist. Die Performance
 kann auf $O(m\ n)$ verbessert werden, indem das Maß mit Hilfe von dynamischer Programmierung und \textit{Memoization}
 umgesetzt wird. Der sich so ergebende Algorithmus ist in Listing \ref{lst:pseudo_LCSS} aufgeführt.
-\begin{lstlisting}[caption=Pseudocode LCSS Bestimmung, language=Pseudo, label=lst:pseudo_LCSS] 
+\begin{lstlisting}[caption=Pseudocode LCSS Bestimmung, language=Pseudo, label=lst:pseudo_LCSS]
 algorithm LCSS:
   input:  trajectory: t1, trajectory: t2, epsilon, deltaFac
   output: LCSS distance between t1 and t2
@@ -513,7 +513,7 @@ algorithm LCSS:
   return LCS(t1Len)(t2Len)
 \end{lstlisting}
 
-Der Parameter $\delta$ wird in dieser Implementierung nicht, wie meist üblich, fest definiert, sondern er ergibt sich als
+Der Parameter $\delta$ wurde in dieser Implementierung nicht, wie meist üblich, fest definiert, sondern er ergibt sich als
 ein Teil der Länge der kurzeren Trajektorie (siehe Listing \ref{lst:pseudo_LCSS} Zeile 7).
 Als Distanzfunktion für das LCSS Zählmaß, wird in dieser Arbeit das von \cite[]{Vlachos2002} definierte
 Maß verwendet:
@@ -524,7 +524,7 @@ Maß verwendet:
 \end{align*}
 \end{ceqn}
 
-Auf die in Abschnitt \ref{sec:relw_vlachos} vorgestellte Erweiterung des Distanzmaßes wurde in dieser Arbeit verzichtet,
+Auf die in Abschnitt \ref{sec:relw_vlachos} vorgestellte Erweiterung des Distanzmaßes wurde verzichtet,
 da es nicht erwünscht ist, formähnliche aber im Raum verschobene Trajektorien, einem Cluster zuzuordnen.
 
 Der DBSCAN Clusteralgorithmus wurde in diesem Fall nicht selbst implementiert. Es wurde die Implementierung
@@ -536,7 +536,7 @@ $\epsilon$-Nachbarschaft und \textit{MinPts} definiert werden (siehe Abschnitt \
 \subsubsection{Auswertung des Verfahrens}
 \label{sec:results_clustering_dbscan_lcss}
 
-In Abbildung \ref{fig:real_results_dbscan_lcss} sind die Cluster-Ergebnisse des beschriebenen Verfahrens
+In Abbildung \ref{fig:real_results_dbscan_lcss} sind die Clustering-Ergebnisse des beschriebenen Verfahrens
 dargestellt. Diese Resultate ergeben sich unter Verwendung der nachfolgenden Parameter, welche auch in den meisten anderen
 Datensätzen gute Ergebnisse liefern und daher als Standardparameter festgelegt wurden:
 
@@ -551,10 +551,10 @@ Datensätzen gute Ergebnisse liefern und daher als Standardparameter festgelegt 
 \end{center}
 }
 
-Die Bedeutung der Werte ist in diesem Fall leicht und intuitiv verständlich: Punkte zweier Trajektorien
+Die Bedeutung der Parameter und Werte ist in diesem Fall leicht und intuitiv verständlich: Punkte zweier Trajektorien
 dürfen maximal $1.5m$ voneinader entfernt sein und ihre Position sich um maximal $\delta_{LCSS} * minTraLength$ unterscheiden.
 Sind diese Bedingungen erfüllt, gelten zwei Trajektorie-Punkte als übereinstimmend. Ein Cluster muss zudem aus mindestens
-5 Trajektorien bestehen und die Differenzen der Trajektorie-Distanzen im Cluster untereinander dürfen nicht größer als 0.3 sein.
+fünf Bewegungsbahnen bestehen und die Differenzen der Trajektorie-Distanzen im Cluster untereinander, dürfen nicht größer als 0.3 sein.
 Für $\epsilon_{DBSCAN}$ gilt grundsätzlich: Je stärker sich Fahrspuren überlagern, umso kleiner muss der gewählte Wert sein, da
 ein kleiner Wert für eine striktere Gruppierung der Trajektorien sorgt. Allerding sorgt ein kleinerer Wert
 auch dafür, dass mehr Trajektorien als Ausreißer klassifiziert werden.
@@ -585,7 +585,7 @@ Der DBSCAN Algorithmus markiert atypische Trajektorien als Ausreißer, was den V
 diese nichtmehr anderen Spurclustern zugeordnet werden. Problematisch ist allerdings, dass Bewegungsbahnen
 welche Abbiegevorgänge beschreiben und in unterschiedliche Spuren einbiegen, teilweise auch als Ausreißer
 klassifiziert werden. In Abbildung \ref{fig:real_results_dbscan_lcss} b) fehlen so beispielsweise die Trajektorien
-der zwei Abbiegespuren in der oberen linken und unteren rechten Ecke (vergleiche Abbildung \ref{fig:real_neckartor} a)).
+der zwei Abbiegespuren im oberen linken und unteren rechten Bereich (vergleiche Abbildung \ref{fig:real_neckartor} a)).
 Um diese weiterhin erkennen zu können, wurde ein extra Verarbeitungsschritt eingeführt, welcher in Abschnitt
 \ref{sec:real_detect_turning_lane} beschrieben wird.
 
@@ -616,7 +616,7 @@ dass sich die Fahrzeuge nach dem Abbiegen auf drei Fahrstreifen verteilen.
     \subfloat[]{{
         \includegraphics[align=c, width=0.28\linewidth]{resources/img/umsetzung/U1/turning_lane_trajs}
     }}
-    \caption[Abbiegespur Neckartor Kreuzung]{Abbiegespur a), zugehörige Trajektorien b)}
+    \caption[Abbiegespur Neckartor Kreuzung]{Abbiegespur der Neckartor-Kreuzung a), zugehörige Trajektorien b)}
     \label{fig:real_turning_lane}
 \end{figure}
 
@@ -689,7 +689,7 @@ welche in Abbildung \ref{fig:real_results_dbscan_lcss} b) noch fehlten, sind nun
 
 Mithilfe der oben vorgestellten Verfahren können Trajektorie-Cluster entdeckt werden, welche
 die einzelnen Fahrspuren in einer Aufnahme beschreiben. Im nachfolgenden Abschnitt wird noch ein
-zusätzliches Verfahren vorgestellt, mit dessen Hilfe sich die Clusteranalyse automatisch parametrisieren lässt. 
+zusätzliches Verfahren vorgestellt, mit dessen Hilfe sich die Clusteranalyse automatisch parametrisieren lässt.
 
 \subsection{Automatische Parametrisierung der Clusteranalyse}
 \label{sec:real1_adjustment_clustering_parameter}
@@ -708,13 +708,13 @@ in Abbildung \ref{fig:real1_clusters_duesseldorf} b) dargestellt.
 \begin{figure}[H]
     \centering
     \subfloat[]{{
-        \includegraphics[align=c, width=0.31\linewidth]{resources/img/umsetzung/U1/Plots_Duesseldorf/preProTraj}
+        \includegraphics[align=c, width=0.33\linewidth]{resources/img/umsetzung/U1/Plots_Duesseldorf/preProTraj}
     }}
     \subfloat[]{{
-        \includegraphics[align=c, width=0.31\linewidth]{resources/img/umsetzung/U1/Plots_Duesseldorf/filteredClusters_03}
+        \includegraphics[align=c, width=0.33\linewidth]{resources/img/umsetzung/U1/Plots_Duesseldorf/filteredClusters_03}
     }}
     \subfloat[]{{
-        \includegraphics[align=c, width=0.31\linewidth]{resources/img/umsetzung/U1/Plots_Duesseldorf/filteredClusters}
+        \includegraphics[align=c, width=0.33\linewidth]{resources/img/umsetzung/U1/Plots_Duesseldorf/filteredClusters}
     }}
     \caption[Ergebnis Clusteranalyse Düsseldorf Datensatz]
             {a) Roh-Trajektorien des Datensatzes Düsseldorf, b) Ergebnis der Clusteranalyse unter Verwendung
@@ -733,7 +733,7 @@ nicht mit den realen Spuren übereinstimmen.
 Das Verfahren nutzt die Spur-Geometrien, welche auf Basis
 der identifizierten Spur-Cluster ermittelt werden (siehe Abschnitt \ref{cha:lane_definition}).
 Mithilfe der Geometrien, welche sich jeweils aus einem Trajektorie-Cluster ableiten, und den Trajektorien des
-Clusters lassen sich sogenannte \textit{Weg-Zeit-Diagramme} erstellen, welche die Bewegungen der Fahrzeuge auf einer
+Clusters, lassen sich sogenannte \textit{Weg-Zeit-Diagramme} erstellen, welche die Bewegungen der Fahrzeuge auf einer
 Fahrspur abbilden.
 Beschreibt eine ermittelte Spur-Geometrie eine reale Fahrspur korrekt, dann schneiden sich die Trajektorien
 in dem entsprechenden Weg-Zeit-Diagramm nicht, da die Fahrzeuge auf der Spur hintereinander herfahren
@@ -765,7 +765,7 @@ Der Ablauf des Verfahrens kann grob wie folgt beschrieben werden:
 \begin{enumerate}
     \item Durchführung der Spurerkennung.
     \item Erstellung von Weg-Zeit-Trajektorien auf Basis der Spur-Geometrien.
-    \item Bestimmung der Anzahl der Überschneidungen in Weg-Zeit-Trajektorien:
+    \item Bestimmung der Anzahl der Überschneidungen in den Weg-Zeit-Trajektorien:
     \begin{enumerate}
         \item bei Überschreitung des Grenzwertes $\rho$: Zurück zu 1) und Anpassung von\\ $\epsilon_{DBSCAN}$, sonst
         \item Verwendung der ermittelten Spur-Geometrien.
@@ -778,6 +778,6 @@ gute Ergebnisse liefern.
 Unter Verwendung des Verfahrens werden beispielsweise auch im Fall des \textit{Düsseldorf} Datensatzes die erwarteten
 Spur-Cluster identifiziert, welche in Abbildung \ref{fig:real1_clusters_duesseldorf} c) zu sehen sind.
 
-Dank der Parameteranpassung, kann das Verhalten der Clusteranalyse automatisch geändert werden,
+Dank der Parameteranpassung kann das Verhalten der Clusteranalyse automatisch geändert werden,
 wenn die Ergebnisse nicht die erwartete Qualität besitzen. Dem Nutzer wird dadurch eine eventuell notwendige
 manuelle Parametrisierung abgenommen.

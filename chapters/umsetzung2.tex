@@ -4,7 +4,7 @@
 \label{cha:lane_definition}
 
 Nachfolgend wird beschrieben, wie aus den identifizierten Trajektorie-Clustern
-Geometrie-Informationen der Fahrspuren abgeleitet werden. Eine Spur-Geometrie besteht primär
+Geometrie-Informationen der Fahrspuren abgeleitet werden. Eine Spur-Geometrie besteht grundlegend
 aus einer Mittellinie und zwei Hülllinien, welche die Breite der Spur festlegen.
 Bestimmt werden die Geometrien primär in drei Schritten:
 
@@ -107,7 +107,7 @@ Auf eine Bestimmung der Mittellinie mittels linearer oder polynomialer Regressio
 wurde ebenfalls verzichtet. Der Grund hierfür ist, dass einerseits die Komplexität und Form der Fahrbahnverläufe
 nicht bekannt ist und andererseits das Erlernen der Spurrepräsentationen auf diese Weise sehr aufwendig ist.
 
-Der in dieser Arbeit gewählte Ansatz zur Bestimmung der Mittellinien macht sich die von Atev et al.
+Der in dieser Arbeit entwickelte Ansatz zur Bestimmung der Mittellinien macht sich die von Atev et al.
 vorgestellte Notation einer relativen Position innerhalb einer Trajektorie zu nutze, welche in
 Gleichung \ref{eq_atev_relPos} und \ref{eq_atev_findPointAtRelPow} gegeben ist.
 Die Koordinaten der Spurlinien ergeben sich aus den Mittelwerten von Trajektorie-Punkten, welche sich
@@ -153,7 +153,7 @@ welche auf die oben beschriebene Weise bestimmt wurden.
 \end{figure}
 
 Das beschriebene Verfahren kann, im Gegensatz zu den meisten Ansätzen welche in den verwandten Arbeiten zum Einsatz kommen,
-Spurmittellinien für unterschiedlichste Spurverläufe ermitteln. 
+Spurmittellinien für unterschiedlichste Spurverläufe ermitteln.
 Diese werden, da es sich bei ihnen ebenfalls um Sequenzen von 2D-Koordinaten handelt,
 im Algorithmus über Trajektorie-Objekte repräsentiert (siehe Abbildung \ref{fig:real_trajectory_classDia}).
 
@@ -192,7 +192,7 @@ veranschaulicht das Vorgehen.
     \label{fig:real2_lane_alignment_concept}
 \end{figure}
 
-Die so bestimmte Gerade $g$ ist zudem gleichzeitig, die Linie, auf welche die anderen Spur-Endpunkte
+Die so bestimmte Gerade $g$ ist zudem gleichzeitig die Linie, auf welche die anderen Spur-Endpunkte
 projiziert werden. Hierzu wird eine Orthogonalprojektion der Endpunkte auf die Gerade $g$ durchgeführt, welche
 in Gleichung \ref{eq_orthPro} definiert ist. $\vec r_0$ entspricht hierbei einem Stützvektor auf der Geraden $g$ und
 $\vec u$ dem Richtungsvektor.
@@ -225,7 +225,7 @@ definiert.
 \subsection{Bestimmung der Spurhüllen}
 \label{sec:real2_define_lane_envelope}
 
-Auf Basis der vorher bestimmten Mittellinien werden anschließend die Spurhüllen bestimmt.
+Auf Basis der bestimmten Mittellinien werden anschließend die Spurhüllen definiert.
 In folgendem Abschnitt wird das hierzu eingesetzte Verfahren beschrieben.
 
 Eine Spurhülle definiert die Breite einer Fahrbahn. In dieser Arbeit verlaufen sie idealerweise entlang
@@ -235,7 +235,7 @@ soll die realen Dimensionen einer Spur möglichst genau abbilden. Aus diesem Gru
 die Hüllen lediglich auf Basis von statistischen Informationen der Trajektorie-Cluster zu bestimmen,
 wie das beispielsweise in \cite[]{WeimingHu2006} oder \cite[]{Morris2011} gemacht wird.
 Der in dieser Arbeit verwendete Ansatz zur Bestimmung der Spurhüllen basiert daher lediglich auf den
-Spurmittellinien und nutzt ihre relative Lage zueinander. Ansätze hierzu stammen aus den Arbeiten von
+Spurmittellinien und nutzt deren relative Lage zueinander. Ansätze hierzu stammen aus den Arbeiten von
 \cite[]{Hsieh2006} und \cite[]{Makris2005}, welche in Abschnitt \ref{sec:rw_lane_detection} vorgestellt wurden.
 
 Die grundlegende Idee, auf welcher die Bestimmung der Spurhüllen basiert, ist konzeptionell in Abbildung
@@ -249,7 +249,7 @@ $1/2\ d$.
     \centering
     \includegraphics[width=0.75\linewidth]{resources/img/umsetzung/U2/concept_lane_envelope}
     \caption[Konzept Bestimmung Spürhüllen]
-            {Konzept Bestimmung Spürhüllen - Ermittlung von Spurbreiten anhand Abstandes paralleler Spuren}
+            {Konzept Bestimmung Spürhüllen - Ermittlung der Spurbreiten anhand des Abstandes paralleler Spuren}
     \label{fig:real2_envelope_definition_concept}
 \end{figure}
 
@@ -321,8 +321,8 @@ die Spurhüllen bestimmt.
 \subsubsection{Berechnung der Hüllen}
 \label{sec:real2_create_envelopes}
 
-Bevor für eine Mittellinie die sie umgebende Spurhülle bestimmt werden kann, muss die Breite der Spur
-ermittelt werden. Diese ergibt sich, für die im vorherigen Schritt ermittelten parallelen Spur-Paare, aus
+Bevor für eine Mittellinie die sie umgebende Spurhülle definiert werden kann, muss die Breite der Spur
+ermittelt werden. Diese ergibt sich, für die im vorherigen Schritt identifizierten parallelen Spur-Paare, aus
 deren mittleren Abstand zueinander. Verlaufen zu einer Spurlinie zwei Bahnen parallel, werden
 die Abstände zu beiden berechnet und der kleinere Wert wird als Spurbreite gewählt.
 Allen Bahnen, welche keine parallele Nachbarspur besitzen, wird das Minimum der im vorherigen Schritt
@@ -330,14 +330,14 @@ bestimmten Spurbreiten zugeordnet.
 Falls sich in einer Aufnahme keine parallelen Spuren befinden, wird für die Spurbreite ein Standartwert
 von 3.5 Metern verwendet, welcher sich ebenfalls aus den RAA und RAL Richtlinien ableitet.
 
-Nachdem Breiten für alle Fahrspuren bestimmt wurden, können die Hülllinien berechnet werden.
-Hierzu werden für jeden Punkt der Mittellinie zwei zugehörige Hüllpunkte berechnet.
+Nachdem die Breiten für alle Fahrspuren bestimmt wurden, können die Hülllinien berechnet werden.
+Hierzu werden für jeden Punkt einer Mittellinie zwei zugehörige Hüllpunkte berechnet.
 Das verwendete Vorgehen ist in Abbildung \ref{fig:real2_envelope_point_calculation_concept} dargestellt.
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\linewidth]{resources/img/umsetzung/U2/calc_env_point}
-    \caption{Konzept Berechnung Spur-Hüllpunkte}
+    \caption{Konzept Berechnung Spurhüllpunkte}
     \label{fig:real2_envelope_point_calculation_concept}
 \end{figure}
 
@@ -382,7 +382,7 @@ sie umgebenden Hüllen in einem Plot. Teil b) zeigt die in die Anwendung \textit
 
 Die obige Abbildung zeigt, dass die berechneten Spur-Geometrien in den meisten Fällen bereits gut
 mit den realen Spur-Dimensionen übereinstimmen. Bevor die Spuren partitioniert werden, um Überlagerungen
-von Fahrspuren zu entfernen, werden in einem weiteren Schritt ``unechte'' Spur-Geometrien entfernt.
+von Fahrspuren zu entfernen, werden in einem weiteren Schritt Pseudo-Spur-Geometrien entfernt.
 
 \subsubsection{Entfernung von Pseudo-Spur-Geometrien}
 
@@ -406,15 +406,15 @@ und entfernt. Beispiele für solche Geometrien sind in Abbildung \ref{fig:real2_
 
 Zu kurz ist eine Spur-Geometrie dann, wenn sie einen Streckenabschnitt beschreibt, welcher
 gleichzeitig noch von einer anderen, längeren Spur beschrieben wird. Sie wird daher
-gänzlich oder fast gänzlich überlagert. Diese Art von Pseudo-Spuren ist leicht zu identifizieren.
+gänzlich oder fast gänzlich überlagert. Diese Art von Pseudo-Spur ist leicht zu identifizieren.
 Es wird für jede Spur geprüft, ob eine andere Spur existiert, welche sie zu 95\% oder mehr überlagert.
-Wie die Überlagerung von zwei Spuren identifiziert wird, ist in Abschnitt \ref{sec:real2_lane_partitioning}
+Wie die Überlagerung von zwei Spuren bestimmt wird, ist in Abschnitt \ref{sec:real2_lane_partitioning}
 beschrieben.
 
 Geometrien, welche nicht eine Spur sondern den Wechsel zwischen zwei Spuren darstellen, können
-existieren, wenn die Trajektoriedaten viele Spurwechselvorgänge enthalten und in der Cluster-Analyse für
+existieren, wenn die Trajektoriedaten viele Spurwechselvorgänge enthalten und in der Clusteranalyse für
 diese ein extra Cluster erstellt wird. Um diese Spuren zu identifizieren, müssen Kriterien eines
-Spurwechsel-Vorgangs definiert werden. Diese zeichnen sich primär dadurch aus, dass sie auf einer Spur
+Spurwechselvorgangs definiert werden. Diese zeichnen sich primär dadurch aus, dass sie auf einer Spur
 $A$ beginnen und auf einer Spur $B$ enden, wobei die Spuren $A$ und $B$ parallel zueinander verlaufen.
 Es kann zudem davon ausgegangen werden, dass sich weniger Fahrzeuge auf einer Spurwechsel-Spur bewegen,
 als auf den zwei eigentlichen Fahrspuren.
@@ -515,13 +515,13 @@ bleibt diese erhalten. Existiert in einem Paar keine primäre Spur, so werden ve
 der Fahrspuren untersucht, um eine Entscheidung zu treffen, welche Geometrie zu partitionieren ist.
 Der hierzu verwendete Algorithmus ist vereinfacht in Listing \ref{lst:pseudo_selectMoreCurvy} dargestellt.
 
-Grundlegen wird zuerst das Krümmungsverhalten der zwei Fahrspuren im Bereich ihres Schnittpunktes untersucht.
+Grundlegend wird zuerst das Krümmungsverhalten der zwei Fahrspuren im Bereich ihres Schnittpunktes untersucht.
 Liegt die Differenz der Krümmungen der beiden Spuren oberhalb eines Grenzwertes $\delta$, so wird
 jene Spur partitioniert, welche die höhere Krümmung besitzt. Die Annahme ist, dass es sich bei dieser
 Spur mit höherer Wahrscheinlichkeit um eine Abbiegespur et cetera handelt, welche in eine gerade Spur übergeht.
 Ist die Differenz der Krümmungen kleiner als $\delta$, so verlaufen die zwei Spuren im Bereich des Schnittpunktes
 annähernd parallel. In diesem Fall wird entweder anhand der Länge oder der Fahrzeuganzahl entschieden,
-welche Spur geteilt wird. Der Anwender der Tracking-Application kann das Verhalten des Algorithmus an dieser Stelle
+welche Spur geteilt wird. Der Anwender des \textit{Vehicle-Trackers} kann das Verhalten des Algorithmus an dieser Stelle
 über einen Parameter steuern. Standardmäßig wird die Anzahl der Fahrzeuge, welche sich auf einer Spur befinden,
 als Kriterium verwendet.
 \begin{lstlisting}[caption=Pseudocode Auswahl zu partitionierende Fahrspur, language=Pseudo, label=lst:pseudo_selectMoreCurvy]
@@ -576,12 +576,12 @@ Abbildung \ref{fig:real2_results_partitioning} zeigt das Ergebnis der Spur-Parti
         \includegraphics[align=c, width=0.45\linewidth]{resources/img/umsetzung/U2/result_lanePartitioned_Screenshot}
     }}
     \caption[Ergebnisse Spur-Partitionierung]
-            {Plot partitionierte Spur-Geometrien a), Visualisierung Ergebnis in der Anwendung \textit{Vehicle-Tracker} b)}
+            {Plot der partitionierten Spur-Geometrien a), Visualisierung der Ergebnisse in der Anwendung \textit{Vehicle-Tracker} b)}
     \label{fig:real2_results_partitioning}
 \end{figure}
 
 Die so ermittelten Spur-Geometrien entsprechen in den meisten Fällen bereits dem gewünschten Ergebnis,
-da sie die realen Fahrspur-Verläufe gut wiederspiegeln und keine Überlagerungen mehr existieren.
+da sie die realen Fahrspurverläufe gut wiederspiegeln und keine Überlagerungen mehr existieren.
 In einigen Szenarien kann es jedoch vorkommen, dass nach der Geometrie-Ermittlung und der Partitionierung
 die Fahrspur-Geometrien die reale Straßentopologie noch nicht korrekt abbilden. Aus diesem Grund werden die
 Spur-Geometrien in einem weiteren Schritt nochmals optimiert.
@@ -596,17 +596,17 @@ in welchem sich rechts zwei parallele Fahrspuren befinden, welche sich links in 
 Es ist erkennbar, dass die zwei Fahrspuren zu Beginn nicht direkt aneinander angrenzen
 und daher in diesem Abschnitt nicht breit genug sind. In diesem Fall resultiert die zu niedrige Fahrbahnbreite
 aus der starken Überlagerung der vier Spur-Geometrien im rechten Bereich vor deren Partitionierung.
-Diese verursacht eine falsche Schätzung der Spur-Breite (siehe Abschnitt \ref{sec:real2_define_lane_envelope}).
+Diese verursacht eine falsche Schätzung der Spurbreite (siehe Abschnitt \ref{sec:real2_define_lane_envelope}).
 
 \begin{figure}[H]
     \centering
     \fbox{\includegraphics[align=c, width=0.7\linewidth]{resources/img/umsetzung/U2/laneOpt_partitioned_pre}}
     \caption[Beispiel zu schmale Spur-Geometrien]
-            {Beispiel zu schmale Spur-Geometrien - Parallele rote und schwarze Spur-Geometrien grenzen nicht aneinander an}
+            {Beispiel zu schmaler Spur-Geometrien - Parallele rote und schwarze Spur-Geometrien grenzen nicht aneinander an}
     \label{fig:real2_pre_opt}
 \end{figure}
 
-Um Effekte wie diesen zu korrigieren, werden nach der Partitionierung nun nochmals die Breiten aller Spur-Geometrien
+Um Effekte wie diesen zu korrigieren, werden nach der Partitionierung nochmals die Breiten aller Spur-Geometrien
 neu bestimmt. Im Gegensatz zu dem verwendeten Vorgehen aus Abschnitt \ref{sec:real2_define_lane_envelope},
 bei welchem für jede Spur eine feste Breite berechnet wurde, wird diese nun für jeden Punkt der Spur einzeln
 berechnet. Hierdurch wird es möglich, dass beispielsweise die rote und grüne Spur aus Abbildung \ref{fig:real2_pre_opt}
@@ -642,7 +642,7 @@ ist nachfolgend dargestellt.
 \end{figure}
 
 Die Fahrspurerkennung ist nach dem Optimierungsschritt abgeschlossen. Auf Basis der vorliegenden
-Spur-Geometrien können anschließend die Fahrspuren in die Anwendung \textit{Vehicle-Tracker} eingefügt werden.
+Spur-Geometrien können anschließend die Spuren in die Anwendung \textit{Vehicle-Tracker} eingefügt werden.
 
 \subsection{Anlegen der Fahrspuren in der Anwendung Vehicle-Tracker}
 
@@ -666,7 +666,7 @@ legt über zwei Punkte die Breite der Fahrspur auf einer bestimmten Höhe der Sp
 kann aus beliebig vielen Querstrecken bestehen, wodurch es möglich ist, die Fahrspuren beliebig detailliert
 zu definieren.
 
-Die Fahrspuren und Querstrecken werden im Fall der automatisch erkannten Fahrbahnen anhand der Spur-Hüllen
+Die Fahrspuren und Querstrecken werden im Fall der automatisch erkannten Fahrbahnen anhand der Spurhüllen
 definiert. Über Punkt-Paaren der beiden Hülllinien (siehe Abbildung \ref{fig:real2_laneGeometry_ClassDia}),
 werden Querstrecken erstellt.
 Da eine Fahrspur möglichst über die kleinste Menge an Querstrecken beschrieben werden soll, welche die
@@ -678,7 +678,8 @@ die Richtungsänderungen zwischen aufeinanderfolgenden Abschnitten betrachtet. H
 die Gleichung \ref{eq_angle_skalar} eingesetzt.
 Überschreitet die Richtungsänderung einer Hülle einen Grenzwert von $\phi = 0.02$, so wird eine neue
 Querstrecke erstellt. Anderenfalls verläuft die Spur im untersuchten Bereich annähernd gerade.
-In Abbildung \ref{fig:real2_lanes_trackerApplication} ist das Ergebnis der Spurerstellung dargestellt.
+% In Abbildung \ref{fig:real2_lanes_trackerApplication} ist das Ergebnis der Spurerstellung dargestellt.
+In Abbildung 6.29 ist das Ergebnis der Spurerstellung dargestellt.
 Es ist gut zu erkennen, dass im Fall der geraden Fahrspuren der Autobahn nur wenige Querstrecken zur
 Definition der Spur verwendet werden, und für die gekrümmten Spuren deutlich mehr.
 
@@ -695,7 +696,7 @@ detektierte Fahrbahnen sich nachträglich noch leicht modifizieren lassen. Falls
 Spur also beispielsweise in einem Abschnitt zu schmal oder zu breit ist, kann dies leicht vom Nutzer korrigiert
 werden.
 
-Nachdem die Fahrspuren in der \textit{Vehicle-Tracker} Anwendung angelegt wurden, können sie zur Auswertung
+Nachdem die Fahrspuren in der \textit{Vehicle-Tracker} Anwendung angelegt wurden, können sie zur Analyse
 des Verkehrs in der Luftbeobachtung verwendet werden.
 Die Ergebnisse und Qualität des in diesem Kapitel vorgestellten Algorithmus, werden im nachfolgenden
 Auswertungskapitel vorgestellt.
