@@ -14,7 +14,7 @@ in Form von Screenshots vorgestellt, in welchen die erkannten Fahrspuren zu sehe
 Die Datenvorverarbeitung ist ein wichtiger Teilschritt bei der Erkennung von Fahrspuren. Nur wenn aus
 den Roh-Trajektorien die meisten Defekte entfernt wurden, können die nachfolgenden
 Schritte zuverlässig funktionieren. Die angewandten Schritte zur
-Entfernung der Anomalien sind in Abschnitt \ref{sec:realisation_preprocessing} beschrieben.
+Entfernung der Defekte sind in Abschnitt \ref{sec:realisation_preprocessing} beschrieben.
 
 Anhand von Abbildung \ref{fig:real_result_2nd_Prepro} im Umsetzungskapitel wurde bereits gezeigt,
 dass die Datenvorverarbeitung grundsätzlich funktioniert.
@@ -40,7 +40,7 @@ circa 1050 Roh-Trajektorien im ursprünglichen Datensatz bleiben nach der Vorver
 Bewegungsbahnen übrig. Die Mehrzahl der Defekte in diesem Fall stammt von \textit{False-Positive}-Detektionen
 und unterbrochener Fahrzeug-Detektionen (siehe Abschnitt \ref{sec:grund_challenges_reconstruction}).
 
-Ein problematisches Verhalten des Vorverarbeitungsschrittes wurde beim Testen der Spurerkennung anhand eines
+Ein problematisches Verhalten der Datenvorverarbeitung wurde beim Testen der Spurerkennung anhand eines
 Datensatzes aus Steinheim deutlich. In Abbildung \ref{fig:results_horizon_problem} a) ist der
 untersuchte Straßenabschnitt dargestellt.
 
@@ -71,8 +71,8 @@ erhalten und es können Spuren im gewünschten Ausschnitt erkannt werden.
 
 Mit Ausnahme des unerwünschten Verhaltens im Fall von Trajektorien, welche am Horizont sehr unterschiedliche Start-
 beziehungsweise End-Positionen besitzen, funktioniert die Datenvorverarbeitung zuverlässig und wie gewünscht.
-Voraussetzung dafür, dass nach der Datenvorverarbeitung noch genug Trajektorien vorliegen, welche weiterverarbeitet werden können,
-ist, dass in den Rohdaten genügend intakte Bewegungsbahnen vorhanden sind.
+Voraussetzung dafür, dass nach der Vorverarbeitung noch genug Trajektorien vorliegen, welche weiterverarbeitet werden können,
+ist, dass in den Rohdaten ausreichend intakte Bewegungsbahnen vorhanden sind.
 
 \section{Evaluierung der Clusteranalyse}
 \label{sec:results_eval_clustering}
@@ -85,16 +85,16 @@ Hier wurden auch bereits Ergebnisse der Clusteranalyse für die Datensätze \tex
 
 Da der angewandte Clustering-Algorithmus die vollständigen Verläufe der
 Trajektorien vergleicht, ist die wichtigste Vorraussetzung zur Identifikation eines Clusters, dass ausreichend
-Trajektorien vorliegen, welche die identische Bewegung durch einen Straßenabschnitt beschreiben.
+Trajektorien vorliegen, welche eine identische Bewegung durch einen Straßenabschnitt beschreiben.
 In Abschnitt \ref{sec:results_clustering_dbscan_lcss} wurde erwähnt, dass ein Cluster mindestens aus
-fünf Trajektorien bestehen muss. Diese Untergrenze wurde gewählt, um nicht zu viele Cluster zu finden, welche
+fünf Trajektorien bestehen muss. Diese Untergrenze wurde gewählt, um nicht zu viele Cluster zu identifizieren, welche
 eigentlich keine Fahrspur beschreiben. Würde die Grenze niedriger angesetzt werden, so würden beispielsweise
 vermehrt Cluster aus Trajektorien gebildet, welche Überholvorgänge beschreiben.
 
 In den meisten Datensätzen, anhand derer der in dieser Arbeit entwickelte Algorithmus getestet wurde,
 existierten ausreichend Trajektorien pro Fahrspur, um diese zuverlässig zu identifizieren. Eine Ausnahme
 stellt der Datensatz von der Heilbronner-Straße in Stuttgart dar, dessen Trajektorien bereits
-in Abschnitt \ref{sec:results_eval_dataprocessing} dargestellt sind. In Abbildung \ref{fig:results_prePro_heilbronner} b)
+in Abschnitt \ref{sec:results_eval_dataprocessing} dargestellt sind. In Teil b) dieser Abbildung
 wird deutlich, dass die Fahrspuren im unteren Bereich des Straßenabschnitts nur wenig befahren sind.
 Dies wirkt sich auch auf das Ergebnis der Clusteranalyse aus, welches in Abbildung \ref{fig:results_clusters_heilbronner} dargestellt ist.
 Zwar existieren ausreichend Trajektorien, welche sich von oben nach unten links bewegen, allerdings können
@@ -117,12 +117,12 @@ den \textit{Neckartor}-Datensatz, aus welchem vor Anwendung des Algorithmus zuf�
     \subfloat[]{{
         \includegraphics[align=c, width=0.31\linewidth]{resources/img/results/Neckartor/filteredClusters1}
     }}
-    \qquad \qquad 
+    \qquad \qquad
     \subfloat[]{{
         \includegraphics[align=c, width=0.31\linewidth]{resources/img/results/Neckartor/filteredClusters2}
     }}
     \caption[Ergebnisse Test Clusteranalyse auf Neckartor Datensatz]
-            {Trajektorie-Cluster des Neckator-Datensatzes nach zufälliger Entfernung von 50\% der Trajektorien}
+            {Trajektorie-Cluster des Neckartor-Datensatzes nach zufälliger Entfernung von 50\% der Trajektorien}
     \label{fig:results_clusters_neckartor}
 \end{figure}
 
@@ -134,14 +134,14 @@ In Plot b) wurden hingegen, trotz des Fehlens von 50\% der Trajektorien, fast al
 Außer von der Anzahl der Trajektorien, hängt das Ergebnis der Clusteranalyse primär von den gewählten
 Parametern des DBSCAN Clusteralgorithmus ab. Die Standardparameter für das Clustering-Verfahren wurden
 in Abschnitt \ref{sec:results_clustering_dbscan_lcss} definiert. In Abschnitt \ref{sec:real1_adjustment_clustering_parameter}
-wurde zudem ein entwickeltes Verfahren vorgestellt, mit dessen Hilfe der Parameter $\epsilon_{DBSCAN}$ 
+wurde zudem ein Verfahren vorgestellt, mit dessen Hilfe der Parameter $\epsilon_{DBSCAN}$
 automatisch angepasst wird, wenn die Qualität der ermittelten Spur-Cluster nicht den Erwartungen entspricht.
 Alle bislang in der Arbeit gezeigten Ergebnisse der Clusteranalysen wurden ohne manuelle Parameteranpassungen bestimmt.
 Die Spur-Cluster beschreiben die in einem Straßenabschnitt existierenden Fahrspuren meist sehr gut,
-weshalb auch die daraus abgeleiteten Spur-Geometrien die Fahrbahnen gut abbilden. 
+weshalb auch die daraus abgeleiteten Spur-Geometrien die Fahrbahnen gut abbilden.
 
-In speziellen Fällen kann es allerdings vorkommen, dass trotz schlechter Clustering-Ergebnisse
-keine automatische Neu-Parametrisierung und Durchführung der Clusteranalyse vorgenommen wird.
+In speziellen Fällen kann es allerdings vorkommen, dass trotz schlechter Clustering-Ergeb-nisse
+keine automatische Neuparametrisierung und Durchführung der Clusteranalyse vorgenommen wird.
 In dieser Situation können nur über eine manuelle Parametrisierung die Spur-Cluster zuverlässig identifiziert werden.
 Dies trifft beispielsweise auf den Datensatz \textit{Steinheim} zu. Die unter Einsatz der Standardparameter
 ermittelten Spur-Cluster sind in Abbildung \ref{fig:results_clusters_steinheim} a) dargestellt.
@@ -173,9 +173,9 @@ aufweisen, kann der Clusteralgorithmus für die linke Spur zudem nur ein Cluster
 knapp vor die Brücken verläuft.
 
 Für die Clusteranalyse kann zusammenfassend festgehalten werden, dass sie gut funktioniert, wenn ausreichend
-ununterbrochene Trajektorien zur Beschreibung einer Spur vorliegen. Dank sorgfältig gewählter Standardparameter
+intakte Trajektorien zur Beschreibung einer Spur vorliegen. Dank sorgfältig gewählter Standardparameter
 und einer automatischen Parametrisierung können in den meisten Fällen die korrekten Spur-Cluster voll automatisch
-ermittelt werden. Nur in Ausnahmefällen muss die Clusteranalyse manuell konfiguriert werden. 
+ermittelt werden. Nur in Ausnahmefällen muss die Clusteranalyse manuell konfiguriert werden.
 
 \section{Evaluierung der Spur-Geometrie-Bestimmung}
 
@@ -189,15 +189,15 @@ In Abbildung \ref{fig:results_laneGeometries} sind beispielhaft Spur-Geometrien 
 \begin{figure}[H]
     \centering
     \subfloat[Heilbronner-Straße]{{
-        \includegraphics[align=c, width=0.40\linewidth]{resources/img/results/Heilbronner/improvedLanes_Heilbronner}
+        \includegraphics[align=c, width=0.45\linewidth]{resources/img/results/Heilbronner/improvedLanes_Heilbronner}
     }}
-    \qquad \qquad
+    \qquad
     \subfloat[Düsseldorf]{{
-        \includegraphics[align=c, width=0.40\linewidth]{resources/img/results/Duesseldorf/improvedLanes_Duesseldorf}
+        \includegraphics[align=c, width=0.45\linewidth]{resources/img/results/Duesseldorf/improvedLanes_Duesseldorf}
     }}
     \hfill
     \subfloat[Steinheim]{{
-        \includegraphics[align=c, width=0.40\linewidth]{resources/img/results/Steinheim/improvedLanes}
+        \includegraphics[align=c, width=0.45\linewidth]{resources/img/results/Steinheim/improvedLanes}
     }}
     \caption[Ergebnisse der Spur-Geometrie-Bestimmung]
             {Ergebnisse der Spur-Geometrie-Bestimmung von verschiedenen Straßenabschnitten}
@@ -215,8 +215,7 @@ Anhand von Plot c), welcher die für den Datensatz \textit{Steinheim} ermittelte
 außerdem deutlich, dass auch die Geometrien kreisförmiger Fahrspuren und Kreisverkehre bestimmt werden können.
 
 Ein Problem, welches bei der Bestimmung der Spur-Geometrien auftreten kann, ist in Abbildung
-\ref{fig:results_defekts_laneGeos} dargestellt. Das Beispiel stammt aus den Geometrien
-des Datensatzes \textit{Heilbronner-Straße}.
+\ref{fig:results_defekts_laneGeos} dargestellt.
 
 \begin{figure}[H]
     \centering
@@ -225,15 +224,15 @@ des Datensatzes \textit{Heilbronner-Straße}.
     \label{fig:results_defekts_laneGeos}
 \end{figure}
 
-Die Abbildung zeigt drei Fahrspuren, welche parallel zueinander verlaufen.
-Auf dem entsprechenden Staßenabschnitt der Heilbronner-Straße (vergleiche Abb. \ref{fig:results_lanes2} b)),
+Das Beispiel zeigt einen Ausschnitt aus den Spur-Geometrien des Datensatzes \textit{Heilbronner-Straße}.
+Auf dem entsprechenden Straßenabschnitt (vergleiche Abb. \ref{fig:results_lanes2} b)),
 auf welchem sich die Spuren befinden, verbreitert sich am rechten Rand der Aufnahme die Fahrbahn nach oben hin.
 Es entstehen zwei neue Fahrspuren. In den partitionierten Spur-Geometrien sollte daher eigentlich die
 oberer Spur (rot) aus der mittlere Spur (schwarz) hervorgehen, welche wiederum selbst aus der unteren
 Spur (blau) hervorgeht.
-Wie in der Abbildung oben zu sehen ist, wird allerdings die mittlere Spur partitioniert
+Wie in der Abbildung zu sehen ist, wird allerdings die mittlere Spur partitioniert
 und die obere bleibt erhalten. Hier trifft der in Abschnitt \ref{sec:real2_lane_partitioning} beschrieben
-Algorithmus eine falsche Partitionierungs-Entscheidung.
+Algorithmus eine falsche Partitionierungsentscheidung.
 
 Partitionierungsprobleme können in ähnlicher Art gelegentlich auftreten. Der Grund hierfür
 ist, dass es sehr schwierig ist, ein Verfahren zu definieren, welches in allen möglichen
@@ -242,8 +241,10 @@ Ein menschlicher Betrachter kann bei der Überlagerung zweier Spuren zwar meist 
 partitioniert werden muss, einem Algorithmus dies beizubringen, ist allerdings schwierig,
 da die Entscheidung von vielen verschiedenen, situationsbezogenen Kriterien abhängt.
 
-Der verwendete Partitionierungsansätz liefert in der Mehrzahl der Fälle die richtige Lösung. 
-Häufig gibt es bei der Teilung der Spuren auch kein eindeutiges ``Richtig'' und ``Falsch''.
+Der verwendete Partitionierungsansatz liefert, wie angestrebt, in der Mehrzahl der Fälle eine gute Lösung.
+Es musste bei der Entwicklung darauf geachtet werden, das keine Verfahren erstellt wird, welches zu sehr
+auf wenige Szenarien angepasst ist. 
+Häufig gibt es bei der Teilung der Spuren auch kein eindeutiges ``Richtig'' oder ``Falsch''.
 Welche Spur erhalten bleiben soll, ist dann Interpretationssache. Daher, und da die Fehler
 leicht über die Oberfläche der \textit{Vehicle-Tracker} Anwendung korrigiert werden können, wurde der verwendete
 Algorithmus hier nicht weiter angepasst.
