@@ -569,11 +569,10 @@ Abbildung \ref{fig:real2_results_partitioning} zeigt das Ergebnis der Spur-Parti
 \begin{figure}[H]
     \centering
     \subfloat[]{{
-        \includegraphics[align=c, width=0.4\linewidth]{resources/img/umsetzung/U2/partitionedLanes}
+        \includegraphics[align=c, width=0.45\linewidth]{resources/img/umsetzung/U2/partitionedLanes}
     }}
-    \qquad
     \subfloat[]{{
-        \includegraphics[align=c, width=0.45\linewidth]{resources/img/umsetzung/U2/result_lanePartitioned_Screenshot}
+        \includegraphics[align=c, width=0.5\linewidth]{resources/img/umsetzung/U2/result_lanePartitioned_Screenshot}
     }}
     \caption[Ergebnisse Spur-Partitionierung]
             {Plot der partitionierten Spur-Geometrien a), Visualisierung der Ergebnisse in der Anwendung \textit{Vehicle-Tracker} b)}
@@ -657,7 +656,7 @@ für die automatisch erkannten Spuren verwendet wird, ist in Abbildung \ref{fig:
 \begin{figure}[H]
     \centering
     \includegraphics[align=c, width=0.85\linewidth]{resources/img/umsetzung/U2/Fahrspurmodell}
-    \caption{Datenmodell der Spurdefinition}
+    \caption{Datenmodell der Fahrspurdefinition}
     \label{fig:real2_lane_datamodell}
 \end{figure}
 
@@ -678,7 +677,6 @@ die Richtungsänderungen zwischen aufeinanderfolgenden Abschnitten betrachtet. H
 die Gleichung \ref{eq_angle_skalar} eingesetzt.
 Überschreitet die Richtungsänderung einer Hülle einen Grenzwert von $\phi = 0.02$, so wird eine neue
 Querstrecke erstellt. Anderenfalls verläuft die Spur im untersuchten Bereich annähernd gerade.
-% In Abbildung \ref{fig:real2_lanes_trackerApplication} ist das Ergebnis der Spurerstellung dargestellt.
 In Abbildung 6.29 ist das Ergebnis der Spurerstellung dargestellt.
 Es ist gut zu erkennen, dass im Fall der geraden Fahrspuren der Autobahn nur wenige Querstrecken zur
 Definition der Spur verwendet werden, und für die gekrümmten Spuren deutlich mehr.
@@ -687,7 +685,7 @@ Definition der Spur verwendet werden, und für die gekrümmten Spuren deutlich m
     \centering
     \includegraphics[align=c, width=0.6\linewidth]{resources/img/umsetzung/U2/LaneCreator_Example}
     \caption{Angelegte Fahrspuren in der \textit{Vehicle-Tracker} Anwendung}
-    \label{fig:real2_lanes_trackerApplication}
+    \label{fig:fuhufuhu}
 \end{figure}
 
 Ein Vorteil, welcher sich durch die Weiterverwendung des in Abbildung \ref{fig:real2_lane_datamodell}

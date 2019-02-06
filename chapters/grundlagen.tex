@@ -463,7 +463,7 @@ erkennen zu können, benötigt ein Algorithmus ein spezielles ``Verständnis'' e
 Um mit den oben beschriebenen unterschiedlichen Cluster-Sets und Cluster Definitionen umgehen zu können,
 existieren verschiedene Clustering-Modelle.
 Einige wichtige Clustering-Ansätze sind Vernetzungsmodelle, Prototyp-Modelle, Verteilungsmodelle
-und Dichtemodelle. Für jede Kategorie existieren unterschiedliche Algorithmen. Im Folgenden werden
+und Dichtemodelle \cite[]{tan2007introduction, SauravKaushik2016}. Für jede Kategorie existieren unterschiedliche Algorithmen. Im Folgenden werden
 diese Modelle und jeweils exemplarisch ein Algorithmus vorgestellt.
 
 \subsection{Vernetzungsmodelle}
@@ -483,7 +483,7 @@ Grundsätzlich teilen sich hierarchische Clusteralgorithmen in zwei Gruppen auf:
 Agglomerative Ansätze weisen zu Beginn des Clustervorgangs jedem Datenelement eine eigene Gruppe zu
 und vereinen diese anschließend.
 Bei divisiven Ansätzen werden hingegen zu Beginn alle Elemente in einem Cluster zusammengefasst und
-diese in den nachfolgenden Schritten geteilt.
+diese in den nachfolgenden Schritten geteilt. \cite[]{SauravKaushik2016}
 
 Als Beispiel wird anschließend der \textit{agglomerative-hierarchische Clusteralgorithmus} genauer vorgestellt.
 Seine Arbeitsweise lässt sich sehr gut anhand sogenannter Dendrogramme oder geschachtelter Cluster-Diagramme darstellen
@@ -540,7 +540,7 @@ welche mit ihm verarbeitet werden können, erheblich begrenzt ist \cite[]{tan200
 Prototyp-basierte Clustering-Modelle betrachten im Gegensatz zu hierarchischen Modellen nicht die Distanz
 zwischen Clustern, sondern die Entfernung von Objekten zu Referenzpunkten, den \textit{Prototypen}.
 Die am häufigsten verwendeten Prototypen sind \textit{Centroids}, welche den Mittelpunkt eines Clusters dargestellen.
-\textit{Medoids}, welche teilweise auch genutz werden, repräsentieren hingegen den Median eines Clusters.
+\textit{Medoids}, welche teilweise auch genutz werden, repräsentieren hingegen den Median eines Clusters. \cite[]{tan2007introduction}
 
 Ein Beispiel für einen Centroid-Clusteralgorithmus ist \textit{k-Means}. Dieser ist aufgrund seines Alters,
 seiner Einfachheit und der vielen Weiterentwicklungen wohl der bekannteste Clusteralgorithmus überhaupt.
@@ -557,7 +557,7 @@ Mittelwerte $\mu_k$ (Centroids) minimiert.
 \end{ceqn}
 
 Eine Lösung für dieses Problem zu finden, ist NP-Schwer. Aus diesem Grund
-ist k-Means ein approximativer Ansatz, welcher nicht garantieren kann, ein globales Minimum zu finden.
+ist k-Means ein approximativer Ansatz, welcher nicht garantieren kann, ein globales Minimum zu finden \cite[]{Jain2010}.
 Die Funktionsweise des Algorithmus ist in Abbildung \ref{fig:grund_kmeans_clustering} dargestellt.
 Die Kreuze entsprechen hierbei den Centroids, welche sich in jeder Iterationen in Richtung der
 Clustermittelpunkte verschieben.
@@ -596,9 +596,9 @@ Hierzu wird der Durchschnitt aller Punkte eines Clusters berechnet:
 Diese zwei Schritte werden mehrfach wiederholt, bis das Ergebnis konvergiert, das heißt die Zuweisungen sich
 nurnoch geringfügig ändern. \cite[]{Jain2010}
 
-Der primäre Nachteil des k-Means Algorithmus ist, das auch bei ihm die Anzahl der Zielcluster spezifiziert
+Der größte Nachteil des k-Means Algorithmus ist, das auch bei ihm die Anzahl der Zielcluster spezifiziert
 werden muss. Des Weiteren ist sein Ergebnis aufgrund der zufälligen Initialisierung der Centroids
-nicht deterministisch. Ein Vorteil von k-Means ist hingegen, dass seine Zeitkomplexität bei $O(n)$ liegt.
+nicht deterministisch. Ein Vorteil von k-Means ist hingegen, dass seine Zeitkomplexität bei $O(n)$ liegt. \cite[]{tan2007introduction}
 
 Um die genannten Nachteile, zumindest in Teilen, umgehen zu können, existieren diverse Weiterentwicklungen des k-Mean
 Algorithmus. So stammen beispielsweise von \cite[]{Hamerly} und \cite[]{Pelleg} die Algorithmen \textit{g-Means}
@@ -665,7 +665,7 @@ Wahrscheinlichkeit besitzt.
 Dichte-basierte Cluster sind, wie oben beschrieben, definiert als Regionen hoher Objektdichte, welche
 von Bereichen geringer Dichte umgeben sind. Dichte-Clustering-Modelle suchen nach eben solchen Regionen.
 Großer Vorteil der Algorithmen dieser Klasse ist, dass sie Cluster beliebiger Formen identifizieren können,
-nicht auf die Vorgabe einer Clusteranzahl angewiesen sind und mit Ausreißern umgehen können.
+nicht auf die Vorgabe einer Clusteranzahl angewiesen sind und mit Ausreißern umgehen können. \cite[]{tan2007introduction}
 
 Als Vertreter der Dichte-basierten Ansätze wird nachfolgend der \textit{\acrshort*{dbscan}} Algorithmus
 (\textit{Density-Based Spatial Clustering of Applications with Noise}), wie in \cite[]{Gao2012} beschrieben, vorgestellt.
@@ -728,7 +728,7 @@ Der DBSCAN Algorithmus kann, basierend auf den obigen Definitionen, wie folgt be
 \end{enumerate}
 
 DBSCAN besitzt die oben erwähnten Vorteile Dichte-basierter Clusteralgorithmen. Dank einer Zeitkomplexität
-von $O(n\ log\ n)$, kann er außerdem auch auf große Datensätze angewendet werden.
+von $O(n\ log\ n)$, kann er außerdem auch auf große Datensätze angewendet werden \cite[]{tan2007introduction}.
 Nachteil des Ansatzes ist, dass er schlecht mit Clustern umgehen kann, welche unterschiedliche Dichten besitzen.
 
 \section{Distanzmaße zum Vergleich von Fahrzeugtrajektorien}
@@ -885,32 +885,3 @@ Sind sie sich ähnlich, wenn sie die selbe Form haben und im Raum nahe beieinand
 Dies sind wichtige Fragen, welche vor der Wahl eines Distanzmaßes geklärt werden müssen.
 Da die Maße als Distanzfunktionen bei der Clusteranalyse verwendet werden, ist ihr Verhalten ausschlaggebend
 für den Erfolg der Gruppierung von Trajektorien.
-
-% Wichtige Eigenschaften einiger in der Literatur häufig verwendeten Vergleichsmaße, inklusive der drei oben beschriebenen,
-% sind nachfolgend nochmals in tabellarischer Form festgehalten.
-
-% \begin{table}[H]
-%     \caption{Eigenschaften verschiedener Distanzmaße}
-%     \label{tab:parallelen}
-%     \centering
-%     \begin{tabular}{l|ccc}
-%         \toprule
-%         \textbf{Distanzmaß} & \textbf{gerichtet} & \textbf{PreProc. nötig} & \textbf{Ausreißer-resistent} \\
-%         \midrule \addlinespace
-%         HU \cite[]{Hu2005} & \cmark & \cmark & \cmark \\
-%         \addlinespace
-%         \acrshort{pca} \cite[]{Bashir2003} & \cmark & \cmark & \cmark \\
-%         \addlinespace
-%         \acrshort*{dtw} \cite[]{Keogh2000} & \cmark & \xmark & \xmark \\
-%         \addlinespace
-%         \acrshort*{hd} \cite[]{Chen2011} & \xmark & \xmark & \xmark \\
-%         \addlinespace
-%         mod. HD \cite[]{Atev2006} & \cmark & \xmark & \cmark \\
-%         \addlinespace
-%         PF \cite[]{Piciarelli2006} & \cmark & \xmark & \xmark \\
-%         \addlinespace
-%         LCSS \cite[]{Vlachos2002} & \cmark & \xmark & \cmark \\
-%         \addlinespace
-%         \bottomrule
-%     \end{tabular}
-% \end{table}
