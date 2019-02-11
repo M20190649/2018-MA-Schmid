@@ -28,25 +28,35 @@
 % Tabellen-Einstellungen
 \input{preamble/pre-tablesettings}
 % % %%%%%% Vorspiel
-\begin{spacing}{1} % Vorspiel immer mit Standard-Zeilenabstand setzen
-	\frontmatter
-	% % Titelblatt
-	\include{chapters/titel}
-	\include{chapters/kurzfassung}
-	\include{chapters/vorspiel}
+\frontmatter
+% % Titelblatt
+\include{chapters/titel}
 
-	% % Verzeichnisse
-	\tableofcontents
-	\listoffigures
-	% \listoftables
-	\lstlistoflistings
+\newgeometry{
+	top=30mm,% Oben
+	bottom=30mm,% Unten
+	inner=25mm,% Innen
+	outer=25mm,% Außen
+	bindingoffset=15mm,% Bundsteg
+	nomarginpar,% Kein Platz für Randnotizen
+	%includeheadfoot,
+	showframe=false,% shows visible frames for the text area and page, and the lines for the head and foot on the first page
+}
 
-	\begingroup
-	\let\clearpage\relax
-	\listoftheorems[ignoreall,show={theorem}]
-	\endgroup
-	\printglossary[type=\acronymtype, title=Abkürzungsverzeichnis]
-\end{spacing}
+\include{chapters/kurzfassung}
+\include{chapters/vorspiel}
+
+% % Verzeichnisse
+\tableofcontents
+\listoffigures
+% \listoftables
+\lstlistoflistings
+
+\begingroup
+\let\clearpage\relax
+\listoftheorems[ignoreall,show={theorem}]
+\endgroup
+\printglossary[type=\acronymtype, title=Abkürzungsverzeichnis]
 
 % % %%%%%% Textteil (Eigentliche Arbeit)
 \mainmatter
