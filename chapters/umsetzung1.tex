@@ -284,7 +284,7 @@ Nachdem im vorherigen Abschnitt beschrieben wurde, wie die Roh-Trajektorien vorv
 werden, folgt nun eine Erläuterung zweier Verfahren zur Clusteranalyse von Trajektorien, deren Einsatz
 im Rahmen der Arbeit genauer untersucht wurde.
 
-\subsection{Ansatz Spectral-Clustering und modifizierte Hausdorff-Distanz}
+\subsection[Spectral-Clustering und modifizierte Hausdorff-Distanz]{Ansatz Spectral-Clustering und modifizierte Hausdorff-Distanz}
 \label{sec:real_ansatz_spec_modHD}
 
 Als erster Ansatz für die Clusteranalyse wurde das von \cite[]{Atev2010} vorgestellte Verfahren untersucht.
@@ -445,7 +445,7 @@ Aufgrund der oben angeführten Problematiken, welche auch bei der Anwendung des 
 wurde entschieden, dass der Ansatz nicht weiter verfolgt werden soll.
 Es wurde ein Ansatz gesucht, welcher mit den beschriebenen Herausforderungen besser umgehen kann.
 
-\subsection{Ansatz DBSCAN und LCSS}
+\subsection[DBSCAN und LCSS]{Ansatz DBSCAN und LCSS}
 \label{sec:real_ansatz_dbscan_lcss}
 
 Nachdem das in Abschnitt \ref{sec:real_ansatz_spec_modHD} beschriebene Verfahren in
@@ -682,7 +682,7 @@ welche in Abbildung \ref{fig:real_results_dbscan_lcss} b) noch fehlten, sind nun
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.35\linewidth]{resources/img/umsetzung/U1/clusters_with_turning_lanes}
+    \includegraphics[width=0.4\linewidth]{resources/img/umsetzung/U1/clusters_with_turning_lanes2}
     \caption{Ergebnis Clusteranalyse inklusive Abbiegespur-Cluster}
     \label{fig:real_turning_lane_result}
 \end{figure}
@@ -708,13 +708,13 @@ in Abbildung \ref{fig:real1_clusters_duesseldorf} b) dargestellt.
 \begin{figure}[H]
     \centering
     \subfloat[]{{
-        \includegraphics[align=c, width=0.33\linewidth]{resources/img/umsetzung/U1/Plots_Duesseldorf/preProTraj}
+        \includegraphics[align=c, width=0.32\linewidth]{resources/img/umsetzung/U1/Plots_Duesseldorf/preProTraj}
     }}
     \subfloat[]{{
-        \includegraphics[align=c, width=0.33\linewidth]{resources/img/umsetzung/U1/Plots_Duesseldorf/filteredClusters_03}
+        \includegraphics[align=c, width=0.32\linewidth]{resources/img/umsetzung/U1/Plots_Duesseldorf/filteredClusters_03}
     }}
     \subfloat[]{{
-        \includegraphics[align=c, width=0.33\linewidth]{resources/img/umsetzung/U1/Plots_Duesseldorf/filteredClusters}
+        \includegraphics[align=c, width=0.32\linewidth]{resources/img/umsetzung/U1/Plots_Duesseldorf/filteredClusters}
     }}
     \caption[Ergebnis Clusteranalyse Düsseldorf Datensatz]
             {a) Roh-Trajektorien des Datensatzes Düsseldorf, b) Ergebnis der Clusteranalyse unter Verwendung
