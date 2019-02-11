@@ -40,6 +40,17 @@
 \usepackage[table]{xcolor} % Farben
 \usepackage[]{graphicx} % Bilder
 \usepackage{geometry}
+\geometry{
+    top=30mm,% Oben
+    bottom=30mm,% Unten
+    inner=25mm,% Innen
+    outer=25mm,% Außen
+    bindingoffset=15mm,% Bundsteg
+    nomarginpar,% Kein Platz für Randnotizen
+    %includeheadfoot,
+    showframe=false,% shows visible frames for the text area and page, and the lines for the head and foot on the first page
+}
+
 \usepackage{graphbox}
 %\usepackage{epstopdf} % If an eps image is detected, epstopdf is automatically called to convert it to pdf format.
 \usepackage[]{amsmath} % Amsmath - Mathematik Basispaket
@@ -59,6 +70,7 @@
 % package cm-super instead. Otherwise your fonts will look horrible in the PDF
 
 % DO NOT LOAD ae-Package for the font !
+
 
 %% - Latin Modern
 \usepackage{lmodern}
@@ -352,8 +364,8 @@ captionpos=b
 %% Seitenlayout ==========================================================
 %
 % Layout mit 'typearea'
-\typearea[current]{last}
-\raggedbottom     % Variable Seitenhoehen zulassen
+% \typearea[current]{last}
+% \raggedbottom     % Variable Seitenhoehen zulassen
 
 
 %% Kopf und Fusszeilen====================================================
@@ -430,7 +442,7 @@ captionpos=b
 \setkomafont{descriptionlabel}{\itshape}        % Stichwortliste
 %
 \renewcommand*{\raggedsection}{\raggedright} % Titelzeile linksbuendig, haengend
-%
+
 
 %% Captions (Schrift, Aussehen) ==========================================
 
